@@ -33,7 +33,7 @@ namespace NinjaTurtles.Fluent
     internal class MutationTest : IMutationTest
     {
         private readonly AssemblyDefinition _assembly;
-        private readonly ISet<Type> _expectedInvariantMethodMutators = new HashSet<Type>();
+        private readonly IDictionary<Type, string> _expectedInvariantMethodMutators = new Dictionary<Type, string>();
         private readonly ISet<Type> _methodTurtles = new HashSet<Type>();
         private readonly string _methodName;
         private readonly Type _targetClass;
@@ -64,10 +64,14 @@ namespace NinjaTurtles.Fluent
                 bool thisTurtleAllFailed = true;
                 var turtle = (IMethodTurtle)Activator.CreateInstance(methodTurtle);
                 Console.WriteLine(turtle.Description);
-                bool isExpectedInvariant = _expectedInvariantMethodMutators.Contains(methodTurtle);
+                bool isExpectedInvariant = _expectedInvariantMethodMutators.ContainsKey(methodTurtle);
                 if (isExpectedInvariant)
                 {
                     Console.WriteLine("*** This mutation is expected to be invariant! ***");
+                    if (!string.IsNullOrEmpty(_expectedInvariantMethodMutators[methodTurtle]))
+                    {
+                        Console.WriteLine("*** Reason: {0} ***", _expectedInvariantMethodMutators[methodTurtle]);
+                    }
                 }
 
                 foreach (TypeDefinition type in _assembly.MainModule.Types.Where(t => t.Name == _targetClass.Name))
@@ -111,7 +115,19 @@ namespace NinjaTurtles.Fluent
 
         public IMutationTest ExpectedInvariantFor<T>() where T : IMethodTurtle
         {
-            _expectedInvariantMethodMutators.Add(typeof(T));
+            return ExpectedInvariantFor<T>(string.Empty);
+        }
+
+        public IMutationTest ExpectedInvariantFor<T>(string reason) where T : IMethodTurtle
+        {
+            if (!_expectedInvariantMethodMutators.ContainsKey(typeof(T)))
+            {
+                _expectedInvariantMethodMutators.Add(typeof(T), reason);
+            }
+            else
+            {
+                _expectedInvariantMethodMutators[typeof(T)] = reason;
+            }
             return this;
         }
 

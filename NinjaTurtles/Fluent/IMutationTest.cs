@@ -29,6 +29,7 @@ namespace NinjaTurtles.Fluent
         void Run();
         IMutationTest With<T>() where T : IMethodTurtle;
         IMutationTest ExpectedInvariantFor<T>() where T : IMethodTurtle;
+        IMutationTest ExpectedInvariantFor<T>(string reason) where T : IMethodTurtle;
         IMutationTest CombineWith<T>() where T : IMethodTurtle;
         IMutationTest UsingRunner<T>() where T : ITestRunner;
     }

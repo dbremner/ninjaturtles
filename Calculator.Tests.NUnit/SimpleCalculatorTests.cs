@@ -54,7 +54,7 @@ namespace Calculator.Tests.NUnit
         public void Add_MutationTests()
         {
             MutationTestBuilder<SimpleCalculator>.For("Add")
-                .ExpectedInvariantFor<ParameterPermutationTurtle>()
+                .ExpectedInvariantFor<ParameterPermutationTurtle>("Addition is a commutative operation.")
                 .Run();
         }
 
