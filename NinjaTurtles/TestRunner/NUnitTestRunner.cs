@@ -28,7 +28,7 @@ namespace NinjaTurtles.TestRunner
     {
         public NUnitTestRunner()
         {
-            Path = "C:\\Program Files (x86)\\NUnit 2.6\\bin\\";
+            Path = @"..\..\..\packages\NUnit.Runners.2.6.0.12051\tools\";
         }
 
         public string Path { get; set; }
