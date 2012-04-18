@@ -25,8 +25,8 @@ using System.Linq;
 
 using Mono.Cecil;
 
-using NinjaTurtles.Mutators;
 using NinjaTurtles.TestRunner;
+using NinjaTurtles.Turtles;
 
 namespace NinjaTurtles.Fluent
 {
@@ -34,7 +34,7 @@ namespace NinjaTurtles.Fluent
     {
         private readonly AssemblyDefinition _assembly;
         private readonly ISet<Type> _expectedInvariantMethodMutators = new HashSet<Type>();
-        private readonly ISet<Type> _methodMutators = new HashSet<Type>();
+        private readonly ISet<Type> _methodTurtles = new HashSet<Type>();
         private readonly string _methodName;
         private readonly Type _targetClass;
         private readonly string _testAssemblyLocation;
@@ -54,17 +54,17 @@ namespace NinjaTurtles.Fluent
         {
             var runner = (ITestRunner)Activator.CreateInstance(_testRunner);
             string fileName = _targetClass.Assembly.Location;
-            if (_methodMutators.Count == 0)
+            if (_methodTurtles.Count == 0)
             {
-                PopulateDefaultMutators();
+                PopulateDefaultTurtles();
             }
             bool allFailed = true;
-            foreach (Type methodMutator in _methodMutators)
+            foreach (Type methodTurtle in _methodTurtles)
             {
-                bool thisMutatorAllFailed = true;
-                var mutator = (IMethodMutator)Activator.CreateInstance(methodMutator);
-                Console.WriteLine(mutator.Description);
-                bool isExpectedInvariant = _expectedInvariantMethodMutators.Contains(methodMutator);
+                bool thisTurtleAllFailed = true;
+                var turtle = (IMethodTurtle)Activator.CreateInstance(methodTurtle);
+                Console.WriteLine(turtle.Description);
+                bool isExpectedInvariant = _expectedInvariantMethodMutators.Contains(methodTurtle);
                 if (isExpectedInvariant)
                 {
                     Console.WriteLine("*** This mutation is expected to be invariant! ***");
@@ -80,7 +80,7 @@ namespace NinjaTurtles.Fluent
                     foreach (MethodDefinition method in type.Methods.Where(m => m.Name == _methodName))
                     {
                         bool mutationsFound = false;
-                        foreach (string mutation in mutator.Mutate(method, _assembly, fileName))
+                        foreach (string mutation in turtle.Mutate(method, _assembly, fileName))
                         {
                             mutationsFound = true;
                             Console.Write("\t{0}: ", mutation);
@@ -88,7 +88,7 @@ namespace NinjaTurtles.Fluent
                             OutputResultToConsole(isExpectedInvariant, result);
                             if (result != -1)
                             {
-                                thisMutatorAllFailed &= result != 0 ^ !isExpectedInvariant;
+                                thisTurtleAllFailed &= result != 0 ^ !isExpectedInvariant;
                             }
                         }
                         if (!mutationsFound)
@@ -97,28 +97,28 @@ namespace NinjaTurtles.Fluent
                         }
                     }
                 }
-                allFailed &= thisMutatorAllFailed;
+                allFailed &= thisTurtleAllFailed;
             }
 
             if (allFailed) throw new MutationTestFailureException();
         }
 
-        public IMutationTest With<T>() where T : IMethodMutator
+        public IMutationTest With<T>() where T : IMethodTurtle
         {
-            _methodMutators.Add(typeof(T));
+            _methodTurtles.Add(typeof(T));
             return this;
         }
 
-        public IMutationTest ExpectedInvariantFor<T>() where T : IMethodMutator
+        public IMutationTest ExpectedInvariantFor<T>() where T : IMethodTurtle
         {
             _expectedInvariantMethodMutators.Add(typeof(T));
             return this;
         }
 
-        public IMutationTest CombineWith<T>() where T : IMethodMutator
+        public IMutationTest CombineWith<T>() where T : IMethodTurtle
         {
-            PopulateDefaultMutators();
-            _methodMutators.Add(typeof(T));
+            PopulateDefaultTurtles();
+            _methodTurtles.Add(typeof(T));
             return this;
         }
 
@@ -146,13 +146,13 @@ namespace NinjaTurtles.Fluent
             }
         }
 
-        private void PopulateDefaultMutators()
+        private void PopulateDefaultTurtles()
         {
             foreach (Type type in GetType().Assembly.GetTypes()
                 .Where(t => !t.IsAbstract)
-                .Where(t => t.GetInterface(typeof(IMethodMutator).Name) != null))
+                .Where(t => t.GetInterface(typeof(IMethodTurtle).Name) != null))
             {
-                _methodMutators.Add(type);
+                _methodTurtles.Add(type);
             }
         }
     }

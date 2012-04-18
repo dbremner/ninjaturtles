@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 using NinjaTurtles.Attributes;
 using NinjaTurtles.Fluent;
-using NinjaTurtles.Mutators.Method;
+using NinjaTurtles.Turtles.Method;
 
 namespace Calculator.Tests.NUnit
 {
@@ -54,7 +54,7 @@ namespace Calculator.Tests.NUnit
         public void Add_MutationTests()
         {
             MutationTestBuilder<SimpleCalculator>.For("Add")
-                .ExpectedInvariantFor<ParameterPermutationMutator>()
+                .ExpectedInvariantFor<ParameterPermutationTurtle>()
                 .Run();
         }
 
@@ -62,7 +62,7 @@ namespace Calculator.Tests.NUnit
         public void MultiAdd_MutationTests()
         {
             MutationTestBuilder<SimpleCalculator>.For("MultiAdd")
-                .ExpectedInvariantFor<ParameterPermutationMutator>()
+                .ExpectedInvariantFor<ParameterPermutationTurtle>()
                 .Run();
         }
 
@@ -70,7 +70,7 @@ namespace Calculator.Tests.NUnit
         public void MixedAdd_MutationTests()
         {
             MutationTestBuilder<SimpleCalculator>.For("MixedAdd")
-                .ExpectedInvariantFor<ParameterPermutationMutator>()
+                .ExpectedInvariantFor<ParameterPermutationTurtle>()
                 .Run();
         }
 

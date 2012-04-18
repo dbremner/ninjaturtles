@@ -29,9 +29,9 @@ using Mono.Cecil.Cil;
 
 using NinjaTurtles.Utilities;
 
-namespace NinjaTurtles.Mutators.Method
+namespace NinjaTurtles.Turtles.Method
 {
-    public class ParameterPermutationMutator : MethodMutator
+    public class ParameterPermutationTurtle : MethodTurtle
     {
         public override string Description
         {

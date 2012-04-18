@@ -23,9 +23,9 @@ using System.Collections.Generic;
 
 using Mono.Cecil.Cil;
 
-namespace NinjaTurtles.Mutators.Method
+namespace NinjaTurtles.Turtles.Method
 {
-    public class ShortBranchConditionMutator : OpCodeRotationMutator
+    public class ShortBranchConditionTurtle : OpCodeRotationTurtle
     {
         private static readonly IEnumerable<OpCode> _fromOpCodes = new[]
                                                                         {

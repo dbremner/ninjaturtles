@@ -23,13 +23,14 @@ using System.Collections.Generic;
 
 using Mono.Cecil.Cil;
 
-namespace NinjaTurtles.Mutators.Method
+namespace NinjaTurtles.Turtles.Method
 {
-    public class BitwiseOperatorMutator : OpCodeRotationMutator
+    public class ArithmeticOperatorTurtle : OpCodeRotationTurtle
     {
         private static readonly IEnumerable<OpCode> _interchangeableOpCodes = new[]
                                                                         {
-                                                                            OpCodes.Or, OpCodes.And, OpCodes.Xor
+                                                                            OpCodes.Add, OpCodes.Sub, OpCodes.Mul,
+                                                                            OpCodes.Div, OpCodes.Rem
                                                                         };
 
         public override IEnumerable<OpCode> FromOpCodes
@@ -44,7 +45,7 @@ namespace NinjaTurtles.Mutators.Method
 
         public override string Description
         {
-            get { return "Rotating boolean or bitwise operators"; }
+            get { return "Rotating arithmetic operators"; }
         }
     }
 }

@@ -23,9 +23,9 @@ using System.Collections.Generic;
 
 using Mono.Cecil;
 
-namespace NinjaTurtles.Mutators
+namespace NinjaTurtles.Turtles
 {
-    public interface IMethodMutator
+    public interface IMethodTurtle
     {
         string Description { get; }
         bool IsExpectedInvariant { get; set; }

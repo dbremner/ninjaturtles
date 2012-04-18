@@ -19,17 +19,17 @@
 
 #endregion
 
-using NinjaTurtles.Mutators;
 using NinjaTurtles.TestRunner;
+using NinjaTurtles.Turtles;
 
 namespace NinjaTurtles.Fluent
 {
     public interface IMutationTest
     {
         void Run();
-        IMutationTest With<T>() where T : IMethodMutator;
-        IMutationTest ExpectedInvariantFor<T>() where T : IMethodMutator;
-        IMutationTest CombineWith<T>() where T : IMethodMutator;
+        IMutationTest With<T>() where T : IMethodTurtle;
+        IMutationTest ExpectedInvariantFor<T>() where T : IMethodTurtle;
+        IMutationTest CombineWith<T>() where T : IMethodTurtle;
         IMutationTest UsingRunner<T>() where T : ITestRunner;
     }
 }

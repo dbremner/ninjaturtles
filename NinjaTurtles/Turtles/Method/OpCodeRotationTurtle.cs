@@ -26,9 +26,9 @@ using System.Linq;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
-namespace NinjaTurtles.Mutators.Method
+namespace NinjaTurtles.Turtles.Method
 {
-    public abstract class OpCodeRotationMutator : MethodMutator
+    public abstract class OpCodeRotationTurtle : MethodTurtle
     {
         public abstract IEnumerable<OpCode> FromOpCodes { get; }
         public abstract IEnumerable<OpCode> ToOpCodes { get; }

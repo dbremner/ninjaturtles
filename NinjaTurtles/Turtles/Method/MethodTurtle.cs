@@ -25,9 +25,9 @@ using System.Threading;
 
 using Mono.Cecil;
 
-namespace NinjaTurtles.Mutators.Method
+namespace NinjaTurtles.Turtles.Method
 {
-    public abstract class MethodMutator : IMethodMutator
+    public abstract class MethodTurtle : IMethodTurtle
     {
         public abstract string Description { get; }
 
