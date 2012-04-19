@@ -19,6 +19,8 @@
 
 #endregion
 
+using System;
+
 namespace NinjaTurtles.Utilities
 {
     static internal class IntExtensions
@@ -28,6 +30,13 @@ namespace NinjaTurtles.Utilities
             int temp = array[index1];
             array[index1] = array[index2];
             array[index2] = temp;
+        }
+
+        static internal int Fact(this int number)
+        {
+            if (number < 0) throw new ArgumentException("Can't have a negative input.");
+            if (number == 0) return 1;
+            return number * (number - 1).Fact();
         }
     }
 }

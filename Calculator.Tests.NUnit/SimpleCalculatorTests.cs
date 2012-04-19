@@ -54,7 +54,7 @@ namespace Calculator.Tests.NUnit
         public void Add_MutationTests()
         {
             MutationTestBuilder<SimpleCalculator>.For("Add")
-                .ExpectedInvariantFor<ParameterPermutationTurtle>("Addition is a commutative operation.")
+                .ExpectedInvariantCasesFor<ParameterAndVariablePermutationTurtle>("Addition is a commutative operation.", 2)
                 .Run();
         }
 
@@ -62,7 +62,7 @@ namespace Calculator.Tests.NUnit
         public void MultiAdd_MutationTests()
         {
             MutationTestBuilder<SimpleCalculator>.For("MultiAdd")
-                .ExpectedInvariantFor<ParameterPermutationTurtle>()
+                .ExpectedInvariantCasesFor<ParameterAndVariablePermutationTurtle>(4)
                 .Run();
         }
 
@@ -70,7 +70,7 @@ namespace Calculator.Tests.NUnit
         public void MixedAdd_MutationTests()
         {
             MutationTestBuilder<SimpleCalculator>.For("MixedAdd")
-                .ExpectedInvariantFor<ParameterPermutationTurtle>()
+                .ExpectedInvariantCasesFor<ParameterAndVariablePermutationTurtle>(3, 3)
                 .Run();
         }
 

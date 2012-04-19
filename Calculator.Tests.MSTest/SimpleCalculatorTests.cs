@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NinjaTurtles.Attributes;
 using NinjaTurtles.Fluent;
 using NinjaTurtles.TestRunner;
+using NinjaTurtles.Turtles.Method;
 
 namespace Calculator.Tests.MSTest
 {
@@ -48,6 +49,7 @@ namespace Calculator.Tests.MSTest
         public void Add_MutationTests()
         {
             MutationTestBuilder<SimpleCalculator>.For("Add")
+                .ExpectedInvariantCasesFor<ParameterAndVariablePermutationTurtle>("Addition is a commutative operation.", 2)
                 .UsingRunner<MSTestTestRunner>()
                 .Run();
         }

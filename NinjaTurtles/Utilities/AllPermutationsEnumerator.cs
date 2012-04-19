@@ -33,49 +33,48 @@ namespace NinjaTurtles.Utilities
     public class AllPermutationsEnumerator<T> : IEnumerator<IEnumerable<T>>
     {
         /// <summary>The set of items over which all permutations are generated.</summary>
-        private T[] originalItems;
+        private T[] _originalItems;
 
         /// <summary>Flag to indicate if this enumerator is in its initial state.</summary>
-        private bool isFirst;
+        private bool _isFirst;
 
         /// <summary>Flag to indicate if this enumerator has been disposed of.</summary>
-        private bool isDisposed;
+        private bool _isDisposed;
 
         /// <summary>The current permutation.</summary>
-        private T[] current;
+        private T[] _current;
 
         /// <summary>The indicates of the items in the original set that are selected for the current permutation.</summary>
-        private int[] indices;
+        private int[] _indices;
 
         /// <summary>A state variable used by the permutation algorithm.</summary>
-        private bool even;
+        private bool _even;
 
         /// <summary>A state variable used by the permutation algorithm to track whether this enumerator is finished.</summary>
-        private bool isFinished;
+        private bool _isFinished;
 
         /// <summary>
         /// Creates and initializes an instance of the <see cref="AllPermutationsEnumerator{T}"/> type.
         /// </summary>
         /// <param name="items">The set of items over which permutations are to be created.</param>
         public AllPermutationsEnumerator(IEnumerable<T> items)
-            : base()
         {
             if (null == items)
             {
                 throw new ArgumentNullException("items");
             }
 
-            this.originalItems = items.ToArray();
-            this.indices = new int[this.originalItems.Length];
-            for (int i = 0; i < this.indices.Length; ++i)
+            _originalItems = items.ToArray();
+            _indices = new int[_originalItems.Length];
+            for (int i = 0; i < _indices.Length; ++i)
             {
-                this.indices[i] = i + 1;
+                _indices[i] = i + 1;
             }
-            this.current = null;
-            this.even = true;
-            this.isDisposed = false;
-            this.isFirst = true;
-            this.isFinished = false;
+            _current = null;
+            _even = true;
+            _isDisposed = false;
+            _isFirst = true;
+            _isFinished = false;
         }
 
         /// <summary>
@@ -85,9 +84,8 @@ namespace NinjaTurtles.Utilities
         {
             get
             {
-                this.CheckIfDisposed();
-
-                return this.current;
+                CheckIfDisposed();
+                return _current;
             }
         }
 
@@ -96,18 +94,18 @@ namespace NinjaTurtles.Utilities
         /// </summary>
         public void Dispose()
         {
-            if (this.isDisposed)
+            if (_isDisposed)
             {
                 return;
             }
 
-            this.isDisposed = true;
-            this.originalItems = null;
-            this.current = null;
-            this.indices = null;
-            this.even = true;
-            this.isFirst = true;
-            this.isFinished = false;
+            _isDisposed = true;
+            _originalItems = null;
+            _current = null;
+            _indices = null;
+            _even = true;
+            _isFirst = true;
+            _isFinished = false;
         }
 
         /// <summary>
@@ -115,10 +113,7 @@ namespace NinjaTurtles.Utilities
         /// </summary>
         object IEnumerator.Current
         {
-            get
-            {
-                return this.Current;
-            }
+            get { return Current; }
         }
 
         /// <summary>
@@ -127,46 +122,46 @@ namespace NinjaTurtles.Utilities
         /// <returns><c>true</c> if a value is available; <c>false</c> if the end has been reached.</returns>
         public bool MoveNext()
         {
-            this.CheckIfDisposed();
+            CheckIfDisposed();
 
-            if (this.isFinished)
+            if (_isFinished)
             {
                 return false;
             }
 
-            if (this.isFirst)
+            if (_isFirst)
             {
-                this.even = true;
-                this.isFirst = false;
-                this.Select();
+                _even = true;
+                _isFirst = false;
+                Select();
                 return true;
             }
-            else if (this.originalItems.Length == 1)
+            if (_originalItems.Length == 1)
             {
-                this.current = null;
+                _current = null;
                 return false;
             }
 
-            if (even)
+            if (_even)
             {
-                this.even = false;
-                this.indices.Swap(0, 1);
-                this.Select();
+                _even = false;
+                _indices.Swap(0, 1);
+                Select();
 
-                if (!((this.indices[this.indices.Length - 1] != 1) || (this.indices[0] != (2 + this.indices.Length % 2))))
+                if (!((_indices[_indices.Length - 1] != 1) || (_indices[0] != (2 + _indices.Length % 2))))
                 {
-                    if (this.indices.Length <= 3)
+                    if (_indices.Length <= 3)
                     {
-                        this.isFinished = true;
+                        _isFinished = true;
                     }
                     else
                     {
-                        this.isFinished = true;
-                        for (int i = 0; i < (this.indices.Length - 3); ++i)
+                        _isFinished = true;
+                        for (int i = 0; i < (_indices.Length - 3); ++i)
                         {
-                            if (this.indices[i + 1] != this.indices[i] + 1)
+                            if (_indices[i + 1] != _indices[i] + 1)
                             {
-                                this.isFinished = false;
+                                _isFinished = false;
                             }
                         }
                     }
@@ -175,17 +170,17 @@ namespace NinjaTurtles.Utilities
             }
 
             int s = 0;
-            this.even = true;
+            _even = true;
 
-            for (int k = 1; k < this.indices.Length; ++k)
+            for (int k = 1; k < _indices.Length; ++k)
             {
                 int d = 0;
-                int ia = this.indices[k];
+                int ia = _indices[k];
                 int i = k - 1;
 
                 for (int j = 0; j <= i; ++j)
                 {
-                    if (this.indices[j] > ia)
+                    if (_indices[j] > ia)
                     {
                         ++d;
                     }
@@ -195,19 +190,19 @@ namespace NinjaTurtles.Utilities
                 if (d != (i + 1) * (s % 2))
                 {
                     int l = 0;
-                    int m = ((s + 1) % 2) * (this.indices.Length + 1);
+                    int m = ((s + 1) % 2) * (_indices.Length + 1);
                     for (int j = 0; j <= i; ++j)
                     {
-                        if (this.Sign(1, this.indices[j] - ia) != this.Sign(1, this.indices[j] - m))
+                        if (Sign(1, _indices[j] - ia) != Sign(1, _indices[j] - m))
                         {
-                            m = this.indices[j];
+                            m = _indices[j];
                             l = j;
                         }
                     }
-                    this.indices[l] = ia;
-                    this.indices[k] = m;
-                    this.even = true;
-                    this.Select();
+                    _indices[l] = ia;
+                    _indices[k] = m;
+                    _even = true;
+                    Select();
                     break;
                 }
             }
@@ -225,16 +220,7 @@ namespace NinjaTurtles.Utilities
         /// <returns><paramref name="x"/> signed by <paramref name="y"/>.</returns>
         private int Sign(int x, int y)
         {
-            if (y >= 0)
-            {
-                x = Math.Abs(x);
-            }
-            else
-            {
-                x = -1 * Math.Abs(x);
-            }
-
-            return x;
+            return x * y >= 0 ? 1 : -1;
         }
 
         /// <summary>
@@ -243,10 +229,10 @@ namespace NinjaTurtles.Utilities
         /// </summary>
         private void Select()
         {
-            this.current = new T[this.originalItems.Length];
-            for (int i = 0; i < this.indices.Length; ++i)
+            _current = new T[_originalItems.Length];
+            for (int i = 0; i < _indices.Length; ++i)
             {
-                this.current[i] = this.originalItems[this.indices[i] - 1];
+                _current[i] = _originalItems[_indices[i] - 1];
             }
         }
 
@@ -255,18 +241,18 @@ namespace NinjaTurtles.Utilities
         /// </summary>
         public void Reset()
         {
-            this.CheckIfDisposed();
+            CheckIfDisposed();
 
-            for (int i = 0; i < this.indices.Length; ++i)
+            for (int i = 0; i < _indices.Length; ++i)
             {
-                this.indices[i] = i + 1;
+                _indices[i] = i + 1;
             }
 
-            this.current = null;
-            this.even = true;
-            this.isDisposed = false;
-            this.isFirst = true;
-            this.isFinished = false;
+            _current = null;
+            _even = true;
+            _isDisposed = false;
+            _isFirst = true;
+            _isFinished = false;
         }
 
         /// <summary>
@@ -274,9 +260,9 @@ namespace NinjaTurtles.Utilities
         /// </summary>
         private void CheckIfDisposed()
         {
-            if (this.isDisposed)
+            if (_isDisposed)
             {
-                throw new ObjectDisposedException(this.GetType().FullName);
+                throw new ObjectDisposedException(GetType().FullName);
             }
         }
     }

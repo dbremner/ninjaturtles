@@ -31,16 +31,15 @@ namespace NinjaTurtles.Utilities
     public class AllPermutationsEnumerable<T> : IEnumerable<IEnumerable<T>>
     {
         /// <summary>The set of items over which all permutations are generated.</summary>
-        private IEnumerable<T> items;
+        private readonly IEnumerable<T> _items;
 
         /// <summary>
         /// Creates and initializes a new instance of the <see cref="AllPermutationsEnumerable{T}"/> type.
         /// </summary>
         /// <param name="items">The original set of items over which all permutations are generated.</param>
         public AllPermutationsEnumerable(IEnumerable<T> items)
-            : base()
         {
-            this.items = items;
+            _items = items;
         }
 
         /// <summary>
@@ -49,7 +48,7 @@ namespace NinjaTurtles.Utilities
         /// <returns>An instance of <see cref="IEnumerator{T}"/>.</returns>
         public IEnumerator<IEnumerable<T>> GetEnumerator()
         {
-            return new AllPermutationsEnumerator<T>(this.items);
+            return new AllPermutationsEnumerator<T>(_items);
         }
 
         /// <summary>
@@ -58,7 +57,7 @@ namespace NinjaTurtles.Utilities
         /// <returns>An instance of <see cref="IEnumerator{T}"/>.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return new AllPermutationsEnumerator<T>(this.items);
+            return new AllPermutationsEnumerator<T>(_items);
         }
     }
 }

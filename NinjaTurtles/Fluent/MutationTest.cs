@@ -27,13 +27,14 @@ using Mono.Cecil;
 
 using NinjaTurtles.TestRunner;
 using NinjaTurtles.Turtles;
+using NinjaTurtles.Utilities;
 
 namespace NinjaTurtles.Fluent
 {
     internal class MutationTest : IMutationTest
     {
         private readonly AssemblyDefinition _assembly;
-        private readonly IDictionary<Type, string> _expectedInvariantMethodMutators = new Dictionary<Type, string>();
+        private readonly IDictionary<Type, Tuple<int, string>> _expectedInvariantMethodMutators = new Dictionary<Type, Tuple<int, string>>();
         private readonly ISet<Type> _methodTurtles = new HashSet<Type>();
         private readonly string _methodName;
         private readonly Type _targetClass;
@@ -61,16 +62,20 @@ namespace NinjaTurtles.Fluent
             bool allFailed = true;
             foreach (Type methodTurtle in _methodTurtles)
             {
-                bool thisTurtleAllFailed = true;
                 var turtle = (IMethodTurtle)Activator.CreateInstance(methodTurtle);
                 Console.WriteLine(turtle.Description);
+                int passCount = 0;
+                int failCount = 0;
+                int expectedPassCount = 0;
                 bool isExpectedInvariant = _expectedInvariantMethodMutators.ContainsKey(methodTurtle);
                 if (isExpectedInvariant)
                 {
-                    Console.WriteLine("*** This mutation is expected to be invariant! ***");
-                    if (!string.IsNullOrEmpty(_expectedInvariantMethodMutators[methodTurtle]))
+                    expectedPassCount = _expectedInvariantMethodMutators[methodTurtle].Item1;
+                    Console.WriteLine("*** This mutation is expected to be invariant in {0} cases! ***",
+                        expectedPassCount);
+                    if (!string.IsNullOrEmpty(_expectedInvariantMethodMutators[methodTurtle].Item2))
                     {
-                        Console.WriteLine("*** Reason: {0} ***", _expectedInvariantMethodMutators[methodTurtle]);
+                        Console.WriteLine("*** Reason: {0} ***", _expectedInvariantMethodMutators[methodTurtle].Item2);
                     }
                 }
 
@@ -92,7 +97,14 @@ namespace NinjaTurtles.Fluent
                             OutputResultToConsole(isExpectedInvariant, result);
                             if (result != -1)
                             {
-                                thisTurtleAllFailed &= (result != 0) ^ isExpectedInvariant;
+                                if (result == 0)
+                                {
+                                    passCount++;
+                                }
+                                else
+                                {
+                                    failCount++;
+                                }
                             }
                         }
                         if (!mutationsFound)
@@ -101,7 +113,7 @@ namespace NinjaTurtles.Fluent
                         }
                     }
                 }
-                allFailed &= thisTurtleAllFailed;
+                allFailed &= (passCount == expectedPassCount);
             }
 
             if (!allFailed) throw new MutationTestFailureException();
@@ -113,21 +125,18 @@ namespace NinjaTurtles.Fluent
             return this;
         }
 
-        public IMutationTest ExpectedInvariantFor<T>() where T : IMethodTurtle
+        public IMutationTest ExpectedInvariantCasesFor<T>(params int[] interchangeableParameterSetSizes) where T : IMethodTurtle
         {
-            return ExpectedInvariantFor<T>(string.Empty);
+            return ExpectedInvariantCasesFor<T>(string.Empty, interchangeableParameterSetSizes);
         }
 
-        public IMutationTest ExpectedInvariantFor<T>(string reason) where T : IMethodTurtle
+        public IMutationTest ExpectedInvariantCasesFor<T>(string reason, params int[] interchangeableParameterSetSizes) where T : IMethodTurtle
         {
-            if (!_expectedInvariantMethodMutators.ContainsKey(typeof(T)))
+            if (interchangeableParameterSetSizes.Length == 0)
             {
-                _expectedInvariantMethodMutators.Add(typeof(T), reason);
+                throw new ArgumentException("You must specify at least one set of interchangeable parameters for this method to work.");
             }
-            else
-            {
-                _expectedInvariantMethodMutators[typeof(T)] = reason;
-            }
+            _expectedInvariantMethodMutators[typeof(T)] = new Tuple<int, string>(interchangeableParameterSetSizes.Select(n => n.Fact() - 1).Sum(), reason);
             return this;
         }
 
@@ -151,13 +160,13 @@ namespace NinjaTurtles.Fluent
             switch (result)
             {
                 case 0:
-                    Console.WriteLine("Passed (this is {0})", isExpectedInvariant ? "good" : "bad");
+                    Console.WriteLine("Passed (this {0})", isExpectedInvariant ? "might be OK" : "is bad");
                     break;
                 case -1:
                     Console.WriteLine("No valid tests found to run");
                     break;
                 default:
-                    Console.WriteLine("Failed (this is {0})", isExpectedInvariant ? "bad" : "good");
+                    Console.WriteLine("Failed (this {0})", isExpectedInvariant ? "might be OK" : "is good");
                     break;
             }
         }
