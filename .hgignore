@@ -24,3 +24,4 @@ nunit-test-report.xml
 Refix.TestSolution/Refix
 Packages
 *.dotCover
+*.nupkg
