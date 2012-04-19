@@ -79,7 +79,7 @@ namespace NinjaTurtles.Turtles.Method
                             method.DeclaringType.Name,
                             method.Name);
 
-                        if (orderArray[0] == 3) assembly.Write(fileName + ".kept");
+                        if (orderArray[0] == 3) assembly.Write(fileName + ".kept.dll");
                         foreach (var p in PlaceFileAndYield(assembly, fileName, output, originalFileName))
                         {
                             yield return p;

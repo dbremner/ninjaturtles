@@ -65,6 +65,7 @@
     <Compile Include="Turtles\Method\BitwiseOperatorTurtle.cs" />
     <Compile Include="Turtles\Method\BranchConditionTurtle.cs" />
     <Compile Include="Turtles\Method\MethodTurtle.cs" />
+    <Compile Include="Turtles\Method\OpCodeDeletionTurtle.cs" />
     <Compile Include="Turtles\Method\ParameterPermutationTurtle.cs" />
     <Compile Include="Turtles\Method\ShortBranchConditionTurtle.cs" />
     <Compile Include="Turtles\Method\OpCodeRotationTurtle.cs" />

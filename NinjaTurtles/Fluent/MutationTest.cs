@@ -92,7 +92,7 @@ namespace NinjaTurtles.Fluent
                             OutputResultToConsole(isExpectedInvariant, result);
                             if (result != -1)
                             {
-                                thisTurtleAllFailed &= result != 0 ^ !isExpectedInvariant;
+                                thisTurtleAllFailed &= (result != 0) ^ isExpectedInvariant;
                             }
                         }
                         if (!mutationsFound)
@@ -104,7 +104,7 @@ namespace NinjaTurtles.Fluent
                 allFailed &= thisTurtleAllFailed;
             }
 
-            if (allFailed) throw new MutationTestFailureException();
+            if (!allFailed) throw new MutationTestFailureException();
         }
 
         public IMutationTest With<T>() where T : IMethodTurtle
