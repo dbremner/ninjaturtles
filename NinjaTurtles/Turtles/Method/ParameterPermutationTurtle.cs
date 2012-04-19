@@ -21,7 +21,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 using Mono.Cecil;
@@ -38,75 +37,62 @@ namespace NinjaTurtles.Turtles.Method
             get { return "Permuting method parameters"; }
         }
 
-        public override IEnumerable<string> Mutate(MethodDefinition method, AssemblyDefinition assembly, string fileName)
+        protected override IEnumerable<string> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string fileName)
         {
-            if (method.HasBody)
+            int offset = method.IsStatic ? 0 : 1;
+            var parameters = GroupMethodParametersByType(method);
+            if (!parameters.Any(kv => parameters[kv.Key].Count > 1))
             {
-                string originalFileName = fileName.Replace(".dll", ".ninjaoriginal.dll");
-                if (File.Exists(originalFileName)) File.Delete(originalFileName);
+                yield break;
+            }
 
-                int offset = method.IsStatic ? 0 : 1;
-                IDictionary<TypeReference, IList<int>> parameters = new Dictionary<TypeReference, IList<int>>();
-                foreach (var parameter in method.Parameters)
+            foreach (var keyValuePair in parameters.Where(kv => kv.Value.Count > 1))
+            {
+                var indices = keyValuePair.Value.ToArray();
+                foreach (var order in new AllPermutationsEnumerable<int>(indices).ToArray())
                 {
-                    var type = parameter.ParameterType;
-                    if (!parameters.ContainsKey(type))
+                    int[] orderArray = order.ToArray();
+                    int j = 0;
+                    bool isOriginalOrder = orderArray.All(index => index == indices[j++]);
+                    if (isOriginalOrder) continue;
+
+                    PermuteIndices(method, indices, orderArray, offset);
+                    var output = string.Format("Parameter permutation change for type {0} ({1}) => ({2}) in {3}.{4}",
+                                               keyValuePair.Key.Name,
+                                               string.Join(",", indices),
+                                               string.Join(",", orderArray),
+                                               method.DeclaringType.Name,
+                                               method.Name);
+
+                    if (orderArray[0] == 3) assembly.Write(fileName + ".kept.dll");
+                    foreach (var p in PlaceFileAndYield(assembly, fileName, output))
                     {
-                        parameters.Add(type, new List<int>());
+                        yield return p;
                     }
-                    parameters[type].Add(parameter.Index);
-                }
-                if (!parameters.Any(kv => parameters[kv.Key].Count > 1))
-                {
-                    yield break;
-                }
-                foreach (var type in parameters.Keys)
-                {
-                    if (parameters[type].Count < 2) continue;
-                    var indices = parameters[type].ToArray();
-                    foreach (var order in new AllPermutationsEnumerable<int>(indices).ToArray())
-                    {
-                        int[] orderArray = order.ToArray();
-                        int j = 0;
-                        bool isOriginalOrder = orderArray.All(index => index == indices[j++]);
-                        if (isOriginalOrder) continue;
 
-                        PermuteIndices(method, indices, orderArray, offset);
-                        var output = string.Format("Parameter permutation change for type {0} ({1}) => ({2}) in {3}.{4}",
-                            type.Name,
-                            string.Join(",", indices),
-                            string.Join(",", orderArray),
-                            method.DeclaringType.Name,
-                            method.Name);
-
-                        if (orderArray[0] == 3) assembly.Write(fileName + ".kept.dll");
-                        foreach (var p in PlaceFileAndYield(assembly, fileName, output, originalFileName))
-                        {
-                            yield return p;
-                        }
-
-                        PermuteIndices(method, orderArray, indices, offset);
-                    }
+                    PermuteIndices(method, orderArray, indices, offset);
                 }
             }
         }
 
+        private static IDictionary<TypeReference, IList<int>> GroupMethodParametersByType(MethodDefinition method)
+        {
+            IDictionary<TypeReference, IList<int>> parameters = new Dictionary<TypeReference, IList<int>>();
+            foreach (var parameter in method.Parameters)
+            {
+                var type = parameter.ParameterType;
+                if (!parameters.ContainsKey(type))
+                {
+                    parameters.Add(type, new List<int>());
+                }
+                parameters[type].Add(parameter.Index);
+            }
+            return parameters;
+        }
+
         private static void PermuteIndices(MethodDefinition method, int[] fromIndices, int[] toIndices, int offset)
         {
-            IDictionary<int, ParameterDefinition> ldargOperands = new Dictionary<int, ParameterDefinition>();
-            foreach (var instruction in method.Body.Instructions)
-            {
-
-                if (instruction.OpCode == OpCodes.Ldarg_S)
-                {
-                    var parameterDefinition = (ParameterDefinition)instruction.Operand;
-                    int sequence = parameterDefinition.Sequence;
-                    if (!ldargOperands.ContainsKey(sequence))
-                    {
-                        ldargOperands.Add(sequence, parameterDefinition);
-                    }
-                }
-            }
+            var ldargOperands = GetOperandsForHigherIndexParameters(method);
             foreach (var instruction in method.Body.Instructions)
             {
                 int parameterIndex = -1;
@@ -169,6 +155,24 @@ namespace NinjaTurtles.Turtles.Method
                     }
                 }
             }
+        }
+
+        private static IDictionary<int, ParameterDefinition> GetOperandsForHigherIndexParameters(MethodDefinition method)
+        {
+            IDictionary<int, ParameterDefinition> ldargOperands = new Dictionary<int, ParameterDefinition>();
+            foreach (var instruction in method.Body.Instructions)
+            {
+                if (instruction.OpCode == OpCodes.Ldarg_S)
+                {
+                    var parameterDefinition = (ParameterDefinition)instruction.Operand;
+                    int sequence = parameterDefinition.Sequence;
+                    if (!ldargOperands.ContainsKey(sequence))
+                    {
+                        ldargOperands.Add(sequence, parameterDefinition);
+                    }
+                }
+            }
+            return ldargOperands;
         }
     }
 }

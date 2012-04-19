@@ -33,32 +33,28 @@ namespace NinjaTurtles.Turtles.Method
         public abstract IEnumerable<OpCode> FromOpCodes { get; }
         public abstract IEnumerable<OpCode> ToOpCodes { get; }
 
-        public override IEnumerable<string> Mutate(MethodDefinition method, AssemblyDefinition assembly, string fileName)
+        protected override IEnumerable<string> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string fileName)
         {
-            if (method.HasBody)
+            foreach (var instruction in method.Body.Instructions)
             {
-                string originalFileName = fileName.Replace(".dll", ".ninjaoriginal.dll");
-                if (File.Exists(originalFileName)) File.Delete(originalFileName);
-
-                foreach (var instruction in method.Body.Instructions)
+                if (FromOpCodes.Any(o => o.Equals(instruction.OpCode)))
                 {
-                    if (FromOpCodes.Any(o => o.Equals(instruction.OpCode)))
+                    var originalCode = instruction.OpCode;
+                    foreach (var opCode in ToOpCodes)
                     {
-                        var originalCode = instruction.OpCode;
-                        foreach (var opCode in ToOpCodes)
+                        if (originalCode != opCode)
                         {
-                            if (originalCode != opCode)
+                            instruction.OpCode = opCode;
+                            var output = string.Format("OpCode change {0} => {1} at {2:x4} in {3}.{4}",
+                                                       originalCode.Name, opCode.Name, instruction.Offset,
+                                                       method.DeclaringType.Name, method.Name);
+
+                            foreach (var p in PlaceFileAndYield(assembly, fileName, output))
                             {
-                                instruction.OpCode = opCode;
-                                var output = string.Format("OpCode change {0} => {1} at {2:x4} in {3}.{4}", originalCode.Name, opCode.Name, instruction.Offset, method.DeclaringType.Name, method.Name);
-
-                                foreach (var p in PlaceFileAndYield(assembly, fileName, output, originalFileName))
-                                {
-                                    yield return p;
-                                }
-
-                                instruction.OpCode = originalCode;
+                                yield return p;
                             }
+
+                            instruction.OpCode = originalCode;
                         }
                     }
                 }

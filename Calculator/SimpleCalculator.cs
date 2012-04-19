@@ -6,7 +6,8 @@ namespace Calculator
     {
         public int Add(int left, int right)
         {
-            return left + right;
+            int sum = left + right;
+            return sum;
         }
 
         public int MultiAdd(int i1, int i2, int i3, int i4)

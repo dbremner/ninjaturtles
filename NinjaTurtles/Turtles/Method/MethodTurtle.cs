@@ -29,16 +29,28 @@ namespace NinjaTurtles.Turtles.Method
 {
     public abstract class MethodTurtle : IMethodTurtle
     {
+        protected string _originalFileName;
+
         public abstract string Description { get; }
 
         public bool IsExpectedInvariant { get; set; }
 
-        public abstract IEnumerable<string> Mutate(MethodDefinition method, AssemblyDefinition assembly, string fileName);
-
-        protected IEnumerable<string> PlaceFileAndYield(AssemblyDefinition assembly, string fileName, string output,
-                                                      string originalFileName)
+        public IEnumerable<string> Mutate(MethodDefinition method, AssemblyDefinition assembly, string fileName)
         {
-            File.Move(fileName, originalFileName);
+            if (!method.HasBody) yield break;
+            _originalFileName = fileName.Replace(".dll", ".ninjaoriginal.dll");
+            if (File.Exists(_originalFileName)) File.Delete(_originalFileName);
+            foreach (var line in DoMutate(method, assembly, fileName))
+            {
+                yield return line;
+            }
+        }
+
+        protected abstract IEnumerable<string> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string fileName); 
+
+        protected IEnumerable<string> PlaceFileAndYield(AssemblyDefinition assembly, string fileName, string output)
+        {
+            File.Move(fileName, _originalFileName);
             assembly.Write(fileName);
             yield return output;
             File.Delete(fileName);
@@ -48,7 +60,7 @@ namespace NinjaTurtles.Turtles.Method
                 Thread.Sleep(100);
                 File.Delete(fileName);
             }
-            File.Move(originalFileName, fileName);
+            File.Move(_originalFileName, fileName);
         }
     }
 }

@@ -20,7 +20,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.IO;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -34,35 +33,30 @@ namespace NinjaTurtles.Turtles.Method
             get { return "Deleting OpCodes in turn"; }
         }
 
-        public override IEnumerable<string> Mutate(MethodDefinition method, AssemblyDefinition assembly, string fileName)
+        protected override IEnumerable<string> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string fileName)
         {
-            if (method.HasBody)
+            foreach (var instruction in method.Body.Instructions)
             {
-                string originalFileName = fileName.Replace(".dll", ".ninjaoriginal.dll");
-                if (File.Exists(originalFileName)) File.Delete(originalFileName);
+                if (!ShouldDeleteOpCode(instruction)) continue;
 
-                foreach (var instruction in method.Body.Instructions)
+                var originalCode = instruction.OpCode;
+                var originalOperand = instruction.Operand;
+
+                instruction.OpCode = OpCodes.Nop;
+                instruction.Operand = null;
+                var output = string.Format("OpCode deletion {0} at {1:x4} in {2}.{3}", originalCode.Name,
+                                           instruction.Offset, method.DeclaringType.Name, method.Name);
+
+                foreach (var p in PlaceFileAndYield(assembly, fileName, output))
                 {
-                    if (!ShouldDeleteOpCode(instruction)) continue;
-
-                    var originalCode = instruction.OpCode;
-                    var originalOperand = instruction.Operand;
-
-                    instruction.OpCode = OpCodes.Nop;
-                    instruction.Operand = null;
-                    var output = string.Format("OpCode deletion {0} at {1:x4} in {2}.{3}", originalCode.Name,
-                                               instruction.Offset, method.DeclaringType.Name, method.Name);
-
-                    foreach (var p in PlaceFileAndYield(assembly, fileName, output, originalFileName))
-                    {
-                        yield return p;
-                    }
-
-                    instruction.OpCode = originalCode;
-                    instruction.Operand = originalOperand;
+                    yield return p;
                 }
+
+                instruction.OpCode = originalCode;
+                instruction.Operand = originalOperand;
             }
         }
+
 
         private bool ShouldDeleteOpCode(Instruction instruction)
         {
