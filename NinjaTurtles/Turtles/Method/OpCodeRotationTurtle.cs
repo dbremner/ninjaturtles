@@ -38,7 +38,7 @@ namespace NinjaTurtles.Turtles.Method
         /// Defines a mapping from input opcodes to a set of replacement output
         /// opcodes for mutation purposes.
         /// </summary>
-        public abstract IList<KeyValuePair<OpCode, OpCode>> OpCodeMap { get; } 
+        public abstract IDictionary<OpCode, IEnumerable<OpCode>> OpCodeMap { get; } 
 
         /// <summary>
         /// When implemented in a subclass, performs the actual mutations on
@@ -65,7 +65,7 @@ namespace NinjaTurtles.Turtles.Method
                 if (OpCodeMap.Any(o => o.Key.Equals(instruction.OpCode)))
                 {
                     var originalCode = instruction.OpCode;
-                    foreach (var opCode in OpCodeMap.Where(o => o.Key.Equals(originalCode)).Select(o => o.Value))
+                    foreach (var opCode in OpCodeMap[originalCode])
                     {
                         if (originalCode != opCode)
                         {

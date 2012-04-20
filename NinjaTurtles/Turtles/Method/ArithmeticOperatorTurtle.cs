@@ -31,35 +31,17 @@ namespace NinjaTurtles.Turtles.Method
     /// </summary>
     public class ArithmeticOperatorTurtle : OpCodeRotationTurtle
     {
-        private static readonly IList<KeyValuePair<OpCode, OpCode>> _opcodeMap = new List<KeyValuePair<OpCode, OpCode>>
-                                                                             {
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Add, OpCodes.Rem),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Add, OpCodes.Sub),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Add, OpCodes.Mul),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Add, OpCodes.Div),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Sub, OpCodes.Add),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Sub, OpCodes.Rem),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Sub, OpCodes.Mul),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Sub, OpCodes.Div),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Mul, OpCodes.Add),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Mul, OpCodes.Sub),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Mul, OpCodes.Rem),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Mul, OpCodes.Div),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Div, OpCodes.Add),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Div, OpCodes.Sub),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Div, OpCodes.Mul),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Div, OpCodes.Rem),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Rem, OpCodes.Add),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Rem, OpCodes.Sub),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Rem, OpCodes.Mul),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Rem, OpCodes.Div)
-                                                                             };
+        private static readonly IDictionary<OpCode, IEnumerable<OpCode>> _opcodeMap 
+            = new Dictionary<OpCode, IEnumerable<OpCode>>
+                {
+                    {OpCodes.Add, new[] {OpCodes.Rem, OpCodes.Sub, OpCodes.Mul, OpCodes.Div}},
+                    {OpCodes.Sub, new[] {OpCodes.Rem, OpCodes.Add, OpCodes.Mul, OpCodes.Div}},
+                    {OpCodes.Mul, new[] {OpCodes.Rem, OpCodes.Sub, OpCodes.Add, OpCodes.Div}},
+                    {OpCodes.Div, new[] {OpCodes.Rem, OpCodes.Sub, OpCodes.Mul, OpCodes.Add}},
+                    {OpCodes.Rem, new[] {OpCodes.Add, OpCodes.Sub, OpCodes.Mul, OpCodes.Div}}
+                };
 
-        /// <summary>
-        /// Defines a mapping from input opcodes to a set of replacement output
-        /// opcodes for mutation purposes.
-        /// </summary>
-        public override IList<KeyValuePair<OpCode, OpCode>> OpCodeMap
+        public override IDictionary<OpCode, IEnumerable<OpCode>> OpCodeMap
         {
             get { return _opcodeMap; }
         }

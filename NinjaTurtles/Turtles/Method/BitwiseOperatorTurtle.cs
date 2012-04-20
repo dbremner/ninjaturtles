@@ -20,7 +20,7 @@
 #endregion
 
 using System.Collections.Generic;
-
+using System.ComponentModel;
 using Mono.Cecil.Cil;
 
 namespace NinjaTurtles.Turtles.Method
@@ -31,20 +31,19 @@ namespace NinjaTurtles.Turtles.Method
     /// </summary>
     public class BitwiseOperatorTurtle : OpCodeRotationTurtle
     {
+        private static readonly IDictionary<OpCode, IEnumerable<OpCode>> _opcodeMap 
+            = new Dictionary<OpCode, IEnumerable<OpCode>>
+                {
+                    {OpCodes.Or, new[] {OpCodes.And, OpCodes.Xor}},
+                    {OpCodes.And, new[] {OpCodes.Xor, OpCodes.Or}},
+                    {OpCodes.Xor, new[] {OpCodes.And, OpCodes.Or}}
+                };
 
-        private static readonly IList<KeyValuePair<OpCode, OpCode>> _opcodeMap = new List<KeyValuePair<OpCode, OpCode>>
-                                                                             {
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Or, OpCodes.And),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.And, OpCodes.Xor),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.And, OpCodes.Or),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Xor, OpCodes.And)
-                                                                             };
-
-        /// <summary>
+        
         /// Defines a mapping from input opcodes to a set of replacement output
         /// opcodes for mutation purposes.
         /// </summary>
-        public override IList<KeyValuePair<OpCode, OpCode>> OpCodeMap
+        public override IDictionary<OpCode, IEnumerable<OpCode>> OpCodeMap
         {
             get { return _opcodeMap; }
         }

@@ -33,27 +33,29 @@ namespace NinjaTurtles.Turtles.Method
     /// </summary>
     public class BranchConditionTurtle : OpCodeRotationTurtle
     {
-        private static readonly IList<KeyValuePair<OpCode, OpCode>> _opcodeMap = new List<KeyValuePair<OpCode, OpCode>>
-                                                                             {
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Brfalse, OpCodes.Brtrue),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Brtrue, OpCodes.Brfalse),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Beq, OpCodes.Bne_Un),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Bne_Un, OpCodes.Beq),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Bge, OpCodes.Blt),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Blt, OpCodes.Bge),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Bge_Un, OpCodes.Blt_Un),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Blt_Un, OpCodes.Bge_Un),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Ble, OpCodes.Bgt),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Bgt, OpCodes.Ble),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Ble_Un, OpCodes.Bgt_Un),
-                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Bgt_Un, OpCodes.Ble_Un)
-                                                                             };
+        private static readonly IDictionary<OpCode, IEnumerable<OpCode>> _opcodeMap 
+            = new Dictionary<OpCode, IEnumerable<OpCode>>
+                {
+                    {OpCodes.Brfalse, new[] {OpCodes.Brtrue}},
+                    {OpCodes.Brtrue, new[] {OpCodes.Brfalse}},
+                    {OpCodes.Beq, new[] {OpCodes.Bne_Un}},
+                    {OpCodes.Bne_Un, new[] {OpCodes.Beq}},
+                    {OpCodes.Bge, new[] {OpCodes.Blt}},
+                    {OpCodes.Blt, new[] {OpCodes.Bge}},
+                    {OpCodes.Bge_Un, new[] {OpCodes.Blt_Un}},
+                    {OpCodes.Blt_Un, new[] {OpCodes.Bge_Un}},
+                    {OpCodes.Ble, new[] {OpCodes.Bgt}},
+                    {OpCodes.Bgt, new[] {OpCodes.Ble}},
+                    {OpCodes.Ble_Un, new[] {OpCodes.Bgt_Un}},
+                    {OpCodes.Bgt_Un, new[] {OpCodes.Ble_Un}}
+                
+                };
 
         /// <summary>
         /// Defines a mapping from input opcodes to a set of replacement output
         /// opcodes for mutation purposes.
         /// </summary>
-        public override IList<KeyValuePair<OpCode, OpCode>> OpCodeMap
+        public override IDictionary<OpCode, IEnumerable<OpCode>> OpCodeMap
         {
             get { return _opcodeMap; }
         }
