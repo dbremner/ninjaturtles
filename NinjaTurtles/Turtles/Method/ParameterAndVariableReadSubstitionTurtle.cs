@@ -91,38 +91,38 @@ namespace NinjaTurtles.Turtles.Method
                         int ldlocIndex = ((VariableDefinition)instruction.Operand).Index;
                         oldIndex = ldlocIndex;
                     }
-                    if (oldIndex.HasValue)
+                    
+                    if (!oldIndex.HasValue) continue;
+                    
+                    int parameterPosition = Array.IndexOf(indices, oldIndex.Value);
+                    if (parameterPosition == -1) continue;
+                    
+                    foreach (var sequence in indices)
                     {
-                        int parameterPosition = Array.IndexOf(indices, oldIndex.Value);
-                        if (parameterPosition == -1) continue;
-                        foreach (var sequence in indices)
+                        if (sequence == oldIndex.Value) continue;
+                            
+                        OpCode originalOpCode = instruction.OpCode;
+                        object originalOperand = instruction.Operand;
+                        instruction.OpCode = sequence >= 0 ? OpCodes.Ldloc : OpCodes.Ldarg;
+                        instruction.Operand = ldargOperands[sequence];
+
+                        var output =
+                            string.Format(
+                                "Parameter/variable read substitution {0}.{1} => {0}.{2} at {3:x4} in {4}.{5}",
+                                keyValuePair.Key.Name,
+                                GetIndexAsString(oldIndex.Value),
+                                GetIndexAsString(sequence),
+                                instruction.Offset,
+                                method.DeclaringType.Name,
+                                method.Name);
+
+                        foreach (var p in PlaceFileAndYield(assembly, fileName, output))
                         {
-                            if (sequence != oldIndex.Value)
-                            {
-                                OpCode originalOpCode = instruction.OpCode;
-                                object originalOperand = instruction.Operand;
-                                instruction.OpCode = sequence >= 0 ? OpCodes.Ldloc : OpCodes.Ldarg;
-                                instruction.Operand = ldargOperands[sequence];
-
-                                var output =
-                                    string.Format(
-                                        "Parameter/variable read substitution {0}.{1} => {0}.{2} at {3:x4} in {4}.{5}",
-                                        keyValuePair.Key.Name,
-                                        GetIndexAsString(oldIndex.Value),
-                                        GetIndexAsString(sequence),
-                                        instruction.Offset,
-                                        method.DeclaringType.Name,
-                                        method.Name);
-
-                                foreach (var p in PlaceFileAndYield(assembly, fileName, output))
-                                {
-                                    yield return p;
-                                }
-
-                                instruction.OpCode = originalOpCode;
-                                instruction.Operand = originalOperand;
-                            }
+                            yield return p;
                         }
+
+                        instruction.OpCode = originalOpCode;
+                        instruction.Operand = originalOperand;
                     }
                 }
             }

@@ -66,7 +66,7 @@ namespace NinjaTurtles
                 int passCount = 0;
                 foreach (TypeDefinition type in _assembly.MainModule.Types.Where(t => t.Name == _targetClass.Name))
                 {
-                    if (!type.Methods.Any(m => m.Name == _methodName))
+                    if (type.Methods.All(m => m.Name != _methodName))
                     {
                         throw new MutationTestFailureException(
                             string.Format("Unknown method '{0}'", _methodName));

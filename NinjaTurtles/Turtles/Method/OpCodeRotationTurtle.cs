@@ -62,26 +62,22 @@ namespace NinjaTurtles.Turtles.Method
         {
             foreach (var instruction in method.Body.Instructions)
             {
-                if (OpCodeMap.Any(o => o.Key.Equals(instruction.OpCode)))
+                if (!OpCodeMap.Any(o => o.Key.Equals(instruction.OpCode))) continue;
+                
+                var originalCode = instruction.OpCode;
+                foreach (var opCode in OpCodeMap[originalCode].Where(opCode => originalCode != opCode))
                 {
-                    var originalCode = instruction.OpCode;
-                    foreach (var opCode in OpCodeMap[originalCode])
+                    instruction.OpCode = opCode;
+                    var output = string.Format("OpCode change {0} => {1} at {2:x4} in {3}.{4}",
+                                               originalCode.Name, opCode.Name, instruction.Offset,
+                                               method.DeclaringType.Name, method.Name);
+
+                    foreach (var p in PlaceFileAndYield(assembly, fileName, output))
                     {
-                        if (originalCode != opCode)
-                        {
-                            instruction.OpCode = opCode;
-                            var output = string.Format("OpCode change {0} => {1} at {2:x4} in {3}.{4}",
-                                                       originalCode.Name, opCode.Name, instruction.Offset,
-                                                       method.DeclaringType.Name, method.Name);
-
-                            foreach (var p in PlaceFileAndYield(assembly, fileName, output))
-                            {
-                                yield return p;
-                            }
-
-                            instruction.OpCode = originalCode;
-                        }
+                        yield return p;
                     }
+
+                    instruction.OpCode = originalCode;
                 }
             }
         }
