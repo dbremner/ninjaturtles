@@ -77,40 +77,39 @@ namespace NinjaTurtles.Turtles.Method
                 var ldargOperands = GetOperandsForVariables(method);
                 foreach (var instruction in method.Body.Instructions)
                 {
-                    if (instruction.OpCode == OpCodes.Stloc)
+                    if (instruction.OpCode != OpCodes.Stloc) continue;
+                    
+                    int ldlocIndex = ((VariableDefinition)instruction.Operand).Index;
+                    int oldIndex = ldlocIndex;
+                    int parameterPosition = Array.IndexOf(indices, oldIndex);
+                    if (parameterPosition == -1) continue;
+                    
+                    foreach (var sequence in indices)
                     {
-                        int ldlocIndex = ((VariableDefinition)instruction.Operand).Index;
-                        int oldIndex = ldlocIndex;
-                        int parameterPosition = Array.IndexOf(indices, oldIndex);
-                        if (parameterPosition == -1) continue;
-                        foreach (var sequence in indices)
+                        if (sequence == oldIndex) continue;
+                        
+                        OpCode originalOpCode = instruction.OpCode;
+                        object originalOperand = instruction.Operand;
+                        instruction.OpCode = sequence >= 0 ? OpCodes.Ldloc : OpCodes.Ldarg;
+                        instruction.Operand = ldargOperands[sequence];
+
+                        var output =
+                            string.Format(
+                                "Variable write substitution {0}.V{1} => {0}.V{2} at {3:x4} in {4}.{5}",
+                                keyValuePair.Key.Name,
+                                oldIndex,
+                                sequence,
+                                instruction.Offset,
+                                method.DeclaringType.Name,
+                                method.Name);
+
+                        foreach (var p in PlaceFileAndYield(assembly, fileName, output))
                         {
-                            if (sequence != oldIndex)
-                            {
-                                OpCode originalOpCode = instruction.OpCode;
-                                object originalOperand = instruction.Operand;
-                                instruction.OpCode = sequence >= 0 ? OpCodes.Ldloc : OpCodes.Ldarg;
-                                instruction.Operand = ldargOperands[sequence];
-
-                                var output =
-                                    string.Format(
-                                        "Variable write substitution {0}.V{1} => {0}.V{2} at {3:x4} in {4}.{5}",
-                                        keyValuePair.Key.Name,
-                                        oldIndex,
-                                        sequence,
-                                        instruction.Offset,
-                                        method.DeclaringType.Name,
-                                        method.Name);
-
-                                foreach (var p in PlaceFileAndYield(assembly, fileName, output))
-                                {
-                                    yield return p;
-                                }
-
-                                instruction.OpCode = originalOpCode;
-                                instruction.Operand = originalOperand;
-                            }
+                            yield return p;
                         }
+
+                        instruction.OpCode = originalOpCode;
+                        instruction.Operand = originalOperand;
                     }
                 }
             }
@@ -136,14 +135,14 @@ namespace NinjaTurtles.Turtles.Method
             IDictionary<int, object> operands = new Dictionary<int, object>();
             foreach (var instruction in method.Body.Instructions)
             {
-                if (instruction.OpCode == OpCodes.Ldloc)
+                if (instruction.OpCode != OpCodes.Ldloc) continue;
+                
+                var variableDefinition = (VariableDefinition)instruction.Operand;
+                int index = variableDefinition.Index;
+                
+                if (!operands.ContainsKey(index))
                 {
-                    var variableDefinition = (VariableDefinition)instruction.Operand;
-                    int index = variableDefinition.Index;
-                    if (!operands.ContainsKey(index))
-                    {
-                        operands.Add(index, variableDefinition);
-                    }
+                    operands.Add(index, variableDefinition);
                 }
             }
             return operands;
