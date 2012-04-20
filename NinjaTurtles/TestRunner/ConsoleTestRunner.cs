@@ -19,6 +19,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -81,8 +82,14 @@ namespace NinjaTurtles.TestRunner
             var startInfo = new ProcessStartInfo(GetCommandLine(testLibraryPath, testsToRun))
                                 {
                                     UseShellExecute = false,
-                                    CreateNoWindow = true
+                                    CreateNoWindow = true,
+									RedirectStandardOutput = true
                                 };
+			if (Runtime.IsRunningOnMono)
+			{
+				startInfo.Arguments = startInfo.FileName;
+				startInfo.FileName = "mono";
+			}
             using (var process = Process.Start(startInfo))
             {
                 if (!process.WaitForExit(30000))

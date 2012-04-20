@@ -23,7 +23,13 @@ nunit-test-report.xml
 .refix
 Refix.TestSolution/Refix
 Packages
+packages
 *.dotCover
 *.nupkg
 Help
 *.shfbproj_*
+NUnit.*
+Mono.Cecil.*
+*.userprefs
+*.pidb
+test-results

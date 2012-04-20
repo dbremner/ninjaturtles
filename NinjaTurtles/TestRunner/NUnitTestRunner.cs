@@ -75,16 +75,23 @@ namespace NinjaTurtles.TestRunner
                 // If we can't find a packages directory for any reason, just swallow the exception and continue...
             }
             string programFilesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-            string programFilesX86Folder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
             searchPath.AddRange(new[]
                                     {
                                         Path.Combine(programFilesFolder, "NUnit 2.6\\bin"),
-                                        Path.Combine(programFilesX86Folder, "NUnit 2.6\\bin"),
-                                        Path.Combine(programFilesFolder, "NUnit 2.5\\bin"),
-                                        Path.Combine(programFilesX86Folder, "NUnit 2.5\\bin"),
+                                        Path.Combine(programFilesFolder, "NUnit 2.5\\bin")
                                     });
-            string environmentSearchPath = Environment.GetEnvironmentVariable("PATH") ?? "";
-            searchPath.AddRange(environmentSearchPath.Split(new[] {";"}, StringSplitOptions.RemoveEmptyEntries));
+			string programFilesX86Folder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+            if (!string.IsNullOrEmpty(programFilesX86Folder))
+			{
+	            searchPath.AddRange(new[]
+                        {
+                            Path.Combine(programFilesX86Folder, "NUnit 2.6\\bin"),
+                            Path.Combine(programFilesX86Folder, "NUnit 2.5\\bin")
+                        });
+			}
+			string environmentSearchPath = Environment.GetEnvironmentVariable("PATH") ?? "";
+            searchPath.AddRange(environmentSearchPath
+			    .Split(new[] {Runtime.SearchPathSeparator}, StringSplitOptions.RemoveEmptyEntries));
             foreach (string folder in searchPath)
             {
                 if (File.Exists(Path.Combine(folder, EXECUTABLE_NAME)))
@@ -111,8 +118,10 @@ namespace NinjaTurtles.TestRunner
         {
             string path = Path.GetTempFileName();
             File.WriteAllLines(path, tests);
-            return string.Format("\"{0}\" \"{1}\" /runlist=\"{2}\"",
+            string exeCommand = string.Format("\"{1}\" \"{2}\" {0}runlist=\"{3}\" {0}stoponerror",
+			                     Runtime.CommandLineArgumentCharacter,
                                  Path.Combine(RunnerPath, EXECUTABLE_NAME), testLibraryPath, path);
+			return exeCommand;
         }
 
         /// <summary>
