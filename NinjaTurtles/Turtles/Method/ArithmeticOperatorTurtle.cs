@@ -27,20 +27,33 @@ namespace NinjaTurtles.Turtles.Method
 {
     public class ArithmeticOperatorTurtle : OpCodeRotationTurtle
     {
-        private static readonly IEnumerable<OpCode> _interchangeableOpCodes = new[]
-                                                                        {
-                                                                            OpCodes.Add, OpCodes.Sub, OpCodes.Mul,
-                                                                            OpCodes.Div, OpCodes.Rem
-                                                                        };
+        private static readonly IList<KeyValuePair<OpCode, OpCode>> _opcodeMap = new List<KeyValuePair<OpCode, OpCode>>
+                                                                             {
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Add, OpCodes.Rem),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Add, OpCodes.Sub),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Add, OpCodes.Mul),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Add, OpCodes.Div),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Sub, OpCodes.Add),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Sub, OpCodes.Rem),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Sub, OpCodes.Mul),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Sub, OpCodes.Div),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Mul, OpCodes.Add),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Mul, OpCodes.Sub),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Mul, OpCodes.Rem),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Mul, OpCodes.Div),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Div, OpCodes.Add),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Div, OpCodes.Sub),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Div, OpCodes.Mul),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Div, OpCodes.Rem),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Rem, OpCodes.Add),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Rem, OpCodes.Sub),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Rem, OpCodes.Mul),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Rem, OpCodes.Div)
+                                                                             };
 
-        public override IEnumerable<OpCode> FromOpCodes
+        public override IList<KeyValuePair<OpCode, OpCode>> OpCodeMap
         {
-            get { return _interchangeableOpCodes; }
-        }
-
-        public override IEnumerable<OpCode> ToOpCodes
-        {
-            get { return _interchangeableOpCodes; }
+            get { return _opcodeMap; }
         }
 
         public override string Description

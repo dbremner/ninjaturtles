@@ -19,6 +19,7 @@
 
 #endregion
 
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,17 +31,16 @@ namespace NinjaTurtles.Turtles.Method
 {
     public abstract class OpCodeRotationTurtle : MethodTurtle
     {
-        public abstract IEnumerable<OpCode> FromOpCodes { get; }
-        public abstract IEnumerable<OpCode> ToOpCodes { get; }
+        public abstract IList<KeyValuePair<OpCode, OpCode>> OpCodeMap { get; } 
 
         protected override IEnumerable<string> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string fileName)
         {
             foreach (var instruction in method.Body.Instructions)
             {
-                if (FromOpCodes.Any(o => o.Equals(instruction.OpCode)))
+                if (OpCodeMap.Any(o => o.Key.Equals(instruction.OpCode)))
                 {
                     var originalCode = instruction.OpCode;
-                    foreach (var opCode in ToOpCodes)
+                    foreach (var opCode in OpCodeMap.Where(o => o.Key.Equals(originalCode)).Select(o => o.Value))
                     {
                         if (originalCode != opCode)
                         {

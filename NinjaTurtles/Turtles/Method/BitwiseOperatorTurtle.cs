@@ -27,19 +27,18 @@ namespace NinjaTurtles.Turtles.Method
 {
     public class BitwiseOperatorTurtle : OpCodeRotationTurtle
     {
-        private static readonly IEnumerable<OpCode> _interchangeableOpCodes = new[]
-                                                                        {
-                                                                            OpCodes.Or, OpCodes.And, OpCodes.Xor
-                                                                        };
 
-        public override IEnumerable<OpCode> FromOpCodes
+        private static readonly IList<KeyValuePair<OpCode, OpCode>> _opcodeMap = new List<KeyValuePair<OpCode, OpCode>>
+                                                                             {
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Or, OpCodes.And),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.And, OpCodes.Xor),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.And, OpCodes.Or),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Xor, OpCodes.And)
+                                                                             };
+        
+        public override IList<KeyValuePair<OpCode, OpCode>> OpCodeMap
         {
-            get { return _interchangeableOpCodes; }
-        }
-
-        public override IEnumerable<OpCode> ToOpCodes
-        {
-            get { return _interchangeableOpCodes; }
+            get { return _opcodeMap; }
         }
 
         public override string Description

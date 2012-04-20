@@ -27,25 +27,25 @@ namespace NinjaTurtles.Turtles.Method
 {
     public class BranchConditionTurtle : OpCodeRotationTurtle
     {
-        private static readonly IEnumerable<OpCode> _fromOpCodes = new[]
-                                                                        {
-                                                                            OpCodes.Brfalse, OpCodes.Brtrue
-                                                                        };
+        private static readonly IList<KeyValuePair<OpCode, OpCode>> _opcodeMap = new List<KeyValuePair<OpCode, OpCode>>
+                                                                             {
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Brfalse, OpCodes.Brtrue),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Brtrue, OpCodes.Brfalse),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Beq, OpCodes.Bne_Un),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Bne_Un, OpCodes.Beq),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Bge, OpCodes.Blt),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Blt, OpCodes.Bge),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Bge_Un, OpCodes.Blt_Un),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Blt_Un, OpCodes.Bge_Un),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Ble, OpCodes.Bgt),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Bgt, OpCodes.Ble),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Ble_Un, OpCodes.Bgt_Un),
+                                                                                 new KeyValuePair<OpCode, OpCode>(OpCodes.Bgt_Un, OpCodes.Ble_Un)
+                                                                             };
 
-        private static readonly IEnumerable<OpCode> _toOpCodes = new[]
-                                                                        {
-                                                                            OpCodes.Brfalse, OpCodes.Brtrue,
-                                                                            OpCodes.Br, OpCodes.Nop
-                                                                        };
-
-        public override IEnumerable<OpCode> FromOpCodes
+        public override IList<KeyValuePair<OpCode, OpCode>> OpCodeMap
         {
-            get { return _fromOpCodes; }
-        }
-
-        public override IEnumerable<OpCode> ToOpCodes
-        {
-            get { return _toOpCodes; }
+            get { return _opcodeMap; }
         }
 
         public override string Description
