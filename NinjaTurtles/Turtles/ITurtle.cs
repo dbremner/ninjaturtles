@@ -15,20 +15,20 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with Refix.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove.
+// Copyright (C) 2012 David Musgrove and others.
 
 #endregion
 
-using System.Collections.Generic;
-
-using Mono.Cecil;
-
 namespace NinjaTurtles.Turtles
 {
-    public interface IMethodTurtle
+    /// <summary>
+    /// An <b>interface</b> defining basic turtle functionality.
+    /// </summary>
+    public interface ITurtle
     {
+        /// <summary>
+        /// A description for the particular implementation class.
+        /// </summary>
         string Description { get; }
-        bool IsExpectedInvariant { get; set; }
-        IEnumerable<string> Mutate(MethodDefinition method, AssemblyDefinition assembly, string fileName);
     }
 }

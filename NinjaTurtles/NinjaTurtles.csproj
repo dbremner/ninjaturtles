@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\NinjaTurtles.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -56,14 +57,19 @@
   <ItemGroup>
     <Compile Include="Attributes\ClassTestedAttribute.cs" />
     <Compile Include="Attributes\MethodTestedAttribute.cs" />
-    <Compile Include="Fluent\IMutationTest.cs" />
-    <Compile Include="Fluent\MutationTest.cs" />
-    <Compile Include="Fluent\MutationTestBuilder.cs" />
+    <Compile Include="Attributes\NamespaceDoc.cs" />
+    <Compile Include="IMutationTest.cs" />
+    <Compile Include="MutationTest.cs" />
+    <Compile Include="MutationTestBuilder.cs" />
     <Compile Include="MutationTestFailureException.cs" />
-    <Compile Include="Turtles\IMethodTurtle.cs" />
+    <Compile Include="NamespaceDoc.cs" />
+    <Compile Include="TestRunner\NamespaceDoc.cs" />
+    <Compile Include="Turtles\Method\IMethodTurtle.cs" />
+    <Compile Include="Turtles\ITurtle.cs" />
     <Compile Include="Turtles\Method\ArithmeticOperatorTurtle.cs" />
     <Compile Include="Turtles\Method\BitwiseOperatorTurtle.cs" />
     <Compile Include="Turtles\Method\BranchConditionTurtle.cs" />
+    <Compile Include="Turtles\Method\NamespaceDoc.cs" />
     <Compile Include="Turtles\Method\VariableWriteSubstitionTurtle.cs" />
     <Compile Include="Turtles\Method\ParameterAndVariableReadSubstitionTurtle.cs" />
     <Compile Include="Turtles\Method\MethodTurtle.cs" />
@@ -74,7 +80,7 @@
     <Compile Include="TestRunner\MSTestTestRunner.cs" />
     <Compile Include="TestRunner\ITestRunner.cs" />
     <Compile Include="TestRunner\NUnitTestRunner.cs" />
-    <Compile Include="Utilities\IntExtensions.cs" />
+    <Compile Include="Turtles\NamespaceDoc.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">

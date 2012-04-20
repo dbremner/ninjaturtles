@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with Refix.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove.
+// Copyright (C) 2012 David Musgrove and others.
 
 #endregion
 
@@ -25,6 +25,10 @@ using Mono.Cecil.Cil;
 
 namespace NinjaTurtles.Turtles.Method
 {
+    /// <summary>
+    /// A concrete implementation of <see cref="IMethodTurtle" /> that replaces
+    /// any arithmetic operator in the method body with an alternative.
+    /// </summary>
     public class ArithmeticOperatorTurtle : OpCodeRotationTurtle
     {
         private static readonly IList<KeyValuePair<OpCode, OpCode>> _opcodeMap = new List<KeyValuePair<OpCode, OpCode>>
@@ -51,11 +55,18 @@ namespace NinjaTurtles.Turtles.Method
                                                                                  new KeyValuePair<OpCode, OpCode>(OpCodes.Rem, OpCodes.Div)
                                                                              };
 
+        /// <summary>
+        /// Defines a mapping from input opcodes to a set of replacement output
+        /// opcodes for mutation purposes.
+        /// </summary>
         public override IList<KeyValuePair<OpCode, OpCode>> OpCodeMap
         {
             get { return _opcodeMap; }
         }
 
+        /// <summary>
+        /// A description for the particular implementation class.
+        /// </summary>
         public override string Description
         {
             get { return "Rotating arithmetic operators"; }

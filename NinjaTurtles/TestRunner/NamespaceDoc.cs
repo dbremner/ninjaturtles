@@ -15,19 +15,21 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with Refix.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove.
+// Copyright (C) 2012 David Musgrove and others.
 
 #endregion
 
-using NinjaTurtles.TestRunner;
-using NinjaTurtles.Turtles;
+using System.Runtime.CompilerServices;
 
-namespace NinjaTurtles.Fluent
+namespace NinjaTurtles.TestRunner
 {
-    public interface IMutationTest
+    /// <summary>
+    /// Contains interfaces and classes defining unit test runners, and
+    /// allowing NinjaTurtles users to define their own for test frameworks
+    /// not currently catered for.
+    /// </summary>
+    [CompilerGenerated]
+    class NamespaceDoc
     {
-        void Run();
-        IMutationTest With<T>() where T : IMethodTurtle;
-        IMutationTest UsingRunner<T>() where T : ITestRunner;
     }
 }

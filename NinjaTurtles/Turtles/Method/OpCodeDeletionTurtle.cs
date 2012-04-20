@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with Refix.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove.
+// Copyright (C) 2012 David Musgrove and others.
 
 #endregion
 
@@ -26,13 +26,41 @@ using Mono.Cecil.Cil;
 
 namespace NinjaTurtles.Turtles.Method
 {
+    /// <summary>
+    /// A concrete implementation of <see cref="IMethodTurtle" /> that deletes
+    /// each IL statement in the method body in turn, yielding at each stage
+    /// to allow the test suite to be run. Statements that have no effect (e.g.
+    /// a Nop or a branch to the next statement) are skipped, as their deletion
+    /// will always create an equivalent mutant.    
+    /// </summary>
     public class OpCodeDeletionTurtle : MethodTurtle
     {
+        /// <summary>
+        /// A description for the particular implementation class.
+        /// </summary>
         public override string Description
         {
             get { return "Deleting OpCodes in turn"; }
         }
 
+        /// <summary>
+        /// When implemented in a subclass, performs the actual mutations on
+        /// the source assembly
+        /// </summary>
+        /// <param name="method">
+        /// A <see cref="MethodDefinition" /> for the method on which mutation
+        /// testing is to be carried out.
+        /// </param>
+        /// <param name="assembly">
+        /// An <see cref="AssemblyDefinition" /> for the containing assembly.
+        /// </param>
+        /// <param name="fileName">
+        /// The path to the assembly file, so that the turtle can overwrite it
+        /// with mutated versions.
+        /// </param>
+        /// <returns>
+        /// An <see cref="IEnumerable{T}" /> of <see cref="string" />s.
+        /// </returns>
         protected override IEnumerable<string> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string fileName)
         {
             foreach (var instruction in method.Body.Instructions)
@@ -56,7 +84,6 @@ namespace NinjaTurtles.Turtles.Method
                 instruction.Operand = originalOperand;
             }
         }
-
 
         private bool ShouldDeleteOpCode(Instruction instruction)
         {

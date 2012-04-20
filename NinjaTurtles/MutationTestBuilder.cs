@@ -19,34 +19,34 @@
 
 #endregion
 
-using System;
+using System.Reflection;
 
-namespace NinjaTurtles.Attributes
+namespace NinjaTurtles
 {
     /// <summary>
-    /// When applied to a class containing unit tests, specifies that the class
-    /// contains tests for the type passed in the constructor.
+    /// A static class used as the starting point for a fluent definition of
+    /// a set of mutation tests.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public class ClassTestedAttribute : Attribute
+    /// <typeparam name="T">
+    /// The type to be tested.
+    /// </typeparam>
+    public static class MutationTestBuilder<T> where T : class
     {
-        private readonly string _className;
-
         /// <summary>
-        /// Initializes a new instance of the
-        /// <see cref="ClassTestedAttribute" /> class.
+        /// Returns an <see cref="IMutationTest" /> instance allowing a fluent
+        /// definition of a set of mutation tests for a particular method.
         /// </summary>
-        /// <param name="targetClass">
-        /// The type for which the attributed class contains unit tests.
+        /// <param name="methodName">
+        /// The name of the method to mutate.
         /// </param>
-        public ClassTestedAttribute(Type targetClass)
+        /// <returns>
+        /// An <see cref="IMutationTest" /> instance to allow fluent
+        /// method chaining.
+        /// </returns>
+        public static IMutationTest For(string methodName)
         {
-            _className = targetClass.Name;
-        }
-
-        internal string ClassName
-        {
-            get { return _className; }
+            var testAssembly = Assembly.GetCallingAssembly().Location;
+            return new MutationTest(typeof(T), methodName, testAssembly);
         }
     }
 }

@@ -15,13 +15,11 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with Refix.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove.
+// Copyright (C) 2012 David Musgrove and others.
 
 #endregion
 
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 using Mono.Cecil;
@@ -29,10 +27,37 @@ using Mono.Cecil.Cil;
 
 namespace NinjaTurtles.Turtles.Method
 {
+    /// <summary>
+    /// An abstract implementation of <see cref="IMethodTurtle" /> that
+    /// replaces opcode according to the mapping specified in
+    /// <see pref="OpCodeMap" />.
+    /// </summary>
     public abstract class OpCodeRotationTurtle : MethodTurtle
     {
+        /// <summary>
+        /// Defines a mapping from input opcodes to a set of replacement output
+        /// opcodes for mutation purposes.
+        /// </summary>
         public abstract IList<KeyValuePair<OpCode, OpCode>> OpCodeMap { get; } 
 
+        /// <summary>
+        /// When implemented in a subclass, performs the actual mutations on
+        /// the source assembly
+        /// </summary>
+        /// <param name="method">
+        /// A <see cref="MethodDefinition" /> for the method on which mutation
+        /// testing is to be carried out.
+        /// </param>
+        /// <param name="assembly">
+        /// An <see cref="AssemblyDefinition" /> for the containing assembly.
+        /// </param>
+        /// <param name="fileName">
+        /// The path to the assembly file, so that the turtle can overwrite it
+        /// with mutated versions.
+        /// </param>
+        /// <returns>
+        /// An <see cref="IEnumerable{T}" /> of <see cref="string" />s.
+        /// </returns>
         protected override IEnumerable<string> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string fileName)
         {
             foreach (var instruction in method.Body.Instructions)

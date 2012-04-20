@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with Refix.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove.
+// Copyright (C) 2012 David Musgrove and others.
 
 #endregion
 
@@ -24,22 +24,37 @@ using System.Linq;
 
 namespace NinjaTurtles.TestRunner
 {
-// ReSharper disable InconsistentNaming
+    /// <summary>
+    /// A concrete implementation of <see cref="ConsoleTestRunner" /> that
+    /// attempts to locate and run the MSTest console runner.
+    /// </summary>
+    // ReSharper disable InconsistentNaming
     public class MSTestTestRunner : ConsoleTestRunner
 // ReSharper restore InconsistentNaming
     {
-        public MSTestTestRunner()
+        /// <summary>
+        /// Gets the command line used to run the unit tests specified in the
+        /// <paramref name="tests" /> parameter from the library found at path
+        /// <paramref name="testLibraryPath" />.
+        /// </summary>
+        /// <param name="testLibraryPath">
+        /// The path to the test assembly.
+        /// </param>
+        /// <param name="tests">
+        /// A list of the fully qualified names of the test methods to be run.
+        /// </param>
+        /// <returns></returns>
+        protected override string GetCommandLine(string testLibraryPath, IEnumerable<string> tests)
         {
-            Path = "C:\\Program Files (x86)\\Microsoft Visual Studio 10.0\\Common7\\IDE\\";
-        }
-
-        public string Path { get; set; }
-
-        protected override string GetCommandLine(string testLibrary, IEnumerable<string> tests)
-        {
+            string path = "C:\\Program Files (x86)\\Microsoft Visual Studio 10.0\\Common7\\IDE\\";
             string testArguments = string.Join(" ", tests.Select(t => string.Format("/test:\"{0}\"", t)));
             return string.Format("\"{0}MSTest.exe\" /testcontainer:\"{1}\" {2}",
-                Path, testLibrary, testArguments);
+                path, testLibraryPath, testArguments);
+        }
+
+        protected override bool InterpretExitCode(int exitCode)
+        {
+            return exitCode == 0;
         }
     }
 }

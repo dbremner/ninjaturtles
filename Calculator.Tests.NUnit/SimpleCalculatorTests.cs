@@ -2,8 +2,8 @@
 
 using NUnit.Framework;
 
+using NinjaTurtles;
 using NinjaTurtles.Attributes;
-using NinjaTurtles.Fluent;
 using NinjaTurtles.Turtles.Method;
 
 namespace Calculator.Tests.NUnit

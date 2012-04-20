@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with Refix.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove.
+// Copyright (C) 2012 David Musgrove and others.
 
 #endregion
 
@@ -27,8 +27,9 @@ using Mono.Cecil;
 
 using NinjaTurtles.TestRunner;
 using NinjaTurtles.Turtles;
+using NinjaTurtles.Turtles.Method;
 
-namespace NinjaTurtles.Fluent
+namespace NinjaTurtles
 {
     internal class MutationTest : IMutationTest
     {
@@ -77,9 +78,9 @@ namespace NinjaTurtles.Fluent
                         {
                             mutationsFound = true;
                             Console.Write("\t{0}: ", mutation);
-                            int result = runner.RunTestsWithMutations(method, fileName, _testAssemblyLocation);
+                            bool? result = runner.RunTestsWithMutations(method, _testAssemblyLocation);
                             OutputResultToConsole(result);
-                            if (result == 0) passCount++;
+                            if (result ?? false) passCount++;
                         }
                         if (!mutationsFound)
                         {
@@ -93,7 +94,7 @@ namespace NinjaTurtles.Fluent
             if (!allFailed) throw new MutationTestFailureException();
         }
 
-        public IMutationTest With<T>() where T : IMethodTurtle
+        public IMutationTest With<T>() where T : ITurtle
         {
             _methodTurtles.Add(typeof(T));
             return this;
@@ -107,20 +108,19 @@ namespace NinjaTurtles.Fluent
 
         #endregion
 
-        private static void OutputResultToConsole(int result)
+        private static void OutputResultToConsole(bool? result)
         {
-            switch (result)
+            if (!result.HasValue)
             {
-                case 0:
-                    Console.WriteLine("Passed (this is bad)");
-                    break;
-                case -1:
-                    Console.WriteLine("No valid tests found to run");
-                    break;
-                default:
-                    Console.WriteLine("Failed (this is good)");
-                    break;
+                Console.WriteLine("No valid tests found to run");
+                return;
             }
+            if (result.Value)
+            {
+                Console.WriteLine("Passed (this is bad)");
+                return;
+            }
+            Console.WriteLine("Failed (this is good)");
         }
 
         private void PopulateDefaultTurtles()

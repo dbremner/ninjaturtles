@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with Refix.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove.
+// Copyright (C) 2012 David Musgrove and others.
 
 #endregion
 
@@ -28,13 +28,40 @@ using Mono.Cecil.Cil;
 
 namespace NinjaTurtles.Turtles.Method
 {
+    /// <summary>
+    /// A concrete implementation of <see cref="IMethodTurtle" /> that groups
+    /// parameters and variables of the same data type, and for each IL
+    /// statement that reads one of these (using Ldarg or Ldloc), replaces that
+    /// read with the read of each different parameter or variable.
+    /// </summary>
     public class ParameterAndVariableReadSubstitutionTurtle : MethodTurtle
     {
+        /// <summary>
+        /// A description for the particular implementation class.
+        /// </summary>
         public override string Description
         {
             get { return "Substituting method parameters and variables on reads/loads"; }
         }
 
+        /// <summary>
+        /// When implemented in a subclass, performs the actual mutations on
+        /// the source assembly
+        /// </summary>
+        /// <param name="method">
+        /// A <see cref="MethodDefinition" /> for the method on which mutation
+        /// testing is to be carried out.
+        /// </param>
+        /// <param name="assembly">
+        /// An <see cref="AssemblyDefinition" /> for the containing assembly.
+        /// </param>
+        /// <param name="fileName">
+        /// The path to the assembly file, so that the turtle can overwrite it
+        /// with mutated versions.
+        /// </param>
+        /// <returns>
+        /// An <see cref="IEnumerable{T}" /> of <see cref="string" />s.
+        /// </returns>
         protected override IEnumerable<string> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string fileName)
         {
             var parametersAndVariablesByType = GroupMethodParametersAndVariablesByType(method);

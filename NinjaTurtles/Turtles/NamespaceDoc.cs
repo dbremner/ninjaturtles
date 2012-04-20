@@ -15,28 +15,20 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with Refix.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove.
+// Copyright (C) 2012 David Musgrove and others.
 
 #endregion
 
-using System;
+using System.Runtime.CompilerServices;
 
-namespace NinjaTurtles.Utilities
+namespace NinjaTurtles.Turtles
 {
-    static internal class IntExtensions
+    /// <summary>
+    /// Contains interfaces defining core turtle functionality for
+    /// NinjaTurtles.
+    /// </summary>
+    [CompilerGenerated]
+    class NamespaceDoc
     {
-        static internal void Swap(this int[] array, int index1, int index2)
-        {
-            int temp = array[index1];
-            array[index1] = array[index2];
-            array[index2] = temp;
-        }
-
-        static internal int Fact(this int number)
-        {
-            if (number < 0) throw new ArgumentException("Can't have a negative input.");
-            if (number == 0) return 1;
-            return number * (number - 1).Fact();
-        }
     }
 }

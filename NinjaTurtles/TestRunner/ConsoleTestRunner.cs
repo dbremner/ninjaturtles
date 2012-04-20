@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with Refix.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove.
+// Copyright (C) 2012 David Musgrove and others.
 
 #endregion
 
@@ -25,13 +25,39 @@ using System.Linq;
 
 using Mono.Cecil;
 
+using NinjaTurtles.Attributes;
+
 namespace NinjaTurtles.TestRunner
 {
+    /// <summary>
+    /// An abstract implementation of <see cref="ITestRunner" /> that uses the
+    /// <see cref="Process"/> class to run a console-based test runner.
+    /// </summary>
     public abstract class ConsoleTestRunner : ITestRunner
     {
-        public int RunTestsWithMutations(MethodDefinition method, string library, string testLibrary)
+        /// <summary>
+        /// Runs the test suite for the specified method, identifying the tests
+        /// by inspecting the assembly identified by the
+        /// <paramref name="testLibraryPath" /> for
+        /// <see cref="ClassTestedAttribute"/>s and
+        /// <see cref="MethodTestedAttribute"/>s.
+        /// </summary>
+        /// <param name="method">
+        /// A <see cref="MethodDefinition" /> defining the method for which
+        /// mutation tests should be run.
+        /// </param>
+        /// <param name="testLibraryPath">
+        /// The path to an assembly containing unit tests for the method to be
+        /// tested.
+        /// </param>
+        /// <returns>
+        /// <b>true</b> if the tests pass (which is bad in the context of
+        /// mutation testing, <b>false</b> if at least one fails, or
+        /// <b>null</b> if no valid tests are found in the assembly.
+        /// </returns>
+        public bool? RunTestsWithMutations(MethodDefinition method, string testLibraryPath)
         {
-            var testAssembly = AssemblyDefinition.ReadAssembly(testLibrary);
+            var testAssembly = AssemblyDefinition.ReadAssembly(testLibraryPath);
             var testsToRun = new List<string>();
             foreach (var typeDefinition in testAssembly.MainModule.Types)
             {
@@ -49,21 +75,47 @@ namespace NinjaTurtles.TestRunner
             }
             if (!testsToRun.Any())
             {
-                return -1;
+                return null;
             }
 
-            var startInfo = new ProcessStartInfo(GetCommandLine(testLibrary, testsToRun))
+            var startInfo = new ProcessStartInfo(GetCommandLine(testLibraryPath, testsToRun))
                                 {
                                     UseShellExecute = false,
                                     CreateNoWindow = true
                                 };
             using (var process = Process.Start(startInfo))
             {
-                process.WaitForExit(30000);
-                return process.ExitCode;
+                if (!process.WaitForExit(30000))
+                {
+                    return true;
+                }
+                return InterpretExitCode(process.ExitCode);
             }
         }
 
-        protected abstract string GetCommandLine(string testLibrary, IEnumerable<string> tests);
+        /// <summary>
+        /// Gets the command line used to run the unit tests specified in the
+        /// <paramref name="tests" /> parameter from the library found at path
+        /// <paramref name="testLibraryPath" />.
+        /// </summary>
+        /// <param name="testLibraryPath">
+        /// The path to the test assembly.
+        /// </param>
+        /// <param name="tests">
+        /// A list of the fully qualified names of the test methods to be run.
+        /// </param>
+        /// <returns></returns>
+        protected abstract string GetCommandLine(string testLibraryPath, IEnumerable<string> tests);
+
+        /// <summary>
+        /// Maps a process exit code to the success status of the test suite.
+        /// </summary>
+        /// <param name="exitCode">
+        /// The exit code of the console test runner process.
+        /// </param>
+        /// <returns>
+        /// <b>true</b> if the test suite passed, otherwise <b>false</b>.
+        /// </returns>
+        protected abstract bool InterpretExitCode(int exitCode);
     }
 }

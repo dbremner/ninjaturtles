@@ -15,16 +15,42 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with Refix.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove.
+// Copyright (C) 2012 David Musgrove and others.
 
 #endregion
 
 using Mono.Cecil;
 
+using NinjaTurtles.Attributes;
+
 namespace NinjaTurtles.TestRunner
 {
+    /// <summary>
+    /// An <b>interface</b> that defines the contract a test runner must
+    /// implement to be used by NinjaTurtles in running mutation tests.
+    /// </summary>
     public interface ITestRunner
     {
-        int RunTestsWithMutations(MethodDefinition method, string library, string testLibrary);
+        /// <summary>
+        /// Runs the test suite for the specified method, identifying the tests
+        /// by inspecting the assembly identified by the
+        /// <paramref name="testLibraryPath" /> for
+        /// <see cref="ClassTestedAttribute"/>s and
+        /// <see cref="MethodTestedAttribute"/>s.
+        /// </summary>
+        /// <param name="method">
+        /// A <see cref="MethodDefinition" /> defining the method for which
+        /// mutation tests should be run.
+        /// </param>
+        /// <param name="testLibraryPath">
+        /// The path to a library containing unit tests for the method to be
+        /// tested.
+        /// </param>
+        /// <returns>
+        /// <b>true</b> if the tests pass (which is bad in the context of
+        /// mutation testing, <b>false</b> if at least one fails, or
+        /// <b>null</b> if no valid tests are found in the library.
+        /// </returns>
+        bool? RunTestsWithMutations(MethodDefinition method, string testLibraryPath);
     }
 }

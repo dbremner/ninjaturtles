@@ -19,34 +19,16 @@
 
 #endregion
 
-using System;
+using System.Runtime.CompilerServices;
 
-namespace NinjaTurtles.Attributes
+namespace NinjaTurtles.Turtles.Method
 {
     /// <summary>
-    /// When applied to a class containing unit tests, specifies that the class
-    /// contains tests for the type passed in the constructor.
+    /// Contains interfaces and classes defining turtles (mutations) that can
+    /// be applied at an IL level to method bodies.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public class ClassTestedAttribute : Attribute
+    [CompilerGenerated]
+    class NamespaceDoc
     {
-        private readonly string _className;
-
-        /// <summary>
-        /// Initializes a new instance of the
-        /// <see cref="ClassTestedAttribute" /> class.
-        /// </summary>
-        /// <param name="targetClass">
-        /// The type for which the attributed class contains unit tests.
-        /// </param>
-        public ClassTestedAttribute(Type targetClass)
-        {
-            _className = targetClass.Name;
-        }
-
-        internal string ClassName
-        {
-            get { return _className; }
-        }
     }
 }

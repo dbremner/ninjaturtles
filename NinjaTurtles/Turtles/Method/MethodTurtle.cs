@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with Refix.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove.
+// Copyright (C) 2012 David Musgrove and others.
 
 #endregion
 
@@ -28,14 +28,40 @@ using Mono.Cecil.Rocks;
 
 namespace NinjaTurtles.Turtles.Method
 {
+    /// <summary>
+    /// An abstract implementation of <see cref="IMethodTurtle" /> which
+    /// handles assembly rewriting for derived classes, requiring them to just
+    /// implement their own <see mref="DoMutate" /> method which internally
+    /// uses the <see mref="PlaceFileAndYield" /> method.
+    /// </summary>
     public abstract class MethodTurtle : IMethodTurtle
     {
-        protected string _originalFileName;
+        private string _originalFileName;
 
+        /// <summary>
+        /// A description for the particular implementation class.
+        /// </summary>
         public abstract string Description { get; }
 
-        public bool IsExpectedInvariant { get; set; }
-
+        /// <summary>
+        /// Returns an <see cref="IEnumerable{T}" /> of detailed descriptions
+        /// of mutations, having first carried out the mutation in question and
+        /// saved the modified assembly under test to disk.
+        /// </summary>
+        /// <param name="method">
+        /// A <see cref="MethodDefinition" /> for the method on which mutation
+        /// testing is to be carried out.
+        /// </param>
+        /// <param name="assembly">
+        /// An <see cref="AssemblyDefinition" /> for the containing assembly.
+        /// </param>
+        /// <param name="fileName">
+        /// The path to the assembly file, so that the turtle can overwrite it
+        /// with mutated versions.
+        /// </param>
+        /// <returns>
+        /// An <see cref="IEnumerable{T}" /> of <see cref="string" />s.
+        /// </returns>
         public IEnumerable<string> Mutate(MethodDefinition method, AssemblyDefinition assembly, string fileName)
         {
             if (!method.HasBody) yield break;
@@ -48,8 +74,47 @@ namespace NinjaTurtles.Turtles.Method
             }
         }
 
+        /// <summary>
+        /// When implemented in a subclass, performs the actual mutations on
+        /// the source assembly
+        /// </summary>
+        /// <param name="method">
+        /// A <see cref="MethodDefinition" /> for the method on which mutation
+        /// testing is to be carried out.
+        /// </param>
+        /// <param name="assembly">
+        /// An <see cref="AssemblyDefinition" /> for the containing assembly.
+        /// </param>
+        /// <param name="fileName">
+        /// The path to the assembly file, so that the turtle can overwrite it
+        /// with mutated versions.
+        /// </param>
+        /// <returns>
+        /// An <see cref="IEnumerable{T}" /> of <see cref="string" />s.
+        /// </returns>
         protected abstract IEnumerable<string> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string fileName); 
 
+        /// <summary>
+        /// Moves the original assembly aside, and writes the mutated copy in
+        /// its place before yielding to allow the test suite to be run.
+        /// Following this it deletes the mutated file and reinstates the
+        /// original assembly.
+        /// </summary>
+        /// <param name="assembly">
+        /// An <see cref="AssemblyDefinition" /> for the containing assembly.
+        /// </param>
+        /// <param name="fileName">
+        /// The path to the assembly file, so that the turtle can overwrite it
+        /// with mutated versions.
+        /// </param>
+        /// <param name="output">
+        /// The string describing the mutation, returned to calling code with
+        /// <code>yield return</code>.
+        /// </param>
+        /// <returns>
+        /// An <see cref="IEnumerable{T}" /> of <see cref="string" />s with a
+        /// single element.
+        /// </returns>
         protected IEnumerable<string> PlaceFileAndYield(AssemblyDefinition assembly, string fileName, string output)
         {
             File.Move(fileName, _originalFileName);

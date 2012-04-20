@@ -15,20 +15,19 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with Refix.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove.
+// Copyright (C) 2012 David Musgrove and others.
 
 #endregion
 
-using System.Reflection;
+using System.Runtime.CompilerServices;
 
-namespace NinjaTurtles.Fluent
+namespace NinjaTurtles
 {
-    public static class MutationTestBuilder<T> where T : class
+    /// <summary>
+    /// Contains NinjaTurtles core classes to define and run mutation tests.
+    /// </summary>
+    [CompilerGenerated]
+    class NamespaceDoc
     {
-        public static IMutationTest For(string methodName)
-        {
-            var testAssembly = Assembly.GetCallingAssembly().Location;
-            return new MutationTest(typeof(T), methodName, testAssembly);
-        }
     }
 }

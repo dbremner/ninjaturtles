@@ -2,8 +2,8 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using NinjaTurtles;
 using NinjaTurtles.Attributes;
-using NinjaTurtles.Fluent;
 using NinjaTurtles.TestRunner;
 using NinjaTurtles.Turtles.Method;
 
