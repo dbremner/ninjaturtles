@@ -56,7 +56,7 @@ namespace NinjaTurtles.TestRunner
                                 {
                                     UseShellExecute = false,
                                     RedirectStandardOutput = true,
-                                    WindowStyle = ProcessWindowStyle.Hidden
+                                    WindowStyle = ProcessWindowStyle.Minimized
                                 };
             using (var process = Process.Start(startInfo))
             {

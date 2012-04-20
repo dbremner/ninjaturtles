@@ -62,7 +62,7 @@ namespace NinjaTurtles.Turtles.Method
         {
             if (instruction.OpCode == OpCodes.Nop) return false;
             if (instruction.OpCode == OpCodes.Ret) return false;
-            if ((instruction.OpCode == OpCodes.Br_S || instruction.OpCode == OpCodes.Br)
+            if (instruction.OpCode == OpCodes.Br
                 && instruction.Next.Offset == instruction.Offset + instruction.GetSize())
             {
                 return false;

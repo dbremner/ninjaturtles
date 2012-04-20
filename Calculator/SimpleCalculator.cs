@@ -4,6 +4,11 @@ namespace Calculator
 {
     public class SimpleCalculator
     {
+        static public int StaticAdd(int left, int right)
+        {
+            return left + right;
+        }
+
         public int Add(int left, int right)
         {
             return left + right;

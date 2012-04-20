@@ -20,6 +20,14 @@ namespace Calculator.Tests.NUnit
             return new SimpleCalculator().Add(left, right);
         }
 
+        [TestCase(3, 4, Result = 7)]
+        [TestCase(3, 0, Result = 3)]
+        [MethodTested("StaticAdd")]
+        public int StaticAdd_SimpleTests(int left, int right)
+        {
+            return SimpleCalculator.StaticAdd(left, right);
+        }
+
         [TestCase(1, 2, 3, 4, Result = 10)]
         [MethodTested("MultiAdd")]
         public int MultiAdd_SimpleTests(int i1, int i2, int i3, int i4)
@@ -54,6 +62,14 @@ namespace Calculator.Tests.NUnit
         public void Add_MutationTests()
         {
             MutationTestBuilder<SimpleCalculator>.For("Add")
+                .ExpectedInvariantCasesFor<ParameterAndVariablePermutationTurtle>("Addition is a commutative operation.", 2)
+                .Run();
+        }
+
+        [Test, Category("Mutation")]
+        public void StaticAdd_MutationTests()
+        {
+            MutationTestBuilder<SimpleCalculator>.For("StaticAdd")
                 .ExpectedInvariantCasesFor<ParameterAndVariablePermutationTurtle>("Addition is a commutative operation.", 2)
                 .Run();
         }

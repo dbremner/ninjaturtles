@@ -67,7 +67,6 @@
     <Compile Include="Turtles\Method\MethodTurtle.cs" />
     <Compile Include="Turtles\Method\OpCodeDeletionTurtle.cs" />
     <Compile Include="Turtles\Method\ParameterAndVariablePermutationTurtle.cs" />
-    <Compile Include="Turtles\Method\ShortBranchConditionTurtle.cs" />
     <Compile Include="Turtles\Method\OpCodeRotationTurtle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestRunner\ConsoleTestRunner.cs" />

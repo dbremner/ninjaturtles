@@ -67,8 +67,7 @@ namespace NinjaTurtles.Fluent
                 int passCount = 0;
                 int failCount = 0;
                 int expectedPassCount = 0;
-                bool isExpectedInvariant = _expectedInvariantMethodMutators.ContainsKey(methodTurtle);
-                if (isExpectedInvariant)
+                if (_expectedInvariantMethodMutators.ContainsKey(methodTurtle))
                 {
                     expectedPassCount = _expectedInvariantMethodMutators[methodTurtle].Item1;
                     Console.WriteLine("*** This mutation is expected to be invariant in {0} cases! ***",
@@ -94,7 +93,7 @@ namespace NinjaTurtles.Fluent
                             mutationsFound = true;
                             Console.Write("\t{0}: ", mutation);
                             int result = runner.RunTestsWithMutations(method, fileName, _testAssemblyLocation);
-                            OutputResultToConsole(isExpectedInvariant, result);
+                            OutputResultToConsole(expectedPassCount > passCount, result);
                             if (result != -1)
                             {
                                 if (result == 0)
@@ -160,13 +159,13 @@ namespace NinjaTurtles.Fluent
             switch (result)
             {
                 case 0:
-                    Console.WriteLine("Passed (this {0})", isExpectedInvariant ? "might be OK" : "is bad");
+                    Console.WriteLine("Passed (this {0})", isExpectedInvariant ? "is good (probably)" : "is bad");
                     break;
                 case -1:
                     Console.WriteLine("No valid tests found to run");
                     break;
                 default:
-                    Console.WriteLine("Failed (this {0})", isExpectedInvariant ? "might be OK" : "is good");
+                    Console.WriteLine("Failed (this {0})", isExpectedInvariant ? "is good (probably)" : "is good");
                     break;
             }
         }

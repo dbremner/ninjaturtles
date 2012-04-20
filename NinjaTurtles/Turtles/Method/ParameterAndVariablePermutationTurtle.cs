@@ -32,6 +32,8 @@ namespace NinjaTurtles.Turtles.Method
 {
     public class ParameterAndVariablePermutationTurtle : MethodTurtle
     {
+        private ILProcessor _ilProcessor;
+
         public override string Description
         {
             get { return "Permuting method parameters and variables"; }
@@ -39,8 +41,8 @@ namespace NinjaTurtles.Turtles.Method
 
         protected override IEnumerable<string> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string fileName)
         {
-            int offset = method.IsStatic ? 0 : 1;
             var parametersAndVariablesByType = GroupMethodParametersAndVariablesByType(method);
+            _ilProcessor = method.Body.GetILProcessor();
 
             if (!parametersAndVariablesByType.Any(kv => parametersAndVariablesByType[kv.Key].Count > 1))
             {
@@ -57,7 +59,7 @@ namespace NinjaTurtles.Turtles.Method
                     bool isOriginalOrder = orderArray.All(index => index == indices[j++]);
                     if (isOriginalOrder) continue;
 
-                    PermuteIndices(method, indices, orderArray, offset);
+                    PermuteIndices(method, indices, orderArray);
                     var output = string.Format("Parameter/variable permutation change for type {0} ({1}) => ({2}) in {3}.{4}",
                                                keyValuePair.Key.Name,
                                                GetIndicesAsString(indices),
@@ -70,7 +72,7 @@ namespace NinjaTurtles.Turtles.Method
                         yield return p;
                     }
 
-                    PermuteIndices(method, orderArray, indices, offset);
+                    PermuteIndices(method, orderArray, indices);
                 }
             }
         }
@@ -83,6 +85,7 @@ namespace NinjaTurtles.Turtles.Method
         private static IDictionary<TypeReference, IList<int>> GroupMethodParametersAndVariablesByType(MethodDefinition method)
         {
             IDictionary<TypeReference, IList<int>> parametersAndVariables = new Dictionary<TypeReference, IList<int>>();
+            int offset = method.IsStatic ? 0 : 1;
             foreach (var parameter in method.Parameters)
             {
                 var type = parameter.ParameterType;
@@ -90,7 +93,7 @@ namespace NinjaTurtles.Turtles.Method
                 {
                     parametersAndVariables.Add(type, new List<int>());
                 }
-                parametersAndVariables[type].Add(-1 - parameter.Index);
+                parametersAndVariables[type].Add(-1 - parameter.Index - offset);
             }
             foreach (var variable in method.Body.Variables)
             {
@@ -104,116 +107,44 @@ namespace NinjaTurtles.Turtles.Method
             return parametersAndVariables;
         }
 
-        private static void PermuteIndices(MethodDefinition method, int[] fromIndices, int[] toIndices, int offset)
+        private static void PermuteIndices(MethodDefinition method, int[] fromIndices, int[] toIndices)
         {
             var ldargOperands = GetOperandsForHigherIndexParametersAndVariables(method);
             foreach (var instruction in method.Body.Instructions)
             {
-                int? parameterIndex = null;
-                if (instruction.OpCode == OpCodes.Ldarg_0 && offset == 0)
-                {
-                    parameterIndex = -1;
-                }
-                else if (instruction.OpCode == OpCodes.Ldarg_1)
-                {
-                    parameterIndex = -2 + offset;
-                }
-                else if (instruction.OpCode == OpCodes.Ldarg_2)
-                {
-                    parameterIndex = -3 + offset;
-                }
-                else if (instruction.OpCode == OpCodes.Ldarg_3)
-                {
-                    parameterIndex = -4 + offset;
-                }
-                else if (instruction.OpCode == OpCodes.Ldarg_S)
+                int? oldIndex = null;
+
+                if (instruction.OpCode == OpCodes.Ldarg)
                 {
                     int ldargIndex = ((ParameterDefinition)instruction.Operand).Sequence;
-                    parameterIndex = -1 - ldargIndex + offset;
-                }
-                else if (instruction.OpCode == OpCodes.Ldloc_0)
-                {
-                    parameterIndex = 0;
-                }
-                else if (instruction.OpCode == OpCodes.Ldloc_1)
-                {
-                    parameterIndex = 1;
-                }
-                else if (instruction.OpCode == OpCodes.Ldloc_2)
-                {
-                    parameterIndex = 2;
-                }
-                else if (instruction.OpCode == OpCodes.Ldloc_3)
-                {
-                    parameterIndex = 3;
-                }
-                else if (instruction.OpCode == OpCodes.Ldloc_S)
-                {
-                    int ldlocIndex = ((ParameterDefinition)instruction.Operand).Sequence;
-                    parameterIndex = ldlocIndex;
-                }
-                if (parameterIndex.HasValue)
-                {
-                    int parameterOrder = Array.IndexOf(fromIndices, parameterIndex);
-                    if (parameterOrder == -1) continue;
-                    int newIndex = toIndices[parameterOrder];
-                    switch (newIndex)
+                    if (method.IsStatic || ldargIndex > 0)
                     {
-                        case 0:
-                            instruction.OpCode = OpCodes.Ldloc_0;
-                            instruction.Operand = null;
-                            break;
-                        case 1:
-                            instruction.OpCode = OpCodes.Ldloc_1;
-                            instruction.Operand = null;
-                            break;
-                        case 2:
-                            instruction.OpCode = OpCodes.Ldloc_2;
-                            instruction.Operand = null;
-                            break;
-                        case 3:
-                            instruction.OpCode = OpCodes.Ldloc_3;
-                            instruction.Operand = null;
-                            break;
-                        case -1:
-                            instruction.OpCode = offset == 0 ? OpCodes.Ldarg_0 : OpCodes.Ldarg_1;
-                            instruction.Operand = null;
-                            break;
-                        case -2:
-                            instruction.OpCode = offset == 0 ? OpCodes.Ldarg_1 : OpCodes.Ldarg_2;
-                            instruction.Operand = null;
-                            break;
-                        case -3:
-                            instruction.OpCode = offset == 0 ? OpCodes.Ldarg_2 : OpCodes.Ldarg_3;
-                            instruction.Operand = null;
-                            break;
-                        case -4:
-                            if (offset == 0)
-                            {
-                                instruction.OpCode = OpCodes.Ldarg_3;
-                                instruction.Operand = null;
-                            }
-                            else
-                            {
-                                instruction.OpCode = OpCodes.Ldarg_S;
-                                instruction.Operand = ldargOperands[newIndex - 1];
-                            }
-                            break;
-                        default:
-                            instruction.OpCode = newIndex >= 0 ? OpCodes.Ldloc_S : OpCodes.Ldarg_S;
-                            instruction.Operand = ldargOperands[newIndex >= 0 ? newIndex : newIndex - offset];
-                            break;
+                        oldIndex = -1 - ldargIndex;
                     }
+                }
+                if (instruction.OpCode == OpCodes.Ldloc)
+                {
+                    int ldlocIndex = ((VariableDefinition)instruction.Operand).Index;
+                    oldIndex = ldlocIndex;
+                }
+                if (oldIndex.HasValue)
+                {
+                    int parameterPosition = Array.IndexOf(fromIndices, oldIndex);
+                    if (parameterPosition == -1) continue;
+                    int newIndex = toIndices[parameterPosition];
+
+                    instruction.OpCode = newIndex >= 0 ? OpCodes.Ldloc : OpCodes.Ldarg;
+                    instruction.Operand = ldargOperands[newIndex];
                 }
             }
         }
 
-        private static IDictionary<int, ParameterDefinition> GetOperandsForHigherIndexParametersAndVariables(MethodDefinition method)
+        private static IDictionary<int, object> GetOperandsForHigherIndexParametersAndVariables(MethodDefinition method)
         {
-            IDictionary<int, ParameterDefinition> operands = new Dictionary<int, ParameterDefinition>();
+            IDictionary<int, object> operands = new Dictionary<int, object>();
             foreach (var instruction in method.Body.Instructions)
             {
-                if (instruction.OpCode == OpCodes.Ldarg_S)
+                if (instruction.OpCode == OpCodes.Ldarg)
                 {
                     var parameterDefinition = (ParameterDefinition)instruction.Operand;
                     int sequence = parameterDefinition.Sequence;
@@ -225,13 +156,13 @@ namespace NinjaTurtles.Turtles.Method
             }
             foreach (var instruction in method.Body.Instructions)
             {
-                if (instruction.OpCode == OpCodes.Ldloc_S)
+                if (instruction.OpCode == OpCodes.Ldloc)
                 {
-                    var parameterDefinition = (ParameterDefinition)instruction.Operand;
-                    int sequence = parameterDefinition.Sequence;
-                    if (!operands.ContainsKey(sequence))
+                    var variableDefinition = (VariableDefinition)instruction.Operand;
+                    int index = variableDefinition.Index;
+                    if (!operands.ContainsKey(index))
                     {
-                        operands.Add(sequence, parameterDefinition);
+                        operands.Add(index, variableDefinition);
                     }
                 }
             }

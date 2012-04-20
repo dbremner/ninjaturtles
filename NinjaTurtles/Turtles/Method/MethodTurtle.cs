@@ -24,6 +24,7 @@ using System.IO;
 using System.Threading;
 
 using Mono.Cecil;
+using Mono.Cecil.Rocks;
 
 namespace NinjaTurtles.Turtles.Method
 {
@@ -38,6 +39,7 @@ namespace NinjaTurtles.Turtles.Method
         public IEnumerable<string> Mutate(MethodDefinition method, AssemblyDefinition assembly, string fileName)
         {
             if (!method.HasBody) yield break;
+            method.Body.SimplifyMacros(); 
             _originalFileName = fileName.Replace(".dll", ".ninjaoriginal.dll");
             if (File.Exists(_originalFileName)) File.Delete(_originalFileName);
             foreach (var line in DoMutate(method, assembly, fileName))
