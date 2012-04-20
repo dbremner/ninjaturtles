@@ -28,8 +28,6 @@ packages
 *.nupkg
 Help
 *.shfbproj_*
-NUnit.*
-Mono.Cecil.*
 *.userprefs
 *.pidb
 test-results

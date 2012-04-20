@@ -69,6 +69,18 @@ namespace NinjaTurtles.TestRunner
                         ((IList<string>)searchPath).Add(Path.Combine(directory.FullName, "tools"));
                     }
                 }
+                if (Runtime.IsRunningOnMono && guessedSolutionRoot.Exists && guessedSolutionRoot.EnumerateDirectories("Packages").Any())
+                {
+                    var guessedPackagesFolder = new DirectoryInfo(Path.Combine(guessedSolutionRoot.FullName, "Packages"));
+                    foreach (DirectoryInfo directory in guessedPackagesFolder.GetDirectories("NUnit.Runners.2.6.*"))
+                    {
+                        ((IList<string>)searchPath).Add(Path.Combine(directory.FullName, "tools"));
+                    }
+                    foreach (DirectoryInfo directory in guessedPackagesFolder.GetDirectories("NUnit.Runners.2.5.*"))
+                    {
+                        ((IList<string>)searchPath).Add(Path.Combine(directory.FullName, "tools"));
+                    }
+                }
             }
             catch (NullReferenceException)
             {
