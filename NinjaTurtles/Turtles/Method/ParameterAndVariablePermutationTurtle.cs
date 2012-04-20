@@ -32,8 +32,6 @@ namespace NinjaTurtles.Turtles.Method
 {
     public class ParameterAndVariablePermutationTurtle : MethodTurtle
     {
-        private ILProcessor _ilProcessor;
-
         public override string Description
         {
             get { return "Permuting method parameters and variables"; }
@@ -42,7 +40,6 @@ namespace NinjaTurtles.Turtles.Method
         protected override IEnumerable<string> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string fileName)
         {
             var parametersAndVariablesByType = GroupMethodParametersAndVariablesByType(method);
-            _ilProcessor = method.Body.GetILProcessor();
 
             if (!parametersAndVariablesByType.Any(kv => parametersAndVariablesByType[kv.Key].Count > 1))
             {
