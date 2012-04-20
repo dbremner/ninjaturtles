@@ -33,10 +33,15 @@ namespace NinjaTurtles
     /// <example>
     /// This code creates and runs the default set of mutation tests for the
     /// <b>ClassUnderTest</b> class's <b>MethodUnderTest</b> method:
-    /// <code>
+    /// <code lang="cs">
     /// MutationTestBuilder&lt;ClassUnderTest&gt;
     ///     .For("MethodUnderTest")
     ///     .Run();
+    /// </code>
+    /// <code lang="vbnet">
+    /// Call MutationTestBuilder(Of ClassUnderTest) _
+    ///     .For("MethodUnderTest") _
+    ///     .Run
     /// </code>
     /// </example>
     public static class MutationTestBuilder<T> where T : class

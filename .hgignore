@@ -26,3 +26,4 @@ Packages
 *.dotCover
 *.nupkg
 Help
+*.shfbproj_*

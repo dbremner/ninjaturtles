@@ -21,9 +21,16 @@
     <DocumentationSources>
       <DocumentationSource sourceFile="NinjaTurtles\bin\Debug\NinjaTurtles.dll" />
 <DocumentationSource sourceFile="NinjaTurtles\bin\Debug\NinjaTurtles.XML" /></DocumentationSources>
-    <HelpFileFormat>Website</HelpFileFormat>
-    <PresentationStyle>vs2005</PresentationStyle>
+    <HelpFileFormat>MSHelpViewer</HelpFileFormat>
+    <PresentationStyle>vs2010</PresentationStyle>
     <SelfBranded>False</SelfBranded>
+    <HelpTitle>NinjaTurtles - .NET mutation testing</HelpTitle>
+    <RootNamespaceContainer>True</RootNamespaceContainer>
+    <RootNamespaceTitle>NinjaTurtles</RootNamespaceTitle>
+    <ProductTitle>NinjaTurtles</ProductTitle>
+    <VendorName>NinjaTurtles</VendorName>
+    <ProjectSummary>NinjaTurtles is an open source .NET mutation testing library. You can find the source code in CodePlex, and download the library in binary form using NuGet.</ProjectSummary>
+    <CopyrightText>&amp;#169%3b 2012 David Musgrove and others.</CopyrightText>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional
