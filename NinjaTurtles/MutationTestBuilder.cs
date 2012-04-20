@@ -30,6 +30,15 @@ namespace NinjaTurtles
     /// <typeparam name="T">
     /// The type to be tested.
     /// </typeparam>
+    /// <example>
+    /// This code creates and runs the default set of mutation tests for the
+    /// <b>ClassUnderTest</b> class's <b>MethodUnderTest</b> method:
+    /// <code>
+    /// MutationTestBuilder&lt;ClassUnderTest&gt;
+    ///     .For("MethodUnderTest")
+    ///     .Run();
+    /// </code>
+    /// </example>
     public static class MutationTestBuilder<T> where T : class
     {
         /// <summary>

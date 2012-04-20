@@ -109,7 +109,7 @@ namespace NinjaTurtles.Turtles.Method
         /// </param>
         /// <param name="output">
         /// The string describing the mutation, returned to calling code with
-        /// <code>yield return</code>.
+        /// <c>yield return</c>.
         /// </param>
         /// <returns>
         /// An <see cref="IEnumerable{T}" /> of <see cref="string" />s with a
