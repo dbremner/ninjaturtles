@@ -28,9 +28,6 @@ namespace NinjaTurtles.Fluent
     {
         void Run();
         IMutationTest With<T>() where T : IMethodTurtle;
-        IMutationTest ExpectedInvariantCasesFor<T>(params int[] interchangeableParameterSetSizes) where T : IMethodTurtle;
-        IMutationTest ExpectedInvariantCasesFor<T>(string reason, params int[] interchangeableParameterSetSizes) where T : IMethodTurtle;
-        IMutationTest CombineWith<T>() where T : IMethodTurtle;
         IMutationTest UsingRunner<T>() where T : ITestRunner;
     }
 }

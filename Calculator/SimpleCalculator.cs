@@ -21,7 +21,10 @@ namespace Calculator
 
         public int MixedAdd(short i1, short i2, short i3, int i4, int i5, int i6)
         {
-            return i1 + i2 + i3 + i4 + i5 + i6;
+            int shortSum = i1 + i2 + i3;
+            int intSum = i4 + i5 + i6;
+            int sum = shortSum + intSum;
+            return sum;
         }
 
         public int Divide(int left, int right)

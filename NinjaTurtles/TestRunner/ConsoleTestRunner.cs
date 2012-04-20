@@ -55,8 +55,7 @@ namespace NinjaTurtles.TestRunner
             var startInfo = new ProcessStartInfo(GetCommandLine(testLibrary, testsToRun))
                                 {
                                     UseShellExecute = false,
-                                    RedirectStandardOutput = true,
-                                    WindowStyle = ProcessWindowStyle.Minimized
+                                    CreateNoWindow = true
                                 };
             using (var process = Process.Start(startInfo))
             {

@@ -35,7 +35,7 @@ namespace Calculator.Tests.NUnit
             return new SimpleCalculator().MultiAdd(i1, i2, i3, i4);
         }
 
-        [TestCase(1, 2, 3, 4, 5, 6, Result = 21)]
+        [TestCase(1, 2, 3, 4, 5, 7, Result = 22)]
         [MethodTested("MixedAdd")]
         public int MixedAdd_SimpleTests(short i1, short i2, short i3, int i4, int i5, int i6)
         {
@@ -62,7 +62,6 @@ namespace Calculator.Tests.NUnit
         public void Add_MutationTests()
         {
             MutationTestBuilder<SimpleCalculator>.For("Add")
-                .ExpectedInvariantCasesFor<ParameterAndVariablePermutationTurtle>("Addition is a commutative operation.", 2)
                 .Run();
         }
 
@@ -70,7 +69,6 @@ namespace Calculator.Tests.NUnit
         public void StaticAdd_MutationTests()
         {
             MutationTestBuilder<SimpleCalculator>.For("StaticAdd")
-                .ExpectedInvariantCasesFor<ParameterAndVariablePermutationTurtle>("Addition is a commutative operation.", 2)
                 .Run();
         }
 
@@ -78,7 +76,6 @@ namespace Calculator.Tests.NUnit
         public void MultiAdd_MutationTests()
         {
             MutationTestBuilder<SimpleCalculator>.For("MultiAdd")
-                .ExpectedInvariantCasesFor<ParameterAndVariablePermutationTurtle>(4)
                 .Run();
         }
 
@@ -86,7 +83,8 @@ namespace Calculator.Tests.NUnit
         public void MixedAdd_MutationTests()
         {
             MutationTestBuilder<SimpleCalculator>.For("MixedAdd")
-                .ExpectedInvariantCasesFor<ParameterAndVariablePermutationTurtle>(3, 3)
+                .With<ParameterAndVariableReadSubstitutionTurtle>()
+                .With<VariableWriteSubstitutionTurtle>()
                 .Run();
         }
 

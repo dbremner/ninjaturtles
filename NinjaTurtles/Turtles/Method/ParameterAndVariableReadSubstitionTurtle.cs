@@ -26,15 +26,13 @@ using System.Linq;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
-using NinjaTurtles.Utilities;
-
 namespace NinjaTurtles.Turtles.Method
 {
-    public class ParameterAndVariablePermutationTurtle : MethodTurtle
+    public class ParameterAndVariableReadSubstitutionTurtle : MethodTurtle
     {
         public override string Description
         {
-            get { return "Permuting method parameters and variables"; }
+            get { return "Substituting method parameters and variables on reads/loads"; }
         }
 
         protected override IEnumerable<string> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string fileName)
@@ -49,34 +47,63 @@ namespace NinjaTurtles.Turtles.Method
             foreach (var keyValuePair in parametersAndVariablesByType.Where(kv => kv.Value.Count > 1))
             {
                 var indices = keyValuePair.Value.ToArray();
-                foreach (var order in new AllPermutationsEnumerable<int>(indices).ToArray())
+                var ldargOperands = GetOperandsForParametersAndVariables(method);
+                foreach (var instruction in method.Body.Instructions)
                 {
-                    int[] orderArray = order.ToArray();
-                    int j = 0;
-                    bool isOriginalOrder = orderArray.All(index => index == indices[j++]);
-                    if (isOriginalOrder) continue;
-
-                    PermuteIndices(method, indices, orderArray);
-                    var output = string.Format("Parameter/variable permutation change for type {0} ({1}) => ({2}) in {3}.{4}",
-                                               keyValuePair.Key.Name,
-                                               GetIndicesAsString(indices),
-                                               GetIndicesAsString(orderArray),
-                                               method.DeclaringType.Name,
-                                               method.Name);
-
-                    foreach (var p in PlaceFileAndYield(assembly, fileName, output))
+                    int? oldIndex = null;
+                    if (instruction.OpCode == OpCodes.Ldarg)
                     {
-                        yield return p;
+                        int ldargIndex = ((ParameterDefinition)instruction.Operand).Sequence;
+                        if (method.IsStatic || ldargIndex > 0)
+                        {
+                            oldIndex = -1 - ldargIndex;
+                        }
                     }
+                    if (instruction.OpCode == OpCodes.Ldloc && instruction.Next.OpCode != OpCodes.Ret)
+                    {
+                        int ldlocIndex = ((VariableDefinition)instruction.Operand).Index;
+                        oldIndex = ldlocIndex;
+                    }
+                    if (oldIndex.HasValue)
+                    {
+                        int parameterPosition = Array.IndexOf(indices, oldIndex.Value);
+                        if (parameterPosition == -1) continue;
+                        foreach (var sequence in indices)
+                        {
+                            if (sequence != oldIndex.Value)
+                            {
+                                OpCode originalOpCode = instruction.OpCode;
+                                object originalOperand = instruction.Operand;
+                                instruction.OpCode = sequence >= 0 ? OpCodes.Ldloc : OpCodes.Ldarg;
+                                instruction.Operand = ldargOperands[sequence];
 
-                    PermuteIndices(method, orderArray, indices);
+                                var output =
+                                    string.Format(
+                                        "Parameter/variable read substitution {0}.{1} => {0}.{2} at {3:x4} in {4}.{5}",
+                                        keyValuePair.Key.Name,
+                                        GetIndexAsString(oldIndex.Value),
+                                        GetIndexAsString(sequence),
+                                        instruction.Offset,
+                                        method.DeclaringType.Name,
+                                        method.Name);
+
+                                foreach (var p in PlaceFileAndYield(assembly, fileName, output))
+                                {
+                                    yield return p;
+                                }
+
+                                instruction.OpCode = originalOpCode;
+                                instruction.Operand = originalOperand;
+                            }
+                        }
+                    }
                 }
             }
         }
 
-        private string GetIndicesAsString(IEnumerable<int> indices)
+        private string GetIndexAsString(int index)
         {
-            return string.Join(",", indices.Select(i => i < 0 ? "P" + (-1 - i) : "V" + i));
+            return index < 0 ? "P" + (-1 - index) : "V" + index;
         }
 
         private static IDictionary<TypeReference, IList<int>> GroupMethodParametersAndVariablesByType(MethodDefinition method)
@@ -104,39 +131,7 @@ namespace NinjaTurtles.Turtles.Method
             return parametersAndVariables;
         }
 
-        private static void PermuteIndices(MethodDefinition method, int[] fromIndices, int[] toIndices)
-        {
-            var ldargOperands = GetOperandsForHigherIndexParametersAndVariables(method);
-            foreach (var instruction in method.Body.Instructions)
-            {
-                int? oldIndex = null;
-
-                if (instruction.OpCode == OpCodes.Ldarg)
-                {
-                    int ldargIndex = ((ParameterDefinition)instruction.Operand).Sequence;
-                    if (method.IsStatic || ldargIndex > 0)
-                    {
-                        oldIndex = -1 - ldargIndex;
-                    }
-                }
-                if (instruction.OpCode == OpCodes.Ldloc)
-                {
-                    int ldlocIndex = ((VariableDefinition)instruction.Operand).Index;
-                    oldIndex = ldlocIndex;
-                }
-                if (oldIndex.HasValue)
-                {
-                    int parameterPosition = Array.IndexOf(fromIndices, oldIndex);
-                    if (parameterPosition == -1) continue;
-                    int newIndex = toIndices[parameterPosition];
-
-                    instruction.OpCode = newIndex >= 0 ? OpCodes.Ldloc : OpCodes.Ldarg;
-                    instruction.Operand = ldargOperands[newIndex];
-                }
-            }
-        }
-
-        private static IDictionary<int, object> GetOperandsForHigherIndexParametersAndVariables(MethodDefinition method)
+        private static IDictionary<int, object> GetOperandsForParametersAndVariables(MethodDefinition method)
         {
             IDictionary<int, object> operands = new Dictionary<int, object>();
             foreach (var instruction in method.Body.Instructions)

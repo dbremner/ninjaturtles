@@ -27,14 +27,12 @@ using Mono.Cecil;
 
 using NinjaTurtles.TestRunner;
 using NinjaTurtles.Turtles;
-using NinjaTurtles.Utilities;
 
 namespace NinjaTurtles.Fluent
 {
     internal class MutationTest : IMutationTest
     {
         private readonly AssemblyDefinition _assembly;
-        private readonly IDictionary<Type, Tuple<int, string>> _expectedInvariantMethodMutators = new Dictionary<Type, Tuple<int, string>>();
         private readonly ISet<Type> _methodTurtles = new HashSet<Type>();
         private readonly string _methodName;
         private readonly Type _targetClass;
@@ -65,19 +63,6 @@ namespace NinjaTurtles.Fluent
                 var turtle = (IMethodTurtle)Activator.CreateInstance(methodTurtle);
                 Console.WriteLine(turtle.Description);
                 int passCount = 0;
-                int failCount = 0;
-                int expectedPassCount = 0;
-                if (_expectedInvariantMethodMutators.ContainsKey(methodTurtle))
-                {
-                    expectedPassCount = _expectedInvariantMethodMutators[methodTurtle].Item1;
-                    Console.WriteLine("*** This mutation is expected to be invariant in {0} cases! ***",
-                        expectedPassCount);
-                    if (!string.IsNullOrEmpty(_expectedInvariantMethodMutators[methodTurtle].Item2))
-                    {
-                        Console.WriteLine("*** Reason: {0} ***", _expectedInvariantMethodMutators[methodTurtle].Item2);
-                    }
-                }
-
                 foreach (TypeDefinition type in _assembly.MainModule.Types.Where(t => t.Name == _targetClass.Name))
                 {
                     if (!type.Methods.Any(m => m.Name == _methodName))
@@ -93,18 +78,8 @@ namespace NinjaTurtles.Fluent
                             mutationsFound = true;
                             Console.Write("\t{0}: ", mutation);
                             int result = runner.RunTestsWithMutations(method, fileName, _testAssemblyLocation);
-                            OutputResultToConsole(expectedPassCount > passCount, result);
-                            if (result != -1)
-                            {
-                                if (result == 0)
-                                {
-                                    passCount++;
-                                }
-                                else
-                                {
-                                    failCount++;
-                                }
-                            }
+                            OutputResultToConsole(result);
+                            if (result == 0) passCount++;
                         }
                         if (!mutationsFound)
                         {
@@ -112,7 +87,7 @@ namespace NinjaTurtles.Fluent
                         }
                     }
                 }
-                allFailed &= (passCount == expectedPassCount);
+                allFailed &= (passCount == 0);
             }
 
             if (!allFailed) throw new MutationTestFailureException();
@@ -120,28 +95,6 @@ namespace NinjaTurtles.Fluent
 
         public IMutationTest With<T>() where T : IMethodTurtle
         {
-            _methodTurtles.Add(typeof(T));
-            return this;
-        }
-
-        public IMutationTest ExpectedInvariantCasesFor<T>(params int[] interchangeableParameterSetSizes) where T : IMethodTurtle
-        {
-            return ExpectedInvariantCasesFor<T>(string.Empty, interchangeableParameterSetSizes);
-        }
-
-        public IMutationTest ExpectedInvariantCasesFor<T>(string reason, params int[] interchangeableParameterSetSizes) where T : IMethodTurtle
-        {
-            if (interchangeableParameterSetSizes.Length == 0)
-            {
-                throw new ArgumentException("You must specify at least one set of interchangeable parameters for this method to work.");
-            }
-            _expectedInvariantMethodMutators[typeof(T)] = new Tuple<int, string>(interchangeableParameterSetSizes.Select(n => n.Fact() - 1).Sum(), reason);
-            return this;
-        }
-
-        public IMutationTest CombineWith<T>() where T : IMethodTurtle
-        {
-            PopulateDefaultTurtles();
             _methodTurtles.Add(typeof(T));
             return this;
         }
@@ -154,18 +107,18 @@ namespace NinjaTurtles.Fluent
 
         #endregion
 
-        private static void OutputResultToConsole(bool isExpectedInvariant, int result)
+        private static void OutputResultToConsole(int result)
         {
             switch (result)
             {
                 case 0:
-                    Console.WriteLine("Passed (this {0})", isExpectedInvariant ? "is good (probably)" : "is bad");
+                    Console.WriteLine("Passed (this is bad)");
                     break;
                 case -1:
                     Console.WriteLine("No valid tests found to run");
                     break;
                 default:
-                    Console.WriteLine("Failed (this {0})", isExpectedInvariant ? "is good (probably)" : "is good");
+                    Console.WriteLine("Failed (this is good)");
                     break;
             }
         }
