@@ -36,18 +36,18 @@ namespace NinjaTurtles.Turtles.Method
         private static readonly IDictionary<OpCode, IEnumerable<OpCode>> _opcodeMap 
             = new Dictionary<OpCode, IEnumerable<OpCode>>
                 {
-                    {OpCodes.Brfalse, new[] {OpCodes.Brtrue}},
-                    {OpCodes.Brtrue, new[] {OpCodes.Brfalse}},
-                    {OpCodes.Beq, new[] {OpCodes.Bne_Un}},
-                    {OpCodes.Bne_Un, new[] {OpCodes.Beq}},
-                    {OpCodes.Bge, new[] {OpCodes.Blt}},
-                    {OpCodes.Blt, new[] {OpCodes.Bge}},
-                    {OpCodes.Bge_Un, new[] {OpCodes.Blt_Un}},
-                    {OpCodes.Blt_Un, new[] {OpCodes.Bge_Un}},
-                    {OpCodes.Ble, new[] {OpCodes.Bgt}},
-                    {OpCodes.Bgt, new[] {OpCodes.Ble}},
-                    {OpCodes.Ble_Un, new[] {OpCodes.Bgt_Un}},
-                    {OpCodes.Bgt_Un, new[] {OpCodes.Ble_Un}}
+                    {OpCodes.Brfalse, new[] {OpCodes.Brtrue, OpCodes.Br, OpCodes.Nop}},
+                    {OpCodes.Brtrue, new[] {OpCodes.Brfalse, OpCodes.Br, OpCodes.Nop}},
+                    {OpCodes.Beq, new[] {OpCodes.Bne_Un, OpCodes.Br, OpCodes.Nop}},
+                    {OpCodes.Bne_Un, new[] {OpCodes.Beq, OpCodes.Br, OpCodes.Nop}},
+                    {OpCodes.Bge, new[] {OpCodes.Blt, OpCodes.Br, OpCodes.Nop}},
+                    {OpCodes.Blt, new[] {OpCodes.Bge, OpCodes.Br, OpCodes.Nop}},
+                    {OpCodes.Bge_Un, new[] {OpCodes.Blt_Un, OpCodes.Br, OpCodes.Nop}},
+                    {OpCodes.Blt_Un, new[] {OpCodes.Bge_Un, OpCodes.Br, OpCodes.Nop}},
+                    {OpCodes.Ble, new[] {OpCodes.Bgt, OpCodes.Br, OpCodes.Nop}},
+                    {OpCodes.Bgt, new[] {OpCodes.Ble, OpCodes.Br, OpCodes.Nop}},
+                    {OpCodes.Ble_Un, new[] {OpCodes.Bgt_Un, OpCodes.Br, OpCodes.Nop}},
+                    {OpCodes.Bgt_Un, new[] {OpCodes.Ble_Un, OpCodes.Br, OpCodes.Nop}}
                 
                 };
 
