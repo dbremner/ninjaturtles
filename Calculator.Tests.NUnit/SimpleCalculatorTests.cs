@@ -12,6 +12,7 @@ namespace Calculator.Tests.NUnit
     [ClassTested(typeof(SimpleCalculator))]
     public class SimpleCalculatorTests
     {
+		[Test]
         [TestCase(3, 4, Result = 7)]
         [TestCase(3, 0, Result = 3)]
         [MethodTested("Add")]
@@ -19,7 +20,8 @@ namespace Calculator.Tests.NUnit
         {
             return new SimpleCalculator().Add(left, right);
         }
-
+		
+		[Test]
         [TestCase(3, 4, Result = 7)]
         [TestCase(3, 0, Result = 3)]
         [MethodTested("StaticAdd")]
@@ -27,21 +29,24 @@ namespace Calculator.Tests.NUnit
         {
             return SimpleCalculator.StaticAdd(left, right);
         }
-
+		
+		[Test]
         [TestCase(1, 2, 3, 4, Result = 10)]
         [MethodTested("MultiAdd")]
         public int MultiAdd_SimpleTests(int i1, int i2, int i3, int i4)
         {
             return new SimpleCalculator().MultiAdd(i1, i2, i3, i4);
         }
-
+		
+		[Test]
         [TestCase(1, 2, 3, 4, 5, 7, Result = 22)]
         [MethodTested("MixedAdd")]
         public int MixedAdd_SimpleTests(short i1, short i2, short i3, int i4, int i5, int i6)
         {
             return new SimpleCalculator().MixedAdd(i1, i2, i3, i4, i5, i6);
         }
-
+		
+		[Test]
         [TestCase(4, 2, Result = 2)]
         [TestCase(3, 2, Result = 1)]
         [TestCase(-8, 2, Result = -4)]
