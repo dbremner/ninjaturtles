@@ -79,15 +79,16 @@ namespace NinjaTurtles.TestRunner
                 return null;
             }
 
-            var startInfo = new ProcessStartInfo(GetCommandLine(testLibraryPath, testsToRun))
+            var startInfo = new ProcessStartInfo(GetCommandLineFileName())
                                 {
                                     UseShellExecute = false,
                                     CreateNoWindow = true,
 									RedirectStandardOutput = true
                                 };
+            startInfo.Arguments = GetCommandLineArguments(testLibraryPath, testsToRun);
 			if (Runtime.IsRunningOnMono)
 			{
-				startInfo.Arguments = startInfo.FileName;
+				startInfo.Arguments = startInfo.FileName + " " + startInfo.Arguments;
 				startInfo.FileName = "mono";
 			}
             using (var process = Process.Start(startInfo))
@@ -101,7 +102,14 @@ namespace NinjaTurtles.TestRunner
         }
 
         /// <summary>
-        /// Gets the command line used to run the unit tests specified in the
+        /// Gets the command line executable file name used to run the unit
+        /// tests.
+        /// </summary>
+        /// <returns></returns>
+        protected abstract string GetCommandLineFileName();
+
+        /// <summary>
+        /// Gets the arguments used to run the unit tests specified in the
         /// <paramref name="tests" /> parameter from the library found at path
         /// <paramref name="testLibraryPath" />.
         /// </summary>
@@ -112,7 +120,7 @@ namespace NinjaTurtles.TestRunner
         /// A list of the fully qualified names of the test methods to be run.
         /// </param>
         /// <returns></returns>
-        protected abstract string GetCommandLine(string testLibraryPath, IEnumerable<string> tests);
+        protected abstract string GetCommandLineArguments(string testLibraryPath, IEnumerable<string> tests);
 
         /// <summary>
         /// Maps a process exit code to the success status of the test suite.

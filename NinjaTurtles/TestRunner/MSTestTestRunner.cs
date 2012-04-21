@@ -19,6 +19,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -33,7 +34,18 @@ namespace NinjaTurtles.TestRunner
 // ReSharper restore InconsistentNaming
     {
         /// <summary>
-        /// Gets the command line used to run the unit tests specified in the
+        /// Gets the command line executable file name used to run the unit
+        /// tests.
+        /// </summary>
+        /// <returns></returns>
+        protected override string GetCommandLineFileName()
+        {
+            string path = "C:\\Program Files (x86)\\Microsoft Visual Studio 10.0\\Common7\\IDE\\";
+            return string.Format("\"{0}MSTest.exe\"", path);
+        }
+
+        /// <summary>
+        /// Gets the arguments used to run the unit tests specified in the
         /// <paramref name="tests" /> parameter from the library found at path
         /// <paramref name="testLibraryPath" />.
         /// </summary>
@@ -44,12 +56,11 @@ namespace NinjaTurtles.TestRunner
         /// A list of the fully qualified names of the test methods to be run.
         /// </param>
         /// <returns></returns>
-        protected override string GetCommandLine(string testLibraryPath, IEnumerable<string> tests)
+        protected override string GetCommandLineArguments(string testLibraryPath, IEnumerable<string> tests)
         {
-            string path = "C:\\Program Files (x86)\\Microsoft Visual Studio 10.0\\Common7\\IDE\\";
             string testArguments = string.Join(" ", tests.Select(t => string.Format("/test:\"{0}\"", t)));
-            return string.Format("\"{0}MSTest.exe\" /testcontainer:\"{1}\" {2}",
-                path, testLibraryPath, testArguments);
+            return string.Format("/testcontainer:\"{0}\" {1}",
+                testLibraryPath, testArguments);
         }
 
         protected override bool InterpretExitCode(int exitCode)

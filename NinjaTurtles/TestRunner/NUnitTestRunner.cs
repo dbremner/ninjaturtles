@@ -115,7 +115,17 @@ namespace NinjaTurtles.TestRunner
         }
 
         /// <summary>
-        /// Gets the command line used to run the unit tests specified in the
+        /// Gets the command line executable file name used to run the unit
+        /// tests.
+        /// </summary>
+        /// <returns></returns>
+        protected override string GetCommandLineFileName()
+        {
+            return Path.Combine(RunnerPath, EXECUTABLE_NAME);
+        }
+
+        /// <summary>
+        /// Gets the arguments used to run the unit tests specified in the
         /// <paramref name="tests" /> parameter from the library found at path
         /// <paramref name="testLibraryPath" />.
         /// </summary>
@@ -126,14 +136,14 @@ namespace NinjaTurtles.TestRunner
         /// A list of the fully qualified names of the test methods to be run.
         /// </param>
         /// <returns></returns>
-        protected override string GetCommandLine(string testLibraryPath, IEnumerable<string> tests)
+        protected override string GetCommandLineArguments(string testLibraryPath, IEnumerable<string> tests)
         {
             string path = Path.GetTempFileName();
             File.WriteAllLines(path, tests);
-            string exeCommand = string.Format("\"{1}\" \"{2}\" {0}runlist=\"{3}\" {0}stoponerror",
-			                     Runtime.CommandLineArgumentCharacter,
-                                 Path.Combine(RunnerPath, EXECUTABLE_NAME), testLibraryPath, path);
-			return exeCommand;
+            string exeCommand = string.Format("\"{1}\" {0}runlist=\"{2}\" {0}stoponerror",
+                                 Runtime.CommandLineArgumentCharacter,
+                                 testLibraryPath, path);
+            return exeCommand;
         }
 
         /// <summary>
