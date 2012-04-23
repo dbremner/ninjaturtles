@@ -165,7 +165,7 @@ namespace NinjaTurtles.Turtles.Method
                 {
                 }
                 if (Directory.Exists(directoryName)) Thread.Sleep(1000);
-            } while (Directory.Exists(directoryName) && attemptCount++ < 30);
+            } while (Directory.Exists(directoryName) && attemptCount++ < 3);
         }
     }
 }
