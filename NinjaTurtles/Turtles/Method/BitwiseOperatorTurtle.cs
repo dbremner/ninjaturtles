@@ -20,7 +20,7 @@
 #endregion
 
 using System.Collections.Generic;
-using System.ComponentModel;
+
 using Mono.Cecil.Cil;
 
 namespace NinjaTurtles.Turtles.Method
@@ -29,9 +29,33 @@ namespace NinjaTurtles.Turtles.Method
     /// A concrete implementation of <see cref="IMethodTurtle" /> that replaces
     /// any bitwise combination operator in the method body with an alternative.
     /// </summary>
+    /// <remarks>
+    /// This turtle replaces each bitwise operator that it finds with each
+    /// of the alternatives, from this set:
+    /// <list type="table">
+    ///     <listheader>
+    ///         <term>Operator</term>
+    ///         <term>IL Opcode</term>
+    ///     </listheader>
+    ///     <item>
+    ///         <description>|| / Or</description>
+    ///         <description><see cref="System.Reflection.Emit.OpCodes.Or" /></description>
+    ///     </item>
+    ///     <item>
+    ///         <description>&& / And</description>
+    ///         <description><see cref="System.Reflection.Emit.OpCodes.And" /></description>
+    ///     </item>
+    ///     <item>
+    ///         <description>^ / Xor</description>
+    ///         <description><see cref="System.Reflection.Emit.OpCodes.Xor" /></description>
+    ///     </item>
+    /// </list>
+    /// Note that boolean operators compile to bitwise operators in IL, and so
+    /// are also covered by this mutation.
+    /// </remarks>
     public class BitwiseOperatorTurtle : OpCodeRotationTurtle
     {
-        private static readonly IDictionary<OpCode, IEnumerable<OpCode>> _opcodeMap 
+        private static readonly IDictionary<OpCode, IEnumerable<OpCode>> _opCodeMap 
             = new Dictionary<OpCode, IEnumerable<OpCode>>
                 {
                     {OpCodes.Or, new[] {OpCodes.And, OpCodes.Xor}},
@@ -45,7 +69,7 @@ namespace NinjaTurtles.Turtles.Method
         /// </summary>
         public override IDictionary<OpCode, IEnumerable<OpCode>> OpCodeMap
         {
-            get { return _opcodeMap; }
+            get { return _opCodeMap; }
         }
 
         /// <summary>

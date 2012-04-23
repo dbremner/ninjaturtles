@@ -33,7 +33,7 @@ namespace NinjaTurtles.Turtles.Method
     /// </summary>
     public class BranchConditionTurtle : OpCodeRotationTurtle
     {
-        private static readonly IDictionary<OpCode, IEnumerable<OpCode>> _opcodeMap 
+        private static readonly IDictionary<OpCode, IEnumerable<OpCode>> _opCodeMap 
             = new Dictionary<OpCode, IEnumerable<OpCode>>
                 {
                     {OpCodes.Brfalse, new[] {OpCodes.Brtrue, OpCodes.Br, OpCodes.Nop}},
@@ -57,7 +57,7 @@ namespace NinjaTurtles.Turtles.Method
         /// </summary>
         public override IDictionary<OpCode, IEnumerable<OpCode>> OpCodeMap
         {
-            get { return _opcodeMap; }
+            get { return _opCodeMap; }
         }
 
         /// <summary>
