@@ -24,17 +24,19 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
+using Mono.Cecil;
+
+using Xunit;
+
 namespace NinjaTurtles.TestRunner
 {
     /// <summary>
     /// A concrete implementation of <see cref="ConsoleTestRunner" /> that
-    /// attempts to locate and run the MSTest console runner.
+    /// attempts to locate and run the NUnit console runner.
     /// </summary>
-// ReSharper disable InconsistentNaming
-    public class MSTestTestRunner : ConsoleTestRunner
-// ReSharper restore InconsistentNaming
+    public class xUnitTestRunner : ConsoleTestRunner
     {
-        private const string EXECUTABLE_NAME = "MSTest.exe";
+        private const string EXECUTABLE_NAME = "xunit.console.clr4.exe";
 
         private string _runnerPath;
 
@@ -54,24 +56,9 @@ namespace NinjaTurtles.TestRunner
         private string FindConsoleRunner()
         {
             var searchPath = new List<string>();
-            string programFilesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-            searchPath.AddRange(new[]
-                                    {
-                                        Path.Combine(programFilesFolder, "Microsoft Visual Studio 11.0\\Common7\\IDE"),
-                                        Path.Combine(programFilesFolder, "Microsoft Visual Studio 10.0\\Common7\\IDE")
-                                    });
-            string programFilesX86Folder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
-            if (!string.IsNullOrEmpty(programFilesX86Folder))
-            {
-                searchPath.AddRange(new[]
-                        {
-                                        Path.Combine(programFilesX86Folder, "Microsoft Visual Studio 11.0\\Common7\\IDE"),
-                                        Path.Combine(programFilesX86Folder, "Microsoft Visual Studio 10.0\\Common7\\IDE")
-                        });
-            }
-            string environmentSearchPath = Environment.GetEnvironmentVariable("PATH") ?? "";
+			string environmentSearchPath = Environment.GetEnvironmentVariable("PATH") ?? "";
             searchPath.AddRange(environmentSearchPath
-                .Split(new[] { Runtime.SearchPathSeparator }, StringSplitOptions.RemoveEmptyEntries));
+			    .Split(new[] {Runtime.SearchPathSeparator}, StringSplitOptions.RemoveEmptyEntries));
             foreach (string folder in searchPath)
             {
                 if (File.Exists(Path.Combine(folder, EXECUTABLE_NAME)))
@@ -92,7 +79,6 @@ namespace NinjaTurtles.TestRunner
             return Path.Combine(RunnerPath, EXECUTABLE_NAME);
         }
 
-
         /// <summary>
         /// Gets the arguments used to run the unit tests specified in the
         /// <paramref name="tests" /> parameter from the library found at path
@@ -107,9 +93,36 @@ namespace NinjaTurtles.TestRunner
         /// <returns></returns>
         protected override string GetCommandLineArguments(string testLibraryPath, IEnumerable<string> tests)
         {
-            string testArguments = string.Join(" ", tests.Select(t => string.Format("/test:\"{0}\"", t)));
-            return string.Format("/testcontainer:\"{0}\" {1}",
-                testLibraryPath, testArguments);
+            // HACKTAGE: In the absence of a simple way to limit the tests
+            // xUnit runs, we inject TraitAttributes to specify this.
+            var testAssembly = AssemblyDefinition.ReadAssembly(testLibraryPath);
+            var traitConstructor =
+                testAssembly.MainModule.Import(
+                    typeof(TraitAttribute).GetConstructor(new[] {typeof(string), typeof(string)}));
+            var customAttribute = new CustomAttribute(traitConstructor);
+            customAttribute.ConstructorArguments.Add(
+                new CustomAttributeArgument(
+                    testAssembly.MainModule.TypeSystem.String, "NinjaTurtles"));
+            customAttribute.ConstructorArguments.Add(
+                new CustomAttributeArgument(
+                    testAssembly.MainModule.TypeSystem.String, "run"));
+
+            foreach (var module in testAssembly.MainModule.Types)
+            {
+                foreach (var method in module.Methods)
+                {
+                    string qualifiedMethodName = module.FullName + "." + method.Name;
+                    if (tests.Contains(qualifiedMethodName))
+                    {
+                        method.CustomAttributes.Add(customAttribute);
+                    }
+                }
+            }
+            testAssembly.Write(testLibraryPath);
+            string exeCommand = string.Format("\"{1}\" {0}noshadow {0}trait \"NinjaTurtles=run\"",
+                                 Runtime.CommandLineArgumentCharacter,
+                                 testLibraryPath);
+            return exeCommand;
         }
 
         /// <summary>
