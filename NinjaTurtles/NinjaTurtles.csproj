@@ -24,6 +24,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\NinjaTurtles.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -61,6 +62,7 @@
     <Compile Include="IMutationTest.cs" />
     <Compile Include="MutationTest.cs" />
     <Compile Include="MutationTestBuilder.cs" />
+    <Compile Include="MutationTestMetaData.cs" />
     <Compile Include="MutationTestFailureException.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="TestRunner\NamespaceDoc.cs" />

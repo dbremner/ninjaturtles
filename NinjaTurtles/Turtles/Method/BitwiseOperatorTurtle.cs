@@ -39,7 +39,7 @@ namespace NinjaTurtles.Turtles.Method
                     {OpCodes.Xor, new[] {OpCodes.And, OpCodes.Or}}
                 };
 
-        
+        /// <summary>
         /// Defines a mapping from input opcodes to a set of replacement output
         /// opcodes for mutation purposes.
         /// </summary>

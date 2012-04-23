@@ -56,9 +56,10 @@ namespace NinjaTurtles.Turtles.Method
         /// with mutated versions.
         /// </param>
         /// <returns>
-        /// An <see cref="IEnumerable{T}" /> of <see cref="string" />s.
+        /// An <see cref="IEnumerable{T}" /> of
+        /// <see cref="MutationTestMetaData" /> structures.
         /// </returns>
-        protected override IEnumerable<string> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string fileName)
+        protected override IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string fileName)
         {
             foreach (var instruction in method.Body.Instructions)
             {
