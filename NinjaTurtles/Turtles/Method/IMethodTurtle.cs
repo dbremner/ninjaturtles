@@ -48,8 +48,9 @@ namespace NinjaTurtles.Turtles.Method
         /// with mutated versions.
         /// </param>
         /// <returns>
-        /// An <see cref="IEnumerable{T}" /> of <see cref="string" />s.
+        /// An <see cref="IEnumerable{T}" /> of
+        /// <see cref="MutationTestMetaData" /> structures.
         /// </returns>
-        IEnumerable<string> Mutate(MethodDefinition method, AssemblyDefinition assembly, string fileName);
+        IEnumerable<MutationTestMetaData> Mutate(MethodDefinition method, AssemblyDefinition assembly, string fileName);
     }
 }

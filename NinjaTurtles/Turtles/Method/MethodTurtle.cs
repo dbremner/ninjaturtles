@@ -19,6 +19,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -36,8 +37,6 @@ namespace NinjaTurtles.Turtles.Method
     /// </summary>
     public abstract class MethodTurtle : IMethodTurtle
     {
-        private string _originalFileName;
-
         /// <summary>
         /// A description for the particular implementation class.
         /// </summary>
@@ -60,19 +59,40 @@ namespace NinjaTurtles.Turtles.Method
         /// with mutated versions.
         /// </param>
         /// <returns>
-        /// An <see cref="IEnumerable{T}" /> of <see cref="string" />s.
+        /// An <see cref="IEnumerable{T}" /> of
+        /// <see cref="MutationTestMetaData" /> structures.
         /// </returns>
-        public IEnumerable<string> Mutate(MethodDefinition method, AssemblyDefinition assembly, string fileName)
+        public IEnumerable<MutationTestMetaData> Mutate(MethodDefinition method, AssemblyDefinition assembly, string fileName)
         {
             if (!method.HasBody) yield break;
-            method.Body.SimplifyMacros(); 
-            _originalFileName = fileName.Replace(".dll", ".ninjaoriginal.dll");
-            if (File.Exists(_originalFileName)) File.Delete(_originalFileName);
-            foreach (var line in DoMutate(method, assembly, fileName))
+            method.Body.SimplifyMacros();
+            foreach (var data in DoMutate(method, assembly, fileName))
             {
-                yield return line;
+                yield return data;
+
             }
         }
+
+        private static void CopyDirectory(string sourcePath, string destPath)
+        {
+            if (!Directory.Exists(destPath))
+            {
+                Directory.CreateDirectory(destPath);
+            }
+
+            foreach (string file in Directory.GetFiles(sourcePath))
+            {
+                string dest = Path.Combine(destPath, Path.GetFileName(file));
+                File.Copy(file, dest);
+            }
+
+            foreach (string folder in Directory.GetDirectories(sourcePath))
+            {
+                string dest = Path.Combine(destPath, Path.GetFileName(folder));
+                CopyDirectory(folder, dest);
+            }
+        }
+
 
         /// <summary>
         /// When implemented in a subclass, performs the actual mutations on
@@ -90,9 +110,10 @@ namespace NinjaTurtles.Turtles.Method
         /// with mutated versions.
         /// </param>
         /// <returns>
-        /// An <see cref="IEnumerable{T}" /> of <see cref="string" />s.
+        /// An <see cref="IEnumerable{T}" /> of
+        /// <see cref="MutationTestMetaData" /> structures.
         /// </returns>
-        protected abstract IEnumerable<string> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string fileName); 
+        protected abstract IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string fileName); 
 
         /// <summary>
         /// Moves the original assembly aside, and writes the mutated copy in
@@ -112,22 +133,38 @@ namespace NinjaTurtles.Turtles.Method
         /// <c>yield return</c>.
         /// </param>
         /// <returns>
-        /// An <see cref="IEnumerable{T}" /> of <see cref="string" />s with a
-        /// single element.
+        /// An <see cref="IEnumerable{T}" /> of
+        /// <see cref="MutationTestMetaData" /> structures.
         /// </returns>
-        protected IEnumerable<string> PlaceFileAndYield(AssemblyDefinition assembly, string fileName, string output)
+        protected IEnumerable<MutationTestMetaData> PlaceFileAndYield(AssemblyDefinition assembly, string fileName, string output)
         {
-            File.Move(fileName, _originalFileName);
-            assembly.Write(fileName);
-            yield return output;
-            File.Delete(fileName);
-            // HACKTAG: Wait for file to be deletable...
-            while (File.Exists(fileName))
+            string sourceFolder = Path.GetDirectoryName(fileName);
+            string targetFolder = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
+            CopyDirectory(sourceFolder, targetFolder);
+            string targetFileName = Path.Combine(targetFolder, Path.GetFileName(fileName));
+            assembly.Write(targetFileName);
+            yield return new MutationTestMetaData
+                             {
+                                 TestFolder = targetFolder,
+                                 Description = output
+                             };
+            new Thread(DeleteDirectory).Start(targetFolder);
+        }
+
+        private void DeleteDirectory(object directory)
+        {
+            string directoryName = (string)directory;
+            do
             {
-                Thread.Sleep(100);
-                File.Delete(fileName);
-            }
-            File.Move(_originalFileName, fileName);
+                try
+                {
+                    Directory.Delete(directoryName);
+                }
+                catch
+                {
+                }
+                if (Directory.Exists(directoryName)) Thread.Sleep(1000);
+            } while (Directory.Exists(directoryName));
         }
     }
 }

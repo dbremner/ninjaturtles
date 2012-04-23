@@ -21,7 +21,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Mono.Cecil;
 
@@ -74,14 +76,17 @@ namespace NinjaTurtles
                     foreach (MethodDefinition method in type.Methods.Where(m => m.Name == _methodName))
                     {
                         bool mutationsFound = false;
-                        foreach (string mutation in turtle.Mutate(method, _assembly, fileName))
-                        {
-                            mutationsFound = true;
-                            Console.Write("\t{0}: ", mutation);
-                            bool? result = runner.RunTestsWithMutations(method, _testAssemblyLocation);
-                            OutputResultToConsole(result);
-                            if (result ?? false) passCount++;
-                        }
+                        Parallel.ForEach(turtle.Mutate(method, _assembly, fileName),
+                                         mutation =>
+                                             {
+                                                 mutationsFound = true;
+                                                 string testAssembly = Path.Combine(mutation.TestFolder,
+                                                                                    Path.GetFileName(
+                                                                                        _testAssemblyLocation));
+                                                 bool? result = runner.RunTestsWithMutations(method, testAssembly);
+                                                 OutputResultToConsole(mutation.Description, result);
+                                                 if (result ?? false) passCount++;
+                                             });
                         if (!mutationsFound)
                         {
                             Console.WriteLine("\tNo valid mutations found (this is fine)");
@@ -108,19 +113,22 @@ namespace NinjaTurtles
 
         #endregion
 
-        private static void OutputResultToConsole(bool? result)
+        private static void OutputResultToConsole(string description, bool? result)
         {
+            string interpretation;
             if (!result.HasValue)
             {
-                Console.WriteLine("No valid tests found to run");
-                return;
+                interpretation = "No valid tests found to run";
             }
-            if (result.Value)
+            else if (result.Value)
             {
-                Console.WriteLine("Passed (this is bad)");
-                return;
+                interpretation = "Passed (this is bad)";
             }
-            Console.WriteLine("Failed (this is good)");
+            else
+            {
+                interpretation = "Failed (this is good)";
+            }
+            Console.WriteLine("\t{0}: {1}", description, interpretation);
         }
 
         private void PopulateDefaultTurtles()

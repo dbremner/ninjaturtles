@@ -63,6 +63,15 @@ namespace NinjaTurtles.TestRunner
                 testLibraryPath, testArguments);
         }
 
+        /// <summary>
+        /// Maps a process exit code to the success status of the test suite.
+        /// </summary>
+        /// <param name="exitCode">
+        /// The exit code of the console test runner process.
+        /// </param>
+        /// <returns>
+        /// <b>true</b> if the test suite passed, otherwise <b>false</b>.
+        /// </returns>
         protected override bool InterpretExitCode(int exitCode)
         {
             return exitCode == 0;

@@ -41,6 +41,10 @@ namespace NinjaTurtles.Turtles.Method
                     {OpCodes.Rem, new[] {OpCodes.Add, OpCodes.Sub, OpCodes.Mul, OpCodes.Div}}
                 };
 
+        /// <summary>
+        /// Defines a mapping from input opcodes to a set of replacement output
+        /// opcodes for mutation purposes.
+        /// </summary>
         public override IDictionary<OpCode, IEnumerable<OpCode>> OpCodeMap
         {
             get { return _opcodeMap; }
