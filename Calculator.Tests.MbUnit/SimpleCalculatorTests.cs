@@ -21,60 +21,73 @@
 
 using System;
 
-using NUnit.Framework;
+using MbUnit.Framework;
 
 using NinjaTurtles;
 using NinjaTurtles.Attributes;
+using NinjaTurtles.TestRunner;
 using NinjaTurtles.Turtles.Method;
 
-namespace Calculator.Tests.NUnit
+namespace Calculator.Tests.MbUnit
 {
     [TestFixture]
     [ClassTested(typeof(SimpleCalculator))]
     public class SimpleCalculatorTests
     {
-		[Test]
-        [TestCase(3, 4, Result = 7)]
-        [TestCase(3, 0, Result = 3)]
+        [FixtureSetUp]
+        public void FixtureSetUp()
+        {
+            MutationTestBuilder<SimpleCalculator>.Use<GallioTestRunner>();
+        }
+
+        [FixtureTearDown]
+        public void FixtureTearDown()
+        {
+            MutationTestBuilder<SimpleCalculator>.Clear();
+        }
+
+        [Test]
+        [Row(3, 4, 7)]
+        [Row(3, 0, 3)]
         [MethodTested("Add")]
-        public int Add_SimpleTests(int left, int right)
+        public void Add_SimpleTests(int left, int right, int result)
         {
-            return new SimpleCalculator().Add(left, right);
+            Assert.AreEqual(result, new SimpleCalculator().Add(left, right));
         }
 		
 		[Test]
-        [TestCase(3, 4, Result = 7)]
-        [TestCase(3, 0, Result = 3)]
+        [Row(3, 4, 7)]
+        [Row(3, 0, 3)]
         [MethodTested("StaticAdd")]
-        public int StaticAdd_SimpleTests(int left, int right)
+        public void StaticAdd_SimpleTests(int left, int right, int result)
         {
-            return SimpleCalculator.StaticAdd(left, right);
+            Assert.AreEqual(result, SimpleCalculator.StaticAdd(left, right));
         }
 		
 		[Test]
-        [TestCase(1, 2, 3, 4, Result = 10)]
+        [Row(1, 2, 3, 4, 10)]
         [MethodTested("MultiAdd")]
-        public int MultiAdd_SimpleTests(int i1, int i2, int i3, int i4)
+        public void MultiAdd_SimpleTests(int i1, int i2, int i3, int i4, int result)
         {
-            return new SimpleCalculator().MultiAdd(i1, i2, i3, i4);
+            Assert.AreEqual(result, new SimpleCalculator().MultiAdd(i1, i2, i3, i4));
         }
 		
 		[Test]
-        [TestCase(1, 2, 3, 4, 5, 7, Result = 22)]
+        [Row(1, 2, 3, 4, 5, 7, 22)]
         [MethodTested("MixedAdd")]
-        public int MixedAdd_SimpleTests(short i1, short i2, short i3, int i4, int i5, int i6)
+        public void MixedAdd_SimpleTests(short i1, short i2, short i3, int i4, int i5, int i6, int result)
         {
-            return new SimpleCalculator().MixedAdd(i1, i2, i3, i4, i5, i6);
+            Assert.AreEqual(result, new SimpleCalculator().MixedAdd(i1, i2, i3, i4, i5, i6));
         }
 		
 		[Test]
-        [TestCase(4, 2, Result = 2)]
-        [TestCase(3, 2, Result = 1)]
-        [TestCase(-8, 2, Result = -4)]
+        [Row(4, 2, 2)]
+        [Row(3, 2, 1)]
+        [Row(-8, 2, -4)]
         [MethodTested("Divide")]
-        public int Divide_SimpleTests(int left, int right)
+        public void Divide_SimpleTests(int left, int right, int result)
         {
-            return new SimpleCalculator().Divide(left, right);
+            Assert.AreEqual(result, new SimpleCalculator().Divide(left, right));
         }
 
         [Test]

@@ -16,6 +16,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E3F499
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator.Tests.xUnit", "Calculator.Tests.xUnit\Calculator.Tests.xUnit.csproj", "{6D3056B3-87A5-4CB2-8137-15AC748024EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator.Tests.MSTest", "Calculator.Tests.MSTest\Calculator.Tests.MSTest.csproj", "{8DD54E24-C1CB-4D10-BC53-ECFECE6F40E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator.Tests.MbUnit", "Calculator.Tests.MbUnit\Calculator.Tests.MbUnit.csproj", "{F592EBD8-646F-470F-A01D-97B036E4FBD2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +42,14 @@ Global
 		{6D3056B3-87A5-4CB2-8137-15AC748024EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D3056B3-87A5-4CB2-8137-15AC748024EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D3056B3-87A5-4CB2-8137-15AC748024EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DD54E24-C1CB-4D10-BC53-ECFECE6F40E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DD54E24-C1CB-4D10-BC53-ECFECE6F40E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DD54E24-C1CB-4D10-BC53-ECFECE6F40E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DD54E24-C1CB-4D10-BC53-ECFECE6F40E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F592EBD8-646F-470F-A01D-97B036E4FBD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F592EBD8-646F-470F-A01D-97B036E4FBD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F592EBD8-646F-470F-A01D-97B036E4FBD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F592EBD8-646F-470F-A01D-97B036E4FBD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
