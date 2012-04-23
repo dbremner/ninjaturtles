@@ -28,7 +28,7 @@ namespace NinjaTurtles.TestRunner
 {
     /// <summary>
     /// A concrete implementation of <see cref="ConsoleTestRunner" /> that
-    /// attempts to locate and run the NUnit console runner.
+    /// attempts to locate and run the Gallio.Echo console runner.
     /// </summary>
     public class GallioTestRunner : ConsoleTestRunner
     {

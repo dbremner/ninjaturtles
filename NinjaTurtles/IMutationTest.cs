@@ -25,8 +25,8 @@ using NinjaTurtles.Turtles;
 namespace NinjaTurtles
 {
     /// <summary>
-    /// A fluent interface for defining and running mutation tests using
-    /// NinjaTurtles.
+    /// An interface forming the core of a fluent interface for defining
+    /// and running mutation tests using NinjaTurtles.
     /// </summary>
     public interface IMutationTest
     {

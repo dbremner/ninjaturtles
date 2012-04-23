@@ -34,8 +34,10 @@ namespace NinjaTurtles
     /// The type to be tested.
     /// </typeparam>
     /// <example>
+    /// <para>
     /// This code creates and runs the default set of mutation tests for the
     /// <b>ClassUnderTest</b> class's <b>MethodUnderTest</b> method:
+    /// </para>
     /// <code lang="cs">
     /// MutationTestBuilder&lt;ClassUnderTest&gt;
     ///     .For("MethodUnderTest")
@@ -45,6 +47,37 @@ namespace NinjaTurtles
     /// Call MutationTestBuilder(Of ClassUnderTest) _
     ///     .For("MethodUnderTest") _
     ///     .Run
+    /// </code>
+    /// <para>
+    /// When this code is included in a test, it causes the matching tests to
+    /// be run for each mutation that is found of the code under test. By
+    /// default, NinjaTurtles assumes it is running under NUnit, and thus uses
+    /// an NUnit runner to run the suite against the mutated code. This can be
+    /// changed using the fluent interface:
+    /// </para>
+    /// <code lang="cs">
+    /// MutationTestBuilder&lt;ClassUnderTest&gt;
+    ///     .For("MethodUnderTest")
+    ///     .Using&lt;GallioTestRunner&gt;()
+    ///     .Run();
+    /// </code>
+    /// <code lang="vbnet">
+    /// Call MutationTestBuilder(Of ClassUnderTest) _
+    ///     .For("MethodUnderTest") _
+    ///     .Using(Of GallioTestRunner)() _
+    ///     .Run
+    /// </code>
+    /// <para>
+    /// Alternatively, this option can be set across all tests in a fixture by
+    /// including this line in the test fixture's setup method:
+    /// </para>
+    /// <code lang="cs">
+    /// MutationTestBuilder&lt;ClassUnderTest&gt;
+    ///     .Use&lt;GallioTestRunner&gt;();
+    /// </code>
+    /// <code lang="vbnet">
+    /// Call MutationTestBuilder(Of ClassUnderTest) _
+    ///     .Use(Of GallioTestRunner)
     /// </code>
     /// </example>
     public static class MutationTestBuilder<T> where T : class

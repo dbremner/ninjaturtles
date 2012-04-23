@@ -29,9 +29,39 @@ namespace NinjaTurtles.Turtles.Method
     /// A concrete implementation of <see cref="IMethodTurtle" /> that replaces
     /// any arithmetic operator in the method body with an alternative.
     /// </summary>
+    /// <remarks>
+    /// This turtle replaces each arithmetic operator that it finds with each
+    /// of the alternatives, from this set:
+    /// <list type="table">
+    ///     <listheader>
+    ///         <term>Operator</term>
+    ///         <term>IL Opcode</term>
+    ///     </listheader>
+    ///     <item>
+    ///         <description>+</description>
+    ///         <description><see cref="System.Reflection.Emit.OpCodes.Add" /></description>
+    ///     </item>
+    ///     <item>
+    ///         <description>-</description>
+    ///         <description><see cref="System.Reflection.Emit.OpCodes.Sub" /></description>
+    ///     </item>
+    ///     <item>
+    ///         <description>*</description>
+    ///         <description><see cref="System.Reflection.Emit.OpCodes.Mul" /></description>
+    ///     </item>
+    ///     <item>
+    ///         <description>/</description>
+    ///         <description><see cref="System.Reflection.Emit.OpCodes.Div" /></description>
+    ///     </item>
+    ///     <item>
+    ///         <description>% / Mod</description>
+    ///         <description><see cref="System.Reflection.Emit.OpCodes.Rem" /></description>
+    ///     </item>
+    /// </list>
+    /// </remarks>
     public class ArithmeticOperatorTurtle : OpCodeRotationTurtle
     {
-        private static readonly IDictionary<OpCode, IEnumerable<OpCode>> _opcodeMap 
+        private static readonly IDictionary<OpCode, IEnumerable<OpCode>> _opCodeMap 
             = new Dictionary<OpCode, IEnumerable<OpCode>>
                 {
                     {OpCodes.Add, new[] {OpCodes.Rem, OpCodes.Sub, OpCodes.Mul, OpCodes.Div}},
@@ -47,7 +77,7 @@ namespace NinjaTurtles.Turtles.Method
         /// </summary>
         public override IDictionary<OpCode, IEnumerable<OpCode>> OpCodeMap
         {
-            get { return _opcodeMap; }
+            get { return _opCodeMap; }
         }
 
         /// <summary>
