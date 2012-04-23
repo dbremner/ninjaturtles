@@ -42,7 +42,7 @@ namespace NinjaTurtles.Turtles.Method
     ///         <description><see cref="System.Reflection.Emit.OpCodes.Or" /></description>
     ///     </item>
     ///     <item>
-    ///         <description>&& / And</description>
+    ///         <description>&amp;&amp; / And</description>
     ///         <description><see cref="System.Reflection.Emit.OpCodes.And" /></description>
     ///     </item>
     ///     <item>
