@@ -13,12 +13,46 @@ namespace Calculator.Tests.MSTest
     [ClassTested(typeof(SimpleCalculator))]
     public class SimpleCalculatorTests
     {
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            MutationTestBuilder<SimpleCalculator>.Use<MSTestTestRunner>();
+        }
+
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            MutationTestBuilder<SimpleCalculator>.Clear();
+        }
+
         [TestMethod]
         [MethodTested("Add")]
         public void Add_SimpleTests()
         {
             Assert.AreEqual(7, new SimpleCalculator().Add(3, 4));
             Assert.AreEqual(3, new SimpleCalculator().Add(3, 0));
+        }
+
+        [TestMethod]
+        [MethodTested("StaticAdd")]
+        public void StaticAdd_SimpleTests()
+        {
+            Assert.AreEqual(7, SimpleCalculator.StaticAdd(3, 4));
+            Assert.AreEqual(7, SimpleCalculator.StaticAdd(3, 4));
+        }
+
+        [TestMethod]
+        [MethodTested("MultiAdd")]
+        public void MultiAdd_SimpleTests()
+        {
+            Assert.AreEqual(10, new SimpleCalculator().MultiAdd(1, 2, 3, 4));
+        }
+
+        [TestMethod]
+        [MethodTested("MixedAdd")]
+        public void MixedAdd_SimpleTests()
+        {
+            Assert.AreEqual(22, new SimpleCalculator().MixedAdd(1, 2, 3, 4, 5, 7));
         }
 
         [TestMethod]
@@ -32,33 +66,48 @@ namespace Calculator.Tests.MSTest
 
         [TestMethod]
         [MethodTested("Divide")]
+        [ExpectedException(typeof(ArgumentException))]
         public void Divide_DivideByZero()
         {
-            try
-            {
-                new SimpleCalculator().Divide(1, 0);
-            }
-            catch (ArgumentException)
-            {
-                return;
-            }
-            Assert.Fail("ArgumentException not thrown.");
+            new SimpleCalculator().Divide(1, 0);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Mutation")]
         public void Add_MutationTests()
         {
             MutationTestBuilder<SimpleCalculator>.For("Add")
-                .UsingRunner<MSTestTestRunner>()
                 .Run();
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Mutation")]
+        public void StaticAdd_MutationTests()
+        {
+            MutationTestBuilder<SimpleCalculator>.For("StaticAdd")
+                .Run();
+        }
+
+        [TestMethod, TestCategory("Mutation")]
+        public void MultiAdd_MutationTests()
+        {
+            MutationTestBuilder<SimpleCalculator>.For("MultiAdd")
+                .Run();
+        }
+
+        [TestMethod, TestCategory("Mutation")]
+        public void MixedAdd_MutationTests()
+        {
+            MutationTestBuilder<SimpleCalculator>.For("MixedAdd")
+                .With<ParameterAndVariableReadSubstitutionTurtle>()
+                .With<VariableWriteSubstitutionTurtle>()
+                .Run();
+        }
+
+        [TestMethod, TestCategory("Mutation")]
         public void Divide_MutationTests()
         {
             MutationTestBuilder<SimpleCalculator>.For("Divide")
-                .UsingRunner<MSTestTestRunner>()
                 .Run();
         }
+
     }
 }

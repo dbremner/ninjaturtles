@@ -154,6 +154,7 @@ namespace NinjaTurtles.Turtles.Method
         private void DeleteDirectory(object directory)
         {
             string directoryName = (string)directory;
+            int attemptCount = 0;
             do
             {
                 try
@@ -164,7 +165,7 @@ namespace NinjaTurtles.Turtles.Method
                 {
                 }
                 if (Directory.Exists(directoryName)) Thread.Sleep(1000);
-            } while (Directory.Exists(directoryName));
+            } while (Directory.Exists(directoryName) && attemptCount++ < 30);
         }
     }
 }

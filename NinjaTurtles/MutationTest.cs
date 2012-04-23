@@ -40,7 +40,6 @@ namespace NinjaTurtles
         private readonly string _methodName;
         private readonly Type _targetClass;
         private readonly string _testAssemblyLocation;
-        private Type _testRunner = typeof(NUnitTestRunner);
 
         internal MutationTest(Type targetClass, string methodName, string testAssemblyLocation)
         {
@@ -48,13 +47,16 @@ namespace NinjaTurtles
             _methodName = methodName;
             _testAssemblyLocation = testAssemblyLocation;
             _assembly = AssemblyDefinition.ReadAssembly(targetClass.Assembly.Location);
+            TestRunner = typeof(NUnitTestRunner);
         }
+
+        internal Type TestRunner { get; set; }
 
         #region IMutationTest Members
 
         public void Run()
         {
-            var runner = (ITestRunner)Activator.CreateInstance(_testRunner);
+            var runner = (ITestRunner)Activator.CreateInstance(TestRunner);
             string fileName = _targetClass.Assembly.Location;
             if (_methodTurtles.Count == 0)
             {
@@ -107,7 +109,7 @@ namespace NinjaTurtles
 
         public IMutationTest UsingRunner<T>() where T : ITestRunner
         {
-            _testRunner = typeof(T);
+            TestRunner = typeof(T);
             return this;
         }
 

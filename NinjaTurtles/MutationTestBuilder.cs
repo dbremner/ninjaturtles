@@ -19,7 +19,10 @@
 
 #endregion
 
+using System;
 using System.Reflection;
+
+using NinjaTurtles.TestRunner;
 
 namespace NinjaTurtles
 {
@@ -46,6 +49,8 @@ namespace NinjaTurtles
     /// </example>
     public static class MutationTestBuilder<T> where T : class
     {
+        private static Type _testRunner;
+
         /// <summary>
         /// Returns an <see cref="IMutationTest" /> instance allowing a fluent
         /// definition of a set of mutation tests for a particular method.
@@ -60,7 +65,31 @@ namespace NinjaTurtles
         public static IMutationTest For(string methodName)
         {
             var testAssembly = Assembly.GetCallingAssembly().Location;
-            return new MutationTest(typeof(T), methodName, testAssembly);
+            var mutationTest = new MutationTest(typeof(T), methodName, testAssembly);
+            if (_testRunner != null)
+            {
+                mutationTest.TestRunner = _testRunner;
+            }
+            return mutationTest;
+        }
+
+        /// <summary>
+        /// Sets a default test runner type for mutation testing.
+        /// </summary>
+        /// <typeparam name="TRunner">
+        /// The type of test runner to store as default.
+        /// </typeparam>
+        public static void Use<TRunner>() where TRunner : ITestRunner
+        {
+            _testRunner = typeof(TRunner);
+        }
+
+        /// <summary>
+        /// Clears any defaults that have been set.
+        /// </summary>
+        public static void Clear()
+        {
+            _testRunner = null;
         }
     }
 }
