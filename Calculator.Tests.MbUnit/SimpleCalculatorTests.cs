@@ -37,7 +37,7 @@ namespace Calculator.Tests.MbUnit
         [FixtureSetUp]
         public void FixtureSetUp()
         {
-            MutationTestBuilder<SimpleCalculator>.Use<GallioTestRunner>();
+            MutationTestBuilder<SimpleCalculator>.UseRunner<GallioTestRunner>();
         }
 
         [FixtureTearDown]

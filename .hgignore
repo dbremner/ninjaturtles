@@ -31,3 +31,6 @@ Help
 *.userprefs
 *.pidb
 test-results
+*Playground
+Debug
+NinjaTurtles.*sdf

@@ -38,7 +38,7 @@ namespace Calculator.Tests.MSTest
         [TestInitialize]
         public void TestInitialize()
         {
-            MutationTestBuilder<SimpleCalculator>.Use<MSTestTestRunner>();
+            MutationTestBuilder<SimpleCalculator>.UseRunner<MSTestTestRunner>();
         }
 
         [TestCleanup]

@@ -25,26 +25,34 @@ namespace NinjaTurtles
 {
 	internal static class Runtime
 	{
-		static bool _isMono;
+		private static readonly bool _isMono;
+	    private static readonly bool _isWindows;
 		
 		static Runtime()
 		{
 			_isMono = Type.GetType("Mono.Runtime") != null;
+		    _isWindows = Environment.OSVersion.Platform.ToString().StartsWith("Win")
+		                 || Environment.OSVersion.Platform == PlatformID.Xbox;
 		}
 		
 		internal static bool IsRunningOnMono
 		{
     		get { return _isMono; }
 		}
+
+	    internal static bool IsRunningOnWindows
+	    {
+            get { return _isWindows; }
+	    }
 		
 		internal static string SearchPathSeparator
 		{
-			get { return _isMono ? ":" : ";"; }
+            get { return _isWindows ? ";" : ":"; }
 		}
 		
 		internal static string CommandLineArgumentCharacter
 		{
-			get { return _isMono ? "-" : "/"; }
+            get { return _isWindows ? "/" : "-"; }
 		}
 	}
 }
