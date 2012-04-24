@@ -30,7 +30,7 @@ namespace NinjaTurtles.TestRunner
     /// A concrete implementation of <see cref="ConsoleTestRunner" /> that
     /// attempts to locate and run the NUnit console runner.
     /// </summary>
-    public class NUnitTestRunner : ConsoleTestRunner
+    public sealed class NUnitTestRunner : ConsoleTestRunner
     {
         private const string EXECUTABLE_NAME = "nunit-console.exe";
 
@@ -103,7 +103,7 @@ namespace NinjaTurtles.TestRunner
 			}
 			string environmentSearchPath = Environment.GetEnvironmentVariable("PATH") ?? "";
             searchPath.AddRange(environmentSearchPath
-			    .Split(new[] {Runtime.SearchPathSeparator}, StringSplitOptions.RemoveEmptyEntries));
+			    .Split(Runtime.SearchPathSeparator));
             foreach (string folder in searchPath)
             {
                 if (File.Exists(Path.Combine(folder, EXECUTABLE_NAME)))

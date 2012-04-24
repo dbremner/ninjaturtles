@@ -31,7 +31,7 @@ namespace NinjaTurtles.Turtles.Method
     /// hard-wired <b>true</b> and <b>false</b> values (i.e. always branch, and
     /// never branch).
     /// </summary>
-    public class BranchConditionTurtle : OpCodeRotationTurtle
+    public sealed class BranchConditionTurtle : OpCodeRotationTurtle
     {
         private static readonly IDictionary<OpCode, IEnumerable<OpCode>> _opCodeMap 
             = new Dictionary<OpCode, IEnumerable<OpCode>>

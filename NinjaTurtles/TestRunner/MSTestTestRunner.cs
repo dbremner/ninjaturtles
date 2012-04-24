@@ -31,7 +31,7 @@ namespace NinjaTurtles.TestRunner
     /// attempts to locate and run the MSTest console runner.
     /// </summary>
 // ReSharper disable InconsistentNaming
-    public class MSTestTestRunner : ConsoleTestRunner
+    public sealed class MSTestTestRunner : ConsoleTestRunner
 // ReSharper restore InconsistentNaming
     {
         private const string EXECUTABLE_NAME = "MSTest.exe";

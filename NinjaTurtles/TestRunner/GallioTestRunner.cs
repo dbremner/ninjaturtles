@@ -30,7 +30,7 @@ namespace NinjaTurtles.TestRunner
     /// A concrete implementation of <see cref="ConsoleTestRunner" /> that
     /// attempts to locate and run the Gallio.Echo console runner.
     /// </summary>
-    public class GallioTestRunner : ConsoleTestRunner
+    public sealed class GallioTestRunner : ConsoleTestRunner
     {
         private const string EXECUTABLE_NAME = "Gallio.Echo.exe";
 

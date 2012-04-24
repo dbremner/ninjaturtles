@@ -59,7 +59,7 @@ namespace NinjaTurtles.Turtles.Method
     ///     </item>
     /// </list>
     /// </remarks>
-    public class ArithmeticOperatorTurtle : OpCodeRotationTurtle
+    public sealed class ArithmeticOperatorTurtle : OpCodeRotationTurtle
     {
         private static readonly IDictionary<OpCode, IEnumerable<OpCode>> _opCodeMap 
             = new Dictionary<OpCode, IEnumerable<OpCode>>

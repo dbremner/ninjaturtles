@@ -33,7 +33,7 @@ namespace NinjaTurtles.Turtles.Method
     /// a Nop or a branch to the next statement) are skipped, as their deletion
     /// will always create an equivalent mutant.    
     /// </summary>
-    public class OpCodeDeletionTurtle : MethodTurtle
+    public sealed class OpCodeDeletionTurtle : MethodTurtle
     {
         /// <summary>
         /// A description for the particular implementation class.
