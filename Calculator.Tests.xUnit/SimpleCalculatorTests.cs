@@ -36,7 +36,7 @@ namespace Calculator.Tests.NUnit
     {
         public SimpleCalculatorTests()
         {
-            MutationTestBuilder<SimpleCalculator>.Use<xUnitTestRunner>();
+            MutationTestBuilder<SimpleCalculator>.UseRunner<xUnitTestRunner>();
         }
 
         public void Dispose()

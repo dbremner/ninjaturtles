@@ -48,6 +48,11 @@ namespace NinjaTurtles
     ///     .For("MethodUnderTest") _
     ///     .Run
     /// </code>
+    /// <code lang="cpp">
+    /// MutationTestBuilder&lt;ClassUnderTest^&gt;
+    ///     ::For("MethodUnderTest")
+    ///     ->Run();
+    /// </code>
     /// <para>
     /// When this code is included in a test, it causes the matching tests to
     /// be run for each mutation that is found of the code under test. By
@@ -58,26 +63,33 @@ namespace NinjaTurtles
     /// <code lang="cs">
     /// MutationTestBuilder&lt;ClassUnderTest&gt;
     ///     .For("MethodUnderTest")
-    ///     .Using&lt;GallioTestRunner&gt;()
+    ///     .UsingRunner&lt;GallioTestRunner&gt;()
     ///     .Run();
     /// </code>
     /// <code lang="vbnet">
     /// Call MutationTestBuilder(Of ClassUnderTest) _
     ///     .For("MethodUnderTest") _
-    ///     .Using(Of GallioTestRunner)() _
+    ///     .UsingRunner(Of GallioTestRunner)() _
     ///     .Run
+    /// </code>
+    /// <code lang="cpp">
+    /// MutationTestBuilder&lt;ClassUnderTest^&gt;
+    ///     ::For("MethodUnderTest")
+    ///     ->UsingRunner&lt;GallioTestRunner^&gt;()
+    ///     ->Run();
     /// </code>
     /// <para>
     /// Alternatively, this option can be set across all tests in a fixture by
     /// including this line in the test fixture's setup method:
     /// </para>
     /// <code lang="cs">
-    /// MutationTestBuilder&lt;ClassUnderTest&gt;
-    ///     .Use&lt;GallioTestRunner&gt;();
+    /// MutationTestBuilder&lt;ClassUnderTest&gt;.UseRunner&lt;GallioTestRunner&gt;();
     /// </code>
     /// <code lang="vbnet">
-    /// Call MutationTestBuilder(Of ClassUnderTest) _
-    ///     .Use(Of GallioTestRunner)
+    /// Call MutationTestBuilder(Of ClassUnderTest).UseRunner(Of GallioTestRunner)
+    /// </code>
+    /// <code lang="cpp">
+    /// MutationTestBuilder&lt;ClassUnderTest^&gt;::UseRunner&lt;GallioTestRunner^&gt;();
     /// </code>
     /// </example>
     public static class MutationTestBuilder<T> where T : class
@@ -112,7 +124,31 @@ namespace NinjaTurtles
         /// <typeparam name="TRunner">
         /// The type of test runner to store as default.
         /// </typeparam>
-        public static void Use<TRunner>() where TRunner : ITestRunner
+        /// <example>
+        /// This example shows how this might be used in a method flagged with
+        /// the MSTest <b>[TestInitialize]</b> attribute:
+        /// <code lang="cs">
+        /// [TestInitialize]
+        /// public void TestInitialize()
+        /// {
+        ///     MutationTestBuilder&lt;ClassUnderTest&gt;.UseRunner&lt;GallioTestRunner&gt;();
+        /// }
+        /// </code>
+        /// <code lang="vbnet">
+        /// &lt;TestInitialize&gt;
+        /// Public Sub TestInitialize()
+        ///     Call MutationTestBuilder(Of ClassUnderTest).UseRunner(Of GallioTestRunner()
+        /// End Sub
+        /// </code>
+        /// <code lang="cpp">
+        /// [TestInitialize]
+        /// void TestInitialize()
+        /// {
+        ///     MutationTestBuilder&lt;ClassUnderTest^&gt;::UseRunner&lt;GallioTestRunner^&gt;();
+        /// }
+        /// </code>
+        /// </example>
+        public static void UseRunner<TRunner>() where TRunner : ITestRunner
         {
             _testRunner = typeof(TRunner);
         }
@@ -120,6 +156,30 @@ namespace NinjaTurtles
         /// <summary>
         /// Clears any defaults that have been set.
         /// </summary>
+        /// <example>
+        /// This example shows how this might be used in a method flagged with
+        /// the MSTest <b>[TestCleanup]</b> attribute:
+        /// <code lang="cs">
+        /// [TestCleanup]
+        /// public void TestCleanup()
+        /// {
+        ///     MutationTestBuilder&lt;ClassUnderTest&gt;.Clear();
+        /// }
+        /// </code>
+        /// <code lang="vbnet">
+        /// &lt;TestCleanup&gt;
+        /// Public Sub TestCleanup()
+        ///     Call MutationTestBuilder(Of ClassUnderTest).Clear
+        /// End Sub
+        /// </code>
+        /// <code lang="cpp">
+        /// [TestCleanup]
+        /// void TestCleanup()
+        /// {
+        ///     MutationTestBuilder&lt;ClassUnderTest^&gt;::Clear();
+        /// }
+        /// </code>
+        /// </example>
         public static void Clear()
         {
             _testRunner = null;
