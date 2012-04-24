@@ -31,7 +31,7 @@ namespace NinjaTurtles.Attributes
     /// class.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-    public class MethodTestedAttribute : Attribute
+    public sealed class MethodTestedAttribute : Attribute
     {
         private readonly string _methodName;
 

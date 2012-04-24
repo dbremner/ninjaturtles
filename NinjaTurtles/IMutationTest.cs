@@ -28,10 +28,17 @@ namespace NinjaTurtles
     /// An interface forming the core of a fluent interface for defining
     /// and running mutation tests using NinjaTurtles.
     /// </summary>
+    /// <remarks>
+    /// Client code will not use this interface explicitly, nor attempt to
+    /// instantiate an implementing class. Instead, this interface is exposed
+    /// by the <see cref="MutationTestBuilder{T}" /> class's 
+    /// <see mref="MutationTestBuilder{T}.For" /> method, which forms the start
+    /// of a chain of fluent statements defining a set of mutation tests.
+    /// </remarks>
     public interface IMutationTest
     {
         /// <summary>
-        /// Runs the defined mutation tests.
+        /// Runs the defined mutation tests using the specified test runner.
         /// </summary>
         void Run();
 

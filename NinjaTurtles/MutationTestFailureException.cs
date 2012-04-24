@@ -29,7 +29,7 @@ namespace NinjaTurtles
     /// exception being thrown can catch this exception type and act
     /// accordingly.
     /// </summary>
-    public class MutationTestFailureException : Exception
+    public sealed class MutationTestFailureException : Exception
     {
         /// <summary>
         /// Initializes a new instance of the

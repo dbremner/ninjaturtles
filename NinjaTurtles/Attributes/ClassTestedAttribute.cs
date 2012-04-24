@@ -28,7 +28,7 @@ namespace NinjaTurtles.Attributes
     /// contains tests for the type passed in the constructor.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public class ClassTestedAttribute : Attribute
+    public sealed class ClassTestedAttribute : Attribute
     {
         private readonly string _className;
 

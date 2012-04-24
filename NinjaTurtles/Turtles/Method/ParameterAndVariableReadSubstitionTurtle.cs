@@ -34,7 +34,7 @@ namespace NinjaTurtles.Turtles.Method
     /// statement that reads one of these (using Ldarg or Ldloc), replaces that
     /// read with the read of each different parameter or variable.
     /// </summary>
-    public class ParameterAndVariableReadSubstitutionTurtle : MethodTurtle
+    public sealed class ParameterAndVariableReadSubstitutionTurtle : MethodTurtle
     {
         /// <summary>
         /// A description for the particular implementation class.

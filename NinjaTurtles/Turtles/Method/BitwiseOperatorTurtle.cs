@@ -53,7 +53,7 @@ namespace NinjaTurtles.Turtles.Method
     /// Note that boolean operators compile to bitwise operators in IL, and so
     /// are also covered by this mutation.
     /// </remarks>
-    public class BitwiseOperatorTurtle : OpCodeRotationTurtle
+    public sealed class BitwiseOperatorTurtle : OpCodeRotationTurtle
     {
         private static readonly IDictionary<OpCode, IEnumerable<OpCode>> _opCodeMap 
             = new Dictionary<OpCode, IEnumerable<OpCode>>

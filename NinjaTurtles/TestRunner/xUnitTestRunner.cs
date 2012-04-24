@@ -34,7 +34,7 @@ namespace NinjaTurtles.TestRunner
     /// A concrete implementation of <see cref="ConsoleTestRunner" /> that
     /// attempts to locate and run the xUnit console runner.
     /// </summary>
-    public class xUnitTestRunner : ConsoleTestRunner
+    public sealed class xUnitTestRunner : ConsoleTestRunner
     {
         private const string EXECUTABLE_NAME = "xunit.console.clr4.exe";
 

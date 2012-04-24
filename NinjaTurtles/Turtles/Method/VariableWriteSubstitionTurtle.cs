@@ -34,7 +34,7 @@ namespace NinjaTurtles.Turtles.Method
     /// to one of these (using Stloc), replaces that write with the write of
     /// each different variable.
     /// </summary>
-    public class VariableWriteSubstitutionTurtle : MethodTurtle
+    public sealed class VariableWriteSubstitutionTurtle : MethodTurtle
     {
         /// <summary>
         /// A description for the particular implementation class.
