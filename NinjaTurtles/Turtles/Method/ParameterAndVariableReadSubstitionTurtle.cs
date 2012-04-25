@@ -117,10 +117,7 @@ namespace NinjaTurtles.Turtles.Method
                                 method.DeclaringType.Name,
                                 method.Name);
 
-                        foreach (var p in PlaceFileAndYield(assembly, fileName, output))
-                        {
-                            yield return p;
-                        }
+                        yield return PrepareTests(assembly, fileName, output);
 
                         instruction.OpCode = originalOpCode;
                         instruction.Operand = originalOperand;

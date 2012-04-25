@@ -94,6 +94,14 @@ namespace Calculator.Tests.MSTest
             new SimpleCalculator().Divide(1, 0);
         }
 
+        [TestMethod]
+        [MethodTested("AddViaMethodChainAndLinq")]
+        [MethodTested("Sum")]
+        public void Sum_SimpleTests()
+        {
+            Assert.AreEqual(12, new SimpleCalculator().AddViaMethodChainAndLinq(3, 4, 5));
+        }
+
         [TestMethod, TestCategory("Mutation")]
         public void Add_MutationTests()
         {
@@ -128,6 +136,20 @@ namespace Calculator.Tests.MSTest
         public void Divide_MutationTests()
         {
             MutationTestBuilder<SimpleCalculator>.For("Divide")
+                .Run();
+        }
+
+        [TestMethod, TestCategory("Mutation")]
+        public void AddViaMethodChainAndLinq_MutationTests()
+        {
+            MutationTestBuilder<SimpleCalculator>.For("AddViaMethodChainAndLinq")
+                .Run();
+        }
+
+        [TestMethod, TestCategory("Mutation")]
+        public void Sum_MutationTests()
+        {
+            MutationTestBuilder<SimpleCalculator>.For("Sum")
                 .Run();
         }
 

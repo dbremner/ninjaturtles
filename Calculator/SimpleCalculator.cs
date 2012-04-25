@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Calculator
 {
@@ -7,6 +8,16 @@ namespace Calculator
         static public int StaticAdd(int left, int right)
         {
             return left + right;
+        }
+
+        static private int Sum(params int[] args)
+        {
+            return args.Sum();
+        }
+
+        public int AddViaMethodChainAndLinq(int i1, int i2, int i3)
+        {
+            return Sum(i1, i2, i3);
         }
 
         public int Add(int left, int right)
@@ -42,3 +53,4 @@ namespace Calculator
         }
     }
 }
+

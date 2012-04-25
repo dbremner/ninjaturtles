@@ -138,5 +138,22 @@ namespace NinjaTurtles.TestRunner
         {
             return exitCode == 0;
         }
+
+        /// <summary>
+        /// Dispose(bool disposing) executes in two distinct scenarios.
+        /// If disposing equals true, the method has been called directly
+        /// or indirectly by a user's code. Managed and unmanaged resources
+        /// can be disposed.
+        /// If disposing equals false, the method has been called by the 
+        /// runtime from inside the finalizer and you should not reference 
+        /// other objects. Only unmanaged resources can be disposed.
+        /// </summary>
+        /// <param name="disposing">
+        /// Indicates whether the <see mref="Dispose" /> method is being
+        /// called.
+        /// </param>
+        protected override void Dispose(bool disposing)
+        {
+        }
     }
 }
