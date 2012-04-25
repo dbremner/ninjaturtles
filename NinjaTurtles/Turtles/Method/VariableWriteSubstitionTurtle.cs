@@ -76,9 +76,17 @@ namespace NinjaTurtles.Turtles.Method
             {
                 var indices = keyValuePair.Value.ToArray();
                 var ldargOperands = GetOperandsForVariables(method);
+                var returnVariableIndex = GetIndexOfReturnVariableInDebugCode(method);
                 foreach (var instruction in method.Body.Instructions)
                 {
                     if (instruction.OpCode != OpCodes.Stloc) continue;
+                    if (returnVariableIndex.HasValue
+                        && ((VariableDefinition)instruction.Operand).Index == returnVariableIndex.Value
+                        && instruction.Previous.OpCode == OpCodes.Ldc_I4
+                        && (int)instruction.Previous.Operand == 0)
+                    {
+                        continue;
+                    }
                     
                     int ldlocIndex = ((VariableDefinition)instruction.Operand).Index;
                     int oldIndex = ldlocIndex;
@@ -104,16 +112,47 @@ namespace NinjaTurtles.Turtles.Method
                                 method.DeclaringType.Name,
                                 method.Name);
 
-                        foreach (var p in PlaceFileAndYield(assembly, fileName, output))
-                        {
-                            yield return p;
-                        }
+                        yield return PrepareTests(assembly, fileName, output);
 
                         instruction.OpCode = originalOpCode;
                         instruction.Operand = originalOperand;
                     }
                 }
             }
+        }
+
+        private static int? GetIndexOfReturnVariableInDebugCode(MethodDefinition method)
+        {
+            int? returnVariableIndex = null;
+            var loadReturnVariableInstruction = method.Body.Instructions.Last().Previous;
+            if (loadReturnVariableInstruction.OpCode == OpCodes.Ldloc)
+            {
+                returnVariableIndex = ((VariableDefinition)loadReturnVariableInstruction.Operand).Index;
+            }
+            if (returnVariableIndex.HasValue)
+            {
+                // A variable that is only ever read to be returned is either
+                // injected in debug mode by the compiler, or is explicitly
+                // declared and used when compiled in release mode. We treat
+                // both cases the same.
+                bool isVariableEverReadBeforeReturn = false;
+                foreach (var instruction in method.Body.Instructions)
+                {
+                    if (instruction.OpCode != OpCodes.Ldloc) continue;
+                    if (instruction == method.Body.Instructions.Last().Previous) continue;
+
+                    if (((VariableDefinition)instruction.Operand).Index == returnVariableIndex.Value)
+                    {
+                        isVariableEverReadBeforeReturn = true;
+                        break;
+                    }
+                }
+                if (isVariableEverReadBeforeReturn)
+                {
+                    returnVariableIndex = null;
+                }
+            }
+            return returnVariableIndex;
         }
 
         private static IDictionary<TypeReference, IList<int>> GroupMethodVariablesByType(MethodDefinition method)

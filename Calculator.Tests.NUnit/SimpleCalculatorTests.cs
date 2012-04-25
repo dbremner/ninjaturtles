@@ -84,6 +84,15 @@ namespace Calculator.Tests.NUnit
             Assert.Throws<ArgumentException>(() => new SimpleCalculator().Divide(1, 0));
         }
 
+        [Test]
+        [MethodTested("AddViaMethodChainAndLinq")]
+        [MethodTested("Sum")]
+        [TestCase(3, 4, 5, Result = 12)]
+        public int Sum_SimpleTests(int i1, int i2, int i3)
+        {
+            return new SimpleCalculator().AddViaMethodChainAndLinq(i1, i2, i3);
+        }
+
         [Test, Category("Mutation")]
         public void Add_MutationTests()
         {
@@ -120,5 +129,20 @@ namespace Calculator.Tests.NUnit
             MutationTestBuilder<SimpleCalculator>.For("Divide")
                 .Run();
         }
+
+        [Test, Category("Mutation")]
+        public void AddViaMethodChainAndLinq_MutationTests()
+        {
+            MutationTestBuilder<SimpleCalculator>.For("AddViaMethodChainAndLinq")
+                .Run();
+        }
+
+        [Test, Category("Mutation")]
+        public void Sum_MutationTests()
+        {
+            MutationTestBuilder<SimpleCalculator>.For("Sum")
+                .Run();
+        }
+
     }
 }

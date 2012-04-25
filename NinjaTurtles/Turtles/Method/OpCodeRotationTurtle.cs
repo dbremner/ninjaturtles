@@ -73,10 +73,7 @@ namespace NinjaTurtles.Turtles.Method
                                                originalCode.Name, opCode.Name, instruction.Offset,
                                                method.DeclaringType.Name, method.Name);
 
-                    foreach (var p in PlaceFileAndYield(assembly, fileName, output))
-                    {
-                        yield return p;
-                    }
+                    yield return PrepareTests(assembly, fileName, output);
 
                     instruction.OpCode = originalCode;
                 }

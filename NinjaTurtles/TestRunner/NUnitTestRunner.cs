@@ -35,6 +35,7 @@ namespace NinjaTurtles.TestRunner
         private const string EXECUTABLE_NAME = "nunit-console.exe";
 
         private string _runnerPath;
+        private IList<string> _temporaryFiles = new List<string>(); 
 
         private string RunnerPath
         {
@@ -139,6 +140,7 @@ namespace NinjaTurtles.TestRunner
         protected override string GetCommandLineArguments(string testLibraryPath, IEnumerable<string> tests)
         {
             string path = Path.GetTempFileName();
+            _temporaryFiles.Add(path);
             File.WriteAllLines(path, tests);
             string exeCommand = string.Format("\"{1}\" {0}runlist=\"{2}\" {0}stoponerror",
                                  Runtime.CommandLineArgumentCharacter,
@@ -158,6 +160,34 @@ namespace NinjaTurtles.TestRunner
         protected override bool InterpretExitCode(int exitCode)
         {
             return exitCode == 0;
+        }
+
+        /// <summary>
+        /// Dispose(bool disposing) executes in two distinct scenarios.
+        /// If disposing equals true, the method has been called directly
+        /// or indirectly by a user's code. Managed and unmanaged resources
+        /// can be disposed.
+        /// If disposing equals false, the method has been called by the 
+        /// runtime from inside the finalizer and you should not reference 
+        /// other objects. Only unmanaged resources can be disposed.
+        /// </summary>
+        /// <param name="disposing">
+        /// Indicates whether the <see mref="Dispose" /> method is being
+        /// called.
+        /// </param>
+        protected override void Dispose(bool disposing)
+        {
+            foreach (var temporaryFile in _temporaryFiles)
+            {
+                if (File.Exists(temporaryFile))
+                {
+                    try
+                    {
+                        File.Delete(temporaryFile);
+                    }
+                    catch {}
+                }
+            }
         }
     }
 }

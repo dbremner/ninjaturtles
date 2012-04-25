@@ -33,7 +33,7 @@ namespace NinjaTurtles.Turtles.Method
     /// An abstract implementation of <see cref="IMethodTurtle" /> which
     /// handles assembly rewriting for derived classes, requiring them to just
     /// implement their own <see mref="DoMutate" /> method which internally
-    /// uses the <see mref="PlaceFileAndYield" /> method.
+    /// uses the <see mref="PrepareTests" /> method.
     /// </summary>
     public abstract class MethodTurtle : IMethodTurtle
     {
@@ -117,9 +117,8 @@ namespace NinjaTurtles.Turtles.Method
 
         /// <summary>
         /// Moves the original assembly aside, and writes the mutated copy in
-        /// its place before yielding to allow the test suite to be run.
-        /// Following this it deletes the mutated file and reinstates the
-        /// original assembly.
+        /// its place before returning the test meta data  to allow the test
+        /// suite to be run.
         /// </summary>
         /// <param name="assembly">
         /// An <see cref="AssemblyDefinition" /> for the containing assembly.
@@ -133,39 +132,20 @@ namespace NinjaTurtles.Turtles.Method
         /// <c>yield return</c>.
         /// </param>
         /// <returns>
-        /// An <see cref="IEnumerable{T}" /> of
-        /// <see cref="MutationTestMetaData" /> structures.
+        /// A <see cref="MutationTestMetaData" /> instance.
         /// </returns>
-        protected IEnumerable<MutationTestMetaData> PlaceFileAndYield(AssemblyDefinition assembly, string fileName, string output)
+        protected MutationTestMetaData PrepareTests(AssemblyDefinition assembly, string fileName, string output)
         {
             string sourceFolder = Path.GetDirectoryName(fileName);
             string targetFolder = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
             CopyDirectory(sourceFolder, targetFolder);
             string targetFileName = Path.Combine(targetFolder, Path.GetFileName(fileName));
             assembly.Write(targetFileName);
-            yield return new MutationTestMetaData
+            return new MutationTestMetaData
                              {
                                  TestFolder = targetFolder,
                                  Description = output
                              };
-            new Thread(DeleteDirectory).Start(targetFolder);
-        }
-
-        private void DeleteDirectory(object directory)
-        {
-            string directoryName = (string)directory;
-            int attemptCount = 0;
-            do
-            {
-                try
-                {
-                    Directory.Delete(directoryName);
-                }
-                catch
-                {
-                }
-                if (Directory.Exists(directoryName)) Thread.Sleep(1000);
-            } while (Directory.Exists(directoryName) && attemptCount++ < 3);
         }
     }
 }

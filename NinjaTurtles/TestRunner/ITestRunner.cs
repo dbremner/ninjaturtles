@@ -19,6 +19,8 @@
 
 #endregion
 
+using System;
+
 using Mono.Cecil;
 
 using NinjaTurtles.Attributes;
@@ -29,7 +31,7 @@ namespace NinjaTurtles.TestRunner
     /// An <b>interface</b> that defines the contract a test runner must
     /// implement to be used by NinjaTurtles in running mutation tests.
     /// </summary>
-    public interface ITestRunner
+    public interface ITestRunner : IDisposable
     {
         /// <summary>
         /// Runs the test suite for the specified method, identifying the tests

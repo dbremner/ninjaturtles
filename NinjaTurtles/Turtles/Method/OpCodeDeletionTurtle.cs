@@ -19,6 +19,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 
 using Mono.Cecil;
@@ -76,10 +77,7 @@ namespace NinjaTurtles.Turtles.Method
                 var output = string.Format("OpCode deletion {0} at {1:x4} in {2}.{3}", originalCode.Name,
                                            instruction.Offset, method.DeclaringType.Name, method.Name);
 
-                foreach (var p in PlaceFileAndYield(assembly, fileName, output))
-                {
-                    yield return p;
-                }
+                yield return PrepareTests(assembly, fileName, output);
 
                 instruction.OpCode = originalCode;
                 instruction.Operand = originalOperand;
@@ -92,6 +90,66 @@ namespace NinjaTurtles.Turtles.Method
             if (instruction.OpCode == OpCodes.Ret) return false;
             if (instruction.OpCode == OpCodes.Br
                 && instruction.Next.Offset == instruction.Offset + instruction.GetSize())
+            {
+                return false;
+            }
+            if (!IsOpCodeSettingOutputParameterToDefaultValue(instruction)) return false;
+            if (!IsOpCodeSettingLocalVariableToDefaultValue(instruction)) return false;
+            return true;
+        }
+
+        private static bool IsOpCodeSettingLocalVariableToDefaultValue(Instruction instruction)
+        {
+            if (instruction.OpCode == OpCodes.Stloc
+                && (instruction.Previous.OpCode == OpCodes.Ldc_I4
+                    || instruction.Previous.OpCode == OpCodes.Ldc_I8)
+                && Convert.ToInt64(instruction.Previous.Operand) == 0L)
+            {
+                return false;
+            }
+            if (instruction.OpCode == OpCodes.Stloc
+                && (instruction.Previous.OpCode == OpCodes.Ldc_R4
+                    || instruction.Previous.OpCode == OpCodes.Ldc_R8)
+// ReSharper disable CompareOfFloatsByEqualityOperator
+                && Convert.ToDouble(instruction.Previous.Operand) == 0D)
+// ReSharper restore CompareOfFloatsByEqualityOperator
+            {
+                return false;
+            }
+            if (instruction.OpCode == OpCodes.Stobj
+                && instruction.Previous.OpCode == OpCodes.Ldnull
+                && instruction.Previous.Previous.OpCode == OpCodes.Ldloca)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private static bool IsOpCodeSettingOutputParameterToDefaultValue(Instruction instruction)
+        {
+            if ((instruction.OpCode == OpCodes.Stind_I
+                 || instruction.OpCode == OpCodes.Stind_I1
+                 || instruction.OpCode == OpCodes.Stind_I2
+                 || instruction.OpCode == OpCodes.Stind_I4
+                 || instruction.OpCode == OpCodes.Stind_I8)
+                && (instruction.Previous.OpCode == OpCodes.Ldc_I4
+                    || instruction.Previous.OpCode == OpCodes.Ldc_I8)
+                && Convert.ToInt64(instruction.Previous.Operand) == 0L)
+            {
+                return false;
+            }
+            if ((instruction.OpCode == OpCodes.Stind_R4
+                 || instruction.OpCode == OpCodes.Stind_I8)
+                && (instruction.Previous.OpCode == OpCodes.Ldc_R4
+                    || instruction.Previous.OpCode == OpCodes.Ldc_R8)
+// ReSharper disable CompareOfFloatsByEqualityOperator
+                && Convert.ToDouble(instruction.Previous.Operand) == 0D)
+// ReSharper restore CompareOfFloatsByEqualityOperator
+            {
+                return false;
+            }
+            if (instruction.OpCode == OpCodes.Stind_Ref
+                && instruction.Previous.OpCode == OpCodes.Ldnull)
             {
                 return false;
             }
