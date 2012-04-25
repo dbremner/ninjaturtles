@@ -40,7 +40,6 @@ namespace Cron
         static public bool TryParse(string s, ExpressionSectionType type, out EveryOccurenceExpressionSection result)
         {
             result = null;
-            if (string.IsNullOrEmpty(s)) return false;
             if (!string.Equals("*", s, StringComparison.OrdinalIgnoreCase)) return false;
 
             switch (type)
@@ -51,23 +50,15 @@ namespace Cron
                 case ExpressionSectionType.DayOfWeek:
                     result = _dayOfWeekInstance;
                     break;
-
                 case ExpressionSectionType.Hour:
                     result = _hourInstance;
                     break;
-
                 case ExpressionSectionType.Minute:
                     result = _minuteInstance;
                     break;
-
-                case ExpressionSectionType.Month:
+                default:
                     result = _monthInstance;
                     break;
-
-                default:
-                    throw new InvalidOperationException(string.Format("Unexpected {0} {1}",
-                                                                      typeof (ExpressionSectionType).Name,
-                                                                      type));
             }
 
             return true;

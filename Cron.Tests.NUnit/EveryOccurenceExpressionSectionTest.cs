@@ -1,13 +1,17 @@
 ﻿using System;
 using Cron;
+using NinjaTurtles;
+using NinjaTurtles.Attributes;
 using NUnit.Framework;
 
 namespace Cron.Tests.NUnit
 {
     [TestFixture]
+	[ClassTested(typeof(EveryOccurenceExpressionSection))]
     public class EveryOccurenceExpressionSectionTest
     {
         [Test]
+		[MethodTested("TryParse")]
         public void TryParse_Match1()
         {
             EveryOccurenceExpressionSection value;
@@ -17,6 +21,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
+		[MethodTested("TryParse")]
         public void TryParse_Match2()
         {
             EveryOccurenceExpressionSection value;
@@ -26,6 +31,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
+		[MethodTested("TryParse")]
         public void TryParse_Match3()
         {
             EveryOccurenceExpressionSection value;
@@ -35,6 +41,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
+		[MethodTested("TryParse")]
         public void TryParse_Match4()
         {
             EveryOccurenceExpressionSection value;
@@ -44,6 +51,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
+		[MethodTested("TryParse")]
         public void TryParse_Match5()
         {
             EveryOccurenceExpressionSection value;
@@ -53,6 +61,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
+		[MethodTested("TryParse")]
         public void TryParse_NoMatch()
         {
             EveryOccurenceExpressionSection value;
@@ -61,6 +70,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
+		[MethodTested("TryParse")]
         public void TryParse_NoMatch_Empty()
         {
             EveryOccurenceExpressionSection value;
@@ -69,10 +79,18 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
+		[MethodTested("TryParse")]
         public void ValidateValue_Bad()
         {
             EveryOccurenceExpressionSection value;
             Assert.Throws<InvalidOperationException>(() => EveryOccurenceExpressionSection.TryParse("*", (ExpressionSectionType)99, out value));
         }
+		
+		[Test, Category("Mutation")]
+		public void TryParse_MutationTests()
+		{
+			MutationTestBuilder<EveryOccurenceExpressionSection>.For("TryParse")
+				.Run ();
+		}
     }
 }
