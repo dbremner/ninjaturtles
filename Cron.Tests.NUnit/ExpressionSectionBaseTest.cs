@@ -2,12 +2,16 @@
 using Cron;
 using NUnit.Framework;
 
+using NinjaTurtles;
+using NinjaTurtles.Attributes;
+
 namespace Cron.Tests.NUnit
 {
     [TestFixture]
     public class ExpressionSectionBaseTest
     {
         [Test]
+        [MethodTested(typeof(ExpressionSectionBase), "ValidateValue")]
         public void ValidateValue_DayOfMonth()
         {
             Assert.False(ExpressionSectionBase.ValidateValue(ExpressionSectionType.DayOfMonth, -1));
@@ -20,6 +24,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
+        [MethodTested(typeof(ExpressionSectionBase), "ValidateValue")]
         public void ValidateValue_DayOfWeek()
         {
             Assert.False(ExpressionSectionBase.ValidateValue(ExpressionSectionType.DayOfWeek, -1));
@@ -31,6 +36,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
+        [MethodTested(typeof(ExpressionSectionBase), "ValidateValue")]
         public void ValidateValue_Hour()
         {
             Assert.False(ExpressionSectionBase.ValidateValue(ExpressionSectionType.Hour, -1));
@@ -42,6 +48,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
+        [MethodTested(typeof(ExpressionSectionBase), "ValidateValue")]
         public void ValidateValue_Minute()
         {
             Assert.False(ExpressionSectionBase.ValidateValue(ExpressionSectionType.Minute, -1));
@@ -53,12 +60,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
-        public void ValidateValue_Bad()
-        {
-            Assert.Throws<InvalidOperationException>(() => ExpressionSectionBase.ValidateValue((ExpressionSectionType)99, -1));
-        }
-
-        [Test]
+        [MethodTested(typeof(ExpressionSectionBase), "ValidateValue")]
         public void ValidateValue_Month()
         {
             Assert.False(ExpressionSectionBase.ValidateValue(ExpressionSectionType.Month, -1));
@@ -71,11 +73,19 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
+        [MethodTested(typeof(ExpressionSectionBase), "ValidateValue")]
         public void TryParse_NoMatch_Empty()
         {
             ExpressionSectionBase value;
             bool result = ExpressionSectionBase.TryParse(null, ExpressionSectionType.Hour, out value);
             Assert.False(result);
+        }
+
+        [Test, Category("Mutation")]
+        public void ValidateValue_MutationTests()
+        {
+            MutationTestBuilder<ExpressionSectionBase>.For("ValidateValue")
+                .Run();
         }
     }
 }
