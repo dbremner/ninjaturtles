@@ -80,7 +80,10 @@ namespace NinjaTurtles
                         foreach (MethodDefinition method in type.Methods.Where(m => m.Name == _methodName))
                         {
                             bool mutationsFound = false;
+                            var parallelOptions = new ParallelOptions();
+                            //parallelOptions.MaxDegreeOfParallelism = 1;
                             Parallel.ForEach(turtle.Mutate(method, _assembly, fileName),
+                                             parallelOptions,
                                              mutation =>
                                                  {
                                                      mutationsFound = true;

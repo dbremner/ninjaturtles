@@ -89,7 +89,7 @@ namespace NinjaTurtles.Turtles.Method
             if (instruction.OpCode == OpCodes.Nop) return false;
             if (instruction.OpCode == OpCodes.Ret) return false;
             if (instruction.OpCode == OpCodes.Br
-                && instruction.Next.Offset == instruction.Offset + instruction.GetSize())
+                && instruction.Next.Offset == ((Instruction)instruction.Operand).Offset)
             {
                 return false;
             }
@@ -100,9 +100,23 @@ namespace NinjaTurtles.Turtles.Method
 
         private static bool IsOpCodeSettingLocalVariableToDefaultValue(Instruction instruction)
         {
+            if (instruction.Next.OpCode == OpCodes.Stloc
+                && instruction.IsLdcI()
+                && instruction.GetLongValue() == 0L)
+            {
+                return false;
+            }
             if (instruction.OpCode == OpCodes.Stloc
                 && instruction.Previous.IsLdcI()
                 && instruction.Previous.GetLongValue() == 0L)
+            {
+                return false;
+            }
+            if (instruction.Next.OpCode == OpCodes.Stloc
+                && instruction.IsLdcR()
+// ReSharper disable CompareOfFloatsByEqualityOperator
+                && instruction.GetDoubleValue() == 0D)
+// ReSharper restore CompareOfFloatsByEqualityOperator
             {
                 return false;
             }
@@ -139,9 +153,9 @@ namespace NinjaTurtles.Turtles.Method
             }
             if (instruction.Next.IsStindR()
                 && instruction.IsLdcR()
-                // ReSharper disable CompareOfFloatsByEqualityOperator
+// ReSharper disable CompareOfFloatsByEqualityOperator
                 && instruction.GetLongValue() == 0D)
-            // ReSharper restore CompareOfFloatsByEqualityOperator
+// ReSharper restore CompareOfFloatsByEqualityOperator
             {
                 return false;
             }

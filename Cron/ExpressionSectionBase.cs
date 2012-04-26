@@ -18,12 +18,8 @@ namespace Cron
                     return value >= 1 && value <= 31;
                 case ExpressionSectionType.Month:
                     return value >= 1 && value <= 12;
-                case ExpressionSectionType.DayOfWeek:
-                    return value >= 0 && value <= 7;
                 default:
-                    throw new InvalidOperationException(string.Format("Unexpected {0} {1}",
-                                                                      typeof (ExpressionSectionType).Name,
-                                                                      type));
+                    return value >= 0 && value <= 7;
             }
         }
 
