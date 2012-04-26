@@ -39,7 +39,6 @@ namespace NinjaTurtles.TestRunner
         /// Runs the test suite for the specified method, identifying the tests
         /// by inspecting the assembly identified by the
         /// <paramref name="testLibraryPath" /> for
-        /// <see cref="ClassTestedAttribute"/>s and
         /// <see cref="MethodTestedAttribute"/>s.
         /// </summary>
         /// <param name="method">
@@ -61,17 +60,10 @@ namespace NinjaTurtles.TestRunner
             var testsToRun = new List<string>();
             foreach (var typeDefinition in testAssembly.MainModule.Types)
             {
-                if (!typeDefinition.CustomAttributes
-                         .Where(a => a.AttributeType.Name == "ClassTestedAttribute")
-                         .Any(a => ((TypeReference)a.ConstructorArguments[0].Value).Name == method.DeclaringType.Name))
-                {
-                    continue;
-                }
-                testsToRun.AddRange(typeDefinition.Methods
-                                        .Where(m => m.CustomAttributes
-                                                        .Where(a => a.AttributeType.Name == "MethodTestedAttribute")
-                                                        .Any(a => (string)a.ConstructorArguments[0].Value == method.Name))
-                                        .Select(m => typeDefinition.FullName + "." + m.Name));
+                testsToRun
+                    .AddRange(typeDefinition.Methods
+                                  .Where(m => m.HasTestedAttributeMatching(method))
+                                  .Select(m => m.GetQualifiedName()));
             }
             if (!testsToRun.Any())
             {

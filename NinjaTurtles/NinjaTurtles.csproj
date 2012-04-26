@@ -59,9 +59,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\ClassTestedAttribute.cs" />
     <Compile Include="Attributes\MethodTestedAttribute.cs" />
     <Compile Include="Attributes\NamespaceDoc.cs" />
+    <Compile Include="MethodDefinitionExtensions.cs" />
     <Compile Include="IMutationTest.cs" />
     <Compile Include="MutationTest.cs" />
     <Compile Include="MutationTestBuilder.cs" />

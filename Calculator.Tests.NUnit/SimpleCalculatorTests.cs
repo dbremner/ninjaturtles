@@ -30,13 +30,12 @@ using NinjaTurtles.Turtles.Method;
 namespace Calculator.Tests.NUnit
 {
     [TestFixture]
-    [ClassTested(typeof(SimpleCalculator))]
     public class SimpleCalculatorTests
     {
 		[Test]
         [TestCase(3, 4, Result = 7)]
         [TestCase(3, 0, Result = 3)]
-        [MethodTested("Add")]
+        [MethodTested(typeof(SimpleCalculator), "Add")]
         public int Add_SimpleTests(int left, int right)
         {
             return new SimpleCalculator().Add(left, right);
@@ -45,7 +44,7 @@ namespace Calculator.Tests.NUnit
 		[Test]
         [TestCase(3, 4, Result = 7)]
         [TestCase(3, 0, Result = 3)]
-        [MethodTested("StaticAdd")]
+        [MethodTested(typeof(SimpleCalculator), "StaticAdd")]
         public int StaticAdd_SimpleTests(int left, int right)
         {
             return SimpleCalculator.StaticAdd(left, right);
@@ -53,7 +52,7 @@ namespace Calculator.Tests.NUnit
 		
 		[Test]
         [TestCase(1, 2, 3, 4, Result = 10)]
-        [MethodTested("MultiAdd")]
+        [MethodTested(typeof(SimpleCalculator), "MultiAdd")]
         public int MultiAdd_SimpleTests(int i1, int i2, int i3, int i4)
         {
             return new SimpleCalculator().MultiAdd(i1, i2, i3, i4);
@@ -61,7 +60,7 @@ namespace Calculator.Tests.NUnit
 		
 		[Test]
         [TestCase(1, 2, 3, 4, 5, 7, Result = 22)]
-        [MethodTested("MixedAdd")]
+        [MethodTested(typeof(SimpleCalculator), "MixedAdd")]
         public int MixedAdd_SimpleTests(short i1, short i2, short i3, int i4, int i5, int i6)
         {
             return new SimpleCalculator().MixedAdd(i1, i2, i3, i4, i5, i6);
@@ -71,22 +70,22 @@ namespace Calculator.Tests.NUnit
         [TestCase(4, 2, Result = 2)]
         [TestCase(3, 2, Result = 1)]
         [TestCase(-8, 2, Result = -4)]
-        [MethodTested("Divide")]
+        [MethodTested(typeof(SimpleCalculator), "Divide")]
         public int Divide_SimpleTests(int left, int right)
         {
             return new SimpleCalculator().Divide(left, right);
         }
 
         [Test]
-        [MethodTested("Divide")]
+        [MethodTested(typeof(SimpleCalculator), "Divide")]
         public void Divide_DivideByZero()
         {
             Assert.Throws<ArgumentException>(() => new SimpleCalculator().Divide(1, 0));
         }
 
         [Test]
-        [MethodTested("AddViaMethodChainAndLinq")]
-        [MethodTested("Sum")]
+        [MethodTested(typeof(SimpleCalculator), "AddViaMethodChainAndLinq")]
+        [MethodTested(typeof(SimpleCalculator), "Sum")]
         [TestCase(3, 4, 5, Result = 12)]
         public int Sum_SimpleTests(int i1, int i2, int i3)
         {
@@ -143,6 +142,5 @@ namespace Calculator.Tests.NUnit
             MutationTestBuilder<SimpleCalculator>.For("Sum")
                 .Run();
         }
-
     }
 }

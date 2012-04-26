@@ -19,34 +19,29 @@
 
 #endregion
 
-using System;
+using System.Linq;
 
-namespace NinjaTurtles.Attributes
+using Mono.Cecil;
+
+using NinjaTurtles.Attributes;
+
+namespace NinjaTurtles
 {
-    /// <summary>
-    /// When applied to a class containing unit tests, specifies that the class
-    /// contains tests for the type passed in the constructor.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public sealed class ClassTestedAttribute : Attribute
+    internal static class MethodDefinitionExtensions
     {
-        private readonly string _className;
-
-        /// <summary>
-        /// Initializes a new instance of the
-        /// <see cref="ClassTestedAttribute" /> class.
-        /// </summary>
-        /// <param name="targetClass">
-        /// The type for which the attributed class contains unit tests.
-        /// </param>
-        public ClassTestedAttribute(Type targetClass)
+        internal static bool HasTestedAttributeMatching(this MethodDefinition testMethod, MethodDefinition method)
         {
-            _className = targetClass.Name;
+            return testMethod.CustomAttributes
+                .Where(a => a.AttributeType.Name == typeof(MethodTestedAttribute).Name)
+                .Any(a => ((TypeReference)a.ConstructorArguments[0].Value).Resolve().FullName == method.DeclaringType.FullName
+                          && (string)a.ConstructorArguments[1].Value == method.Name);
         }
 
-        internal string ClassName
+        internal static string GetQualifiedName(this MethodDefinition method)
         {
-            get { return _className; }
+            return string.Format("{0}.{1}",
+                                 method.DeclaringType.FullName,
+                                 method.Name);
         }
     }
 }
