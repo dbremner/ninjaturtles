@@ -101,6 +101,19 @@ namespace NinjaTurtles.Turtles.Method
                     foreach (var sequence in indices)
                     {
                         if (sequence == oldIndex.Value) continue;
+
+                        if (instruction.OpCode == OpCodes.Ldloc
+                            && instruction.Previous.OpCode == OpCodes.Stloc
+                            && ((VariableDefinition)instruction.Operand).Index == ((VariableDefinition)instruction.Previous.Operand).Index
+                            && instruction.Previous.Previous.OpCode == OpCodes.Ldarg
+                            && ((ParameterDefinition)instruction.Previous.Previous.Operand).Index == -1 -sequence)
+                        {
+                            // The .NET compiler sometimes adds a pointless
+                            // cache of a parameter into a local variable
+                            // (oddly, Mono doesn't seem to). We need to not
+                            // mutate in this scenario.
+                            continue;
+                        }
                             
                         OpCode originalOpCode = instruction.OpCode;
                         object originalOperand = instruction.Operand;

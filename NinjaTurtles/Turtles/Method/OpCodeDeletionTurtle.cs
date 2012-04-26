@@ -101,17 +101,15 @@ namespace NinjaTurtles.Turtles.Method
         private static bool IsOpCodeSettingLocalVariableToDefaultValue(Instruction instruction)
         {
             if (instruction.OpCode == OpCodes.Stloc
-                && (instruction.Previous.OpCode == OpCodes.Ldc_I4
-                    || instruction.Previous.OpCode == OpCodes.Ldc_I8)
-                && Convert.ToInt64(instruction.Previous.Operand) == 0L)
+                && instruction.Previous.IsLdcI()
+                && instruction.Previous.GetLongValue() == 0L)
             {
                 return false;
             }
             if (instruction.OpCode == OpCodes.Stloc
-                && (instruction.Previous.OpCode == OpCodes.Ldc_R4
-                    || instruction.Previous.OpCode == OpCodes.Ldc_R8)
+                && instruction.Previous.IsLdcR()
 // ReSharper disable CompareOfFloatsByEqualityOperator
-                && Convert.ToDouble(instruction.Previous.Operand) == 0D)
+                && instruction.Previous.GetDoubleValue() == 0D)
 // ReSharper restore CompareOfFloatsByEqualityOperator
             {
                 return false;
@@ -127,24 +125,41 @@ namespace NinjaTurtles.Turtles.Method
 
         private static bool IsOpCodeSettingOutputParameterToDefaultValue(Instruction instruction)
         {
-            if ((instruction.OpCode == OpCodes.Stind_I
-                 || instruction.OpCode == OpCodes.Stind_I1
-                 || instruction.OpCode == OpCodes.Stind_I2
-                 || instruction.OpCode == OpCodes.Stind_I4
-                 || instruction.OpCode == OpCodes.Stind_I8)
-                && (instruction.Previous.OpCode == OpCodes.Ldc_I4
-                    || instruction.Previous.OpCode == OpCodes.Ldc_I8)
-                && Convert.ToInt64(instruction.Previous.Operand) == 0L)
+            if (instruction.Next.IsStindI()
+                && instruction.IsLdcI()
+                && instruction.GetLongValue() == 0L)
             {
                 return false;
             }
-            if ((instruction.OpCode == OpCodes.Stind_R4
-                 || instruction.OpCode == OpCodes.Stind_I8)
-                && (instruction.Previous.OpCode == OpCodes.Ldc_R4
-                    || instruction.Previous.OpCode == OpCodes.Ldc_R8)
-// ReSharper disable CompareOfFloatsByEqualityOperator
-                && Convert.ToDouble(instruction.Previous.Operand) == 0D)
-// ReSharper restore CompareOfFloatsByEqualityOperator
+            if (instruction.IsStindI()
+                && instruction.Previous.IsLdcI()
+                && instruction.Previous.GetLongValue() == 0L)
+            {
+                return false;
+            }
+            if (instruction.Next.IsStindR()
+                && instruction.IsLdcR()
+                // ReSharper disable CompareOfFloatsByEqualityOperator
+                && instruction.GetLongValue() == 0D)
+            // ReSharper restore CompareOfFloatsByEqualityOperator
+            {
+                return false;
+            }
+            if (instruction.IsStindR()
+                && instruction.Previous.IsLdcR()
+                // ReSharper disable CompareOfFloatsByEqualityOperator
+                && instruction.Previous.GetLongValue() == 0D)
+            // ReSharper restore CompareOfFloatsByEqualityOperator
+            {
+                return false;
+            }
+            if (instruction.OpCode == OpCodes.Ldnull
+                && instruction.Next.OpCode == OpCodes.Stind_Ref)
+            {
+                return false;
+            }
+            if (instruction.Next.OpCode == OpCodes.Ldnull
+                && instruction.Next.Next.OpCode == OpCodes.Stind_Ref)
             {
                 return false;
             }
