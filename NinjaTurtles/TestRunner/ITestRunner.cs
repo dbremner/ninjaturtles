@@ -37,7 +37,6 @@ namespace NinjaTurtles.TestRunner
         /// Runs the test suite for the specified method, identifying the tests
         /// by inspecting the assembly identified by the
         /// <paramref name="testLibraryPath" /> for
-        /// <see cref="ClassTestedAttribute"/>s and
         /// <see cref="MethodTestedAttribute"/>s.
         /// </summary>
         /// <param name="method">

@@ -8,7 +8,6 @@ using NinjaTurtles.Turtles.Method;
 namespace Cron.Tests.NUnit
 {
     [TestFixture]
-    [ClassTested(typeof(DayOfWeekExpressionSection))]
     public class DayOfWeekExpressionSectionTest
     {
         [Test]
@@ -24,7 +23,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
-        [MethodTested("TryParse")]
+        [MethodTested(typeof(DayOfWeekExpressionSection), "TryParse")]
         public void TryParse_Match_1()
         {
             DayOfWeekExpressionSection value;
@@ -35,7 +34,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
-        [MethodTested("TryParse")]
+        [MethodTested(typeof(DayOfWeekExpressionSection), "TryParse")]
         public void TryParse_Match_7()
         {
             DayOfWeekExpressionSection value;
@@ -45,7 +44,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
-        [MethodTested("TryParse")]
+        [MethodTested(typeof(DayOfWeekExpressionSection), "TryParse")]
         public void TryParse_Match_0()
         {
             DayOfWeekExpressionSection value;
@@ -55,7 +54,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
-        [MethodTested("TryParse")]
+        [MethodTested(typeof(DayOfWeekExpressionSection), "TryParse")]
         public void TryParse_Match_Friday()
         {
             DayOfWeekExpressionSection value;
@@ -65,7 +64,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
-        [MethodTested("TryParse")]
+        [MethodTested(typeof(DayOfWeekExpressionSection), "TryParse")]
         public void TryParse_Match_Saturday()
         {
             DayOfWeekExpressionSection value;
@@ -75,7 +74,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
-        [MethodTested("TryParse")]
+        [MethodTested(typeof(DayOfWeekExpressionSection), "TryParse")]
         public void TryParse_Match_Saturday_IsLastDayOfWeek()
         {
             DayOfWeekExpressionSection value;
@@ -85,7 +84,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
-        [MethodTested("TryParse")]
+        [MethodTested(typeof(DayOfWeekExpressionSection), "TryParse")]
         public void TryParse_Match_Monday()
         {
             DayOfWeekExpressionSection value;
@@ -95,7 +94,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
-        [MethodTested("TryParse")]
+        [MethodTested(typeof(DayOfWeekExpressionSection), "TryParse")]
         public void TryParse_Match_Monday_CaseInsensitive()
         {
             DayOfWeekExpressionSection value;
@@ -105,7 +104,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
-        [MethodTested("TryParse")]
+        [MethodTested(typeof(DayOfWeekExpressionSection), "TryParse")]
         public void TryParse_Match_Sunday()
         {
             DayOfWeekExpressionSection value;
@@ -115,7 +114,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
-        [MethodTested("TryParse")]
+        [MethodTested(typeof(DayOfWeekExpressionSection), "TryParse")]
         public void TryParse_Match_Thursday()
         {
             DayOfWeekExpressionSection value;
@@ -125,7 +124,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
-        [MethodTested("TryParse")]
+        [MethodTested(typeof(DayOfWeekExpressionSection), "TryParse")]
         public void TryParse_Match_Tuesday()
         {
             DayOfWeekExpressionSection value;
@@ -135,7 +134,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
-        [MethodTested("TryParse")]
+        [MethodTested(typeof(DayOfWeekExpressionSection), "TryParse")]
         public void TryParse_Match_Wednesday()
         {
             DayOfWeekExpressionSection value;
@@ -145,7 +144,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
-        [MethodTested("TryParse")]
+        [MethodTested(typeof(DayOfWeekExpressionSection), "TryParse")]
         public void TryParse_NoMatch1()
         {
             DayOfWeekExpressionSection value;
@@ -155,7 +154,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
-        [MethodTested("TryParse")]
+        [MethodTested(typeof(DayOfWeekExpressionSection), "TryParse")]
         public void TryParse_NoMatch2()
         {
             DayOfWeekExpressionSection value;
@@ -164,7 +163,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
-        [MethodTested("TryParse")]
+        [MethodTested(typeof(DayOfWeekExpressionSection), "TryParse")]
         public void TryParse_NoMatch_Empty()
         {
             DayOfWeekExpressionSection value;

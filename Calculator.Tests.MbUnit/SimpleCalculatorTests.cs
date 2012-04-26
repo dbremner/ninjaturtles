@@ -31,7 +31,6 @@ using NinjaTurtles.Turtles.Method;
 namespace Calculator.Tests.MbUnit
 {
     [TestFixture]
-    [ClassTested(typeof(SimpleCalculator))]
     public class SimpleCalculatorTests
     {
         [FixtureSetUp]
@@ -49,7 +48,7 @@ namespace Calculator.Tests.MbUnit
         [Test]
         [Row(3, 4, 7)]
         [Row(3, 0, 3)]
-        [MethodTested("Add")]
+        [MethodTested(typeof(SimpleCalculator), "Add")]
         public void Add_SimpleTests(int left, int right, int result)
         {
             Assert.AreEqual(result, new SimpleCalculator().Add(left, right));
@@ -58,7 +57,7 @@ namespace Calculator.Tests.MbUnit
 		[Test]
         [Row(3, 4, 7)]
         [Row(3, 0, 3)]
-        [MethodTested("StaticAdd")]
+        [MethodTested(typeof(SimpleCalculator), "StaticAdd")]
         public void StaticAdd_SimpleTests(int left, int right, int result)
         {
             Assert.AreEqual(result, SimpleCalculator.StaticAdd(left, right));
@@ -66,7 +65,7 @@ namespace Calculator.Tests.MbUnit
 		
 		[Test]
         [Row(1, 2, 3, 4, 10)]
-        [MethodTested("MultiAdd")]
+        [MethodTested(typeof(SimpleCalculator), "MultiAdd")]
         public void MultiAdd_SimpleTests(int i1, int i2, int i3, int i4, int result)
         {
             Assert.AreEqual(result, new SimpleCalculator().MultiAdd(i1, i2, i3, i4));
@@ -74,7 +73,7 @@ namespace Calculator.Tests.MbUnit
 		
 		[Test]
         [Row(1, 2, 3, 4, 5, 7, 22)]
-        [MethodTested("MixedAdd")]
+        [MethodTested(typeof(SimpleCalculator), "MixedAdd")]
         public void MixedAdd_SimpleTests(short i1, short i2, short i3, int i4, int i5, int i6, int result)
         {
             Assert.AreEqual(result, new SimpleCalculator().MixedAdd(i1, i2, i3, i4, i5, i6));
@@ -84,22 +83,22 @@ namespace Calculator.Tests.MbUnit
         [Row(4, 2, 2)]
         [Row(3, 2, 1)]
         [Row(-8, 2, -4)]
-        [MethodTested("Divide")]
+        [MethodTested(typeof(SimpleCalculator), "Divide")]
         public void Divide_SimpleTests(int left, int right, int result)
         {
             Assert.AreEqual(result, new SimpleCalculator().Divide(left, right));
         }
 
         [Test]
-        [MethodTested("Divide")]
+        [MethodTested(typeof(SimpleCalculator), "Divide")]
         public void Divide_DivideByZero()
         {
             Assert.Throws<ArgumentException>(() => new SimpleCalculator().Divide(1, 0));
         }
 
         [Test]
-        [MethodTested("AddViaMethodChainAndLinq")]
-        [MethodTested("Sum")]
+        [MethodTested(typeof(SimpleCalculator), "AddViaMethodChainAndLinq")]
+        [MethodTested(typeof(SimpleCalculator), "Sum")]
         [Row(3, 4, 5, 12)]
         public void Sum_SimpleTests(int i1, int i2, int i3, int result)
         {

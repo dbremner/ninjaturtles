@@ -24,27 +24,35 @@ using System;
 namespace NinjaTurtles.Attributes
 {
     /// <summary>
-    /// When applied to a unit test method, specifies that the method is a test
-    /// for the method named in the constructor parameter. This is interpreted
-    /// as a method in the class defined in a
-    /// <see cref="ClassTestedAttribute" /> applied to the containing test
-    /// class.
+    /// When applied to a unit test method, specifies a member of a class that
+    /// is tested by that method. This can be applied multiple times for a test
+    /// that exercises multiple methods.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public sealed class MethodTestedAttribute : Attribute
     {
+        private readonly string _className;
         private readonly string _methodName;
 
         /// <summary>
         /// Initializes a new instance of the
         /// <see cref="MethodTestedAttribute" /> class.
         /// </summary>
+        /// <param name="targetClass">
+        /// The type for which the attributed class contains unit tests.
+        /// </param>
         /// <param name="methodName">
         /// The name of a method which is tested by the attributed unit test.
         /// </param>
-        public MethodTestedAttribute(string methodName)
+        public MethodTestedAttribute(Type targetClass, string methodName)
         {
+            _className = targetClass.Name;
             _methodName = methodName;
+        }
+
+        internal string ClassName
+        {
+            get { return _className; }
         }
 
         internal string MethodName

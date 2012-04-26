@@ -31,7 +31,6 @@ using NinjaTurtles.Turtles.Method;
 namespace Calculator.Tests.MSTest
 {
     [TestClass]
-    [ClassTested(typeof(SimpleCalculator))]
     [Ignore]
     public class SimpleCalculatorTests
     {
@@ -48,7 +47,7 @@ namespace Calculator.Tests.MSTest
         }
 
         [TestMethod]
-        [MethodTested("Add")]
+        [MethodTested(typeof(SimpleCalculator), "Add")]
         public void Add_SimpleTests()
         {
             Assert.AreEqual(7, new SimpleCalculator().Add(3, 4));
@@ -56,7 +55,7 @@ namespace Calculator.Tests.MSTest
         }
 
         [TestMethod]
-        [MethodTested("StaticAdd")]
+        [MethodTested(typeof(SimpleCalculator), "StaticAdd")]
         public void StaticAdd_SimpleTests()
         {
             Assert.AreEqual(7, SimpleCalculator.StaticAdd(3, 4));
@@ -64,21 +63,21 @@ namespace Calculator.Tests.MSTest
         }
 
         [TestMethod]
-        [MethodTested("MultiAdd")]
+        [MethodTested(typeof(SimpleCalculator), "MultiAdd")]
         public void MultiAdd_SimpleTests()
         {
             Assert.AreEqual(10, new SimpleCalculator().MultiAdd(1, 2, 3, 4));
         }
 
         [TestMethod]
-        [MethodTested("MixedAdd")]
+        [MethodTested(typeof(SimpleCalculator), "MixedAdd")]
         public void MixedAdd_SimpleTests()
         {
             Assert.AreEqual(22, new SimpleCalculator().MixedAdd(1, 2, 3, 4, 5, 7));
         }
 
         [TestMethod]
-        [MethodTested("Divide")]
+        [MethodTested(typeof(SimpleCalculator), "Divide")]
         public void Divide_SimpleTests()
         {
             Assert.AreEqual(2, new SimpleCalculator().Divide(4, 2));
@@ -87,7 +86,7 @@ namespace Calculator.Tests.MSTest
         }
 
         [TestMethod]
-        [MethodTested("Divide")]
+        [MethodTested(typeof(SimpleCalculator), "Divide")]
         [ExpectedException(typeof(ArgumentException))]
         public void Divide_DivideByZero()
         {
@@ -95,8 +94,8 @@ namespace Calculator.Tests.MSTest
         }
 
         [TestMethod]
-        [MethodTested("AddViaMethodChainAndLinq")]
-        [MethodTested("Sum")]
+        [MethodTested(typeof(SimpleCalculator), "AddViaMethodChainAndLinq")]
+        [MethodTested(typeof(SimpleCalculator), "Sum")]
         public void Sum_SimpleTests()
         {
             Assert.AreEqual(12, new SimpleCalculator().AddViaMethodChainAndLinq(3, 4, 5));
