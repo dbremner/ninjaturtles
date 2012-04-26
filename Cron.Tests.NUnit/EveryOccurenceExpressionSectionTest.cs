@@ -77,14 +77,6 @@ namespace Cron.Tests.NUnit
             Assert.False(result);
         }
 
-        [Test]
-        [MethodTested(typeof(EveryOccurenceExpressionSection), "TryParse")]
-        public void ValidateValue_Bad()
-        {
-            EveryOccurenceExpressionSection value;
-            Assert.Throws<InvalidOperationException>(() => EveryOccurenceExpressionSection.TryParse("*", (ExpressionSectionType)99, out value));
-        }
-		
 		[Test, Category("Mutation")]
 		public void TryParse_MutationTests()
 		{
