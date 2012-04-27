@@ -68,7 +68,7 @@ namespace Cron
             if (string.IsNullOrEmpty(s)) return false;
 
             string[] parts = s.Split(' ');
-            if (parts.Length != 5) return false;
+            if (parts.LongLength != 5) return false;
 
             ExpressionSectionBase minuteSection;
             ExpressionSectionBase hourSection;
