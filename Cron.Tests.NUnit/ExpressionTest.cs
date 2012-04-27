@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using Cron;
 using NUnit.Framework;
 
+using NinjaTurtles;
+using NinjaTurtles.Attributes;
+
 namespace Cron.Tests.NUnit
 {
     [TestFixture]
@@ -17,6 +20,7 @@ namespace Cron.Tests.NUnit
         }
          
         [Test]
+        [MethodTested(typeof(Expression), "TryParse")]
         public void GetNextValid_Works()
         {
             AssertGetNextValidResult("0 0 2/3 * ?", new DateTime(2009, 9, 9), new DateTime(2009, 9, 11, 0, 0, 0));
@@ -47,6 +51,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
+        [MethodTested(typeof(Expression), "TryParse")]
         public void GetNextValid_WorksForComplexDayOfWeekScenarios()
         {
             AssertGetNextValidResult("15,45 3,4 ? 11 MON-TUE", new DateTime(2008, 10, 27), new DateTime(2008, 11, 3, 3, 15, 0));
@@ -65,6 +70,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
+        [MethodTested(typeof(Expression), "TryParse")]
         public void IsMatch_Works()
         {
             Expression expression;
@@ -74,6 +80,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
+        [MethodTested(typeof(Expression), "TryParse")]
         public void StaticGetNextValid_Works()
         {
             Expression expression1, expression2, expression3;
@@ -89,6 +96,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
+        [MethodTested(typeof(Expression), "TryParse")]
         public void StaticIsMatch_Works()
         {
             Expression expression;
@@ -100,6 +108,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
+        [MethodTested(typeof(Expression), "TryParse")]
         public void TryParse_Fails()
         {
             Expression result;
@@ -121,6 +130,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
+        [MethodTested(typeof(Expression), "TryParse")]
         public void TryParse_Works()
         {
             Expression result;
@@ -147,6 +157,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
+        [MethodTested(typeof(Expression), "TryParse")]
         public void DayOfMonthSpecialCharacter_L_Works()
         {
             Expression result;
@@ -157,6 +168,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
+        [MethodTested(typeof(Expression), "TryParse")]
         public void DayOfMonthSpecialCharacter_W_Works()
         {
             Expression result;
@@ -171,6 +183,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
+        [MethodTested(typeof(Expression), "TryParse")]
         public void DayOfMonthSpecialCharacter_Combination_LW_Works()
         {
             Expression result;
@@ -181,6 +194,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
+        [MethodTested(typeof(Expression), "TryParse")]
         public void DayOfWeekSpecialCharacter_L_Works_Alone()
         {
             Expression result;
@@ -190,6 +204,7 @@ namespace Cron.Tests.NUnit
         }
 
         [Test]
+        [MethodTested(typeof(Expression), "TryParse")]
         public void DayOfWeekSpecialCharacter_Hash_Works()
         {
             Expression result;
@@ -201,6 +216,13 @@ namespace Cron.Tests.NUnit
             AssertGetNextValidResult("* * ? * 7#3", new DateTime(2008, 11, 20), new DateTime(2008, 12, 20));
             AssertGetNextValidResult("* * ? * 7#3", new DateTime(2008, 12, 20, 2, 5, 0), new DateTime(2008, 12, 20, 2, 6, 0));
             AssertGetNextValidResult("* * ? * 6#5", new DateTime(2008, 11, 20), new DateTime(2009, 1, 30));
+        }
+
+        [Test, Category("Mutation")]
+        public void TryParse_MutationTests()
+        {
+            MutationTestBuilder<Expression>.For("TryParse")
+                .Run();
         }
     }
 }
