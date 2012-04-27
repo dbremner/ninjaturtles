@@ -19,11 +19,22 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+
+using DiffPlex;
+using DiffPlex.DiffBuilder;
+using DiffPlex.DiffBuilder.Model;
+
+using ICSharpCode.Decompiler;
+using ICSharpCode.Decompiler.Disassembler;
+using ICSharpCode.ILSpy;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
+using Mono.Cecil.Rocks;
 
 namespace NinjaTurtles.Turtles.Method
 {
@@ -64,7 +75,7 @@ namespace NinjaTurtles.Turtles.Method
             foreach (var instruction in method.Body.Instructions)
             {
                 if (!OpCodeMap.Any(o => o.Key.Equals(instruction.OpCode))) continue;
-                
+
                 var originalCode = instruction.OpCode;
                 foreach (var opCode in OpCodeMap[originalCode].Where(opCode => originalCode != opCode))
                 {
@@ -73,7 +84,7 @@ namespace NinjaTurtles.Turtles.Method
                                                originalCode.Name, opCode.Name, instruction.Offset,
                                                method.DeclaringType.Name, method.Name);
 
-                    yield return PrepareTests(assembly, fileName, output);
+                    yield return PrepareTests(assembly, method, fileName, output);
 
                     instruction.OpCode = originalCode;
                 }

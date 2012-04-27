@@ -77,7 +77,7 @@ namespace NinjaTurtles.Turtles.Method
                 var output = string.Format("OpCode deletion {0} at {1:x4} in {2}.{3}", originalCode.Name,
                                            instruction.Offset, method.DeclaringType.Name, method.Name);
 
-                yield return PrepareTests(assembly, fileName, output);
+                yield return PrepareTests(assembly, method, fileName, output);
 
                 instruction.OpCode = originalCode;
                 instruction.Operand = originalOperand;

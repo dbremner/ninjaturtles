@@ -94,7 +94,7 @@ namespace NinjaTurtles
                                                                                         Path.GetFileName(
                                                                                             _testAssemblyLocation));
                                                      bool? result = runner.RunTestsWithMutations(method, testAssembly);
-                                                     OutputResultToConsole(mutation.Description, result);
+                                                     OutputResultToConsole(mutation, result);
                                                      if (result ?? false) Interlocked.Increment(ref passCount);
                                                      mutation.Dispose();
                                                  });
@@ -125,7 +125,7 @@ namespace NinjaTurtles
 
         #endregion
 
-        private static void OutputResultToConsole(string description, bool? result)
+        private static void OutputResultToConsole(MutationTestMetaData metaData, bool? result)
         {
             string interpretation;
             if (!result.HasValue)
@@ -140,7 +140,12 @@ namespace NinjaTurtles
             {
                 interpretation = "Failed (this is good)";
             }
-            Console.WriteLine("\t{0}: {1}", description, interpretation);
+            string output = string.Format("\t{0}: {1}\n", metaData.Description, interpretation);
+            if (!string.IsNullOrEmpty(metaData.DiffRepresentation) && (result ?? false))
+            {
+                output += metaData.DiffRepresentation;
+            }
+            Console.Write(output);
         }
 
         private void PopulateDefaultTurtles()
