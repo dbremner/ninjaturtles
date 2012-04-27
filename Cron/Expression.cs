@@ -25,6 +25,14 @@ namespace Cron
                            ExpressionSectionBase dayOfWeekSection
             )
         {
+            if (minuteSection.Type != ExpressionSectionType.Minute
+                || hourSection.Type != ExpressionSectionType.Hour
+                || dayOfMonthSection.Type != ExpressionSectionType.DayOfMonth
+                || dayOfWeekSection.Type != ExpressionSectionType.DayOfWeek
+                || monthSection.Type != ExpressionSectionType.Month)
+            {
+                throw new ArgumentException("Invalid constructor call.");
+            }
             _minuteSection = minuteSection;
             _hourSection = hourSection;
             _dayOfMonthSection = dayOfMonthSection;
@@ -68,7 +76,7 @@ namespace Cron
             if (string.IsNullOrEmpty(s)) return false;
 
             string[] parts = s.Split(' ');
-            if (parts.LongLength != 5) return false;
+            if (parts.Length != 5L) return false;
 
             ExpressionSectionBase minuteSection;
             ExpressionSectionBase hourSection;

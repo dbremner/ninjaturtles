@@ -85,9 +85,8 @@ namespace NinjaTurtles.Turtles.Method
                                                method.DeclaringType.Name, method.Name);
 
                     yield return PrepareTests(assembly, method, fileName, output);
-
-                    instruction.OpCode = originalCode;
                 }
+                instruction.OpCode = originalCode;
             }
         }
     }

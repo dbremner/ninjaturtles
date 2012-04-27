@@ -93,6 +93,7 @@ namespace NinjaTurtles.Turtles.Method
             {
                 return false;
             }
+            if (instruction.IsNumericConversion()) return false;
             if (!IsOpCodeSettingOutputParameterToDefaultValue(instruction)) return false;
             if (!IsOpCodeSettingLocalVariableToDefaultValue(instruction)) return false;
             return true;

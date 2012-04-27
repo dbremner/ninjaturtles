@@ -86,7 +86,7 @@ namespace NinjaTurtles.TestRunner
             {
                 if (!process.WaitForExit(30000))
                 {
-                    return true;
+                    return null;
                 }
                 return InterpretExitCode(process.ExitCode);
             }

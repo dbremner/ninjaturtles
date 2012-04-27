@@ -92,13 +92,13 @@ namespace NinjaTurtles.Turtles.Method
                     int oldIndex = ldlocIndex;
                     int parameterPosition = Array.IndexOf(indices, oldIndex);
                     if (parameterPosition == -1) continue;
-                    
+
+                    OpCode originalOpCode = instruction.OpCode;
+                    object originalOperand = instruction.Operand;
                     foreach (var sequence in indices)
                     {
                         if (sequence == oldIndex) continue;
                         
-                        OpCode originalOpCode = instruction.OpCode;
-                        object originalOperand = instruction.Operand;
                         instruction.OpCode = sequence >= 0 ? OpCodes.Ldloc : OpCodes.Ldarg;
                         instruction.Operand = ldargOperands[sequence];
 
@@ -114,9 +114,9 @@ namespace NinjaTurtles.Turtles.Method
 
                         yield return PrepareTests(assembly, method, fileName, output);
 
-                        instruction.OpCode = originalOpCode;
-                        instruction.Operand = originalOperand;
                     }
+                    instruction.OpCode = originalOpCode;
+                    instruction.Operand = originalOperand;
                 }
             }
         }
