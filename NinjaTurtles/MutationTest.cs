@@ -55,7 +55,7 @@ namespace NinjaTurtles
 
         #region IMutationTest Members
 
-        public void Run()
+        public void Run(int? maxThreads = null)
         {
             using (var runner = (ITestRunner)Activator.CreateInstance(TestRunner))
             {
@@ -81,7 +81,10 @@ namespace NinjaTurtles
                         {
                             bool mutationsFound = false;
                             var parallelOptions = new ParallelOptions();
-                            //parallelOptions.MaxDegreeOfParallelism = 1;
+                            if (maxThreads.HasValue)
+                            {
+                                parallelOptions.MaxDegreeOfParallelism = maxThreads.Value;
+                            }
                             Parallel.ForEach(turtle.Mutate(method, _assembly, fileName),
                                              parallelOptions,
                                              mutation =>

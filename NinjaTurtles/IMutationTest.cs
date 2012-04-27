@@ -21,6 +21,7 @@
 
 using NinjaTurtles.TestRunner;
 using NinjaTurtles.Turtles;
+using NinjaTurtles.Turtles.Method;
 
 namespace NinjaTurtles
 {
@@ -40,7 +41,12 @@ namespace NinjaTurtles
         /// <summary>
         /// Runs the defined mutation tests using the specified test runner.
         /// </summary>
-        void Run();
+        /// <param name="maxThreads">
+        /// Optionally, a maximum number of threads to spawn in testing. This
+        /// can be usefully set to 1 when testing sequential mutators like the
+        /// <see cref="OpCodeDeletionTurtle" />.
+        /// </param>
+        void Run(int? maxThreads = null);
 
         /// <summary>
         /// Adds a <see cref="ITurtle" /> type to be used in mutation testing.
