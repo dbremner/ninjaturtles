@@ -31,7 +31,9 @@ namespace NinjaTurtles
     public sealed class MutationTestMetaData : IDisposable
     {
         /// <summary>
-        /// 
+        /// Gets or sets a string describing the code difference obtained
+        /// by decompiling the expanded IL of both the original and the 
+        /// mutated methods.
         /// </summary>
         public string DiffRepresentation { get; set; }
 

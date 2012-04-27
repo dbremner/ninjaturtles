@@ -225,11 +225,13 @@ namespace NinjaTurtles.Turtles.Method
                 }
                 if (line < model.OldText.Lines.Count)
                 {
-                    takes += string.Format("\t\t- {0}\n", model.OldText.Lines[line].Text);
+                    takes += string.Format("\t\t- {0}\n",
+                        (model.OldText.Lines[line].Text ?? "").Replace("\t", "  "));
                 }
                 if (line < model.NewText.Lines.Count)
                 {
-                    adds += string.Format("\t\t+ {0}\n", model.NewText.Lines[line].Text);
+                    adds += string.Format("\t\t+ {0}\n",
+                        (model.NewText.Lines[line].Text ?? "").Replace("\t", "  "));
                 }
                 lastLine = line;
             }

@@ -27,6 +27,22 @@ namespace NinjaTurtles
 {
     internal static class InstructionExtensions
     {
+        internal static bool IsNumericConversion(this Instruction instruction)
+        {
+            return instruction.OpCode == OpCodes.Conv_I
+                || instruction.OpCode == OpCodes.Conv_I1
+                || instruction.OpCode == OpCodes.Conv_I2
+                || instruction.OpCode == OpCodes.Conv_I4
+                || instruction.OpCode == OpCodes.Conv_I8
+                || instruction.OpCode == OpCodes.Conv_R4
+                || instruction.OpCode == OpCodes.Conv_R8
+                || instruction.OpCode == OpCodes.Conv_U
+                || instruction.OpCode == OpCodes.Conv_U1
+                || instruction.OpCode == OpCodes.Conv_U2
+                || instruction.OpCode == OpCodes.Conv_U4
+                || instruction.OpCode == OpCodes.Conv_U8;
+        }
+
         internal static bool IsLdcI(this Instruction instruction)
         {
             return instruction.OpCode == OpCodes.Ldc_I4

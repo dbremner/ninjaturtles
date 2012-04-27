@@ -130,7 +130,7 @@ namespace NinjaTurtles
             string interpretation;
             if (!result.HasValue)
             {
-                interpretation = "No valid tests found to run";
+                interpretation = "No valid tests found to run, or tests timed out";
             }
             else if (result.Value)
             {
