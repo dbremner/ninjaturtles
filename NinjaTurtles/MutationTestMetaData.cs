@@ -31,6 +31,11 @@ namespace NinjaTurtles
     public sealed class MutationTestMetaData : IDisposable
     {
         /// <summary>
+        /// 
+        /// </summary>
+        public string DiffRepresentation { get; set; }
+
+        /// <summary>
         /// Gets or sets the target folder for the mutation test, to which
         /// the test DLLs and mutated assembly have been copied.
         /// </summary>

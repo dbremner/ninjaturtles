@@ -130,7 +130,7 @@ namespace NinjaTurtles.Turtles.Method
                                 method.DeclaringType.Name,
                                 method.Name);
 
-                        yield return PrepareTests(assembly, fileName, output);
+                        yield return PrepareTests(assembly, method, fileName, output);
 
                         instruction.OpCode = originalOpCode;
                         instruction.Operand = originalOperand;

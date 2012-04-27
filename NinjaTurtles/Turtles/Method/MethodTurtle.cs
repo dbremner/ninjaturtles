@@ -24,6 +24,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 
+using DiffPlex;
+using DiffPlex.DiffBuilder;
+using DiffPlex.DiffBuilder.Model;
+
+using ICSharpCode.Decompiler;
+using ICSharpCode.ILSpy;
+
 using Mono.Cecil;
 using Mono.Cecil.Rocks;
 
@@ -37,6 +44,11 @@ namespace NinjaTurtles.Turtles.Method
     /// </summary>
     public abstract class MethodTurtle : IMethodTurtle
     {
+        private CSharpLanguage _cSharpDecompiler;
+        private DecompilationOptions _decompilationOptions;
+        private SideBySideDiffBuilder _differ;
+        private string _oldText;
+
         /// <summary>
         /// A description for the particular implementation class.
         /// </summary>
@@ -66,7 +78,15 @@ namespace NinjaTurtles.Turtles.Method
         {
             if (!method.HasBody) yield break;
             method.Body.SimplifyMacros();
-            foreach (var data in DoMutate(method, assembly, fileName))
+
+            _cSharpDecompiler = new CSharpLanguage();
+            var decompilationOutput = new PlainTextOutput();
+            _decompilationOptions = new DecompilationOptions();
+            _cSharpDecompiler.DecompileMethod(method, decompilationOutput, _decompilationOptions);
+            _oldText = decompilationOutput.ToString();
+            _differ = new SideBySideDiffBuilder(new Differ());
+
+            foreach (var data in LockAndMutate(method, assembly, fileName))
             {
                 yield return data;
 
@@ -93,6 +113,17 @@ namespace NinjaTurtles.Turtles.Method
             }
         }
 
+        private IEnumerable<MutationTestMetaData> LockAndMutate(MethodDefinition method, AssemblyDefinition assembly, string fileName)
+        {
+            IEnumerator<MutationTestMetaData> mutations = DoMutate(method, assembly, fileName).GetEnumerator();
+            Monitor.Enter(method);
+            while (mutations.MoveNext())
+            {
+                yield return mutations.Current;
+                Monitor.Enter(method);
+            }
+            Monitor.Exit(method);
+        }
 
         /// <summary>
         /// When implemented in a subclass, performs the actual mutations on
@@ -113,7 +144,7 @@ namespace NinjaTurtles.Turtles.Method
         /// An <see cref="IEnumerable{T}" /> of
         /// <see cref="MutationTestMetaData" /> structures.
         /// </returns>
-        protected abstract IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string fileName); 
+        protected abstract IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string fileName);
 
         /// <summary>
         /// Moves the original assembly aside, and writes the mutated copy in
@@ -123,6 +154,7 @@ namespace NinjaTurtles.Turtles.Method
         /// <param name="assembly">
         /// An <see cref="AssemblyDefinition" /> for the containing assembly.
         /// </param>
+        /// <param name="method"> </param>
         /// <param name="fileName">
         /// The path to the assembly file, so that the turtle can overwrite it
         /// with mutated versions.
@@ -134,18 +166,78 @@ namespace NinjaTurtles.Turtles.Method
         /// <returns>
         /// A <see cref="MutationTestMetaData" /> instance.
         /// </returns>
-        protected MutationTestMetaData PrepareTests(AssemblyDefinition assembly, string fileName, string output)
+        protected MutationTestMetaData PrepareTests(AssemblyDefinition assembly, MethodDefinition method, string fileName, string output)
         {
             string sourceFolder = Path.GetDirectoryName(fileName);
             string targetFolder = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
             CopyDirectory(sourceFolder, targetFolder);
             string targetFileName = Path.Combine(targetFolder, Path.GetFileName(fileName));
             assembly.Write(targetFileName);
-            return new MutationTestMetaData
+            var metaData = new MutationTestMetaData
                              {
                                  TestFolder = targetFolder,
-                                 Description = output
+                                 Description = output,
+                                 DiffRepresentation = ConstructEstimateCodeDiff(method)
                              };
+            Monitor.Exit(method);
+            return metaData;
+        }
+
+        private string ConstructEstimateCodeDiff(MethodDefinition method)
+        {
+            var decompilationOutput = new PlainTextOutput();
+            try
+            {
+                _cSharpDecompiler.DecompileMethod(method, decompilationOutput, _decompilationOptions);
+            }
+            catch
+            {
+                return "No decompilation available for mutated version.";
+            }
+            string newText = decompilationOutput.ToString();
+            var model = _differ.BuildDiffModel(_oldText, newText);
+            string diffOutput = "\t\tApproximate source code difference from IL decompilation:\n";
+            var lines = new SortedSet<int>();
+            for (int i = 0; i < Math.Max(model.OldText.Lines.Count, model.NewText.Lines.Count); i++)
+            {
+                if ((i < model.OldText.Lines.Count && model.OldText.Lines[i].Type != ChangeType.Unchanged)
+                    || (i < model.NewText.Lines.Count && model.NewText.Lines[i].Type != ChangeType.Unchanged))
+                {
+                    lines.Add(i - 2);
+                    lines.Add(i - 1);
+                    lines.Add(i);
+                    lines.Add(i + 1);
+                    lines.Add(i + 2);
+                }
+            }
+            int lastLine = -1;
+            string adds = "";
+            string takes = "";
+            foreach (var line in lines)
+            {
+                if (line < 0) continue;
+                if (line > lastLine + 1)
+                {
+                    diffOutput += string.Format("{1}{2}\t\t@@ {0} @@\n", line,
+                        takes, adds);
+                    takes = "";
+                    adds = "";
+                }
+                if (line < model.OldText.Lines.Count)
+                {
+                    takes += string.Format("\t\t- {0}\n", model.OldText.Lines[line].Text);
+                }
+                if (line < model.NewText.Lines.Count)
+                {
+                    adds += string.Format("\t\t+ {0}\n", model.NewText.Lines[line].Text);
+                }
+                lastLine = line;
+            }
+            if (!string.IsNullOrEmpty(adds) || !string.IsNullOrEmpty(takes))
+            {
+                diffOutput += takes + adds;
+            }
+            return diffOutput;
         }
     }
 }
