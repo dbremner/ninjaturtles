@@ -192,7 +192,7 @@ namespace NinjaTurtles.Turtles.Method
             }
             catch
             {
-                return "No decompilation available for mutated version.";
+                return "\t\tNo decompilation available for mutated version.\n";
             }
             string newText = decompilationOutput.ToString();
             var model = _differ.BuildDiffModel(_oldText, newText);
