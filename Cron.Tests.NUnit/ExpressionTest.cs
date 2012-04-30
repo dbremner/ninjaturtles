@@ -126,10 +126,10 @@ namespace Cron.Tests.NUnit
             Assert.False(Expression.TryParse("* 24 * * *", out result));
             Assert.False(Expression.TryParse("* NOT * * *", out result));
             Assert.False(Expression.TryParse("* * 32 * *", out result));
-            Assert.False(Expression.TryParse("* * NOT * *", out result));
+            Assert.False(Expression.TryParse("* * NOT * ?", out result));
             Assert.False(Expression.TryParse("* * * 13 *", out result));
             Assert.False(Expression.TryParse("* * * NOT *", out result));
-            Assert.False(Expression.TryParse("* * * * NOT", out result));
+            Assert.False(Expression.TryParse("* * ? * NOT", out result));
             Assert.False(Expression.TryParse(null, out result));
         }
 
