@@ -238,7 +238,7 @@ namespace Cron.Tests.NUnit
         public void TryParse_MutationTests()
         {
             MutationTestBuilder<Expression>.For("TryParse")
-                .Run();
+                .Run(1);
         }
 
         [Test, Category("Mutation")]
