@@ -93,9 +93,11 @@ namespace NinjaTurtles.Turtles.Method
             {
                 return false;
             }
+            if (instruction.OpCode == OpCodes.Endfinally) return false;
             if (instruction.IsNumericConversion()) return false;
-            if (!IsOpCodeSettingOutputParameterToDefaultValue(instruction)) return false;
-            if (!IsOpCodeSettingLocalVariableToDefaultValue(instruction)) return false;
+            if (IsOpCodeSettingOutputParameterToDefaultValue(instruction)) return false;
+            if (IsOpCodeSettingLocalVariableToDefaultValue(instruction)) return false;
+            if (instruction.IsPartOfCompilerGeneratedDispose()) return false;
             return true;
         }
 
@@ -105,13 +107,13 @@ namespace NinjaTurtles.Turtles.Method
                 && instruction.IsLdcI()
                 && instruction.GetLongValue() == 0L)
             {
-                return false;
+                return true;
             }
             if (instruction.OpCode == OpCodes.Stloc
                 && instruction.Previous.IsLdcI()
                 && instruction.Previous.GetLongValue() == 0L)
             {
-                return false;
+                return true;
             }
             if (instruction.Next.OpCode == OpCodes.Stloc
                 && instruction.IsLdcR()
@@ -119,7 +121,7 @@ namespace NinjaTurtles.Turtles.Method
                 && instruction.GetDoubleValue() == 0D)
 // ReSharper restore CompareOfFloatsByEqualityOperator
             {
-                return false;
+                return true;
             }
             if (instruction.OpCode == OpCodes.Stloc
                 && instruction.Previous.IsLdcR()
@@ -127,15 +129,15 @@ namespace NinjaTurtles.Turtles.Method
                 && instruction.Previous.GetDoubleValue() == 0D)
 // ReSharper restore CompareOfFloatsByEqualityOperator
             {
-                return false;
+                return true;
             }
             if (instruction.OpCode == OpCodes.Stobj
                 && instruction.Previous.OpCode == OpCodes.Ldnull
                 && instruction.Previous.Previous.OpCode == OpCodes.Ldloca)
             {
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
 
         private static bool IsOpCodeSettingOutputParameterToDefaultValue(Instruction instruction)
@@ -144,13 +146,13 @@ namespace NinjaTurtles.Turtles.Method
                 && instruction.IsLdcI()
                 && instruction.GetLongValue() == 0L)
             {
-                return false;
+                return true;
             }
             if (instruction.IsStindI()
                 && instruction.Previous.IsLdcI()
                 && instruction.Previous.GetLongValue() == 0L)
             {
-                return false;
+                return true;
             }
             if (instruction.Next.IsStindR()
                 && instruction.IsLdcR()
@@ -158,7 +160,7 @@ namespace NinjaTurtles.Turtles.Method
                 && instruction.GetLongValue() == 0D)
 // ReSharper restore CompareOfFloatsByEqualityOperator
             {
-                return false;
+                return true;
             }
             if (instruction.IsStindR()
                 && instruction.Previous.IsLdcR()
@@ -166,24 +168,24 @@ namespace NinjaTurtles.Turtles.Method
                 && instruction.Previous.GetLongValue() == 0D)
             // ReSharper restore CompareOfFloatsByEqualityOperator
             {
-                return false;
+                return true;
             }
             if (instruction.OpCode == OpCodes.Ldnull
                 && instruction.Next.OpCode == OpCodes.Stind_Ref)
             {
-                return false;
+                return true;
             }
             if (instruction.Next.OpCode == OpCodes.Ldnull
                 && instruction.Next.Next.OpCode == OpCodes.Stind_Ref)
             {
-                return false;
+                return true;
             }
             if (instruction.OpCode == OpCodes.Stind_Ref
                 && instruction.Previous.OpCode == OpCodes.Ldnull)
             {
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
     }
 }

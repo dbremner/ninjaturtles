@@ -31,10 +31,50 @@ namespace NinjaTurtles
     {
         internal static bool HasTestedAttributeMatching(this MethodDefinition testMethod, MethodDefinition method)
         {
-            return testMethod.CustomAttributes
-                .Where(a => a.AttributeType.Name == typeof(MethodTestedAttribute).Name)
-                .Any(a => ((TypeReference)a.ConstructorArguments[0].Value).Resolve().FullName == method.DeclaringType.FullName
-                          && (string)a.ConstructorArguments[1].Value == method.Name);
+            var candidateAttributes = testMethod.CustomAttributes
+                .Where(a => a.AttributeType.Name == typeof(MethodTestedAttribute).Name
+                            && (string)a.ConstructorArguments[1].Value == method.Name);
+            if (!candidateAttributes.Any()) return false;
+            foreach (var attribute in candidateAttributes)
+            {
+                var typeReference = attribute.ConstructorArguments[0].Value as TypeReference;
+                var typeName = attribute.ConstructorArguments[0].Value as string;
+                if (typeReference != null)
+                {
+                    if (typeReference.Resolve().FullName != method.DeclaringType.FullName)
+                    {
+                        continue;
+                    }
+                }
+                else if (typeName != null)
+                {
+                    if (typeName != method.DeclaringType.FullName)
+                    {
+                        continue;
+                    }
+                }
+                else continue;
+                if (attribute.HasProperties)
+                {
+                    if (attribute.Properties[0].Name != "ParameterTypes") continue;
+                    var types = (CustomAttributeArgument[])attribute.Properties[0].Argument.Value;
+                    if (!Enumerable.SequenceEqual(
+                        method.Parameters.Select(p => p.ParameterType.FullName),
+                        types.Select(t => ((TypeReference)t.Value).FullName)))
+                    {
+                        continue;
+                    }
+                }
+                return true;
+            }
+            return false;
+//            return testMethod.CustomAttributes
+//                .Where(a => a.AttributeType.Name == typeof(MethodTestedAttribute).Name)
+//                .Any(a => (a.ConstructorArguments[0].Value is TypeReference
+//                           && ((TypeReference)a.ConstructorArguments[0].Value).Resolve().FullName == method.DeclaringType.FullName)
+//                          || (a.ConstructorArguments[0].Value is string
+//                              && (string)a.ConstructorArguments[0].Value == method.DeclaringType.FullName)
+//                          && (string)a.ConstructorArguments[1].Value == method.Name);
         }
 
         internal static string GetQualifiedName(this MethodDefinition method)

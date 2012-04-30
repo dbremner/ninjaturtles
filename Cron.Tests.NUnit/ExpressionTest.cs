@@ -71,12 +71,19 @@ namespace Cron.Tests.NUnit
 
         [Test]
         [MethodTested(typeof(Expression), "TryParse")]
+        [MethodTested(typeof(Expression), "IsMatch", ParameterTypes = new[] { typeof(DateTime) })]
         public void IsMatch_Works()
         {
             Expression expression;
             Expression.TryParse("45 3,4,5 5-24 11 ?", out expression);
             Assert.True(expression.IsMatch(new DateTime(2008, 11, 5, 3, 45, 0)));
-            Assert.False(expression.IsMatch(new DateTime(2008, 10, 25, 0, 0, 0)));
+            Assert.False(expression.IsMatch(new DateTime(2008, 11, 5, 3, 44, 0)));
+            Assert.False(expression.IsMatch(new DateTime(2008, 11, 4, 3, 45, 0)));
+            Assert.False(expression.IsMatch(new DateTime(2008, 11, 5, 2, 45, 0)));
+            Assert.False(expression.IsMatch(new DateTime(2008, 10, 5, 3, 45, 0)));
+            Expression.TryParse("45 3,4,5 ? 11 3", out expression);
+            Assert.True(expression.IsMatch(new DateTime(2008, 11, 5, 3, 45, 0)));
+            Assert.False(expression.IsMatch(new DateTime(2008, 11, 4, 3, 45, 0)));
         }
 
         [Test]
@@ -97,14 +104,19 @@ namespace Cron.Tests.NUnit
 
         [Test]
         [MethodTested(typeof(Expression), "TryParse")]
+        [MethodTested(typeof(Expression), "IsMatch")]
         public void StaticIsMatch_Works()
         {
-            Expression expression;
-            Expression.TryParse("45 3,4,5 5-24 11 ?", out expression);
+            Expression expression1;
+            Expression.TryParse("45 3,4,5 5-24 11 ?", out expression1);
+            Expression expression2;
+            Expression.TryParse("33 3 3 3 ?", out expression2);
             var expressions = new List<Expression>();
-            expressions.Add(expression);
+            expressions.Add(expression1);
+            expressions.Add(expression2);
+            Assert.True(Expression.IsMatch(new DateTime(2008, 3, 3, 3, 33, 0), expressions));
             Assert.True(Expression.IsMatch(new DateTime(2008, 11, 5, 3, 45, 0), expressions));
-            Assert.False(Expression.IsMatch(new DateTime(2008, 10, 25, 0, 0, 0), expressions));
+            Assert.False(Expression.IsMatch(new DateTime(2008, 11, 5, 3, 44, 0), expressions));
         }
 
         [Test]
@@ -226,6 +238,20 @@ namespace Cron.Tests.NUnit
         public void TryParse_MutationTests()
         {
             MutationTestBuilder<Expression>.For("TryParse")
+                .Run();
+        }
+
+        [Test, Category("Mutation")]
+        public void IsMatch_MutationTests()
+        {
+            MutationTestBuilder<Expression>.For("IsMatch", new[] { typeof(DateTime) })
+                .Run();
+        }
+
+        [Test, Category("Mutation")]
+        public void StaticIsMatch_MutationTests()
+        {
+            MutationTestBuilder<Expression>.For("IsMatch", new[] { typeof(DateTime), typeof(IEnumerable<Expression>) })
                 .Run();
         }
     }

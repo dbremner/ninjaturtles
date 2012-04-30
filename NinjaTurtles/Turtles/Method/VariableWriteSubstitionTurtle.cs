@@ -98,7 +98,12 @@ namespace NinjaTurtles.Turtles.Method
                     foreach (var sequence in indices)
                     {
                         if (sequence == oldIndex) continue;
-                        
+
+                        if (instruction.IsPartOfCompilerGeneratedDispose())
+                        {
+                            continue;
+                        }
+
                         instruction.OpCode = sequence >= 0 ? OpCodes.Ldloc : OpCodes.Ldarg;
                         instruction.Operand = ldargOperands[sequence];
 

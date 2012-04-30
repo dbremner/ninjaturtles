@@ -116,6 +116,11 @@ namespace NinjaTurtles.Turtles.Method
                             // mutate in this scenario.
                             continue;
                         }
+
+                        if (instruction.IsPartOfCompilerGeneratedDispose())
+                        {
+                            continue;
+                        }
                             
                         instruction.OpCode = sequence >= 0 ? OpCodes.Ldloc : OpCodes.Ldarg;
                         instruction.Operand = ldargOperands[sequence];

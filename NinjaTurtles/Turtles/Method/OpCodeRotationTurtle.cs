@@ -19,22 +19,11 @@
 
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-
-using DiffPlex;
-using DiffPlex.DiffBuilder;
-using DiffPlex.DiffBuilder.Model;
-
-using ICSharpCode.Decompiler;
-using ICSharpCode.Decompiler.Disassembler;
-using ICSharpCode.ILSpy;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
-using Mono.Cecil.Rocks;
 
 namespace NinjaTurtles.Turtles.Method
 {
@@ -79,6 +68,11 @@ namespace NinjaTurtles.Turtles.Method
                 var originalCode = instruction.OpCode;
                 foreach (var opCode in OpCodeMap[originalCode].Where(opCode => originalCode != opCode))
                 {
+                    if (instruction.IsPartOfCompilerGeneratedDispose())
+                    {
+                        continue;
+                    }
+
                     instruction.OpCode = opCode;
                     var output = string.Format("OpCode change {0} => {1} at {2:x4} in {3}.{4}",
                                                originalCode.Name, opCode.Name, instruction.Offset,

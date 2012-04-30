@@ -35,12 +35,12 @@ namespace Calculator.Tests.NUnit
     {
         public SimpleCalculatorTests()
         {
-            MutationTestBuilder<SimpleCalculator>.UseRunner<xUnitTestRunner>();
+            MutationTestBuilder.UseRunner<xUnitTestRunner>();
         }
 
         public void Dispose()
         {
-            MutationTestBuilder<SimpleCalculator>.Clear();
+            MutationTestBuilder.Clear();
         }
 
         [Theory]

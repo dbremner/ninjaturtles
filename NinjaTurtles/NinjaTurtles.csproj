@@ -89,7 +89,7 @@
     <Compile Include="MutationTestMetaData.cs" />
     <Compile Include="MutationTestFailureException.cs" />
     <Compile Include="NamespaceDoc.cs" />
-    <Compile Include="OpCodeExtensions.cs" />
+    <Compile Include="InstructionExtensions.cs" />
     <Compile Include="TestRunner\GallioTestRunner.cs" />
     <Compile Include="TestRunner\xUnitTestRunner.cs" />
     <Compile Include="TestRunner\NamespaceDoc.cs" />

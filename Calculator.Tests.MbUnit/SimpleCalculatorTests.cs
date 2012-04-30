@@ -36,13 +36,13 @@ namespace Calculator.Tests.MbUnit
         [FixtureSetUp]
         public void FixtureSetUp()
         {
-            MutationTestBuilder<SimpleCalculator>.UseRunner<GallioTestRunner>();
+            MutationTestBuilder.UseRunner<GallioTestRunner>();
         }
 
         [FixtureTearDown]
         public void FixtureTearDown()
         {
-            MutationTestBuilder<SimpleCalculator>.Clear();
+            MutationTestBuilder.Clear();
         }
 
         [Test]
