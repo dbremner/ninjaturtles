@@ -22,6 +22,7 @@
 using System;
 using System.Linq;
 
+using Mono.Cecil;
 using Mono.Cecil.Cil;
 
 namespace NinjaTurtles
@@ -99,6 +100,35 @@ namespace NinjaTurtles
                 if (startInstruction == null) break;
                 if (startInstruction.FollowsSequence(sequence)) return true;
                 startInstruction = startInstruction.Previous;
+            }
+            return false;
+        }
+
+        internal static bool IsPartOfCompilerGeneratedDispose(this Instruction instruction)
+        {
+            if (instruction.IsPartOfSequence(OpCodes.Leave,
+                OpCodes.Ldloc, OpCodes.Ldnull, OpCodes.Ceq,
+                OpCodes.Stloc, OpCodes.Ldloc, OpCodes.Brtrue,
+                OpCodes.Ldloc, OpCodes.Callvirt))
+            {
+                while (instruction.OpCode != OpCodes.Callvirt)
+                {
+                    instruction = instruction.Next;
+                }
+                var method = ((MethodReference)instruction.Operand);
+                return method.Name == "Dispose";
+            }
+            if (instruction.IsPartOfSequence(OpCodes.Leave,
+                OpCodes.Ldloc, OpCodes.Ldnull, OpCodes.Ceq,
+                OpCodes.Brtrue,
+                OpCodes.Ldloc, OpCodes.Callvirt))
+            {
+                while (instruction.OpCode != OpCodes.Callvirt)
+                {
+                    instruction = instruction.Next;
+                }
+                var method = ((MethodReference)instruction.Operand);
+                return method.Name == "Dispose";
             }
             return false;
         }

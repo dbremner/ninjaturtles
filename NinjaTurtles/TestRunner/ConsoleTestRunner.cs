@@ -49,34 +49,24 @@ namespace NinjaTurtles.TestRunner
         /// The path to an assembly containing unit tests for the method to be
         /// tested.
         /// </param>
+        /// <param name="tests">
+        /// A list of fully-qualified test names to test.
+        /// </param>
         /// <returns>
         /// <b>true</b> if the tests pass (which is bad in the context of
         /// mutation testing, <b>false</b> if at least one fails, or
         /// <b>null</b> if no valid tests are found in the assembly.
         /// </returns>
-        public bool? RunTestsWithMutations(MethodDefinition method, string testLibraryPath)
+        public bool? RunTestsWithMutations(MethodDefinition method, string testLibraryPath,
+            IEnumerable<string> tests)
         {
-            var testAssembly = AssemblyDefinition.ReadAssembly(testLibraryPath);
-            var testsToRun = new List<string>();
-            foreach (var typeDefinition in testAssembly.MainModule.Types)
-            {
-                testsToRun
-                    .AddRange(typeDefinition.Methods
-                                  .Where(m => m.HasTestedAttributeMatching(method))
-                                  .Select(m => m.GetQualifiedName()));
-            }
-            if (!testsToRun.Any())
-            {
-                return null;
-            }
-
             var startInfo = new ProcessStartInfo(GetCommandLineFileName())
                                 {
                                     UseShellExecute = false,
                                     CreateNoWindow = true,
 									RedirectStandardOutput = true
                                 };
-            startInfo.Arguments = GetCommandLineArguments(testLibraryPath, testsToRun);
+            startInfo.Arguments = GetCommandLineArguments(testLibraryPath, tests);
 			if (Runtime.IsRunningOnMono)
 			{
 				startInfo.Arguments = startInfo.FileName + " " + startInfo.Arguments;

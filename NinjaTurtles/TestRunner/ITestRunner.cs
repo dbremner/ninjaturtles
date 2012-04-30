@@ -20,6 +20,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 
 using Mono.Cecil;
 
@@ -47,11 +48,15 @@ namespace NinjaTurtles.TestRunner
         /// The path to a library containing unit tests for the method to be
         /// tested.
         /// </param>
+        /// <param name="tests">
+        /// A list of fully-qualified test names to test.
+        /// </param>
         /// <returns>
         /// <b>true</b> if the tests pass (which is bad in the context of
         /// mutation testing, <b>false</b> if at least one fails, or
         /// <b>null</b> if no valid tests are found in the library.
         /// </returns>
-        bool? RunTestsWithMutations(MethodDefinition method, string testLibraryPath);
+        bool? RunTestsWithMutations(MethodDefinition method, string testLibraryPath,
+            IEnumerable<string> tests);
     }
 }

@@ -94,8 +94,6 @@ namespace NinjaTurtles
     /// </example>
     public static class MutationTestBuilder<T> where T : class
     {
-        private static Type _testRunner;
-
         /// <summary>
         /// Returns an <see cref="IMutationTest" /> instance allowing a fluent
         /// definition of a set of mutation tests for a particular method.
@@ -103,14 +101,81 @@ namespace NinjaTurtles
         /// <param name="methodName">
         /// The name of the method to mutate.
         /// </param>
+        /// <param name="parameterTypes">
+        /// Optional parameter specifying an array of parameter types used to
+        /// identify a particular method overload.
+        /// </param>
         /// <returns>
         /// An <see cref="IMutationTest" /> instance to allow fluent
         /// method chaining.
         /// </returns>
-        public static IMutationTest For(string methodName)
+        public static IMutationTest For(string methodName, Type[] parameterTypes = null)
         {
-            var testAssembly = Assembly.GetCallingAssembly().Location;
-            var mutationTest = new MutationTest(typeof(T), methodName, testAssembly);
+            return MutationTestBuilder.For(Assembly.GetCallingAssembly(), typeof(T), methodName, parameterTypes);
+        }
+    }
+
+    /// <summary>
+    /// A static class used as the starting point for a fluent definition of
+    /// a set of mutation tests.
+    /// </summary>
+    /// <remarks>
+    /// For public classes, the generic <see cref="MutationTestBuilder{T}" />
+    /// is to be prefered. See that class for full documentation.
+    /// </remarks>
+    public static class MutationTestBuilder
+    {
+        private static Type _testRunner;
+
+        /// <summary>
+        /// Returns an <see cref="IMutationTest" /> instance allowing a fluent
+        /// definition of a set of mutation tests for a particular method.
+        /// </summary>
+        /// <param name="className">
+        /// The namespace-qualified name of the type for which mutation tests
+        /// are being defined.
+        /// </param>
+        /// <param name="methodName">
+        /// The name of the method to mutate.
+        /// </param>
+        /// <param name="parameterTypes">
+        /// Optional parameter specifying an array of parameter types used to
+        /// identify a particular method overload.
+        /// </param>
+        /// <returns>
+        /// An <see cref="IMutationTest" /> instance to allow fluent
+        /// method chaining.
+        /// </returns>
+        public static IMutationTest For(string className, string methodName, Type[] parameterTypes = null)
+        {
+            var callingAssembly = Assembly.GetCallingAssembly();
+            Type resolvedType = ResolveTypeFromReferences(callingAssembly, className);
+            if (resolvedType == null)
+            {
+                throw new MutationTestFailureException(
+                    string.Format("Type {0} could not be resolved.", className));
+            }
+            return For(callingAssembly, resolvedType, methodName, parameterTypes);
+        }
+
+        private static Type ResolveTypeFromReferences(Assembly assembly, string className)
+        {
+            foreach (var type in assembly.GetTypes())
+            {
+                if (type.FullName == className) return type;
+            }
+            foreach (var reference in assembly.GetReferencedAssemblies())
+            {
+                var type = ResolveTypeFromReferences(Assembly.Load(reference), className);
+                if (type != null) return type;
+            }
+            return null;
+        }
+
+        internal static IMutationTest For(Assembly callingAssembly, Type targetType, string methodName, Type[] parameterTypes)
+        {
+            var testAssembly = callingAssembly.Location;
+            var mutationTest = new MutationTest(targetType, methodName, parameterTypes, testAssembly);
             if (_testRunner != null)
             {
                 mutationTest.TestRunner = _testRunner;

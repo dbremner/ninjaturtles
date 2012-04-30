@@ -45,7 +45,7 @@ namespace NinjaTurtles.Attributes
         /// The name of a method which is tested by the attributed unit test.
         /// </param>
         public MethodTestedAttribute(Type targetClass, string methodName)
-            : this(targetClass.Name, methodName)
+            : this(targetClass.FullName, methodName)
         {
         }
 
@@ -55,8 +55,8 @@ namespace NinjaTurtles.Attributes
         /// designed to allow non-public class's methods to be tested.
         /// </summary>
         /// <param name="className">
-        /// The name of the type for which the attributed class contains unit
-        /// tests.
+        /// The namespace-qualified name of the type for which the attributed
+        /// class contains unit tests.
         /// </param>
         /// <param name="methodName">
         /// The name of a method which is tested by the attributed unit test.
@@ -76,5 +76,11 @@ namespace NinjaTurtles.Attributes
         {
             get { return _methodName; }
         }
+
+        /// <summary>
+        /// Gets or sets a list of parameter types used to identify a
+        /// particular method overload.
+        /// </summary>
+        public Type[] ParameterTypes { get; set; }
     }
 }
