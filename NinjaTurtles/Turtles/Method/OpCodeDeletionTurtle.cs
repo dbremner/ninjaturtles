@@ -87,6 +87,7 @@ namespace NinjaTurtles.Turtles.Method
 
         private bool ShouldDeleteOpCode(Instruction instruction)
         {
+            if (instruction.OpCode == OpCodes.Newobj) return false;
             if (instruction.OpCode == OpCodes.Nop) return false;
             if (instruction.OpCode == OpCodes.Ret) return false;
             if (instruction.OpCode == OpCodes.Br
