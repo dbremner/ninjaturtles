@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -97,8 +98,20 @@ namespace NinjaTurtles.Turtles.Method
             if (instruction.IsNumericConversion()) return false;
             if (IsOpCodeSettingOutputParameterToDefaultValue(instruction)) return false;
             if (IsOpCodeSettingLocalVariableToDefaultValue(instruction)) return false;
+            if (IsOpCodeSwitchDefaultThatHasAlreadyBeenCateredFor(instruction)) return false;
             if (instruction.IsPartOfCompilerGeneratedDispose()) return false;
             return true;
+        }
+
+        private static bool IsOpCodeSwitchDefaultThatHasAlreadyBeenCateredFor(Instruction instruction)
+        {
+            if (instruction.OpCode == OpCodes.Br
+                && instruction.Previous.OpCode == OpCodes.Switch
+                && ((Instruction[])instruction.Previous.Operand).Any(i => i.Offset == ((Instruction)instruction.Operand).Offset))
+            {
+                return true;
+            }
+            return false;
         }
 
         private static bool IsOpCodeSettingLocalVariableToDefaultValue(Instruction instruction)
