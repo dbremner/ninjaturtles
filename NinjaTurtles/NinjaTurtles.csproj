@@ -99,6 +99,7 @@
     <Compile Include="Turtles\Method\BitwiseOperatorTurtle.cs" />
     <Compile Include="Turtles\Method\BranchConditionTurtle.cs" />
     <Compile Include="Turtles\Method\NamespaceDoc.cs" />
+    <Compile Include="Turtles\Method\OffByOneTurtle.cs" />
     <Compile Include="Turtles\Method\VariableWriteSubstitionTurtle.cs" />
     <Compile Include="Turtles\Method\ParameterAndVariableReadSubstitionTurtle.cs" />
     <Compile Include="Turtles\Method\MethodTurtle.cs" />
