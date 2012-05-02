@@ -79,12 +79,7 @@ namespace NinjaTurtles.Turtles.Method
             if (!method.HasBody) yield break;
             method.Body.SimplifyMacros();
 
-            _cSharpDecompiler = new CSharpLanguage();
-            var decompilationOutput = new PlainTextOutput();
-            _decompilationOptions = new DecompilationOptions();
-            _cSharpDecompiler.DecompileMethod(method, decompilationOutput, _decompilationOptions);
-            _oldText = decompilationOutput.ToString();
-            _differ = new SideBySideDiffBuilder(new Differ());
+			SetupDecompilerAndOriginalSource(method);
 
             foreach (var data in LockAndMutate(method, assembly, fileName))
             {
@@ -92,6 +87,16 @@ namespace NinjaTurtles.Turtles.Method
 
             }
         }
+		
+		private void SetupDecompilerAndOriginalSource(MethodDefinition method)
+		{
+			_cSharpDecompiler = new CSharpLanguage();
+            var decompilationOutput = new PlainTextOutput();
+            _decompilationOptions = new DecompilationOptions();
+            _cSharpDecompiler.DecompileMethod(method, decompilationOutput, _decompilationOptions);
+            _oldText = decompilationOutput.ToString();
+            _differ = new SideBySideDiffBuilder(new Differ());
+		}
 
         private static void CopyDirectory(string sourcePath, string destPath)
         {
