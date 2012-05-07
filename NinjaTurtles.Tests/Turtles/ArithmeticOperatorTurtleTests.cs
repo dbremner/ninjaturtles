@@ -244,6 +244,35 @@ namespace NinjaTurtles.Tests
 			Assert.AreEqual(1, mul);
 			Assert.AreEqual(1, div);
 		}
+		
+		[Test]
+		public void Mutate_Creates_And_Destroys_Directories()
+		{
+			var assembly = CreateTestAssembly(OpCodes.Add);
+			
+			var addMethod = assembly.MainModule
+				.Types.Single(t => t.Name == "TestClass")
+				.Methods.Single(t => t.Name == "TestMethod");
+			
+			var mutator = new ArithmeticOperatorTurtle();
+			IEnumerable<MutationTestMetaData> mutations = mutator
+				.Mutate(addMethod, assembly, GetTempAssemblyFileName());
+			
+			var directories = new List<string>();
+
+			foreach (var mutation in mutations)
+			{
+				string directoryName = mutation.TestDirectoryName;
+				directories.Add(directoryName);
+				Assert.IsTrue(Directory.Exists(directoryName));
+				mutator.MutantComplete(mutation);
+			}
+			
+			foreach (var directory in directories)
+			{
+				Assert.IsFalse(Directory.Exists(directory));
+			}
+		}
 	}
 }
 
