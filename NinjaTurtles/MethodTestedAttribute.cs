@@ -20,18 +20,30 @@
 #endregion
 
 using System;
-
-using NinjaTurtles.Turtles;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace NinjaTurtles
 {
-	public interface IMutationTest
+	[AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+	public class MethodTestedAttribute : Attribute
 	{
-		Type TargetType { get; }
-		string TargetMethod { get; }
+		public MethodTestedAttribute(Type targetType, string targetMethod)
+		{
+			TargetType = targetType;
+			TargetMethod = targetMethod;
+		}
 		
-		void Run();
-		IMutationTest With<T>() where T : IMethodTurtle;
+		public MethodTestedAttribute(string targetType, string targetMethod)
+		{
+            Type resolvedType = TypeResolver.ResolveTypeFromReferences(Assembly.GetCallingAssembly(), targetType);
+			TargetType = resolvedType;
+			TargetMethod = targetMethod;
+		}
+		
+		public Type TargetType { get; private set; }
+		
+		public string TargetMethod { get; private set; }
 	}
 }
 

@@ -1,4 +1,4 @@
-﻿#region Copyright & licence
+#region Copyright & licence
 
 // This file is part of NinjaTurtles.
 // 
@@ -20,9 +20,8 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -30,167 +29,158 @@ using System.Threading.Tasks;
 
 using Mono.Cecil;
 
-using NinjaTurtles.TestRunner;
 using NinjaTurtles.Turtles;
-using NinjaTurtles.Turtles.Method;
 
 namespace NinjaTurtles
 {
-    internal class MutationTest : IMutationTest
-    {
-        private readonly AssemblyDefinition _assembly;
-        private readonly ISet<Type> _methodTurtles = new HashSet<Type>();
-        private readonly string _methodName;
-        private readonly Type[] _parameterTypes;
-        private readonly Type _targetClass;
-        private readonly string _testAssemblyLocation;
+	internal class MutationTest : IMutationTest
+	{
+		private IList<Type> _mutationsToApply = new List<Type>();
+		private string _testAssemblyLocation;
+		private AssemblyDefinition _testAssembly;
+		private TypeReference _targetTypeReference;
+		private AssemblyDefinition _assembly;
+		private string _testList;
+		
+		internal MutationTest(string testAssemblyLocation, Type targetType, string targetMethod)
+		{
+			TargetType = targetType;
+			TargetMethod = targetMethod;
+			_testAssemblyLocation = testAssemblyLocation;
+			_testAssembly = AssemblyDefinition.ReadAssembly(testAssemblyLocation);
+			_targetTypeReference = _testAssembly.MainModule.Import(targetType);
+		}
+		
+		public Type TargetType { get; private set; }
 
-        internal MutationTest(Type targetClass, string methodName, Type[] parameterTypes, string testAssemblyLocation)
-        {
-            _targetClass = targetClass;
-            _methodName = methodName;
-            _parameterTypes = parameterTypes;
-            _testAssemblyLocation = testAssemblyLocation;
-            _assembly = AssemblyDefinition.ReadAssembly(targetClass.Assembly.Location);
-            TestRunner = typeof(NUnitTestRunner);
-        }
+		public string TargetMethod { get; private set; }
+		
+		public void Run()
+		{
+			MethodDefinition method = ValidateMethod();
+			IList<string> tests = GetMatchingTestsOrFail(method);
+			_testList = Path.GetTempFileName();
+			File.WriteAllLines(_testList, tests);
+			int count = 0;
+			int failures = 0;
+			if (_mutationsToApply.Count == 0) PopulateDefaultTurtles();
+			foreach (var turtleType in _mutationsToApply)
+			{
+				var turtle = (IMethodTurtle)Activator.CreateInstance(turtleType);
+				Parallel.ForEach(turtle.Mutate(method, _assembly, _testAssemblyLocation),
+				                 mutation => RunMutation(turtle, mutation, tests, ref failures, ref count));
+			}
+			if (count == 0)
+			{
+				Console.WriteLine("No valid mutations found (this is fine).");
+				return;
+			}
+			if (failures > 0)
+			{
+				throw new MutationTestFailureException();
+			}
+		}
+		
+		private void RunMutation(IMethodTurtle turtle, MutationTestMetaData mutation, IList<string> tests, ref int failures, ref int count)
+		{
+			bool testProcessFailed = CheckTestProcessFails(turtle, mutation, tests);
+			if (!testProcessFailed)
+			{
+				Interlocked.Increment(ref failures);
+			}
+			Interlocked.Increment(ref count);
+		}
+		
+		private bool CheckTestProcessFails(IMethodTurtle turtle, MutationTestMetaData mutation, IList<string> tests)
+		{
+			string testAssemblyLocation = Path.Combine(mutation.TestDirectoryName, Path.GetFileName(_testAssemblyLocation));
+			
+			var processStartInfo = new ProcessStartInfo("mono",
+			                                   "--runtime=4.0 /Users/david/Projects/nt2/packages/NUnit.Runners.2.6.0.12051/tools/nunit-console.exe \"" +
+			                                   testAssemblyLocation + "\" -runlist=\"" + _testList + "\" -nologo -nodots");
+			
+			var process = new Process {
+				StartInfo = processStartInfo
+			};
 
-        internal Type TestRunner { get; set; }
+			process.Start();
+			process.WaitForExit();
+			turtle.MutantComplete(mutation);
+			
+			int exitCode = process.ExitCode;
+			
+			Console.WriteLine("Mutant: {0}. {1}",
+			                  mutation.Description,
+			                  exitCode == 0
+			                  	? "Survived."
+			                    : "Killed.");
+				
+			return exitCode != 0;
+		}
+				
+		private void PopulateDefaultTurtles()
+		{
+			foreach (var type in GetType().Assembly.GetTypes()
+				.Where(t => t.GetInterface("IMethodTurtle") != null))
+			{
+				_mutationsToApply.Add(type);
+			}
+		}
+		
+		private IList<string> GetMatchingTestsOrFail(MethodDefinition targetMethod)
+		{
+			var tests = new List<string>();
+			foreach (var type in _testAssembly.MainModule.Types)
+			{
+				foreach (var method in type.Methods)
+				{
+					if (method.CustomAttributes
+							.Any(a => a.AttributeType.Name == "MethodTestedAttribute"
+						     	&& ((a.ConstructorArguments[0].Value is String
+					    && (string)a.ConstructorArguments[0].Value
+					     == _targetTypeReference.FullName)
+					    || (a.ConstructorArguments[0].Value is TypeReference
+						&& ((TypeReference)a.ConstructorArguments[0].Value).FullName
+						     		== _targetTypeReference.FullName))
+						     	&& ((string)a.ConstructorArguments[1].Value)
+					     			== targetMethod.Name))
+					{
+						tests.Add(string.Format ("{0}.{1}", type.FullName, method.Name));
+					}
+						
+				}
+			}
+			if (!tests.Any())
+			{
+				throw new MutationTestFailureException(
+					"No matching tests were found to run.");
+			}
+			return tests;
+		}
+		
+		private MethodDefinition ValidateMethod()
+		{
+			try
+			{
+				_assembly = AssemblyDefinition.ReadAssembly(TargetType.Assembly.Location);
+				var type = _assembly.MainModule.Types
+					.Single(t => t.FullName == TargetType.FullName);
+				var method = type.Methods
+					.First(m => m.Name == TargetMethod);
+				return method;
+			}
+			catch (Exception)
+			{
+				throw new MutationTestFailureException(
+					string.Format("Method '{0}' was not recognised.", TargetMethod));
+			}
+		}
 
-        #region IMutationTest Members
-
-        public void Run(int? maxThreads = null)
-        {
-            using (var runner = (ITestRunner)Activator.CreateInstance(TestRunner))
-            {
-                string fileName = _targetClass.Assembly.Location;
-                if (_methodTurtles.Count == 0)
-                {
-                    PopulateDefaultTurtles();
-                }
-                bool allFailed = true;
-                foreach (TypeDefinition type in _assembly.MainModule.Types.Where(t => t.FullName == _targetClass.FullName))
-                {
-                    int passCount = 0;
-                    var methodsWithMatchingName = type.Methods.Where(m => m.Name == _methodName);
-                    if (!methodsWithMatchingName.Any())
-                    {
-                        throw new MutationTestFailureException(
-                            string.Format("Unknown method '{0}'",
-                                          _methodName));
-                    }
-                    if (_parameterTypes != null)
-                    {
-                        methodsWithMatchingName = methodsWithMatchingName
-                            .Where(m => Enumerable.SequenceEqual(
-                                m.Parameters.Select(p => p.ParameterType.FullName),
-                                _parameterTypes.Select(t => _assembly.MainModule.Import(t).FullName)));
-                    }
-                    var methodDefinition = methodsWithMatchingName.SingleOrDefault();
-                    if (methodDefinition == null)
-                    {
-                        throw new MutationTestFailureException(
-                            string.Format("Unable to identify unique method named '{0}'",
-                                          _methodName));
-                    }
-
-                    var assemblyContainingTests = AssemblyDefinition.ReadAssembly(_testAssemblyLocation);
-                    var testsToRun = new List<string>();
-                    foreach (var typeDefinition in assemblyContainingTests.MainModule.Types)
-                    {
-                        testsToRun
-                            .AddRange(typeDefinition.Methods
-                                          .Where(m => m.HasTestedAttributeMatching(methodDefinition))
-                                          .Select(m => m.GetQualifiedName()));
-                    }
-
-                    if (!testsToRun.Any())
-                    {
-                        throw new MutationTestFailureException("No matching tests found.");
-                    }
-
-                    bool mutationsFound = false;
-                    var parallelOptions = new ParallelOptions();
-                    if (maxThreads.HasValue)
-                    {
-                        parallelOptions.MaxDegreeOfParallelism = maxThreads.Value;
-                    }
-                    foreach (Type methodTurtle in _methodTurtles)
-                    {
-                        var turtle = (IMethodTurtle)Activator.CreateInstance(methodTurtle);
-                        Console.WriteLine(turtle.Description);
-                        Parallel.ForEach(turtle.Mutate(methodDefinition, _assembly, fileName),
-                                         parallelOptions,
-                                         mutation =>
-                                             {
-                                                 mutationsFound = true;
-                                                 string testAssembly = Path.Combine(mutation.TestFolder,
-                                                                                    Path.GetFileName(
-                                                                                        _testAssemblyLocation));
-                                                 bool? result = runner.RunTestsWithMutations(methodDefinition,
-                                                                                             testAssembly, testsToRun.ToArray());
-                                                 OutputResultToConsole(mutation, result);
-                                                 if (result ?? false) Interlocked.Increment(ref passCount);
-                                                 mutation.Dispose();
-                                             });
-                        if (!mutationsFound)
-                        {
-                            Console.WriteLine("\tNo valid mutations found (this is fine)");
-                        }
-
-                        allFailed &= (passCount == 0);
-                    }
-                }
-
-                if (!allFailed) throw new MutationTestFailureException();
-            }
-        }
-
-        public IMutationTest With<T>() where T : ITurtle
-        {
-            _methodTurtles.Add(typeof(T));
-            return this;
-        }
-
-        public IMutationTest UsingRunner<T>() where T : ITestRunner
-        {
-            TestRunner = typeof(T);
-            return this;
-        }
-
-        #endregion
-
-        private static void OutputResultToConsole(MutationTestMetaData metaData, bool? result)
-        {
-            string interpretation;
-            if (!result.HasValue)
-            {
-                interpretation = "No valid tests found to run, or tests timed out";
-            }
-            else if (result.Value)
-            {
-                interpretation = "Passed (this is bad)";
-            }
-            else
-            {
-                interpretation = "Failed (this is good)";
-            }
-            string output = string.Format("\t{0}: {1}\n", metaData.Description, interpretation);
-            if (!string.IsNullOrEmpty(metaData.DiffRepresentation) && (result ?? false))
-            {
-                output += metaData.DiffRepresentation;
-            }
-            Console.Write(output);
-        }
-
-        private void PopulateDefaultTurtles()
-        {
-            foreach (Type type in GetType().Assembly.GetTypes()
-                .Where(t => !t.IsAbstract)
-                .Where(t => t.GetInterface(typeof(IMethodTurtle).Name) != null))
-            {
-                _methodTurtles.Add(type);
-            }
-        }
-    }
+		public NinjaTurtles.IMutationTest With<T>() where T : IMethodTurtle
+		{
+			_mutationsToApply.Add(typeof(T));
+			return this;
+		}
+	}
 }
+
