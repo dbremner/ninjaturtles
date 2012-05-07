@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NinjaTurtles", "NinjaTurtles\NinjaTurtles.csproj", "{56AFCF77-0818-4B5C-8099-1CCC5D611282}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NinjaTurtles.Tests", "NinjaTurtles.Tests\NinjaTurtles.Tests.csproj", "{688A032D-2BE0-4BE0-85A4-57AA9379F314}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{56AFCF77-0818-4B5C-8099-1CCC5D611282}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56AFCF77-0818-4B5C-8099-1CCC5D611282}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56AFCF77-0818-4B5C-8099-1CCC5D611282}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56AFCF77-0818-4B5C-8099-1CCC5D611282}.Release|Any CPU.Build.0 = Release|Any CPU
+		{688A032D-2BE0-4BE0-85A4-57AA9379F314}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{688A032D-2BE0-4BE0-85A4-57AA9379F314}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{688A032D-2BE0-4BE0-85A4-57AA9379F314}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{688A032D-2BE0-4BE0-85A4-57AA9379F314}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = NinjaTurtles\NinjaTurtles.csproj
+	EndGlobalSection
+EndGlobal
