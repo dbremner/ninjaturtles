@@ -50,6 +50,27 @@ namespace NinjaTurtles.Tests
 			Assert.Fail("MutationTestFailureException was not thrown.");
 		}
 		
+		[Test]
+		[MethodTested("NinjaTurtles.MutationTest", "Run")]
+		[MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
+		public void Mutation_Tests_Produce_Correct_Output()
+		{
+			using (var capturer = new ConsoleCapturer())
+			{
+				MutationTestBuilder<AdditionClassUnderTest>
+					.For("WorkingAdd")
+					.With<ArithmeticOperatorTurtle>()
+					.Run();
+				string output = capturer.Output;
+				StringAssert.Contains("Mutant: ", output);
+				StringAssert.Contains("Killed.", output);
+				StringAssert.Contains("Add => Sub", output);
+				StringAssert.Contains("Add => Mul", output);
+				StringAssert.Contains("Add => Div", output);
+				StringAssert.Contains("Add => Rem", output);
+			}
+		}
+		
 		[Test, Category("Mutation")]
 		public void Run_Mutation_Tests()
 		{
