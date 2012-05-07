@@ -19,19 +19,18 @@
 
 #endregion
 
-using System;
+using System.Reflection;
 
-using NinjaTurtles.Turtles;
+[assembly: AssemblyTitle("NinjaTurtles")]
+[assembly: AssemblyDescription("Mutation testing library for .NET")]
+#if DEBUG
+[assembly: AssemblyConfiguration("Debug")]
+#else
+[assembly: AssemblyConfiguration("Release")]
+#endif
+[assembly: AssemblyCompany("NinjaTurtles")]
+[assembly: AssemblyProduct("NinjaTurtles")]
+[assembly: AssemblyCopyright("Copyright © 2012 David Musgrove")]
 
-namespace NinjaTurtles
-{
-	public interface IMutationTest
-	{
-		Type TargetType { get; }
-		string TargetMethod { get; }
-		
-		void Run();
-		IMutationTest With<T>() where T : IMethodTurtle;
-	}
-}
-
+[assembly: AssemblyVersion("0.2.0.0")]
+[assembly: AssemblyFileVersion("0.2.0.0")]

@@ -23,33 +23,30 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-using Mono.Cecil;
-
 namespace NinjaTurtles
 {
-	public sealed class MutationTestBuilder<T>
+	internal class TypeResolver
 	{
-		public static IMutationTest For(string targetMethod)
+		internal static Type ResolveTypeFromReferences(Assembly callingAssembly, string className)
 		{
-			var callingAssembly = Assembly.GetCallingAssembly();
-			return MutationTestBuilder.For(callingAssembly.Location, typeof(T), targetMethod);
-		}
-	}
-	
-	public sealed class MutationTestBuilder
-	{
-		public static IMutationTest For(string targetClass, string targetMethod)
-		{
-			var callingAssembly = Assembly.GetCallingAssembly();
-            Type resolvedType = TypeResolver.ResolveTypeFromReferences(callingAssembly, targetClass);
-
-			return For(callingAssembly.Location, resolvedType, targetMethod);
+			return ResolveTypeFromReferences(callingAssembly, className, new List<string>());
 		}
 		
-		internal static IMutationTest For(string callingAssemblyLocation, Type targetType, string targetMethod)
-		{
-			return new MutationTest(callingAssemblyLocation, targetType, targetMethod);
-		}
+		private static Type ResolveTypeFromReferences(Assembly assembly, string className, IList<string> consideredAssemblies)
+        {
+            foreach (var type in assembly.GetTypes())
+            {
+                if (type.FullName == className) return type;
+            }
+            foreach (var reference in assembly.GetReferencedAssemblies())
+            {
+				if (consideredAssemblies.Contains(reference.Name)) continue;
+				consideredAssemblies.Add(reference.Name);
+                var type = ResolveTypeFromReferences(Assembly.Load(reference), className, consideredAssemblies);
+                if (type != null) return type;
+            }
+            return null;
+        }	
 	}
 }
 

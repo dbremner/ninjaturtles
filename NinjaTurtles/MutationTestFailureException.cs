@@ -1,4 +1,4 @@
-﻿#region Copyright & licence
+#region Copyright & licence
 
 // This file is part of NinjaTurtles.
 // 
@@ -23,29 +23,10 @@ using System;
 
 namespace NinjaTurtles
 {
-    /// <summary>
-    /// A custom exception type that is thrown to indicate a mutation test
-    /// failure. Test frameworks that do not simply fail their tests on an
-    /// exception being thrown can catch this exception type and act
-    /// accordingly.
-    /// </summary>
-    public sealed class MutationTestFailureException : Exception
-    {
-        /// <summary>
-        /// Initializes a new instance of the
-        /// <see cref="MutationTestFailureException" /> class with the default
-        /// message.
-        /// </summary>
-        public MutationTestFailureException() : this("Not all mutations caused the suite to fail.") {}
-
-        /// <summary>
-        /// Initializes a new instance of the
-        /// <see cref="MutationTestFailureException" /> class with the specified
-        /// message.
-        /// </summary>
-        /// <param name="message">
-        /// The message to use.
-        /// </param>
-        public MutationTestFailureException(string message) : base(message) { }
-    }
+	public class MutationTestFailureException : Exception
+	{
+		public MutationTestFailureException(string message) : base(message) {}
+		public MutationTestFailureException() : base("Mutation testing failed.") {}
+	}
 }
+

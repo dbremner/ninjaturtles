@@ -20,18 +20,16 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 
-using NinjaTurtles.Turtles;
+using Mono.Cecil;
 
-namespace NinjaTurtles
+namespace NinjaTurtles.Turtles
 {
-	public interface IMutationTest
+	public interface IMethodTurtle
 	{
-		Type TargetType { get; }
-		string TargetMethod { get; }
-		
-		void Run();
-		IMutationTest With<T>() where T : IMethodTurtle;
+		void MutantComplete(MutationTestMetaData metaData);
+		IEnumerable<MutationTestMetaData> Mutate(MethodDefinition method, AssemblyDefinition assembly, string testAssemblyLocation);
 	}
 }
 

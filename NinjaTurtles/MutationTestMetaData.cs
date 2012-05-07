@@ -1,4 +1,4 @@
-﻿#region Copyright & licence
+#region Copyright & licence
 
 // This file is part of NinjaTurtles.
 // 
@@ -20,60 +20,20 @@
 #endregion
 
 using System;
-using System.IO;
-using System.Threading;
+
+using Mono.Cecil;
 
 namespace NinjaTurtles
 {
-    /// <summary>
-    /// Structure giving metadata for a mutation test.
-    /// </summary>
-    public sealed class MutationTestMetaData : IDisposable
-    {
-        /// <summary>
-        /// Gets or sets a string describing the code difference obtained
-        /// by decompiling the expanded IL of both the original and the 
-        /// mutated methods.
-        /// </summary>
-        public string DiffRepresentation { get; set; }
-
-        /// <summary>
-        /// Gets or sets the target folder for the mutation test, to which
-        /// the test DLLs and mutated assembly have been copied.
-        /// </summary>
-        public string TestFolder { get; set; }
-
-        /// <summary>
-        /// Gets or sets the description of the mutation test being run.
-        /// </summary>
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing,
-        /// releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                int attemptCount = 0;
-                do
-                {
-                    try
-                    {
-                        Directory.Delete(TestFolder, true);
-                    }
-                    catch
-                    {
-                    }
-                    if (Directory.Exists(TestFolder)) Thread.Sleep(1000);
-                } while (Directory.Exists(TestFolder) && attemptCount++ < 3);
-            }
-        }
-    }
+	public class MutationTestMetaData
+	{
+		public string Description { get; internal set; }
+		public MethodDefinition MethodDefinition { get; internal set; }
+		internal TestDirectory TestDirectory { get; set; }
+		public string TestDirectoryName
+		{
+			get { return TestDirectory.FullName; }
+		}
+	}
 }
+

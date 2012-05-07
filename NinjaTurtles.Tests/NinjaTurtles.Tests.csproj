@@ -5,10 +5,10 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{56AFCF77-0818-4B5C-8099-1CCC5D611282}</ProjectGuid>
+    <ProjectGuid>{688A032D-2BE0-4BE0-85A4-57AA9379F314}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>NinjaTurtles</RootNamespace>
-    <AssemblyName>NinjaTurtles</AssemblyName>
+    <RootNamespace>NinjaTurtles.Tests</RootNamespace>
+    <AssemblyName>NinjaTurtles.Tests</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,6 +30,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.0.12054\lib\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Cecil">
       <HintPath>..\packages\Mono.Cecil.0.9.5.3\lib\net40\Mono.Cecil.dll</HintPath>
     </Reference>
@@ -40,19 +43,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="MutationTestBuilder.cs" />
-    <Compile Include="IMutationTest.cs" />
-    <Compile Include="MutationTest.cs" />
-    <Compile Include="Turtles\ArithmeticOperatorTurtle.cs" />
-    <Compile Include="MutationTestMetaData.cs" />
-    <Compile Include="Turtles\IMethodTurtle.cs" />
-    <Compile Include="MutationTestFailureException.cs" />
-    <Compile Include="MethodTestedAttribute.cs" />
-    <Compile Include="TestDirectory.cs" />
-    <Compile Include="TypeResolver.cs" />
+    <Compile Include="MutationTestBuilderTests.cs" />
+    <Compile Include="Turtles\ArithmeticOperatorTurtleTests.cs" />
+    <Compile Include="Turtles\ArithmeticOperatorTurtleTestSuite\Tests\AdditionClassUnderTestTests.cs" />
+    <Compile Include="Turtles\ArithmeticOperatorTurtleTestSuite\AdditionClassUnderTest.cs" />
+    <Compile Include="MutationTestTests.cs" />
+    <Compile Include="ConsoleCapturer.cs" />
+    <Compile Include="TestDirectoryTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <ProjectReference Include="..\NinjaTurtles\NinjaTurtles.csproj">
+      <Project>{56AFCF77-0818-4B5C-8099-1CCC5D611282}</Project>
+      <Name>NinjaTurtles</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Turtles\" />
+    <Folder Include="Turtles\ArithmeticOperatorTurtleTestSuite\" />
+    <Folder Include="Turtles\ArithmeticOperatorTurtleTestSuite\Tests\" />
   </ItemGroup>
 </Project>
