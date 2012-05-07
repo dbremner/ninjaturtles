@@ -20,6 +20,7 @@
 #endregion
 
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 [assembly: AssemblyTitle("NinjaTurtles")]
 [assembly: AssemblyDescription("Mutation testing library for .NET")]
@@ -34,3 +35,5 @@ using System.Reflection;
 
 [assembly: AssemblyVersion("0.2.0.0")]
 [assembly: AssemblyFileVersion("0.2.0.0")]
+
+[assembly: InternalsVisibleTo("NinjaTurtles.Tests")]

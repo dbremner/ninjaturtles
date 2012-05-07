@@ -50,6 +50,7 @@
     <Compile Include="MutationTestTests.cs" />
     <Compile Include="ConsoleCapturer.cs" />
     <Compile Include="TestDirectoryTests.cs" />
+    <Compile Include="TypeResolverTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
