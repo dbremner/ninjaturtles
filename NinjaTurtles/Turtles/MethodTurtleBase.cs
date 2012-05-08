@@ -21,6 +21,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 using Mono.Cecil;
 using Mono.Cecil.Rocks;
@@ -29,26 +30,29 @@ namespace NinjaTurtles.Turtles
 {
     public abstract class MethodTurtleBase : IMethodTurtle
     {
+        private int[] _originalOffsets;
+
         public void MutantComplete(MutationTestMetaData metaData)
         {
             metaData.TestDirectory.Dispose();
         }
 
-        public IEnumerable<MutationTestMetaData> Mutate(MethodDefinition method, AssemblyDefinition assembly, string testAssemblyLocation)
+        public IEnumerable<MutationTestMetaData> Mutate(MethodDefinition method, AssemblyDefinition assembly, string assemblyLocation)
         {
+            _originalOffsets = method.Body.Instructions.Select(i => i.Offset).ToArray();
             method.Body.SimplifyMacros();
-            foreach (var mutation in DoMutate(method, assembly, testAssemblyLocation))
+            foreach (var mutation in DoMutate(method, assembly, assemblyLocation))
             {
                 yield return mutation;
             }
         }
 
-       public abstract IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string testAssemblyLocation);
+        protected abstract IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string assemblyLocation);
 
-       public MutationTestMetaData DoYield(MethodDefinition method, AssemblyDefinition assembly, string testAssemblyLocation, string description)
+        protected MutationTestMetaData DoYield(MethodDefinition method, AssemblyDefinition assembly, string assemblyLocation, string description)
        {
-           var testDirectory = new TestDirectory(Path.GetDirectoryName(testAssemblyLocation));
-           testDirectory.SaveAssembly(assembly, Path.GetFileName(testAssemblyLocation));
+           var testDirectory = new TestDirectory(Path.GetDirectoryName(assemblyLocation));
+           testDirectory.SaveAssembly(assembly, Path.GetFileName(assemblyLocation));
            return new MutationTestMetaData
            {
                Description = description,
@@ -56,5 +60,10 @@ namespace NinjaTurtles.Turtles
                TestDirectory = testDirectory
            };
        }
+
+        protected int GetOriginalOffset(int index)
+        {
+            return _originalOffsets[index];
+        }
     }
 }

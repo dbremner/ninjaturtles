@@ -21,8 +21,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Management;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -41,8 +43,9 @@ namespace NinjaTurtles
 		private readonly TypeReference _targetTypeReference;
 		private AssemblyDefinition _assembly;
 		private string _testList;
-		
-		internal MutationTest(string testAssemblyLocation, Type targetType, string targetMethod, Type[] parameterTypes)
+	    private string _assemblyLocation;
+
+	    internal MutationTest(string testAssemblyLocation, Type targetType, string targetMethod, Type[] parameterTypes)
 		{
 			TargetType = targetType;
 			TargetMethod = targetMethod;
@@ -68,7 +71,7 @@ namespace NinjaTurtles
 			foreach (var turtleType in _mutationsToApply)
 			{
 				var turtle = (IMethodTurtle)Activator.CreateInstance(turtleType);
-				Parallel.ForEach(turtle.Mutate(method, _assembly, _testAssemblyLocation),
+				Parallel.ForEach(turtle.Mutate(method, _assembly, _assemblyLocation),
 				                 mutation => RunMutation(turtle, mutation, ref failures, ref count));
 			}
 			if (count == 0)
@@ -101,19 +104,47 @@ namespace NinjaTurtles
             var process = ConsoleProcessFactory.CreateProcess("nunit-console.exe", arguments);
 
 			process.Start();
-			process.WaitForExit();
+			bool exitedInTime = process.WaitForExit(30000);
+            if (!exitedInTime)
+            {
+                try
+                {
+                    KillProcessAndChildren(process.Id);
+                }
+                catch {}
+            }
 			turtle.MutantComplete(mutation);
 			
 			int exitCode = process.ExitCode;
 
-			Console.WriteLine("Mutant: {0}. {1}",
+		    bool testSuitePassed = exitCode == 0 && exitedInTime;
+		    Console.WriteLine("Mutant: {0}. {1}",
 			                  mutation.Description,
-			                  exitCode == 0
+			                  testSuitePassed
 			                  	? "Survived."
 			                    : "Killed.");
-				
-			return exitCode != 0;
+
+            return !testSuitePassed;
 		}
+
+        private void KillProcessAndChildren(int pid)
+        {
+            using (var searcher = new ManagementObjectSearcher("Select * From Win32_Process Where ParentProcessID=" + pid))
+            using (ManagementObjectCollection moc = searcher.Get())
+            {
+                foreach (ManagementObject mo in moc)
+                {
+                    KillProcessAndChildren(Convert.ToInt32(mo["ProcessID"]));
+                }
+                try
+                {
+                    Process proc = Process.GetProcessById(pid);
+                    proc.Kill();
+                }
+                catch (ArgumentException) {}
+            }
+        }
+
 				
 		private void PopulateDefaultTurtles()
 		{
@@ -173,8 +204,9 @@ namespace NinjaTurtles
         }
 
 	    private MethodDefinition ValidateMethod()
-		{
-		    _assembly = AssemblyDefinition.ReadAssembly(TargetType.Assembly.Location);
+	    {
+	        _assemblyLocation = TargetType.Assembly.Location;
+		    _assembly = AssemblyDefinition.ReadAssembly(TargetType.Assembly.Location, new ReaderParameters{ReadSymbols = true});
 		    var type = _assembly.MainModule.Types
 		        .Single(t => t.FullName == TargetType.FullName);
 		    var method = MethodDefinitionResolver.ResolveMethod(type, TargetMethod, _parameterTypes);

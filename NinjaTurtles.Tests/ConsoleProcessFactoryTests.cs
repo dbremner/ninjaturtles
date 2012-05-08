@@ -26,7 +26,7 @@ namespace NinjaTurtles.Tests
         {
             var process = ConsoleProcessFactory.CreateProcess("cmd.exe", "");
 
-            Assert.AreEqual(ProcessWindowStyle.Hidden, process.StartInfo.WindowStyle);
+            Assert.IsTrue(process.StartInfo.CreateNoWindow);
         }
 
         [Test]
