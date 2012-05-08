@@ -36,17 +36,19 @@ namespace NinjaTurtles
 	{
 		private readonly IList<Type> _mutationsToApply = new List<Type>();
 		private readonly string _testAssemblyLocation;
-		private readonly AssemblyDefinition _testAssembly;
+	    private readonly Type[] _parameterTypes;
+	    private readonly AssemblyDefinition _testAssembly;
 		private readonly TypeReference _targetTypeReference;
 		private AssemblyDefinition _assembly;
 		private string _testList;
 		
-		internal MutationTest(string testAssemblyLocation, Type targetType, string targetMethod)
+		internal MutationTest(string testAssemblyLocation, Type targetType, string targetMethod, Type[] parameterTypes)
 		{
 			TargetType = targetType;
 			TargetMethod = targetMethod;
 			_testAssemblyLocation = testAssemblyLocation;
-			_testAssembly = AssemblyDefinition.ReadAssembly(testAssemblyLocation);
+		    _parameterTypes = parameterTypes;
+		    _testAssembly = AssemblyDefinition.ReadAssembly(testAssemblyLocation);
 			_targetTypeReference = _testAssembly.MainModule.Import(targetType);
 		}
 		
@@ -156,23 +158,19 @@ namespace NinjaTurtles
 		
 		private MethodDefinition ValidateMethod()
 		{
-			try
-			{
-				_assembly = AssemblyDefinition.ReadAssembly(TargetType.Assembly.Location);
-				var type = _assembly.MainModule.Types
-					.Single(t => t.FullName == TargetType.FullName);
-				var method = type.Methods
-					.First(m => m.Name == TargetMethod);
-				return method;
-			}
-			catch (Exception)
-			{
-				throw new MutationTestFailureException(
-					string.Format("Method '{0}' was not recognised.", TargetMethod));
-			}
+		    _assembly = AssemblyDefinition.ReadAssembly(TargetType.Assembly.Location);
+		    var type = _assembly.MainModule.Types
+		        .Single(t => t.FullName == TargetType.FullName);
+		    var method = MethodDefinitionResolver.ResolveMethod(type, TargetMethod, _parameterTypes);
+		    if (method == null)
+		    {
+		        throw new MutationTestFailureException(
+		            string.Format("Method '{0}' was not recognised.", TargetMethod));
+		    }
+		    return method;
 		}
 
-		public IMutationTest With<T>() where T : IMethodTurtle
+	    public IMutationTest With<T>() where T : IMethodTurtle
 		{
 			_mutationsToApply.Add(typeof(T));
 			return this;
