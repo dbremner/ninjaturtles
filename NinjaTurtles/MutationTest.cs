@@ -21,7 +21,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -83,7 +82,7 @@ namespace NinjaTurtles
 		
 		private void RunMutation(IMethodTurtle turtle, MutationTestMetaData mutation, IList<string> tests, ref int failures, ref int count)
 		{
-			bool testProcessFailed = CheckTestProcessFails(turtle, mutation, tests);
+			bool testProcessFailed = CheckTestProcessFails(turtle, mutation);
 			if (!testProcessFailed)
 			{
 				Interlocked.Increment(ref failures);
@@ -91,24 +90,20 @@ namespace NinjaTurtles
 			Interlocked.Increment(ref count);
 		}
 		
-		private bool CheckTestProcessFails(IMethodTurtle turtle, MutationTestMetaData mutation, IList<string> tests)
+		private bool CheckTestProcessFails(IMethodTurtle turtle, MutationTestMetaData mutation)
 		{
 			string testAssemblyLocation = Path.Combine(mutation.TestDirectoryName, Path.GetFileName(_testAssemblyLocation));
-			
-			var processStartInfo = new ProcessStartInfo("mono",
-			                                   "--runtime=4.0 /Users/david/Projects/nt2/packages/NUnit.Runners.2.6.0.12051/tools/nunit-console.exe \"" +
-			                                   testAssemblyLocation + "\" -runlist=\"" + _testList + "\" -nologo -nodots");
-			
-			var process = new Process {
-				StartInfo = processStartInfo
-			};
+
+		    string arguments = string.Format("\"{0}\" {{0}}runlist=\"{1}\" {{0}}nologo {{0}}nodots", testAssemblyLocation, _testList);
+
+            var process = ConsoleProcessFactory.CreateProcess("nunit-console.exe", arguments);
 
 			process.Start();
 			process.WaitForExit();
 			turtle.MutantComplete(mutation);
 			
 			int exitCode = process.ExitCode;
-			
+
 			Console.WriteLine("Mutant: {0}. {1}",
 			                  mutation.Description,
 			                  exitCode == 0
@@ -120,11 +115,12 @@ namespace NinjaTurtles
 				
 		private void PopulateDefaultTurtles()
 		{
-			foreach (var type in GetType().Assembly.GetTypes()
-				.Where(t => t.GetInterface("IMethodTurtle") != null))
-			{
-				_mutationsToApply.Add(type);
-			}
+            foreach (var type in GetType().Assembly.GetTypes()
+                .Where(t => t.GetInterface("IMethodTurtle") != null
+                && !t.IsAbstract))
+            {
+                _mutationsToApply.Add(type);
+            }
 		}
 		
 		private IList<string> GetMatchingTestsOrFail(MethodDefinition targetMethod)

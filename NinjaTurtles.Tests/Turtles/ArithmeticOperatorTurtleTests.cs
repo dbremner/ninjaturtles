@@ -10,7 +10,7 @@ using NUnit.Framework;
 
 using NinjaTurtles.Turtles;
 
-namespace NinjaTurtles.Tests
+namespace NinjaTurtles.Tests.Turtles
 {
 	[TestFixture]
 	public class ArithmeticOperatorTurtleTests

@@ -19,30 +19,20 @@
 
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Threading;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
-using Mono.Cecil.Rocks;
 
 namespace NinjaTurtles.Turtles
 {
-	public class ArithmeticOperatorTurtle : IMethodTurtle
+	public class ArithmeticOperatorTurtle : MethodTurtleBase
 	{
-		private static List<OpCode> _opCodes = new List<OpCode> {
+		private static readonly List<OpCode> _opCodes = new List<OpCode> {
 			OpCodes.Add, OpCodes.Sub, OpCodes.Mul, OpCodes.Div, OpCodes.Rem };
 		
-		public void MutantComplete(MutationTestMetaData metaData)
+		public override IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string testAssemblyLocation)
 		{
-			metaData.TestDirectory.Dispose();
-		}
-
-		public IEnumerable<MutationTestMetaData> Mutate(MethodDefinition method, AssemblyDefinition assembly, string testAssemblyLocation)
-		{
-			method.Body.SimplifyMacros();
 			foreach (var instruction in method.Body.Instructions)
 			{
 				if (_opCodes.Contains(instruction.OpCode))
@@ -53,14 +43,8 @@ namespace NinjaTurtles.Turtles
 					{
 						if (opCode == originalOpCode) continue;
 						instruction.OpCode = opCode;
-						var testDirectory = new TestDirectory(Path.GetDirectoryName(testAssemblyLocation));
-						testDirectory.SaveAssembly(assembly, Path.GetFileName(testAssemblyLocation));
-						yield return new MutationTestMetaData
-						{
-							Description = string.Format("{0} => {1}", originalOpCode.Code, opCode.Code),
-							MethodDefinition = method,
-							TestDirectory = testDirectory
-						};
+					    var description = string.Format("{0} => {1}", originalOpCode.Code, opCode.Code);
+					    yield return DoYield(method, assembly, testAssemblyLocation, description);
 					}
 					
 					instruction.OpCode = originalOpCode;
