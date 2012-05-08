@@ -77,16 +77,7 @@ namespace NinjaTurtles
 
 		public void Dispose()
 		{
-		    int attempts = 0;
-            while (Directory.Exists(_folder) && attempts < 3)
-            {
-                try
-                {
-                    Directory.Delete(_folder, true);
-                }
-                catch (IOException) {}
-                attempts++;
-            }
+            Directory.Delete(_folder, true);
 		}
 	}
 }
