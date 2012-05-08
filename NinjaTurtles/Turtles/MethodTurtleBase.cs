@@ -110,7 +110,7 @@ namespace NinjaTurtles.Turtles
             return Path.GetFileName(sequencePoint.Document.Url);
         }
 
-        private SequencePoint GetCurrentSequencePoint(int index)
+        public SequencePoint GetCurrentSequencePoint(int index)
         {
             var instruction = _method.Body.Instructions[index];
             while (instruction.SequencePoint == null)

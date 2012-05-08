@@ -1,4 +1,7 @@
 using System;
+using System.IO;
+using System.Linq;
+using System.Xml.Linq;
 
 using NUnit.Framework;
 
@@ -95,6 +98,37 @@ namespace NinjaTurtles.Tests
                 }
             }
             Assert.Fail("MutationTestFailureException was not thrown.");
+        }
+
+        [Test]
+        public void Mutate_Merges_Results_Into_Single_File()
+        {
+            string file = Path.GetTempFileName();
+            if (File.Exists(file)) File.Delete(file);
+            try
+            {
+                MutationTestBuilder<AdditionClassUnderTest>
+                    .For("Add")
+                    .With<ArithmeticOperatorTurtle>()
+                    .WriteReportTo(file)
+                    .Run();
+            }
+            catch (MutationTestFailureException)
+            {
+            }
+            MutationTestBuilder<AdditionClassUnderTest>
+                .For("WorkingAdd")
+                .With<ArithmeticOperatorTurtle>()
+                .MergeReportTo(file)
+                .Run();
+            Assert.IsTrue(File.Exists(file));
+            var xDocument = XDocument.Load(file);
+            Assert.AreEqual(1, xDocument.Root.Descendants().Where(e => e.Name == "SourceFile").Count());
+            Assert.AreEqual(2, xDocument.Root.Descendants().Where(e => e.Name == "SequencePoint").Count());
+            Assert.AreEqual(8, xDocument.Root.Descendants().Where(e => e.Name == "AppliedMutant").Count());
+            Assert.AreEqual(1, xDocument.Root.Descendants().Where(e => e.Name == "AppliedMutant" && e.Attributes().Any(a => a.Name == "Killed" && a.Value == "false")).Count());
+            Assert.AreEqual(7, xDocument.Root.Descendants().Where(e => e.Name == "AppliedMutant" && e.Attributes().Any(a => a.Name == "Killed" && a.Value == "true")).Count());
+            File.Delete(file);
         }
 
 		[Test, Category("Mutation")]
