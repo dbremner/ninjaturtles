@@ -73,7 +73,30 @@ namespace NinjaTurtles.Tests
 				StringAssert.Contains("Add => Rem", output);
 			}
 		}
-		
+
+        [Test]
+        [MethodTested("NinjaTurtles.MutationTest", "Run")]
+        [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
+        public void Mutate_Failed_Tests_Report_Source_Code()
+        {
+            using (var capturer = new ConsoleCapturer())
+            {
+                try
+                {
+                    MutationTestBuilder<AdditionClassUnderTest>
+                        .For("Add")
+                        .With<ArithmeticOperatorTurtle>()
+                        .Run();
+                }
+                catch (MutationTestFailureException)
+                {
+                    StringAssert.Contains("return left + right;", capturer.Output);
+                    return;
+                }
+            }
+            Assert.Fail("MutationTestFailureException was not thrown.");
+        }
+
 		[Test, Category("Mutation")]
 		public void Run_Mutation_Tests()
 		{

@@ -45,7 +45,7 @@ namespace NinjaTurtles.Turtles
 		                if (opCode == originalOpCode) continue;
 		                instruction.OpCode = opCode;
 		                var description = string.Format("{0:x4}: {1} => {2}", GetOriginalOffset(index), originalOpCode.Code, opCode.Code);
-                        MutationTestMetaData mutation = DoYield(method, assembly, assemblyLocation, description);
+                        MutationTestMetaData mutation = DoYield(method, assembly, assemblyLocation, description, index);
 		                yield return mutation;
 		            }
 

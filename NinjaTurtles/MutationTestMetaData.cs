@@ -29,6 +29,7 @@ namespace NinjaTurtles
 	{
 		public string Description { get; internal set; }
 		public MethodDefinition MethodDefinition { get; internal set; }
+        public int ILIndex { get; internal set; }
 		internal TestDirectory TestDirectory { get; set; }
 		public string TestDirectoryName
 		{

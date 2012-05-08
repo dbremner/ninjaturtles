@@ -29,6 +29,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Mono.Cecil;
+using Mono.Cecil.Pdb;
 
 using NinjaTurtles.Turtles;
 
@@ -124,6 +125,12 @@ namespace NinjaTurtles
 			                  	? "Survived."
 			                    : "Killed.");
 
+            if (testSuitePassed)
+            {
+                Console.WriteLine("Original source code around surviving mutant (in {0}):", turtle.GetOriginalSourceFileName(mutation.ILIndex));
+                Console.WriteLine(turtle.GetOriginalSourceCode(mutation.ILIndex));
+            }
+
             return !testSuitePassed;
 		}
 
@@ -206,7 +213,7 @@ namespace NinjaTurtles
 	    private MethodDefinition ValidateMethod()
 	    {
 	        _assemblyLocation = TargetType.Assembly.Location;
-		    _assembly = AssemblyDefinition.ReadAssembly(TargetType.Assembly.Location, new ReaderParameters{ReadSymbols = true});
+		    _assembly = AssemblyDefinition.ReadAssembly(TargetType.Assembly.Location);
 		    var type = _assembly.MainModule.Types
 		        .Single(t => t.FullName == TargetType.FullName);
 		    var method = MethodDefinitionResolver.ResolveMethod(type, TargetMethod, _parameterTypes);
