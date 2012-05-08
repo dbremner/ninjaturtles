@@ -132,7 +132,7 @@ namespace NinjaTurtles.Tests.Turtles
 
         private class DummyTurtle : MethodTurtleBase
         {
-            public override IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string testAssemblyLocation)
+            protected override IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string testAssemblyLocation)
             {
                 yield return DoYield(method, assembly, testAssemblyLocation, "Dummy");
             }

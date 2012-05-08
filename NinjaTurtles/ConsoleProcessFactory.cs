@@ -53,7 +53,7 @@ namespace NinjaTurtles
 
             var processStartInfo = new ProcessStartInfo(exeName, arguments);
             processStartInfo.UseShellExecute = false;
-            processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            processStartInfo.CreateNoWindow = true;
             processStartInfo.RedirectStandardOutput = true;
 
             var process = new Process

@@ -30,26 +30,28 @@ namespace NinjaTurtles.Turtles
 	{
 		private static readonly List<OpCode> _opCodes = new List<OpCode> {
 			OpCodes.Add, OpCodes.Sub, OpCodes.Mul, OpCodes.Div, OpCodes.Rem };
-		
-		public override IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string testAssemblyLocation)
+
+        protected override IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string assemblyLocation)
 		{
-			foreach (var instruction in method.Body.Instructions)
-			{
-				if (_opCodes.Contains(instruction.OpCode))
-				{
-					var originalOpCode = instruction.OpCode;
-					
-					foreach (var opCode in _opCodes)
-					{
-						if (opCode == originalOpCode) continue;
-						instruction.OpCode = opCode;
-					    var description = string.Format("{0} => {1}", originalOpCode.Code, opCode.Code);
-					    yield return DoYield(method, assembly, testAssemblyLocation, description);
-					}
-					
-					instruction.OpCode = originalOpCode;
-				}
-			}
+		    for (int index = 0; index < method.Body.Instructions.Count; index++)
+		    {
+		        var instruction = method.Body.Instructions[index];
+		        if (_opCodes.Contains(instruction.OpCode))
+		        {
+		            var originalOpCode = instruction.OpCode;
+
+		            foreach (var opCode in _opCodes)
+		            {
+		                if (opCode == originalOpCode) continue;
+		                instruction.OpCode = opCode;
+		                var description = string.Format("{0:x4}: {1} => {2}", GetOriginalOffset(index), originalOpCode.Code, opCode.Code);
+                        MutationTestMetaData mutation = DoYield(method, assembly, assemblyLocation, description);
+		                yield return mutation;
+		            }
+
+		            instruction.OpCode = originalOpCode;
+		        }
+		    }
 		}
 	}
 }

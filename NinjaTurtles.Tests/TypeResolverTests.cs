@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 using NUnit.Framework;
@@ -11,20 +12,25 @@ namespace NinjaTurtles.Tests
     public class TypeResolverTests
     {
         [Test]
+        [MethodTested(typeof(TypeResolver), "ResolveTypeFromReferences")]
         public void ResolveTypeFromReferences_Resolves_Within_Same_Assembly()
         {
             var type = TypeResolver.ResolveTypeFromReferences(GetType().Assembly, "NinjaTurtles.Tests.ConsoleCapturer");
+            Assert.IsNotNull(type);
             Assert.AreSame(typeof(ConsoleCapturer), type);
         }
 
         [Test]
+        [MethodTested(typeof(TypeResolver), "ResolveTypeFromReferences")]
         public void ResolveTypeFromReferences_Resolves_Within_Referenced_Assembly()
         {
-            var type = TypeResolver.ResolveTypeFromReferences(GetType().Assembly, "NinjaTurtles.IMutationTest");
-            Assert.AreSame(typeof(IMutationTest), type);
+            var type = TypeResolver.ResolveTypeFromReferences(GetType().Assembly, "System.Linq.ParallelEnumerable");
+            Assert.IsNotNull(type);
+            Assert.AreSame(typeof(ParallelEnumerable), type);
         }
 
         [Test]
+        [MethodTested(typeof(TypeResolver), "ResolveTypeFromReferences")]
         public void ResolveTypeFromReferences_Resolves_Non_Public_Type()
         {
             var type = TypeResolver.ResolveTypeFromReferences(GetType().Assembly, "System.Configuration.ConfigXmlAttribute");
@@ -32,10 +38,27 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
+        [MethodTested(typeof(TypeResolver), "ResolveTypeFromReferences")]
         public void ResolveTypeFromReferences_Returns_Null_If_Unrecognised()
         {
-            var type = TypeResolver.ResolveTypeFromReferences(GetType().Assembly, "System.NonexistentWidger");
+            var type = TypeResolver.ResolveTypeFromReferences(GetType().Assembly, "System.NonexistentWidget");
             Assert.IsNull(type);
+        }
+
+        [Test, Category("Mutation")]
+        public void ResolveTypeFromReferences_Internal_Mutation_Tests()
+        {
+            MutationTestBuilder<TypeResolver>.For("ResolveTypeFromReferences",
+                                                  new[] {typeof(Assembly), typeof(string)})
+                .Run();
+        }
+
+        [Test, Category("Mutation")]
+        public void ResolveTypeFromReferences_Private_Mutation_Tests()
+        {
+            MutationTestBuilder<TypeResolver>.For("ResolveTypeFromReferences",
+                                                  new[] {typeof(Assembly), typeof(string), typeof(IList<string>)})
+                .Run();
         }
     }
 }

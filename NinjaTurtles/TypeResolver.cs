@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 using Mono.Cecil;
@@ -35,16 +36,14 @@ namespace NinjaTurtles
 		}
 		
 		private static Type ResolveTypeFromReferences(Assembly assembly, string className, IList<string> consideredAssemblies)
-        {
-            foreach (var type in assembly.GetTypes())
-            {
-                if (type.FullName == className) return type;
-            }
+		{
+		    var type = assembly.GetTypes().SingleOrDefault(t => t.FullName == className);
+            if (type != null) return type;
             foreach (var reference in assembly.GetReferencedAssemblies())
             {
 				if (consideredAssemblies.Contains(reference.Name)) continue;
 				consideredAssemblies.Add(reference.Name);
-                var type = ResolveTypeFromReferences(Assembly.Load(reference), className, consideredAssemblies);
+                type = ResolveTypeFromReferences(Assembly.Load(reference), className, consideredAssemblies);
                 if (type != null) return type;
             }
             return null;
