@@ -12,8 +12,9 @@ namespace NinjaTurtles.Tests
 	{
 		[Test]
 		[MethodTested("NinjaTurtles.MutationTest", "Run")]
-		[MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
-		public void UncoveredAdd_Mutation_Tests_Fail()
+        [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
+        [MethodTested("NinjaTurtles.MutationTest", "CheckTestProcessFails")]
+        public void UncoveredAdd_Mutation_Tests_Fail()
 		{
 			try
 			{
@@ -33,7 +34,8 @@ namespace NinjaTurtles.Tests
 		[Test]
 		[MethodTested("NinjaTurtles.MutationTest", "Run")]
 		[MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
-		public void Unknown_Method_Mutation_Tests_Fail()
+        [MethodTested("NinjaTurtles.MutationTest", "CheckTestProcessFails")]
+        public void Unknown_Method_Mutation_Tests_Fail()
 		{
 			try
 			{
@@ -53,7 +55,8 @@ namespace NinjaTurtles.Tests
 		[Test]
 		[MethodTested("NinjaTurtles.MutationTest", "Run")]
 		[MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
-		public void Mutation_Tests_Produce_Correct_Output()
+        [MethodTested("NinjaTurtles.MutationTest", "CheckTestProcessFails")]
+        public void Mutation_Tests_Produce_Correct_Output()
 		{
 			using (var capturer = new ConsoleCapturer())
 			{
@@ -78,12 +81,19 @@ namespace NinjaTurtles.Tests
 				.Run();
 		}
 
-		[Test, Category("Mutation")]
-		public void RunMutation_Mutation_Tests()
-		{
-			MutationTestBuilder.For("NinjaTurtles.MutationTest", "RunMutation")
-				.Run();
-		}
-}
+        [Test, Category("Mutation")]
+        public void RunMutation_Mutation_Tests()
+        {
+            MutationTestBuilder.For("NinjaTurtles.MutationTest", "RunMutation")
+                .Run();
+        }
+
+        [Test, Category("Mutation")]
+        public void CheckTestProcessFails_Mutation_Tests()
+        {
+            MutationTestBuilder.For("NinjaTurtles.MutationTest", "CheckTestProcessFails")
+                .Run();
+        }
+    }
 }
 

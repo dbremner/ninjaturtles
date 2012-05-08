@@ -64,7 +64,8 @@ namespace NinjaTurtles.Tests.Turtles
 		}
 		
 		[Test]
-		public void Mutate_Returns_Correct_Replacements_For_Addition()
+        [MethodTested(typeof(ArithmeticOperatorTurtle), "DoMutate")]
+        public void DoMutate_Returns_Correct_Replacements_For_Addition()
 		{
 			var assembly = CreateTestAssembly(OpCodes.Add);
 			
@@ -98,7 +99,8 @@ namespace NinjaTurtles.Tests.Turtles
 		}
 
 		[Test]
-		public void Mutate_Returns_Correct_Replacements_For_Subtraction()
+        [MethodTested(typeof(ArithmeticOperatorTurtle), "DoMutate")]
+        public void DoMutate_Returns_Correct_Replacements_For_Subtraction()
 		{
 			var assembly = CreateTestAssembly(OpCodes.Sub);
 			
@@ -132,7 +134,8 @@ namespace NinjaTurtles.Tests.Turtles
 		}
 
 		[Test]
-		public void Mutate_Returns_Correct_Replacements_For_Division_And_Describes_Appropriately()
+        [MethodTested(typeof(ArithmeticOperatorTurtle), "DoMutate")]
+        public void DoMutate_Returns_Correct_Replacements_For_Division_And_Describes_Appropriately()
 		{
 			var assembly = CreateTestAssembly(OpCodes.Div);
 			
@@ -178,7 +181,8 @@ namespace NinjaTurtles.Tests.Turtles
 		}
 
 		[Test]
-		public void Mutate_Returns_Correct_Replacements_For_Multiplication()
+        [MethodTested(typeof(ArithmeticOperatorTurtle), "DoMutate")]
+        public void DoMutate_Returns_Correct_Replacements_For_Multiplication()
 		{
 			var assembly = CreateTestAssembly(OpCodes.Mul);
 			
@@ -212,7 +216,8 @@ namespace NinjaTurtles.Tests.Turtles
 		}
 
 		[Test]
-		public void Mutate_Returns_Correct_Replacements_For_Remainder()
+        [MethodTested(typeof(ArithmeticOperatorTurtle), "DoMutate")]
+        public void DoMutate_Returns_Correct_Replacements_For_Remainder()
 		{
 			var assembly = CreateTestAssembly(OpCodes.Rem);
 			
@@ -245,34 +250,12 @@ namespace NinjaTurtles.Tests.Turtles
 			Assert.AreEqual(1, div);
 		}
 		
-		[Test]
-		public void Mutate_Creates_And_Destroys_Directories()
-		{
-			var assembly = CreateTestAssembly(OpCodes.Add);
-			
-			var addMethod = assembly.MainModule
-				.Types.Single(t => t.Name == "TestClass")
-				.Methods.Single(t => t.Name == "TestMethod");
-			
-			var mutator = new ArithmeticOperatorTurtle();
-			IEnumerable<MutationTestMetaData> mutations = mutator
-				.Mutate(addMethod, assembly, GetTempAssemblyFileName());
-			
-			var directories = new List<string>();
-
-			foreach (var mutation in mutations)
-			{
-				string directoryName = mutation.TestDirectoryName;
-				directories.Add(directoryName);
-				Assert.IsTrue(Directory.Exists(directoryName));
-				mutator.MutantComplete(mutation);
-			}
-			
-			foreach (var directory in directories)
-			{
-				Assert.IsFalse(Directory.Exists(directory));
-			}
-		}
+	    [Test, Category("Mutation")]
+	    public void DoMutate_Mutation_Tests()
+	    {
+	        MutationTestBuilder<ArithmeticOperatorTurtle>.For("DoMutate")
+	            .Run();
+	    }
 	}
 }
 

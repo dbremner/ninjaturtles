@@ -34,10 +34,10 @@ namespace NinjaTurtles
 {
 	internal class MutationTest : IMutationTest
 	{
-		private IList<Type> _mutationsToApply = new List<Type>();
-		private string _testAssemblyLocation;
-		private AssemblyDefinition _testAssembly;
-		private TypeReference _targetTypeReference;
+		private readonly IList<Type> _mutationsToApply = new List<Type>();
+		private readonly string _testAssemblyLocation;
+		private readonly AssemblyDefinition _testAssembly;
+		private readonly TypeReference _targetTypeReference;
 		private AssemblyDefinition _assembly;
 		private string _testList;
 		
@@ -57,7 +57,7 @@ namespace NinjaTurtles
 		public void Run()
 		{
 			MethodDefinition method = ValidateMethod();
-			IList<string> tests = GetMatchingTestsOrFail(method);
+			IEnumerable<string> tests = GetMatchingTestsOrFail(method);
 			_testList = Path.GetTempFileName();
 			File.WriteAllLines(_testList, tests);
 			int count = 0;
@@ -67,7 +67,7 @@ namespace NinjaTurtles
 			{
 				var turtle = (IMethodTurtle)Activator.CreateInstance(turtleType);
 				Parallel.ForEach(turtle.Mutate(method, _assembly, _testAssemblyLocation),
-				                 mutation => RunMutation(turtle, mutation, tests, ref failures, ref count));
+				                 mutation => RunMutation(turtle, mutation, ref failures, ref count));
 			}
 			if (count == 0)
 			{
@@ -80,7 +80,7 @@ namespace NinjaTurtles
 			}
 		}
 		
-		private void RunMutation(IMethodTurtle turtle, MutationTestMetaData mutation, IList<string> tests, ref int failures, ref int count)
+		private void RunMutation(IMethodTurtle turtle, MutationTestMetaData mutation, ref int failures, ref int count)
 		{
 			bool testProcessFailed = CheckTestProcessFails(turtle, mutation);
 			if (!testProcessFailed)
@@ -123,7 +123,7 @@ namespace NinjaTurtles
             }
 		}
 		
-		private IList<string> GetMatchingTestsOrFail(MethodDefinition targetMethod)
+		private IEnumerable<string> GetMatchingTestsOrFail(MethodDefinition targetMethod)
 		{
 			var tests = new List<string>();
 			foreach (var type in _testAssembly.MainModule.Types)
@@ -172,7 +172,7 @@ namespace NinjaTurtles
 			}
 		}
 
-		public NinjaTurtles.IMutationTest With<T>() where T : IMethodTurtle
+		public IMutationTest With<T>() where T : IMethodTurtle
 		{
 			_mutationsToApply.Add(typeof(T));
 			return this;
