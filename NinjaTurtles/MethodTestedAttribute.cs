@@ -43,6 +43,8 @@ namespace NinjaTurtles
 		public Type TargetType { get; private set; }
 		
 		public string TargetMethod { get; private set; }
+
+        public Type[] ParameterTypes { get; set; }
 	}
 }
 

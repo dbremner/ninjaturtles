@@ -133,15 +133,7 @@ namespace NinjaTurtles
 				foreach (var method in type.Methods)
 				{
 					if (method.CustomAttributes
-							.Any(a => a.AttributeType.Name == "MethodTestedAttribute"
-						     	&& ((a.ConstructorArguments[0].Value is String
-					    && (string)a.ConstructorArguments[0].Value
-					     == _targetTypeReference.FullName)
-					    || (a.ConstructorArguments[0].Value is TypeReference
-						&& ((TypeReference)a.ConstructorArguments[0].Value).FullName
-						     		== _targetTypeReference.FullName))
-						     	&& ((string)a.ConstructorArguments[1].Value)
-					     			== targetMethod.Name))
+							.Any(a => HasMatchingMethodTestedAttribute(targetMethod, a)))
 					{
 						tests.Add(string.Format ("{0}.{1}", type.FullName, method.Name));
 					}
@@ -155,8 +147,32 @@ namespace NinjaTurtles
 			}
 			return tests;
 		}
-		
-		private MethodDefinition ValidateMethod()
+
+        private bool HasMatchingMethodTestedAttribute(MethodDefinition targetMethod, CustomAttribute attribute)
+        {
+            if (attribute.AttributeType.Name != "MethodTestedAttribute") return false;
+            if ((string)attribute.ConstructorArguments[1].Value != targetMethod.Name) return false;
+            if (attribute.ConstructorArguments[0].Value is string
+                && (string)attribute.ConstructorArguments[0].Value != _targetTypeReference.FullName)
+            {
+                return false;
+            }
+            if (attribute.ConstructorArguments[0].Value is TypeReference
+                && ((TypeReference)attribute.ConstructorArguments[0].Value).FullName != _targetTypeReference.FullName)
+            {
+                return false;
+            }
+            if (_parameterTypes != null
+                && attribute.HasProperties
+                && attribute.Properties.Any(p => p.Name == "ParameterTypes")
+                && !Enumerable.SequenceEqual(_parameterTypes, (Type[])attribute.Properties.Single(p => p.Name == "ParameterTypes").Argument.Value))
+            {
+                return false;
+            }
+            return true;
+        }
+
+	    private MethodDefinition ValidateMethod()
 		{
 		    _assembly = AssemblyDefinition.ReadAssembly(TargetType.Assembly.Location);
 		    var type = _assembly.MainModule.Types

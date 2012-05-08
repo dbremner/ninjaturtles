@@ -42,7 +42,7 @@ namespace NinjaTurtles.Tests
 		[Test, Category("Mutation")]
 		public void For_Mutation_Tests()
 		{
-			MutationTestBuilder<MutationTestBuilder>.For("For", new Type[] { typeof(string), typeof(string), typeof(Type[]) })
+			MutationTestBuilder<MutationTestBuilder>.For("For", new[] { typeof(string), typeof(string), typeof(Type[]) })
 				.Run();
 		}
 	}
