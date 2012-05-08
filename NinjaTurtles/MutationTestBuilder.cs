@@ -26,26 +26,26 @@ namespace NinjaTurtles
 {
 	public sealed class MutationTestBuilder<T>
 	{
-		public static IMutationTest For(string targetMethod)
+		public static IMutationTest For(string targetMethod, Type[] parameterTypes = null)
 		{
 			var callingAssembly = Assembly.GetCallingAssembly();
-			return MutationTestBuilder.For(callingAssembly.Location, typeof(T), targetMethod);
+			return MutationTestBuilder.For(callingAssembly.Location, typeof(T), targetMethod, parameterTypes);
 		}
 	}
 	
 	public sealed class MutationTestBuilder
 	{
-		public static IMutationTest For(string targetClass, string targetMethod)
-		{
-			var callingAssembly = Assembly.GetCallingAssembly();
+        public static IMutationTest For(string targetClass, string targetMethod, Type[] parameterTypes = null)
+        {
+            var callingAssembly = Assembly.GetCallingAssembly();
             Type resolvedType = TypeResolver.ResolveTypeFromReferences(callingAssembly, targetClass);
 
-			return For(callingAssembly.Location, resolvedType, targetMethod);
-		}
-		
-		internal static IMutationTest For(string callingAssemblyLocation, Type targetType, string targetMethod)
+            return For(callingAssembly.Location, resolvedType, targetMethod, parameterTypes);
+        }
+
+		internal static IMutationTest For(string callingAssemblyLocation, Type targetType, string targetMethod, Type[] parameterTypes)
 		{
-			return new MutationTest(callingAssemblyLocation, targetType, targetMethod);
+			return new MutationTest(callingAssemblyLocation, targetType, targetMethod, parameterTypes);
 		}
 	}
 }
