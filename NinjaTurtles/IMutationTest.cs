@@ -32,6 +32,8 @@ namespace NinjaTurtles
 		
 		void Run();
 		IMutationTest With<T>() where T : IMethodTurtle;
+	    IMutationTest WriteReportTo(string fileName);
+	    IMutationTest MergeReportTo(string fileName);
 	}
 }
 

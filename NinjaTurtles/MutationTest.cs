@@ -27,10 +27,12 @@ using System.Linq;
 using System.Management;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 using Mono.Cecil;
 using Mono.Cecil.Pdb;
 
+using NinjaTurtles.Reporting;
 using NinjaTurtles.Turtles;
 
 namespace NinjaTurtles
@@ -45,6 +47,9 @@ namespace NinjaTurtles
 		private AssemblyDefinition _assembly;
 		private string _testList;
 	    private string _assemblyLocation;
+	    private MutationTestingReport _report;
+        private ReportingStrategy _reportingStrategy = new NullReportingStrategy();
+	    private string _reportFileName;
 
 	    internal MutationTest(string testAssemblyLocation, Type targetType, string targetMethod, Type[] parameterTypes)
 		{
@@ -63,6 +68,7 @@ namespace NinjaTurtles
 		public void Run()
 		{
 			MethodDefinition method = ValidateMethod();
+		    _report = new MutationTestingReport();
 			IEnumerable<string> tests = GetMatchingTestsOrFail(method);
 			_testList = Path.GetTempFileName();
 			File.WriteAllLines(_testList, tests);
@@ -75,6 +81,9 @@ namespace NinjaTurtles
 				Parallel.ForEach(turtle.Mutate(method, _assembly, _assemblyLocation),
 				                 mutation => RunMutation(turtle, mutation, ref failures, ref count));
 			}
+
+            _reportingStrategy.WriteReport(_report, _reportFileName);
+
 			if (count == 0)
 			{
 				Console.WriteLine("No valid mutations found (this is fine).");
@@ -124,6 +133,7 @@ namespace NinjaTurtles
 			                  testSuitePassed
 			                  	? "Survived."
 			                    : "Killed.");
+            _report.AddResult(turtle.GetCurrentSequencePoint(mutation.ILIndex), mutation, !testSuitePassed);
 
             if (testSuitePassed)
             {
@@ -230,6 +240,53 @@ namespace NinjaTurtles
 			_mutationsToApply.Add(typeof(T));
 			return this;
 		}
-	}
+
+	    public IMutationTest WriteReportTo(string fileName)
+	    {
+	        _reportingStrategy = new OverwriteReportingStrategy();
+	        _reportFileName = fileName;
+	        return this;
+	    }
+
+	    public IMutationTest MergeReportTo(string fileName)
+	    {
+	        _reportingStrategy = new MergeReportingStrategy();
+            _reportFileName = fileName;
+            return this;
+	    }
+
+        private abstract class ReportingStrategy
+        {
+            public abstract void WriteReport(MutationTestingReport report, string fileName);
+        }
+
+        private class NullReportingStrategy : ReportingStrategy
+        {
+            public override void WriteReport(MutationTestingReport report, string fileName) { }
+        }
+
+        private class OverwriteReportingStrategy : ReportingStrategy
+        {
+            public override void WriteReport(MutationTestingReport report, string fileName)
+            {
+                using (var streamWriter = File.CreateText(fileName))
+                {
+                    new XmlSerializer(typeof(MutationTestingReport)).Serialize(streamWriter, report);
+                }
+            }
+        }
+
+        private class MergeReportingStrategy : ReportingStrategy
+        {
+            public override void WriteReport(MutationTestingReport report, string fileName)
+            {
+                report.MergeFromFile(fileName);
+                using (var streamWriter = File.CreateText(fileName))
+                {
+                    new XmlSerializer(typeof(MutationTestingReport)).Serialize(streamWriter, report);
+                }
+            }
+        }
+    }
 }
 

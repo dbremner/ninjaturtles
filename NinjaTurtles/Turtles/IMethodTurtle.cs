@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 
 using Mono.Cecil;
+using Mono.Cecil.Cil;
 
 namespace NinjaTurtles.Turtles
 {
@@ -32,6 +33,7 @@ namespace NinjaTurtles.Turtles
 		IEnumerable<MutationTestMetaData> Mutate(MethodDefinition method, AssemblyDefinition assembly, string testAssemblyLocation);
 	    int GetOriginalOffset(int index);
 	    string GetOriginalSourceFileName(int index);
+	    SequencePoint GetCurrentSequencePoint(int index);
 	    string GetOriginalSourceCode(int index);
 	}
 }

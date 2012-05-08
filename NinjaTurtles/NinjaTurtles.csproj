@@ -44,6 +44,7 @@
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MethodDefinitionResolver.cs" />
@@ -52,6 +53,11 @@
     <Compile Include="MutationTestBuilder.cs" />
     <Compile Include="IMutationTest.cs" />
     <Compile Include="MutationTest.cs" />
+    <Compile Include="Reporting\AppliedMutant.cs" />
+    <Compile Include="Reporting\MutationTestingReport.cs" />
+    <Compile Include="Reporting\SequencePoint.cs" />
+    <Compile Include="Reporting\SourceFile.cs" />
+    <Compile Include="Reporting\Line.cs" />
     <Compile Include="Turtles\ArithmeticOperatorTurtle.cs" />
     <Compile Include="MutationTestMetaData.cs" />
     <Compile Include="Turtles\IMethodTurtle.cs" />
