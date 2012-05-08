@@ -30,6 +30,9 @@ namespace NinjaTurtles.Turtles
 	{
 		void MutantComplete(MutationTestMetaData metaData);
 		IEnumerable<MutationTestMetaData> Mutate(MethodDefinition method, AssemblyDefinition assembly, string testAssemblyLocation);
+	    int GetOriginalOffset(int index);
+	    string GetOriginalSourceFileName(int index);
+	    string GetOriginalSourceCode(int index);
 	}
 }
 

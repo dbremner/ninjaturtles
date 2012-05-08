@@ -9,6 +9,7 @@ using Mono.Cecil.Cil;
 
 using NUnit.Framework;
 
+using NinjaTurtles.Tests.Turtles.ArithmeticOperatorTurtleTestSuite;
 using NinjaTurtles.Turtles;
 
 namespace NinjaTurtles.Tests.Turtles
@@ -79,6 +80,38 @@ namespace NinjaTurtles.Tests.Turtles
 
         [Test]
         [MethodTested(typeof(MethodTurtleBase), "Mutate")]
+        public void Mutate_Stores_Original_Offsets()
+        {
+            var assembly = CreateTestAssembly();
+            var turtle = new DummyTurtle();
+            var method = assembly.MainModule.Types
+                .Single(t => t.Name == "TestClass")
+                .Methods.Single(m => m.Name == "TestMethod");
+            turtle.Mutate(method, assembly, GetTempAssemblyFileName()).First();
+            var ilCount = method.Body.Instructions.Count;
+            Assert.AreNotEqual(turtle.GetOriginalOffset(ilCount - 1), method.Body.Instructions[ilCount - 1].Offset);
+        }
+
+        [Test]
+        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
+        public void Mutate_Resolves_And_Numbers_Source_Code()
+        {
+            string assemblyLocation = typeof(AdditionClassUnderTest).Assembly.Location;
+            var assembly = AssemblyDefinition.ReadAssembly(assemblyLocation);
+            var turtle = new DummyTurtle();
+            var method = assembly.MainModule.Types
+                .Single(t => t.Name == "AdditionClassUnderTest")
+                .Methods.Single(m => m.Name == "Add");
+            turtle.Mutate(method, assembly, assemblyLocation).First();
+            Assert.AreEqual(@"  12:         public int Add(int left, int right)
+  13:         {
+  14:             return left + right;
+  15:         }
+  16: ".Replace("\r\n", Environment.NewLine), turtle.GetOriginalSourceCode(4));
+        }
+
+        [Test]
+        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
         [MethodTested(typeof(MethodTurtleBase), "DoYield")]
         [MethodTested(typeof(MethodTurtleBase), "MutantComplete")]
         public void Mutate_Creates_And_Destroys_Directories()
@@ -134,7 +167,7 @@ namespace NinjaTurtles.Tests.Turtles
         {
             protected override IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string testAssemblyLocation)
             {
-                yield return DoYield(method, assembly, testAssemblyLocation, "Dummy");
+                yield return DoYield(method, assembly, testAssemblyLocation, "Dummy", 0);
             }
         }
     }
