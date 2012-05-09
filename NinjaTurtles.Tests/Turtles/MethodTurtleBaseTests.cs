@@ -29,7 +29,7 @@ namespace NinjaTurtles.Tests.Turtles
         [TestFixtureTearDown]
         public void TestFixtureTearDown()
         {
-            Directory.Delete(_testFolder);
+            Directory.Delete(_testFolder, true);
         }
 
         private string GetTempAssemblyFileName()
@@ -74,7 +74,12 @@ namespace NinjaTurtles.Tests.Turtles
             var method = assembly.MainModule.Types
                 .Single(t => t.Name == "TestClass")
                 .Methods.Single(m => m.Name == "TestMethod");
-            var mutation = turtle.Mutate(method, assembly, GetTempAssemblyFileName()).First();
+
+            string tempAssemblyFileName = GetTempAssemblyFileName();
+            assembly.Write(tempAssemblyFileName);
+            var module = new Module(tempAssemblyFileName);
+
+            var mutation = turtle.Mutate(method, module).First();
             Assert.AreEqual(OpCodes.Ldarg, mutation.MethodDefinition.Body.Instructions[0].OpCode);
         }
 
@@ -83,11 +88,16 @@ namespace NinjaTurtles.Tests.Turtles
         public void Mutate_Stores_Original_Offsets()
         {
             var assembly = CreateTestAssembly();
+
+            string tempAssemblyFileName = GetTempAssemblyFileName();
+            assembly.Write(tempAssemblyFileName);
+            var module = new Module(tempAssemblyFileName);
+
             var turtle = new DummyTurtle();
-            var method = assembly.MainModule.Types
+            var method = module.Definition.Types
                 .Single(t => t.Name == "TestClass")
                 .Methods.Single(m => m.Name == "TestMethod");
-            turtle.Mutate(method, assembly, GetTempAssemblyFileName()).First();
+            turtle.Mutate(method, module).First();
             var ilCount = method.Body.Instructions.Count;
             Assert.AreNotEqual(turtle.GetOriginalOffset(ilCount - 1), method.Body.Instructions[ilCount - 1].Offset);
         }
@@ -96,18 +106,20 @@ namespace NinjaTurtles.Tests.Turtles
         [MethodTested(typeof(MethodTurtleBase), "Mutate")]
         public void Mutate_Resolves_And_Numbers_Source_Code()
         {
-            string assemblyLocation = typeof(AdditionClassUnderTest).Assembly.Location;
-            var assembly = AssemblyDefinition.ReadAssembly(assemblyLocation);
+            var module = new Module(typeof(AdditionClassUnderTest).Assembly.Location);
+            module.LoadDebugInformation();
+            
             var turtle = new DummyTurtle();
-            var method = assembly.MainModule.Types
+            var method = module.Definition.Types
                 .Single(t => t.Name == "AdditionClassUnderTest")
                 .Methods.Single(m => m.Name == "Add");
-            turtle.Mutate(method, assembly, assemblyLocation).First();
+
+            turtle.Mutate(method, module).First();
             Assert.AreEqual(@"  12:         public int Add(int left, int right)
   13:         {
   14:             return left + right;
   15:         }
-  16: ".Replace("\r\n", Environment.NewLine), turtle.GetOriginalSourceCode(3));
+  16: ".Replace("\r\n", "\n").Replace("\n", Environment.NewLine), turtle.GetOriginalSourceCode(3));
         }
 
         [Test]
@@ -122,9 +134,13 @@ namespace NinjaTurtles.Tests.Turtles
                 .Types.Single(t => t.Name == "TestClass")
                 .Methods.Single(t => t.Name == "TestMethod");
 
+            string tempAssemblyFileName = GetTempAssemblyFileName();
+            assembly.Write(tempAssemblyFileName);
+            var module = new Module(tempAssemblyFileName);
+
             var mutator = new DummyTurtle();
             IEnumerable<MutationTestMetaData> mutations = mutator
-                .Mutate(addMethod, assembly, GetTempAssemblyFileName());
+                .Mutate(addMethod, module);
 
             var directories = new List<string>();
 
@@ -146,6 +162,7 @@ namespace NinjaTurtles.Tests.Turtles
         public void Mutate_Mutation_Tests()
         {
             MutationTestBuilder<MethodTurtleBase>.For("Mutate")
+                .MergeReportTo("C:\\Working\\hg\\ninjaturtles\\SampleReport.xml")
                 .Run();
         }
 
@@ -153,6 +170,7 @@ namespace NinjaTurtles.Tests.Turtles
         public void MutantComplete_Mutation_Tests()
         {
             MutationTestBuilder<MethodTurtleBase>.For("MutantComplete")
+                .MergeReportTo("C:\\Working\\hg\\ninjaturtles\\SampleReport.xml")
                 .Run();
         }
 
@@ -160,14 +178,15 @@ namespace NinjaTurtles.Tests.Turtles
         public void DoYield_Mutation_Tests()
         {
             MutationTestBuilder<MethodTurtleBase>.For("DoYield")
+                .MergeReportTo("C:\\Working\\hg\\ninjaturtles\\SampleReport.xml")
                 .Run();
         }
 
         private class DummyTurtle : MethodTurtleBase
         {
-            protected override IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string testAssemblyLocation)
+            protected override IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, Module module)
             {
-                yield return DoYield(method, assembly, testAssemblyLocation, "Dummy", 0);
+                yield return DoYield(method, module, "Dummy", 0);
             }
         }
     }

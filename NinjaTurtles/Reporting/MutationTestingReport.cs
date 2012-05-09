@@ -26,6 +26,8 @@ using System.Linq;
 using System.Threading;
 using System.Xml.Serialization;
 
+using Mono.Cecil;
+
 namespace NinjaTurtles.Reporting
 {
     [Serializable]
@@ -64,6 +66,37 @@ namespace NinjaTurtles.Reporting
             }
         }
 
+        public void RegisterMethod(MethodDefinition method)
+        {
+            if (method.Body.Instructions.All(i => i.SequencePoint == null)) return;
+            string sourceFileUrl =
+                method.Body.Instructions.First(i => i.SequencePoint != null).SequencePoint.Document.Url;
+            _readerWriterLock.EnterUpgradeableReadLock();
+            try
+            {
+                if (!SourceFiles.Any(s => s.Url == sourceFileUrl))
+                {
+                    _readerWriterLock.EnterWriteLock();
+                    var newSourceFile = new SourceFile();
+                    newSourceFile.SetUrl(sourceFileUrl);
+                    SourceFiles.Add(newSourceFile);
+                    _readerWriterLock.ExitWriteLock();
+                }
+            }
+            finally
+            {
+                _readerWriterLock.ExitUpgradeableReadLock();
+            }
+            var sourceFile = SourceFiles.First(s => s.Url == sourceFileUrl);
+            var sequencePoints = method.Body.Instructions
+                .Where(i => i.SequencePoint != null)
+                .Select(i => i.SequencePoint).Distinct();
+            foreach (var point in sequencePoints)
+            {
+                sourceFile.AddSequencePoint(point);
+            }
+        }
+
         public void AddResult(Mono.Cecil.Cil.SequencePoint sequencePoint, MutationTestMetaData mutationTestMetaData, bool mutantKilled)
         {
             string sourceFileUrl = sequencePoint.Document.Url;
@@ -73,10 +106,9 @@ namespace NinjaTurtles.Reporting
                 if (!SourceFiles.Any(s => s.Url == sourceFileUrl))
                 {
                     _readerWriterLock.EnterWriteLock();
-                    SourceFiles.Add(new SourceFile
-                    {
-                        Url = sourceFileUrl
-                    });
+                    var newSourceFile = new SourceFile();
+                    newSourceFile.SetUrl(sourceFileUrl);
+                    SourceFiles.Add(newSourceFile);
                     _readerWriterLock.ExitWriteLock();
                 }
             }

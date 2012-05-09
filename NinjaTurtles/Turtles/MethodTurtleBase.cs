@@ -23,12 +23,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
-using Mono.Cecil.Mdb;
-using Mono.Cecil.Pdb;
 using Mono.Cecil.Rocks;
 
 namespace NinjaTurtles.Turtles
@@ -36,8 +33,7 @@ namespace NinjaTurtles.Turtles
     public abstract class MethodTurtleBase : IMethodTurtle
     {
         private int[] _originalOffsets;
-        private IDictionary<string, string[]> _sourceFiles = new Dictionary<string, string[]>();
-        private AssemblyDefinition _assembly;
+        private Module _module;
         private MethodDefinition _method;
 
         public void MutantComplete(MutationTestMetaData metaData)
@@ -45,54 +41,24 @@ namespace NinjaTurtles.Turtles
             metaData.TestDirectory.Dispose();
         }
 
-        public IEnumerable<MutationTestMetaData> Mutate(MethodDefinition method, AssemblyDefinition assembly, string assemblyLocation)
+        public IEnumerable<MutationTestMetaData> Mutate(MethodDefinition method, Module module)
         {
-            _assembly = assembly;
+            _module = module;
             _method = method;
             _originalOffsets = method.Body.Instructions.Select(i => i.Offset).ToArray();
-            LoadDebugSymbolsAndSourceCode(assemblyLocation);
             method.Body.SimplifyMacros();
-            foreach (var mutation in DoMutate(method, assembly, assemblyLocation))
+            foreach (var mutation in DoMutate(method, module))
             {
                 yield return mutation;
             }
         }
 
-        private void LoadDebugSymbolsAndSourceCode(string assemblyLocation)
-        {
-			string symbolLocation =  null;
-            string pdbLocation = Path.ChangeExtension(assemblyLocation, "pdb");
-			string mdbLocation = assemblyLocation + ".mdb";
-            ISymbolReaderProvider provider = null;
-            if (File.Exists(pdbLocation))
-            {
-				symbolLocation = pdbLocation;
-                provider = new PdbReaderProvider();
-            }
-            else if (File.Exists(mdbLocation))
-            {
-				symbolLocation = assemblyLocation;
-                provider = new MdbReaderProvider();
-            }
-            if (provider == null) return;
-            var reader = provider.GetSymbolReader(_assembly.MainModule, symbolLocation);
-            _assembly.MainModule.ReadSymbols(reader);
-            reader.Read(_method.Body, o => _method.Body.Instructions.FirstOrDefault(i => i.Offset == o));
-            var sourceFiles =
-                _method.Body.Instructions.Where(i => i.SequencePoint != null).Select(i => i.SequencePoint.Document.Url).
-                    Distinct();
-            foreach (var sourceFile in sourceFiles)
-            {
-                _sourceFiles.Add(sourceFile, File.ReadAllLines(sourceFile));
-            }
-        }
+        protected abstract IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, Module module);
 
-        protected abstract IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string assemblyLocation);
-
-        protected MutationTestMetaData DoYield(MethodDefinition method, AssemblyDefinition assembly, string assemblyLocation, string description, int index)
+        protected MutationTestMetaData DoYield(MethodDefinition method, Module module, string description, int index)
         {
-            var testDirectory = new TestDirectory(Path.GetDirectoryName(assemblyLocation));
-            testDirectory.SaveAssembly(assembly, Path.GetFileName(assemblyLocation));
+            var testDirectory = new TestDirectory(Path.GetDirectoryName(module.AssemblyLocation));
+            testDirectory.SaveAssembly(module);
             return new MutationTestMetaData
             {
                 Description = description,
@@ -129,7 +95,7 @@ namespace NinjaTurtles.Turtles
         {
             var sequencePoint = GetCurrentSequencePoint(index);
             string result = "";
-            string[] sourceCode = _sourceFiles[sequencePoint.Document.Url];
+            string[] sourceCode = _module.SourceFiles[sequencePoint.Document.Url];
             int upperBound = Math.Min(sequencePoint.EndLine + 2, sourceCode.Length);
             for (int line = Math.Max(sequencePoint.StartLine - 2, 1); line <= upperBound; line++)
             {

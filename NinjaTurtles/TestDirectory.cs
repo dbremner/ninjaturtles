@@ -22,13 +22,11 @@
 using System;
 using System.IO;
 
-using Mono.Cecil;
-
 namespace NinjaTurtles
 {
 	public class TestDirectory : IDisposable
 	{
-		private string _folder;
+		private readonly string _folder;
 
 		public TestDirectory() : this(null)
 		{
@@ -50,9 +48,9 @@ namespace NinjaTurtles
 			}
 		}
 		
-		public void SaveAssembly(AssemblyDefinition assembly, string fileName)
+		public void SaveAssembly(Module module)
 		{
-			assembly.Write(Path.Combine(_folder, fileName));
+			module.AssemblyDefinition.Write(Path.Combine(_folder, Path.GetFileName(module.AssemblyLocation)));
 		}
 		
 		private static void CopyDirectoryContents(string sourceFolder, string targetFolder)

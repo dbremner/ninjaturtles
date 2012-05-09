@@ -30,7 +30,7 @@ namespace NinjaTurtles.Turtles
 	public interface IMethodTurtle
 	{
 		void MutantComplete(MutationTestMetaData metaData);
-		IEnumerable<MutationTestMetaData> Mutate(MethodDefinition method, AssemblyDefinition assembly, string testAssemblyLocation);
+		IEnumerable<MutationTestMetaData> Mutate(MethodDefinition method, Module module);
 	    int GetOriginalOffset(int index);
 	    string GetOriginalSourceFileName(int index);
 	    SequencePoint GetCurrentSequencePoint(int index);

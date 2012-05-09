@@ -31,7 +31,7 @@ namespace NinjaTurtles.Turtles
 		private static readonly List<OpCode> _opCodes = new List<OpCode> {
 			OpCodes.Add, OpCodes.Sub, OpCodes.Mul, OpCodes.Div, OpCodes.Rem };
 
-        protected override IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, AssemblyDefinition assembly, string assemblyLocation)
+        protected override IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, Module module)
 		{
 		    for (int index = 0; index < method.Body.Instructions.Count; index++)
 		    {
@@ -45,7 +45,7 @@ namespace NinjaTurtles.Turtles
 		                if (opCode == originalOpCode) continue;
 		                instruction.OpCode = opCode;
 		                var description = string.Format("{0:x4}: {1} => {2}", GetOriginalOffset(index), originalOpCode.Code, opCode.Code);
-                        MutationTestMetaData mutation = DoYield(method, assembly, assemblyLocation, description, index);
+                        MutationTestMetaData mutation = DoYield(method, module, description, index);
 		                yield return mutation;
 		            }
 

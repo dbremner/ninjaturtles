@@ -27,7 +27,7 @@ namespace NinjaTurtles.Tests.Turtles
 		[TestFixtureTearDown]
 		public void TestFixtureTearDown()
 		{
-			Directory.Delete(_testFolder);
+			Directory.Delete(_testFolder, true);
 		}
 		
 		private static AssemblyDefinition CreateTestAssembly(OpCode arithmeticOperator)
@@ -72,10 +72,14 @@ namespace NinjaTurtles.Tests.Turtles
 			var addMethod = assembly.MainModule
 				.Types.Single(t => t.Name == "TestClass")
 				.Methods.Single(t => t.Name == "TestMethod");
+
+		    string tempAssemblyFileName = GetTempAssemblyFileName();
+		    assembly.Write(tempAssemblyFileName);
+		    var module = new Module(tempAssemblyFileName);
 			
 			var mutator = new ArithmeticOperatorTurtle();
 			IEnumerable<MutationTestMetaData> mutations = mutator
-				.Mutate(addMethod, assembly, GetTempAssemblyFileName());
+				.Mutate(addMethod, module);
 			
 			int sub = 0;
 			int mul = 0;
@@ -107,10 +111,14 @@ namespace NinjaTurtles.Tests.Turtles
 			var subtractMethod = assembly.MainModule
 				.Types.Single(t => t.Name == "TestClass")
 				.Methods.Single(t => t.Name == "TestMethod");
-			
-			var mutator = new ArithmeticOperatorTurtle();
-			IEnumerable<MutationTestMetaData> mutations = mutator
-				.Mutate(subtractMethod, assembly, GetTempAssemblyFileName());
+
+            string tempAssemblyFileName = GetTempAssemblyFileName();
+            assembly.Write(tempAssemblyFileName);
+            var module = new Module(tempAssemblyFileName);
+
+            var mutator = new ArithmeticOperatorTurtle();
+            IEnumerable<MutationTestMetaData> mutations = mutator
+                .Mutate(subtractMethod, module);
 			
 			int add = 0;
 			int mul = 0;
@@ -142,10 +150,14 @@ namespace NinjaTurtles.Tests.Turtles
 			var divideMethod = assembly.MainModule
 				.Types.Single(t => t.Name == "TestClass")
 				.Methods.Single(t => t.Name == "TestMethod");
-			
-			var mutator = new ArithmeticOperatorTurtle();
-			IEnumerable<MutationTestMetaData> mutations = mutator
-				.Mutate(divideMethod, assembly, GetTempAssemblyFileName());
+
+            string tempAssemblyFileName = GetTempAssemblyFileName();
+            assembly.Write(tempAssemblyFileName);
+            var module = new Module(tempAssemblyFileName);
+
+            var mutator = new ArithmeticOperatorTurtle();
+            IEnumerable<MutationTestMetaData> mutations = mutator
+                .Mutate(divideMethod, module);
 			
 			int add = 0;
 			int sub = 0;
@@ -189,10 +201,14 @@ namespace NinjaTurtles.Tests.Turtles
 			var multiplicationMethod = assembly.MainModule
 				.Types.Single(t => t.Name == "TestClass")
 				.Methods.Single(t => t.Name == "TestMethod");
-			
-			var mutator = new ArithmeticOperatorTurtle();
-			IEnumerable<MutationTestMetaData> mutations = mutator
-				.Mutate(multiplicationMethod, assembly, GetTempAssemblyFileName());
+
+            string tempAssemblyFileName = GetTempAssemblyFileName();
+            assembly.Write(tempAssemblyFileName);
+            var module = new Module(tempAssemblyFileName);
+
+            var mutator = new ArithmeticOperatorTurtle();
+            IEnumerable<MutationTestMetaData> mutations = mutator
+                .Mutate(multiplicationMethod, module);
 			
 			int add = 0;
 			int sub = 0;
@@ -224,10 +240,14 @@ namespace NinjaTurtles.Tests.Turtles
 			var remainderMethod = assembly.MainModule
 				.Types.Single(t => t.Name == "TestClass")
 				.Methods.Single(t => t.Name == "TestMethod");
-			
-			var mutator = new ArithmeticOperatorTurtle();
-			IEnumerable<MutationTestMetaData> mutations = mutator
-				.Mutate(remainderMethod, assembly, GetTempAssemblyFileName());
+
+            string tempAssemblyFileName = GetTempAssemblyFileName();
+            assembly.Write(tempAssemblyFileName);
+            var module = new Module(tempAssemblyFileName);
+
+            var mutator = new ArithmeticOperatorTurtle();
+            IEnumerable<MutationTestMetaData> mutations = mutator
+                .Mutate(remainderMethod, module);
 			
 			int add = 0;
 			int sub = 0;

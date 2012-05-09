@@ -98,13 +98,12 @@ namespace NinjaTurtles.Tests
 		[Test]
 		public void SaveAssembly_Saves_Assembly()
 		{
-			string assemblyLocation = GetType().Assembly.Location;
-			var assemblyDefinition = AssemblyDefinition.ReadAssembly(assemblyLocation);
-			string fileName = Path.GetFileName(assemblyLocation);
+		    var module = new Module(GetType().Assembly.Location);
+			string fileName = Path.GetFileName(module.AssemblyLocation);
 			
 			using (var testDirectory = new TestDirectory())
 			{
-				testDirectory.SaveAssembly(assemblyDefinition, fileName);
+				testDirectory.SaveAssembly(module);
 				Assert.IsTrue(File.Exists(Path.Combine(testDirectory.FullName, fileName)));
 			}
 		}
