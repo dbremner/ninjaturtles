@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InstructionExtensions.cs" />
     <Compile Include="MethodDefinitionResolver.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Reporting\Line.cs" />
     <Compile Include="Turtles\ArithmeticOperatorTurtle.cs" />
     <Compile Include="MutationTestMetaData.cs" />
+    <Compile Include="Turtles\BranchConditionTurtle.cs" />
     <Compile Include="Turtles\IMethodTurtle.cs" />
     <Compile Include="MutationTestFailureException.cs" />
     <Compile Include="MethodTestedAttribute.cs" />

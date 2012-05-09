@@ -130,7 +130,7 @@ namespace NinjaTurtles
 			turtle.MutantComplete(mutation);
 			
 		    bool testSuitePassed = exitCode == 0 && exitedInTime;
-		    Console.WriteLine("Mutant: {0}. {1}",
+            string result = string.Format("Mutant: {0}. {1}",
 			                  mutation.Description,
 			                  testSuitePassed
 			                  	? "Survived."
@@ -139,9 +139,13 @@ namespace NinjaTurtles
 
             if (testSuitePassed)
             {
-                Console.WriteLine("Original source code around surviving mutant (in {0}):", turtle.GetOriginalSourceFileName(mutation.ILIndex));
-                Console.WriteLine(turtle.GetOriginalSourceCode(mutation.ILIndex));
+                result = string.Format("{0}\nOriginal source code around surviving mutant (in {1}):\n{2}",
+                    result,
+                    turtle.GetOriginalSourceFileName(mutation.ILIndex),
+                    turtle.GetOriginalSourceCode(mutation.ILIndex));
             }
+
+            Console.WriteLine(result);
 
             return !testSuitePassed;
 		}

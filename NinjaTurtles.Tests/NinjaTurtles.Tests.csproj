@@ -44,6 +44,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InstructionExtensionsTests.cs" />
     <Compile Include="MethodDefinitionResolverTests.cs" />
     <Compile Include="ModuleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -55,6 +56,9 @@
     <Compile Include="MutationTestTests.cs" />
     <Compile Include="ConsoleCapturer.cs" />
     <Compile Include="TestDirectoryTests.cs" />
+    <Compile Include="Turtles\BranchConditionTurtleTests.cs" />
+    <Compile Include="Turtles\BranchConditionTurtleTestSuite\BranchConditionClassUnderTest.cs" />
+    <Compile Include="Turtles\BranchConditionTurtleTestSuite\Tests\BranchConditionClassUnderTestTests.cs" />
     <Compile Include="Turtles\MethodTurtleBaseTests.cs" />
     <Compile Include="TypeResolverTests.cs" />
   </ItemGroup>
