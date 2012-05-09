@@ -67,14 +67,14 @@
   38:        : <span class="white">        private static Type ResolveTypeFromReferences(Assembly assembly, string className, IList<string> consideredAssemblies)&#x200b;</span>
   39:        : <span class="amber">        {&#x200b;</span>
   40:        : <span class="amber">            var type = assembly.GetTypes().SingleOrDefault(t => t.FullName == className);&#x200b;</span>
-  41:        : <span class="amber">            if (type != null) return type;&#x200b;</span>
-  42:        : <span class="amber">            foreach (var reference in assembly.GetReferencedAssemblies())&#x200b;</span>
+  41:     4/4: <span class="green">            if (type != null) return type;&#x200b;</span>
+  42:     4/4: <span class="green">            foreach (var reference in assembly.GetReferencedAssemblies())&#x200b;</span>
   43:        : <span class="amber">            {&#x200b;</span>
-  44:        : <span class="amber">                if (consideredAssemblies.Contains(reference.Name)) continue;&#x200b;</span>
+  44:     4/4: <span class="green">                if (consideredAssemblies.Contains(reference.Name)) continue;&#x200b;</span>
   45:        : <span class="amber">                consideredAssemblies.Add(reference.Name);&#x200b;</span>
   46:        : <span class="amber">                type = ResolveTypeFromReferences(Assembly.Load(reference), className, consideredAssemblies);&#x200b;</span>
-  47:        : <span class="amber">                if (type != null) return type;&#x200b;</span>
-  48:        : <span class="amber">            }&#x200b;</span>
+  47:     3/3: <span class="green">                if (type != null) return type;&#x200b;</span>
+  48:     4/4: <span class="green">            }&#x200b;</span>
   49:        : <span class="amber">            return null;&#x200b;</span>
   50:        : <span class="amber">        }&#x200b;</span>
   51:        : <span class="white">    }&#x200b;</span>
@@ -165,31 +165,32 @@
   82:        : <span class="white">        public SequencePoint GetCurrentSequencePoint(int index)&#x200b;</span>
   83:        : <span class="white">        {&#x200b;</span>
   84:        : <span class="white">            var instruction = _method.Body.Instructions[index];&#x200b;</span>
-  85:        : <span class="white">            while (instruction.SequencePoint == null && index > 0)&#x200b;</span>
-  86:        : <span class="white">            {&#x200b;</span>
-  87:        : <span class="white">                index--;&#x200b;</span>
-  88:        : <span class="white">                instruction = _method.Body.Instructions[index];&#x200b;</span>
-  89:        : <span class="white">            }&#x200b;</span>
-  90:        : <span class="white">            var sequencePoint = instruction.SequencePoint;&#x200b;</span>
-  91:        : <span class="white">            return sequencePoint;&#x200b;</span>
-  92:        : <span class="white">        }&#x200b;</span>
-  93:        : <span class="white">&#x200b;</span>
-  94:        : <span class="white">        public string GetOriginalSourceCode(int index)&#x200b;</span>
-  95:        : <span class="white">        {&#x200b;</span>
-  96:        : <span class="white">            var sequencePoint = GetCurrentSequencePoint(index);&#x200b;</span>
-  97:        : <span class="white">            string result = "";&#x200b;</span>
-  98:        : <span class="white">            string[] sourceCode = _module.SourceFiles[sequencePoint.Document.Url];&#x200b;</span>
-  99:        : <span class="white">            int upperBound = Math.Min(sequencePoint.EndLine + 2, sourceCode.Length);&#x200b;</span>
- 100:        : <span class="white">            for (int line = Math.Max(sequencePoint.StartLine - 2, 1); line <= upperBound; line++)&#x200b;</span>
- 101:        : <span class="white">            {&#x200b;</span>
- 102:        : <span class="white">                string sourceLine = sourceCode[line - 1].Replace("\t", "    ");&#x200b;</span>
- 103:        : <span class="white">                result += line.ToString().PadLeft(4, ' ') + ": " + sourceLine.TrimEnd(' ', '\t');&#x200b;</span>
- 104:        : <span class="white">                if (line < upperBound) result += Environment.NewLine;&#x200b;</span>
- 105:        : <span class="white">            }&#x200b;</span>
- 106:        : <span class="white">            return result;&#x200b;</span>
- 107:        : <span class="white">        }&#x200b;</span>
- 108:        : <span class="white">    }&#x200b;</span>
- 109:        : <span class="white">}&#x200b;</span>
+  85:        : <span class="white">            while ((instruction.SequencePoint == null&#x200b;</span>
+  86:        : <span class="white">                || instruction.SequencePoint.StartLine == 0xfeefee) && index > 0)&#x200b;</span>
+  87:        : <span class="white">            {&#x200b;</span>
+  88:        : <span class="white">                index--;&#x200b;</span>
+  89:        : <span class="white">                instruction = _method.Body.Instructions[index];&#x200b;</span>
+  90:        : <span class="white">            }&#x200b;</span>
+  91:        : <span class="white">            var sequencePoint = instruction.SequencePoint;&#x200b;</span>
+  92:        : <span class="white">            return sequencePoint;&#x200b;</span>
+  93:        : <span class="white">        }&#x200b;</span>
+  94:        : <span class="white">&#x200b;</span>
+  95:        : <span class="white">        public string GetOriginalSourceCode(int index)&#x200b;</span>
+  96:        : <span class="white">        {&#x200b;</span>
+  97:        : <span class="white">            var sequencePoint = GetCurrentSequencePoint(index);&#x200b;</span>
+  98:        : <span class="white">            string result = "";&#x200b;</span>
+  99:        : <span class="white">            string[] sourceCode = _module.SourceFiles[sequencePoint.Document.Url];&#x200b;</span>
+ 100:        : <span class="white">            int upperBound = Math.Min(sequencePoint.EndLine + 2, sourceCode.Length);&#x200b;</span>
+ 101:        : <span class="white">            for (int line = Math.Max(sequencePoint.StartLine - 2, 1); line <= upperBound; line++)&#x200b;</span>
+ 102:        : <span class="white">            {&#x200b;</span>
+ 103:        : <span class="white">                string sourceLine = sourceCode[line - 1].Replace("\t", "    ");&#x200b;</span>
+ 104:        : <span class="white">                result += line.ToString().PadLeft(4, ' ') + ": " + sourceLine.TrimEnd(' ', '\t');&#x200b;</span>
+ 105:        : <span class="white">                if (line < upperBound) result += Environment.NewLine;&#x200b;</span>
+ 106:        : <span class="white">            }&#x200b;</span>
+ 107:        : <span class="white">            return result;&#x200b;</span>
+ 108:        : <span class="white">        }&#x200b;</span>
+ 109:        : <span class="white">    }&#x200b;</span>
+ 110:        : <span class="white">}&#x200b;</span>
 </pre><h1>MutationTest.cs</h1><pre class="brush:csharp"><span class="title">Line: Mutants: Source code                                                                       </span>
    1:        : <span class="white">#region Copyright & licence&#x200b;</span>
    2:        : <span class="white">&#x200b;</span>
@@ -266,8 +267,8 @@
   73:        : <span class="amber">            File.WriteAllLines(_testList, tests);&#x200b;</span>
   74:        : <span class="amber">            int count = 0;&#x200b;</span>
   75:        : <span class="amber">            int failures = 0;&#x200b;</span>
-  76:        : <span class="amber">            if (_mutationsToApply.Count == 0) PopulateDefaultTurtles();&#x200b;</span>
-  77:        : <span class="amber">            foreach (var turtleType in _mutationsToApply)&#x200b;</span>
+  76:     3/3: <span class="green">            if (_mutationsToApply.Count == 0) PopulateDefaultTurtles();&#x200b;</span>
+  77:     7/7: <span class="green">            foreach (var turtleType in _mutationsToApply)&#x200b;</span>
   78:        : <span class="amber">            {&#x200b;</span>
   79:        : <span class="amber">                var turtle = (IMethodTurtle)Activator.CreateInstance(turtleType);&#x200b;</span>
   80:        : <span class="amber">                Parallel.ForEach(turtle.Mutate(method, _module),&#x200b;</span>
@@ -277,12 +278,12 @@
   84:        : <span class="amber">            _report.RegisterMethod(method);&#x200b;</span>
   85:        : <span class="amber">            _reportingStrategy.WriteReport(_report, _reportFileName);&#x200b;</span>
   86:        : <span class="white">&#x200b;</span>
-  87:        : <span class="amber">            if (count == 0)&#x200b;</span>
+  87:     3/3: <span class="green">            if (count == 0)&#x200b;</span>
   88:        : <span class="amber">            {&#x200b;</span>
   89:        : <span class="amber">                Console.WriteLine("No valid mutations found (this is fine).");&#x200b;</span>
-  90:        : <span class="amber">                return;&#x200b;</span>
+  90:     1/1: <span class="green">                return;&#x200b;</span>
   91:        : <span class="white">            }&#x200b;</span>
-  92:        : <span class="amber">            if (failures > 0)&#x200b;</span>
+  92:     3/3: <span class="green">            if (failures > 0)&#x200b;</span>
   93:        : <span class="amber">            {&#x200b;</span>
   94:        : <span class="amber">                throw new MutationTestFailureException();&#x200b;</span>
   95:        : <span class="white">            }&#x200b;</span>
@@ -291,7 +292,7 @@
   98:        : <span class="white">        private void RunMutation(IMethodTurtle turtle, MutationTestMetaData mutation, ref int failures, ref int count)&#x200b;</span>
   99:        : <span class="amber">        {&#x200b;</span>
  100:        : <span class="amber">            bool testProcessFailed = CheckTestProcessFails(turtle, mutation);&#x200b;</span>
- 101:        : <span class="amber">            if (!testProcessFailed)&#x200b;</span>
+ 101:     3/3: <span class="green">            if (!testProcessFailed)&#x200b;</span>
  102:        : <span class="amber">            {&#x200b;</span>
  103:        : <span class="amber">                Interlocked.Increment(ref failures);&#x200b;</span>
  104:        : <span class="amber">            }&#x200b;</span>
@@ -312,7 +313,7 @@
  119:        : <span class="white">&#x200b;</span>
  120:        : <span class="white">            try&#x200b;</span>
  121:        : <span class="amber">            {&#x200b;</span>
- 122:        : <span class="amber">                if (!exitedInTime)&#x200b;</span>
+ 122:     3/3: <span class="green">                if (!exitedInTime)&#x200b;</span>
  123:        : <span class="amber">                {&#x200b;</span>
  124:        : <span class="amber">                    KillProcessAndChildren(process.Id);&#x200b;</span>
  125:        : <span class="amber">                }&#x200b;</span>
@@ -322,168 +323,172 @@
  129:        : <span class="white">&#x200b;</span>
  130:        : <span class="amber">            turtle.MutantComplete(mutation);&#x200b;</span>
  131:        : <span class="white">&#x200b;</span>
- 132:        : <span class="amber">            bool testSuitePassed = exitCode == 0 && exitedInTime;&#x200b;</span>
- 133:        : <span class="amber">            Console.WriteLine("Mutant: {0}. {1}",&#x200b;</span>
- 134:        : <span class="amber">                              mutation.Description,&#x200b;</span>
- 135:        : <span class="amber">                              testSuitePassed&#x200b;</span>
- 136:        : <span class="amber">                                  ? "Survived."&#x200b;</span>
- 137:        : <span class="amber">                                : "Killed.");&#x200b;</span>
+ 132:     4/4: <span class="green">            bool testSuitePassed = exitCode == 0 && exitedInTime;&#x200b;</span>
+ 133:     4/4: <span class="green">            string result = string.Format("Mutant: {0}. {1}",&#x200b;</span>
+ 134:     4/4: <span class="green">                              mutation.Description,&#x200b;</span>
+ 135:     4/4: <span class="green">                              testSuitePassed&#x200b;</span>
+ 136:     4/4: <span class="green">                                  ? "Survived."&#x200b;</span>
+ 137:     4/4: <span class="green">                                : "Killed.");&#x200b;</span>
  138:        : <span class="amber">            _report.AddResult(turtle.GetCurrentSequencePoint(mutation.ILIndex), mutation, !testSuitePassed);&#x200b;</span>
  139:        : <span class="white">&#x200b;</span>
- 140:        : <span class="amber">            if (testSuitePassed)&#x200b;</span>
+ 140:     3/3: <span class="green">            if (testSuitePassed)&#x200b;</span>
  141:        : <span class="amber">            {&#x200b;</span>
- 142:        : <span class="amber">                Console.WriteLine("Original source code around surviving mutant (in {0}):", turtle.GetOriginalSourceFileName(mutation.ILIndex));&#x200b;</span>
- 143:        : <span class="amber">                Console.WriteLine(turtle.GetOriginalSourceCode(mutation.ILIndex));&#x200b;</span>
- 144:        : <span class="amber">            }&#x200b;</span>
- 145:        : <span class="white">&#x200b;</span>
- 146:        : <span class="amber">            return !testSuitePassed;&#x200b;</span>
- 147:        : <span class="amber">        }&#x200b;</span>
- 148:        : <span class="white">&#x200b;</span>
- 149:        : <span class="white">        private void KillProcessAndChildren(int pid)&#x200b;</span>
- 150:        : <span class="white">        {&#x200b;</span>
- 151:        : <span class="white">            using (var searcher = new ManagementObjectSearcher("Select * From Win32_Process Where ParentProcessID=" + pid))&#x200b;</span>
- 152:        : <span class="white">            using (ManagementObjectCollection moc = searcher.Get())&#x200b;</span>
- 153:        : <span class="white">            {&#x200b;</span>
- 154:        : <span class="white">                foreach (ManagementObject mo in moc)&#x200b;</span>
- 155:        : <span class="white">                {&#x200b;</span>
- 156:        : <span class="white">                    KillProcessAndChildren(Convert.ToInt32(mo["ProcessID"]));&#x200b;</span>
- 157:        : <span class="white">                }&#x200b;</span>
- 158:        : <span class="white">                try&#x200b;</span>
+ 142:        : <span class="amber">                result = string.Format("{0}\nOriginal source code around surviving mutant (in {1}):\n{2}",&#x200b;</span>
+ 143:        : <span class="amber">                    result,&#x200b;</span>
+ 144:        : <span class="amber">                    turtle.GetOriginalSourceFileName(mutation.ILIndex),&#x200b;</span>
+ 145:        : <span class="amber">                    turtle.GetOriginalSourceCode(mutation.ILIndex));&#x200b;</span>
+ 146:        : <span class="amber">            }&#x200b;</span>
+ 147:        : <span class="amber">&#x200b;</span>
+ 148:        : <span class="amber">            Console.WriteLine(result);&#x200b;</span>
+ 149:        : <span class="white">&#x200b;</span>
+ 150:        : <span class="amber">            return !testSuitePassed;&#x200b;</span>
+ 151:        : <span class="amber">        }&#x200b;</span>
+ 152:        : <span class="white">&#x200b;</span>
+ 153:        : <span class="white">        private void KillProcessAndChildren(int pid)&#x200b;</span>
+ 154:        : <span class="white">        {&#x200b;</span>
+ 155:        : <span class="white">            using (var searcher = new ManagementObjectSearcher("Select * From Win32_Process Where ParentProcessID=" + pid))&#x200b;</span>
+ 156:        : <span class="white">            using (ManagementObjectCollection moc = searcher.Get())&#x200b;</span>
+ 157:        : <span class="white">            {&#x200b;</span>
+ 158:        : <span class="white">                foreach (ManagementObject mo in moc)&#x200b;</span>
  159:        : <span class="white">                {&#x200b;</span>
- 160:        : <span class="white">                    Process proc = Process.GetProcessById(pid);&#x200b;</span>
- 161:        : <span class="white">                    proc.Kill();&#x200b;</span>
- 162:        : <span class="white">                }&#x200b;</span>
- 163:        : <span class="white">                catch (ArgumentException) {}&#x200b;</span>
- 164:        : <span class="white">            }&#x200b;</span>
- 165:        : <span class="white">        }&#x200b;</span>
- 166:        : <span class="white">&#x200b;</span>
- 167:        : <span class="white">&#x200b;</span>
- 168:        : <span class="white">        private void PopulateDefaultTurtles()&#x200b;</span>
- 169:        : <span class="white">        {&#x200b;</span>
- 170:        : <span class="white">            foreach (var type in GetType().Assembly.GetTypes()&#x200b;</span>
- 171:        : <span class="white">                .Where(t => t.GetInterface("IMethodTurtle") != null&#x200b;</span>
- 172:        : <span class="white">                && !t.IsAbstract))&#x200b;</span>
- 173:        : <span class="white">            {&#x200b;</span>
- 174:        : <span class="white">                _mutationsToApply.Add(type);&#x200b;</span>
- 175:        : <span class="white">            }&#x200b;</span>
- 176:        : <span class="white">        }&#x200b;</span>
- 177:        : <span class="white">&#x200b;</span>
- 178:        : <span class="white">        private IEnumerable<string> GetMatchingTestsOrFail(MethodDefinition targetMethod)&#x200b;</span>
- 179:        : <span class="white">        {&#x200b;</span>
- 180:        : <span class="white">            var tests = new List<string>();&#x200b;</span>
- 181:        : <span class="white">            foreach (var type in _testAssembly.MainModule.Types)&#x200b;</span>
- 182:        : <span class="white">            {&#x200b;</span>
- 183:        : <span class="white">                foreach (var method in type.Methods)&#x200b;</span>
- 184:        : <span class="white">                {&#x200b;</span>
- 185:        : <span class="white">                    if (method.CustomAttributes&#x200b;</span>
- 186:        : <span class="white">                            .Any(a => HasMatchingMethodTestedAttribute(targetMethod, a)))&#x200b;</span>
- 187:        : <span class="white">                    {&#x200b;</span>
- 188:        : <span class="white">                        tests.Add(string.Format ("{0}.{1}", type.FullName, method.Name));&#x200b;</span>
- 189:        : <span class="white">                    }&#x200b;</span>
- 190:        : <span class="white">&#x200b;</span>
- 191:        : <span class="white">                }&#x200b;</span>
- 192:        : <span class="white">            }&#x200b;</span>
- 193:        : <span class="white">            if (!tests.Any())&#x200b;</span>
- 194:        : <span class="white">            {&#x200b;</span>
- 195:        : <span class="white">                throw new MutationTestFailureException(&#x200b;</span>
- 196:        : <span class="white">                    "No matching tests were found to run.");&#x200b;</span>
- 197:        : <span class="white">            }&#x200b;</span>
- 198:        : <span class="white">            return tests;&#x200b;</span>
- 199:        : <span class="white">        }&#x200b;</span>
- 200:        : <span class="white">&#x200b;</span>
- 201:        : <span class="white">        private bool HasMatchingMethodTestedAttribute(MethodDefinition targetMethod, CustomAttribute attribute)&#x200b;</span>
- 202:        : <span class="white">        {&#x200b;</span>
- 203:        : <span class="white">            if (attribute.AttributeType.Name != "MethodTestedAttribute") return false;&#x200b;</span>
- 204:        : <span class="white">            if ((string)attribute.ConstructorArguments[1].Value != targetMethod.Name) return false;&#x200b;</span>
- 205:        : <span class="white">            if (attribute.ConstructorArguments[0].Value is string&#x200b;</span>
- 206:        : <span class="white">                && (string)attribute.ConstructorArguments[0].Value != _targetTypeReference.FullName)&#x200b;</span>
- 207:        : <span class="white">            {&#x200b;</span>
- 208:        : <span class="white">                return false;&#x200b;</span>
- 209:        : <span class="white">            }&#x200b;</span>
- 210:        : <span class="white">            if (attribute.ConstructorArguments[0].Value is TypeReference&#x200b;</span>
- 211:        : <span class="white">                && ((TypeReference)attribute.ConstructorArguments[0].Value).FullName != _targetTypeReference.FullName)&#x200b;</span>
- 212:        : <span class="white">            {&#x200b;</span>
- 213:        : <span class="white">                return false;&#x200b;</span>
- 214:        : <span class="white">            }&#x200b;</span>
- 215:        : <span class="white">            if (_parameterTypes != null&#x200b;</span>
- 216:        : <span class="white">                && attribute.HasProperties&#x200b;</span>
- 217:        : <span class="white">                && attribute.Properties.Any(p => p.Name == "ParameterTypes")&#x200b;</span>
- 218:        : <span class="white">                && !Enumerable.SequenceEqual(_parameterTypes, (Type[])attribute.Properties.Single(p => p.Name == "ParameterTypes").Argument.Value))&#x200b;</span>
- 219:        : <span class="white">            {&#x200b;</span>
- 220:        : <span class="white">                return false;&#x200b;</span>
- 221:        : <span class="white">            }&#x200b;</span>
- 222:        : <span class="white">            return true;&#x200b;</span>
- 223:        : <span class="white">        }&#x200b;</span>
- 224:        : <span class="white">&#x200b;</span>
- 225:        : <span class="white">        private MethodDefinition ValidateMethod()&#x200b;</span>
- 226:        : <span class="white">        {&#x200b;</span>
- 227:        : <span class="white">            _module = new Module(TargetType.Assembly.Location);&#x200b;</span>
- 228:        : <span class="white">            var type = _module.Definition.Types&#x200b;</span>
- 229:        : <span class="white">                .Single(t => t.FullName == TargetType.FullName);&#x200b;</span>
- 230:        : <span class="white">            var method = MethodDefinitionResolver.ResolveMethod(type, TargetMethod, _parameterTypes);&#x200b;</span>
- 231:        : <span class="white">            if (method == null)&#x200b;</span>
- 232:        : <span class="white">            {&#x200b;</span>
- 233:        : <span class="white">                throw new MutationTestFailureException(&#x200b;</span>
- 234:        : <span class="white">                    string.Format("Method '{0}' was not recognised.", TargetMethod));&#x200b;</span>
- 235:        : <span class="white">            }&#x200b;</span>
- 236:        : <span class="white">            return method;&#x200b;</span>
- 237:        : <span class="white">        }&#x200b;</span>
- 238:        : <span class="white">&#x200b;</span>
- 239:        : <span class="white">        public IMutationTest With<T>() where T : IMethodTurtle&#x200b;</span>
- 240:        : <span class="white">        {&#x200b;</span>
- 241:        : <span class="white">            _mutationsToApply.Add(typeof(T));&#x200b;</span>
- 242:        : <span class="white">            return this;&#x200b;</span>
- 243:        : <span class="white">        }&#x200b;</span>
- 244:        : <span class="white">&#x200b;</span>
- 245:        : <span class="white">        public IMutationTest WriteReportTo(string fileName)&#x200b;</span>
- 246:        : <span class="white">        {&#x200b;</span>
- 247:        : <span class="white">            _reportingStrategy = new OverwriteReportingStrategy();&#x200b;</span>
- 248:        : <span class="white">            _reportFileName = fileName;&#x200b;</span>
- 249:        : <span class="white">            return this;&#x200b;</span>
- 250:        : <span class="white">        }&#x200b;</span>
- 251:        : <span class="white">&#x200b;</span>
- 252:        : <span class="white">        public IMutationTest MergeReportTo(string fileName)&#x200b;</span>
- 253:        : <span class="white">        {&#x200b;</span>
- 254:        : <span class="white">            _reportingStrategy = new MergeReportingStrategy();&#x200b;</span>
- 255:        : <span class="white">            _reportFileName = fileName;&#x200b;</span>
- 256:        : <span class="white">            return this;&#x200b;</span>
- 257:        : <span class="white">        }&#x200b;</span>
- 258:        : <span class="white">&#x200b;</span>
- 259:        : <span class="white">        private abstract class ReportingStrategy&#x200b;</span>
- 260:        : <span class="white">        {&#x200b;</span>
- 261:        : <span class="white">            public abstract void WriteReport(MutationTestingReport report, string fileName);&#x200b;</span>
- 262:        : <span class="white">        }&#x200b;</span>
- 263:        : <span class="white">&#x200b;</span>
- 264:        : <span class="white">        private class NullReportingStrategy : ReportingStrategy&#x200b;</span>
- 265:        : <span class="white">        {&#x200b;</span>
- 266:        : <span class="white">            public override void WriteReport(MutationTestingReport report, string fileName) { }&#x200b;</span>
- 267:        : <span class="white">        }&#x200b;</span>
- 268:        : <span class="white">&#x200b;</span>
- 269:        : <span class="white">        private class OverwriteReportingStrategy : ReportingStrategy&#x200b;</span>
- 270:        : <span class="white">        {&#x200b;</span>
- 271:        : <span class="white">            public override void WriteReport(MutationTestingReport report, string fileName)&#x200b;</span>
- 272:        : <span class="white">            {&#x200b;</span>
- 273:        : <span class="white">                using (var streamWriter = File.CreateText(fileName))&#x200b;</span>
- 274:        : <span class="white">                {&#x200b;</span>
- 275:        : <span class="white">                    new XmlSerializer(typeof(MutationTestingReport)).Serialize(streamWriter, report);&#x200b;</span>
- 276:        : <span class="white">                }&#x200b;</span>
- 277:        : <span class="white">            }&#x200b;</span>
- 278:        : <span class="white">        }&#x200b;</span>
- 279:        : <span class="white">&#x200b;</span>
- 280:        : <span class="white">        private class MergeReportingStrategy : ReportingStrategy&#x200b;</span>
- 281:        : <span class="white">        {&#x200b;</span>
- 282:        : <span class="white">            public override void WriteReport(MutationTestingReport report, string fileName)&#x200b;</span>
- 283:        : <span class="white">            {&#x200b;</span>
- 284:        : <span class="white">                report.MergeFromFile(fileName);&#x200b;</span>
- 285:        : <span class="white">                using (var streamWriter = File.CreateText(fileName))&#x200b;</span>
- 286:        : <span class="white">                {&#x200b;</span>
- 287:        : <span class="white">                    new XmlSerializer(typeof(MutationTestingReport)).Serialize(streamWriter, report);&#x200b;</span>
- 288:        : <span class="white">                }&#x200b;</span>
- 289:        : <span class="white">            }&#x200b;</span>
- 290:        : <span class="white">        }&#x200b;</span>
- 291:        : <span class="white">    }&#x200b;</span>
- 292:        : <span class="white">}&#x200b;</span>
- 293:        : <span class="white">&#x200b;</span>
+ 160:        : <span class="white">                    KillProcessAndChildren(Convert.ToInt32(mo["ProcessID"]));&#x200b;</span>
+ 161:        : <span class="white">                }&#x200b;</span>
+ 162:        : <span class="white">                try&#x200b;</span>
+ 163:        : <span class="white">                {&#x200b;</span>
+ 164:        : <span class="white">                    Process proc = Process.GetProcessById(pid);&#x200b;</span>
+ 165:        : <span class="white">                    proc.Kill();&#x200b;</span>
+ 166:        : <span class="white">                }&#x200b;</span>
+ 167:        : <span class="white">                catch (ArgumentException) {}&#x200b;</span>
+ 168:        : <span class="white">            }&#x200b;</span>
+ 169:        : <span class="white">        }&#x200b;</span>
+ 170:        : <span class="white">&#x200b;</span>
+ 171:        : <span class="white">&#x200b;</span>
+ 172:        : <span class="white">        private void PopulateDefaultTurtles()&#x200b;</span>
+ 173:        : <span class="white">        {&#x200b;</span>
+ 174:        : <span class="white">            foreach (var type in GetType().Assembly.GetTypes()&#x200b;</span>
+ 175:        : <span class="white">                .Where(t => t.GetInterface("IMethodTurtle") != null&#x200b;</span>
+ 176:        : <span class="white">                && !t.IsAbstract))&#x200b;</span>
+ 177:        : <span class="white">            {&#x200b;</span>
+ 178:        : <span class="white">                _mutationsToApply.Add(type);&#x200b;</span>
+ 179:        : <span class="white">            }&#x200b;</span>
+ 180:        : <span class="white">        }&#x200b;</span>
+ 181:        : <span class="white">&#x200b;</span>
+ 182:        : <span class="white">        private IEnumerable<string> GetMatchingTestsOrFail(MethodDefinition targetMethod)&#x200b;</span>
+ 183:        : <span class="white">        {&#x200b;</span>
+ 184:        : <span class="white">            var tests = new List<string>();&#x200b;</span>
+ 185:        : <span class="white">            foreach (var type in _testAssembly.MainModule.Types)&#x200b;</span>
+ 186:        : <span class="white">            {&#x200b;</span>
+ 187:        : <span class="white">                foreach (var method in type.Methods)&#x200b;</span>
+ 188:        : <span class="white">                {&#x200b;</span>
+ 189:        : <span class="white">                    if (method.CustomAttributes&#x200b;</span>
+ 190:        : <span class="white">                            .Any(a => HasMatchingMethodTestedAttribute(targetMethod, a)))&#x200b;</span>
+ 191:        : <span class="white">                    {&#x200b;</span>
+ 192:        : <span class="white">                        tests.Add(string.Format ("{0}.{1}", type.FullName, method.Name));&#x200b;</span>
+ 193:        : <span class="white">                    }&#x200b;</span>
+ 194:        : <span class="white">&#x200b;</span>
+ 195:        : <span class="white">                }&#x200b;</span>
+ 196:        : <span class="white">            }&#x200b;</span>
+ 197:        : <span class="white">            if (!tests.Any())&#x200b;</span>
+ 198:        : <span class="white">            {&#x200b;</span>
+ 199:        : <span class="white">                throw new MutationTestFailureException(&#x200b;</span>
+ 200:        : <span class="white">                    "No matching tests were found to run.");&#x200b;</span>
+ 201:        : <span class="white">            }&#x200b;</span>
+ 202:        : <span class="white">            return tests;&#x200b;</span>
+ 203:        : <span class="white">        }&#x200b;</span>
+ 204:        : <span class="white">&#x200b;</span>
+ 205:        : <span class="white">        private bool HasMatchingMethodTestedAttribute(MethodDefinition targetMethod, CustomAttribute attribute)&#x200b;</span>
+ 206:        : <span class="white">        {&#x200b;</span>
+ 207:        : <span class="white">            if (attribute.AttributeType.Name != "MethodTestedAttribute") return false;&#x200b;</span>
+ 208:        : <span class="white">            if ((string)attribute.ConstructorArguments[1].Value != targetMethod.Name) return false;&#x200b;</span>
+ 209:        : <span class="white">            if (attribute.ConstructorArguments[0].Value is string&#x200b;</span>
+ 210:        : <span class="white">                && (string)attribute.ConstructorArguments[0].Value != _targetTypeReference.FullName)&#x200b;</span>
+ 211:        : <span class="white">            {&#x200b;</span>
+ 212:        : <span class="white">                return false;&#x200b;</span>
+ 213:        : <span class="white">            }&#x200b;</span>
+ 214:        : <span class="white">            if (attribute.ConstructorArguments[0].Value is TypeReference&#x200b;</span>
+ 215:        : <span class="white">                && ((TypeReference)attribute.ConstructorArguments[0].Value).FullName != _targetTypeReference.FullName)&#x200b;</span>
+ 216:        : <span class="white">            {&#x200b;</span>
+ 217:        : <span class="white">                return false;&#x200b;</span>
+ 218:        : <span class="white">            }&#x200b;</span>
+ 219:        : <span class="white">            if (_parameterTypes != null&#x200b;</span>
+ 220:        : <span class="white">                && attribute.HasProperties&#x200b;</span>
+ 221:        : <span class="white">                && attribute.Properties.Any(p => p.Name == "ParameterTypes")&#x200b;</span>
+ 222:        : <span class="white">                && !Enumerable.SequenceEqual(_parameterTypes, (Type[])attribute.Properties.Single(p => p.Name == "ParameterTypes").Argument.Value))&#x200b;</span>
+ 223:        : <span class="white">            {&#x200b;</span>
+ 224:        : <span class="white">                return false;&#x200b;</span>
+ 225:        : <span class="white">            }&#x200b;</span>
+ 226:        : <span class="white">            return true;&#x200b;</span>
+ 227:        : <span class="white">        }&#x200b;</span>
+ 228:        : <span class="white">&#x200b;</span>
+ 229:        : <span class="white">        private MethodDefinition ValidateMethod()&#x200b;</span>
+ 230:        : <span class="white">        {&#x200b;</span>
+ 231:        : <span class="white">            _module = new Module(TargetType.Assembly.Location);&#x200b;</span>
+ 232:        : <span class="white">            var type = _module.Definition.Types&#x200b;</span>
+ 233:        : <span class="white">                .Single(t => t.FullName == TargetType.FullName);&#x200b;</span>
+ 234:        : <span class="white">            var method = MethodDefinitionResolver.ResolveMethod(type, TargetMethod, _parameterTypes);&#x200b;</span>
+ 235:        : <span class="white">            if (method == null)&#x200b;</span>
+ 236:        : <span class="white">            {&#x200b;</span>
+ 237:        : <span class="white">                throw new MutationTestFailureException(&#x200b;</span>
+ 238:        : <span class="white">                    string.Format("Method '{0}' was not recognised.", TargetMethod));&#x200b;</span>
+ 239:        : <span class="white">            }&#x200b;</span>
+ 240:        : <span class="white">            return method;&#x200b;</span>
+ 241:        : <span class="white">        }&#x200b;</span>
+ 242:        : <span class="white">&#x200b;</span>
+ 243:        : <span class="white">        public IMutationTest With<T>() where T : IMethodTurtle&#x200b;</span>
+ 244:        : <span class="white">        {&#x200b;</span>
+ 245:        : <span class="white">            _mutationsToApply.Add(typeof(T));&#x200b;</span>
+ 246:        : <span class="white">            return this;&#x200b;</span>
+ 247:        : <span class="white">        }&#x200b;</span>
+ 248:        : <span class="white">&#x200b;</span>
+ 249:        : <span class="white">        public IMutationTest WriteReportTo(string fileName)&#x200b;</span>
+ 250:        : <span class="white">        {&#x200b;</span>
+ 251:        : <span class="white">            _reportingStrategy = new OverwriteReportingStrategy();&#x200b;</span>
+ 252:        : <span class="white">            _reportFileName = fileName;&#x200b;</span>
+ 253:        : <span class="white">            return this;&#x200b;</span>
+ 254:        : <span class="white">        }&#x200b;</span>
+ 255:        : <span class="white">&#x200b;</span>
+ 256:        : <span class="white">        public IMutationTest MergeReportTo(string fileName)&#x200b;</span>
+ 257:        : <span class="white">        {&#x200b;</span>
+ 258:        : <span class="white">            _reportingStrategy = new MergeReportingStrategy();&#x200b;</span>
+ 259:        : <span class="white">            _reportFileName = fileName;&#x200b;</span>
+ 260:        : <span class="white">            return this;&#x200b;</span>
+ 261:        : <span class="white">        }&#x200b;</span>
+ 262:        : <span class="white">&#x200b;</span>
+ 263:        : <span class="white">        private abstract class ReportingStrategy&#x200b;</span>
+ 264:        : <span class="white">        {&#x200b;</span>
+ 265:        : <span class="white">            public abstract void WriteReport(MutationTestingReport report, string fileName);&#x200b;</span>
+ 266:        : <span class="white">        }&#x200b;</span>
+ 267:        : <span class="white">&#x200b;</span>
+ 268:        : <span class="white">        private class NullReportingStrategy : ReportingStrategy&#x200b;</span>
+ 269:        : <span class="white">        {&#x200b;</span>
+ 270:        : <span class="white">            public override void WriteReport(MutationTestingReport report, string fileName) { }&#x200b;</span>
+ 271:        : <span class="white">        }&#x200b;</span>
+ 272:        : <span class="white">&#x200b;</span>
+ 273:        : <span class="white">        private class OverwriteReportingStrategy : ReportingStrategy&#x200b;</span>
+ 274:        : <span class="white">        {&#x200b;</span>
+ 275:        : <span class="white">            public override void WriteReport(MutationTestingReport report, string fileName)&#x200b;</span>
+ 276:        : <span class="white">            {&#x200b;</span>
+ 277:        : <span class="white">                using (var streamWriter = File.CreateText(fileName))&#x200b;</span>
+ 278:        : <span class="white">                {&#x200b;</span>
+ 279:        : <span class="white">                    new XmlSerializer(typeof(MutationTestingReport)).Serialize(streamWriter, report);&#x200b;</span>
+ 280:        : <span class="white">                }&#x200b;</span>
+ 281:        : <span class="white">            }&#x200b;</span>
+ 282:        : <span class="white">        }&#x200b;</span>
+ 283:        : <span class="white">&#x200b;</span>
+ 284:        : <span class="white">        private class MergeReportingStrategy : ReportingStrategy&#x200b;</span>
+ 285:        : <span class="white">        {&#x200b;</span>
+ 286:        : <span class="white">            public override void WriteReport(MutationTestingReport report, string fileName)&#x200b;</span>
+ 287:        : <span class="white">            {&#x200b;</span>
+ 288:        : <span class="white">                report.MergeFromFile(fileName);&#x200b;</span>
+ 289:        : <span class="white">                using (var streamWriter = File.CreateText(fileName))&#x200b;</span>
+ 290:        : <span class="white">                {&#x200b;</span>
+ 291:        : <span class="white">                    new XmlSerializer(typeof(MutationTestingReport)).Serialize(streamWriter, report);&#x200b;</span>
+ 292:        : <span class="white">                }&#x200b;</span>
+ 293:        : <span class="white">            }&#x200b;</span>
+ 294:        : <span class="white">        }&#x200b;</span>
+ 295:        : <span class="white">    }&#x200b;</span>
+ 296:        : <span class="white">}&#x200b;</span>
+ 297:        : <span class="white">&#x200b;</span>
 </pre><h1>MutationTestBuilder.cs</h1><pre class="brush:csharp"><span class="title">Line: Mutants: Source code                                                                       </span>
    1:        : <span class="white">#region Copyright & licence&#x200b;</span>
    2:        : <span class="white">&#x200b;</span>

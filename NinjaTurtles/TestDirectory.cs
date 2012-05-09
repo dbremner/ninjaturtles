@@ -75,7 +75,11 @@ namespace NinjaTurtles
 
 		public void Dispose()
 		{
-            Directory.Delete(_folder, true);
+            try
+            {
+                Directory.Delete(_folder, true);
+            }
+            catch {}
 		}
 	}
 }
