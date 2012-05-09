@@ -82,7 +82,8 @@ namespace NinjaTurtles.Turtles
         public SequencePoint GetCurrentSequencePoint(int index)
         {
             var instruction = _method.Body.Instructions[index];
-            while (instruction.SequencePoint == null && index > 0)
+            while ((instruction.SequencePoint == null
+                || instruction.SequencePoint.StartLine == 0xfeefee) && index > 0)
             {
                 index--;
                 instruction = _method.Body.Instructions[index];
