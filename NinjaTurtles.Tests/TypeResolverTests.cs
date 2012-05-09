@@ -33,7 +33,7 @@ namespace NinjaTurtles.Tests
         [MethodTested(typeof(TypeResolver), "ResolveTypeFromReferences")]
         public void ResolveTypeFromReferences_Resolves_Non_Public_Type()
         {
-            var type = TypeResolver.ResolveTypeFromReferences(GetType().Assembly, "System.Configuration.ConfigXmlAttribute");
+            var type = TypeResolver.ResolveTypeFromReferences(GetType().Assembly, "NinjaTurtles.TypeResolver");
             Assert.IsNotNull(type);
         }
 
@@ -58,7 +58,7 @@ namespace NinjaTurtles.Tests
         {
             MutationTestBuilder<TypeResolver>.For("ResolveTypeFromReferences",
                                                   new[] {typeof(Assembly), typeof(string), typeof(IList<string>)})
-                .Run();
+				.Run();
         }
     }
 }
