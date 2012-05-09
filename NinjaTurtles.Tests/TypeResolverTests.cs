@@ -50,6 +50,7 @@ namespace NinjaTurtles.Tests
         {
             MutationTestBuilder<TypeResolver>.For("ResolveTypeFromReferences",
                                                   new[] {typeof(Assembly), typeof(string)})
+                .MergeReportTo("C:\\Working\\hg\\ninjaturtles\\SampleReport.xml")
                 .Run();
         }
 
@@ -58,7 +59,8 @@ namespace NinjaTurtles.Tests
         {
             MutationTestBuilder<TypeResolver>.For("ResolveTypeFromReferences",
                                                   new[] {typeof(Assembly), typeof(string), typeof(IList<string>)})
-				.Run();
+                .MergeReportTo("C:\\Working\\hg\\ninjaturtles\\SampleReport.xml")
+                .Run();
         }
     }
 }

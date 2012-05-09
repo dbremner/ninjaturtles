@@ -36,23 +36,21 @@ namespace NinjaTurtles.Reporting
         {
             SequencePoints = new List<SequencePoint>();
             _readerWriterLock = new ReaderWriterLockSlim();
+            Lines = new List<Line>();
         }
 
-        private string _url;
-        public string Url
+        public string Url { get; set; }
+
+        public void SetUrl(string url)
         {
-            get { return _url; }
-            set
+            Url = url;
+            if (File.Exists(url))
             {
-                _url = value;
-                if (File.Exists(_url))
+                var lines = File.ReadAllLines(url);
+                Lines.Clear();
+                for (int i = 0; i < lines.Length; i++)
                 {
-                    var lines = File.ReadAllLines(_url);
-                    Lines = new List<Line>();
-                    for (int i = 0; i < lines.Length; i++)
-                    {
-                        Lines.Add(new Line {Text = lines[i], Number = i + 1});
-                    }
+                    Lines.Add(new Line { Text = lines[i].Replace("\t", "    "), Number = i + 1 });
                 }
             }
         }
@@ -95,6 +93,14 @@ namespace NinjaTurtles.Reporting
                     SequencePoints.First(s => s.GetIdentifier() == sequencePoint.GetIdentifier()).MergeFrom(
                         sequencePoint);
                 }
+            }
+        }
+
+        public void AddSequencePoint(Mono.Cecil.Cil.SequencePoint point)
+        {
+            if (!SequencePoints.Any(s => s.GetIdentifier() == SequencePoint.GetIdentifier(point)))
+            {
+                SequencePoints.Add(new SequencePoint(point));
             }
         }
     }

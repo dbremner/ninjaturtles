@@ -30,7 +30,6 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 using Mono.Cecil;
-using Mono.Cecil.Pdb;
 
 using NinjaTurtles.Reporting;
 using NinjaTurtles.Turtles;
@@ -44,9 +43,8 @@ namespace NinjaTurtles
 	    private readonly Type[] _parameterTypes;
 	    private readonly AssemblyDefinition _testAssembly;
 		private readonly TypeReference _targetTypeReference;
-		private AssemblyDefinition _assembly;
+	    private Module _module;
 		private string _testList;
-	    private string _assemblyLocation;
 	    private MutationTestingReport _report;
         private ReportingStrategy _reportingStrategy = new NullReportingStrategy();
 	    private string _reportFileName;
@@ -68,6 +66,7 @@ namespace NinjaTurtles
 		public void Run()
 		{
 			MethodDefinition method = ValidateMethod();
+            _module.LoadDebugInformation();
 		    _report = new MutationTestingReport();
 			IEnumerable<string> tests = GetMatchingTestsOrFail(method);
 			_testList = Path.GetTempFileName();
@@ -78,10 +77,11 @@ namespace NinjaTurtles
 			foreach (var turtleType in _mutationsToApply)
 			{
 				var turtle = (IMethodTurtle)Activator.CreateInstance(turtleType);
-				Parallel.ForEach(turtle.Mutate(method, _assembly, _assemblyLocation),
+				Parallel.ForEach(turtle.Mutate(method, _module),
 				                 mutation => RunMutation(turtle, mutation, ref failures, ref count));
 			}
 
+            _report.RegisterMethod(method);
             _reportingStrategy.WriteReport(_report, _reportFileName);
 
 			if (count == 0)
@@ -224,9 +224,8 @@ namespace NinjaTurtles
 
 	    private MethodDefinition ValidateMethod()
 	    {
-	        _assemblyLocation = TargetType.Assembly.Location;
-		    _assembly = AssemblyDefinition.ReadAssembly(TargetType.Assembly.Location);
-		    var type = _assembly.MainModule.Types
+            _module = new Module(TargetType.Assembly.Location);
+		    var type = _module.Definition.Types
 		        .Single(t => t.FullName == TargetType.FullName);
 		    var method = MethodDefinitionResolver.ResolveMethod(type, TargetMethod, _parameterTypes);
 		    if (method == null)

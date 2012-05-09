@@ -124,7 +124,7 @@ namespace NinjaTurtles.Tests
             Assert.IsTrue(File.Exists(file));
             var xDocument = XDocument.Load(file);
             Assert.AreEqual(1, xDocument.Root.Descendants().Where(e => e.Name == "SourceFile").Count());
-            Assert.AreEqual(2, xDocument.Root.Descendants().Where(e => e.Name == "SequencePoint").Count());
+            Assert.GreaterOrEqual(xDocument.Root.Descendants().Where(e => e.Name == "SequencePoint").Count(), 2);
             Assert.AreEqual(8, xDocument.Root.Descendants().Where(e => e.Name == "AppliedMutant").Count());
             Assert.AreEqual(1, xDocument.Root.Descendants().Where(e => e.Name == "AppliedMutant" && e.Attributes().Any(a => a.Name == "Killed" && a.Value == "false")).Count());
             Assert.AreEqual(7, xDocument.Root.Descendants().Where(e => e.Name == "AppliedMutant" && e.Attributes().Any(a => a.Name == "Killed" && a.Value == "true")).Count());
@@ -135,13 +135,15 @@ namespace NinjaTurtles.Tests
 		public void Run_Mutation_Tests()
 		{
 			MutationTestBuilder.For("NinjaTurtles.MutationTest", "Run")
-				.Run();
+                .MergeReportTo("C:\\Working\\hg\\ninjaturtles\\SampleReport.xml")
+                .Run();
 		}
 
         [Test, Category("Mutation")]
         public void RunMutation_Mutation_Tests()
         {
             MutationTestBuilder.For("NinjaTurtles.MutationTest", "RunMutation")
+                .MergeReportTo("C:\\Working\\hg\\ninjaturtles\\SampleReport.xml")
                 .Run();
         }
 
@@ -149,6 +151,7 @@ namespace NinjaTurtles.Tests
         public void CheckTestProcessFails_Mutation_Tests()
         {
             MutationTestBuilder.For("NinjaTurtles.MutationTest", "CheckTestProcessFails")
+                .MergeReportTo("C:\\Working\\hg\\ninjaturtles\\SampleReport.xml")
                 .Run();
         }
     }
