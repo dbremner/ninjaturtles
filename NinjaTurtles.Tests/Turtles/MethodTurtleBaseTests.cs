@@ -107,7 +107,7 @@ namespace NinjaTurtles.Tests.Turtles
   13:         {
   14:             return left + right;
   15:         }
-  16: ".Replace("\r\n", Environment.NewLine), turtle.GetOriginalSourceCode(4));
+  16: ".Replace("\r\n", Environment.NewLine), turtle.GetOriginalSourceCode(3));
         }
 
         [Test]

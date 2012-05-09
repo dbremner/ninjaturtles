@@ -56,12 +56,13 @@ namespace NinjaTurtles.Tests
         [Test]
         public void CreateProcess_Resolves_Full_Exe_Path()
         {
-            bool isMono = ConsoleProcessFactory.IsMono;
+			string exeName = ConsoleProcessFactory.IsWindows ? "cmd.exe" : "mono";
+			bool isMono = ConsoleProcessFactory.IsMono;
             ConsoleProcessFactory.IsMono = false;
-            var process = ConsoleProcessFactory.CreateProcess("cmd.exe", "");
+            var process = ConsoleProcessFactory.CreateProcess(exeName, "");
             ConsoleProcessFactory.IsMono = isMono;
 
-            Assert.AreNotEqual("cmd.exe", process.StartInfo.FileName);
+            Assert.AreNotEqual(exeName, process.StartInfo.FileName);
             Assert.IsTrue(File.Exists(process.StartInfo.FileName));
         }
 

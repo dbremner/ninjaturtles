@@ -115,18 +115,20 @@ namespace NinjaTurtles
 
 			process.Start();
 			bool exitedInTime = process.WaitForExit(30000);
-            if (!exitedInTime)
-            {
-                try
-                {
-                    KillProcessAndChildren(process.Id);
-                }
-                catch {}
-            }
+			int exitCode = -1;
+
+			try
+			{
+				if (!exitedInTime)
+				{
+					KillProcessAndChildren(process.Id);
+				}
+				exitCode = process.ExitCode;
+			}
+			catch {}
+			
 			turtle.MutantComplete(mutation);
 			
-			int exitCode = process.ExitCode;
-
 		    bool testSuitePassed = exitCode == 0 && exitedInTime;
 		    Console.WriteLine("Mutant: {0}. {1}",
 			                  mutation.Description,
@@ -156,9 +158,9 @@ namespace NinjaTurtles
                 try
                 {
                     Process proc = Process.GetProcessById(pid);
-                    proc.Kill();
+					proc.Kill();
                 }
-                catch (ArgumentException) {}
+				catch (ArgumentException) {}
             }
         }
 

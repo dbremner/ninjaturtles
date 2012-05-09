@@ -60,19 +60,22 @@ namespace NinjaTurtles.Turtles
 
         private void LoadDebugSymbolsAndSourceCode(string assemblyLocation)
         {
+			string symbolLocation =  null;
             string pdbLocation = Path.ChangeExtension(assemblyLocation, "pdb");
-            string mdbLocation = Path.ChangeExtension(assemblyLocation, "mdb");
+			string mdbLocation = assemblyLocation + ".mdb";
             ISymbolReaderProvider provider = null;
             if (File.Exists(pdbLocation))
             {
+				symbolLocation = pdbLocation;
                 provider = new PdbReaderProvider();
             }
             else if (File.Exists(mdbLocation))
             {
+				symbolLocation = assemblyLocation;
                 provider = new MdbReaderProvider();
             }
             if (provider == null) return;
-            var reader = provider.GetSymbolReader(_assembly.MainModule, pdbLocation);
+            var reader = provider.GetSymbolReader(_assembly.MainModule, symbolLocation);
             _assembly.MainModule.ReadSymbols(reader);
             reader.Read(_method.Body, o => _method.Body.Instructions.FirstOrDefault(i => i.Offset == o));
             var sourceFiles =
@@ -113,7 +116,7 @@ namespace NinjaTurtles.Turtles
         public SequencePoint GetCurrentSequencePoint(int index)
         {
             var instruction = _method.Body.Instructions[index];
-            while (instruction.SequencePoint == null)
+            while (instruction.SequencePoint == null && index > 0)
             {
                 index--;
                 instruction = _method.Body.Instructions[index];
