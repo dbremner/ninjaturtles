@@ -67,14 +67,14 @@
   38:        : <span class="white">        private static Type ResolveTypeFromReferences(Assembly assembly, string className, IList<string> consideredAssemblies)&#x200b;</span>
   39:        : <span class="amber">        {&#x200b;</span>
   40:        : <span class="amber">            var type = assembly.GetTypes().SingleOrDefault(t => t.FullName == className);&#x200b;</span>
-  41:     4/4: <span class="green">            if (type != null) return type;&#x200b;</span>
-  42:     4/4: <span class="green">            foreach (var reference in assembly.GetReferencedAssemblies())&#x200b;</span>
+  41:     8/8: <span class="green">            if (type != null) return type;&#x200b;</span>
+  42:     8/8: <span class="green">            foreach (var reference in assembly.GetReferencedAssemblies())&#x200b;</span>
   43:        : <span class="amber">            {&#x200b;</span>
-  44:     4/4: <span class="green">                if (consideredAssemblies.Contains(reference.Name)) continue;&#x200b;</span>
+  44:     8/8: <span class="green">                if (consideredAssemblies.Contains(reference.Name)) continue;&#x200b;</span>
   45:        : <span class="amber">                consideredAssemblies.Add(reference.Name);&#x200b;</span>
   46:        : <span class="amber">                type = ResolveTypeFromReferences(Assembly.Load(reference), className, consideredAssemblies);&#x200b;</span>
-  47:     3/3: <span class="green">                if (type != null) return type;&#x200b;</span>
-  48:     4/4: <span class="green">            }&#x200b;</span>
+  47:     6/6: <span class="green">                if (type != null) return type;&#x200b;</span>
+  48:     8/8: <span class="green">            }&#x200b;</span>
   49:        : <span class="amber">            return null;&#x200b;</span>
   50:        : <span class="amber">        }&#x200b;</span>
   51:        : <span class="white">    }&#x200b;</span>

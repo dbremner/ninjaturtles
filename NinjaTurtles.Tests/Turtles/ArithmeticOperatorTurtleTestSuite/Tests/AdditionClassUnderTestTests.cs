@@ -51,7 +51,9 @@ namespace NinjaTurtles.Tests.Turtles.ArithmeticOperatorTurtleTestSuite.Tests
 		[Test]
 		[MethodTested("NinjaTurtles.MutationTest", "Run")]
         [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
-        [MethodTested("NinjaTurtles.Turtles.AruithmeticOperatorTurtle", "DoMutate")]
+        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
+        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
+        [MethodTested(typeof(ArithmeticOperatorTurtle), "DoMutate")]
         public void Add_Mutation_Tests_Fail()
 		{
 			try
@@ -71,7 +73,9 @@ namespace NinjaTurtles.Tests.Turtles.ArithmeticOperatorTurtleTestSuite.Tests
 		[Test]
 		[MethodTested("NinjaTurtles.MutationTest", "Run")]
 		[MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
-        [MethodTested("NinjaTurtles.Turtles.AruithmeticOperatorTurtle", "DoMutate")]
+        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
+        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
+        [MethodTested(typeof(ArithmeticOperatorTurtle), "DoMutate")]
         public void WorkingAdd_Mutation_Tests_Pass()
 		{
 			MutationTestBuilder<AdditionClassUnderTest>

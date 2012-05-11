@@ -64,6 +64,8 @@ namespace NinjaTurtles.Tests.Turtles
 		}
 		
 		[Test]
+        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
+        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
         [MethodTested(typeof(ArithmeticOperatorTurtle), "DoMutate")]
         public void DoMutate_Returns_Correct_Replacements_For_Addition()
 		{
@@ -103,6 +105,8 @@ namespace NinjaTurtles.Tests.Turtles
 		}
 
 		[Test]
+        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
+        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
         [MethodTested(typeof(ArithmeticOperatorTurtle), "DoMutate")]
         public void DoMutate_Returns_Correct_Replacements_For_Subtraction()
 		{
@@ -142,6 +146,8 @@ namespace NinjaTurtles.Tests.Turtles
 		}
 
 		[Test]
+        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
+        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
         [MethodTested(typeof(ArithmeticOperatorTurtle), "DoMutate")]
         public void DoMutate_Returns_Correct_Replacements_For_Division_And_Describes_Appropriately()
 		{
@@ -193,6 +199,8 @@ namespace NinjaTurtles.Tests.Turtles
 		}
 
 		[Test]
+        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
+        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
         [MethodTested(typeof(ArithmeticOperatorTurtle), "DoMutate")]
         public void DoMutate_Returns_Correct_Replacements_For_Multiplication()
 		{
@@ -232,6 +240,8 @@ namespace NinjaTurtles.Tests.Turtles
 		}
 
 		[Test]
+        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
+        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
         [MethodTested(typeof(ArithmeticOperatorTurtle), "DoMutate")]
         public void DoMutate_Returns_Correct_Replacements_For_Remainder()
 		{

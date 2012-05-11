@@ -35,7 +35,8 @@ namespace NinjaTurtles
         public Module(string assemblyLocation)
         {
             AssemblyLocation = assemblyLocation;
-            AssemblyDefinition = AssemblyDefinition.ReadAssembly(assemblyLocation);
+            var readerParameters = new ReaderParameters(ReadingMode.Immediate);
+            AssemblyDefinition = AssemblyDefinition.ReadAssembly(assemblyLocation, readerParameters);
             Definition = AssemblyDefinition.MainModule;
             SourceFiles = new Dictionary<string, string[]>();
         }
@@ -51,11 +52,13 @@ namespace NinjaTurtles
             if (reader == null) return;
 
             Definition.ReadSymbols(reader);
+
             foreach (var method in Definition.Types
                 .SelectMany(t => t.Methods)
                 .Where(m => m.HasBody))
             {
-                reader.Read(method.Body, o => method.Body.Instructions.FirstOrDefault(i => i.Offset == o));
+                reader.Read(method.Body,
+                    o => method.Body.Instructions.FirstOrDefault(i => i.Offset == o));
                 var sourceFiles = method.Body.Instructions.Where(i => i.SequencePoint != null)
                     .Select(i => i.SequencePoint.Document.Url)
                     .Distinct();
@@ -67,6 +70,11 @@ namespace NinjaTurtles
                     }
                 }
             }
+        }
+
+        private static Instruction FirstOrDefault(int o, MethodDefinition method)
+        {
+            return method.Body.Instructions.FirstOrDefault(i => i.Offset == o);
         }
 
         private ISymbolReader ResolveSymbolReader()
