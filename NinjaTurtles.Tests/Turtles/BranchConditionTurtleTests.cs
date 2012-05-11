@@ -73,6 +73,8 @@ namespace NinjaTurtles.Tests.Turtles
         }
 
         [Test]
+        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
+        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
         [MethodTested(typeof(BranchConditionTurtle), "DoMutate")]
         public void DoMutate_Returns_Correct_Replacements_For_Addition()
         {

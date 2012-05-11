@@ -4,31 +4,17 @@
     <SourceFile>
       <Url>C:\Working\hg\ninjaturtles\NinjaTurtles\TypeResolver.cs</Url>
       <SequencePoints>
-        <SequencePoint StartLine="48" StartColumn="13" EndLine="48" EndColumn="14">
-          <AppliedMutants>
-            <AppliedMutant Killed="true">
-              <Description>009e: Add =&gt; Sub</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>009e: Add =&gt; Mul</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>009e: Add =&gt; Div</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>009e: Add =&gt; Rem</Description>
-            </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
-        <SequencePoint StartLine="42" StartColumn="39" EndLine="42" EndColumn="73">
-          <AppliedMutants>
-            <AppliedMutant Killed="true">
-              <Description>007a: Br =&gt; Nop</Description>
-            </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
         <SequencePoint StartLine="41" StartColumn="13" EndLine="41" EndColumn="30">
           <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>0034: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0034: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0034: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>0051: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
@@ -40,8 +26,27 @@
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
+        <SequencePoint StartLine="42" StartColumn="39" EndLine="42" EndColumn="73">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>0046: Br =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>007a: Br =&gt; Nop</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
         <SequencePoint StartLine="44" StartColumn="5" EndLine="44" EndColumn="55">
           <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>0062: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0062: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0062: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>00ae: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
@@ -53,28 +58,17 @@
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="41" StartColumn="31" EndLine="41" EndColumn="43">
-          <AppliedMutants>
-            <AppliedMutant Killed="true">
-              <Description>005e: Br =&gt; Nop</Description>
-            </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
-        <SequencePoint StartLine="42" StartColumn="36" EndLine="42" EndColumn="38">
-          <AppliedMutants>
-            <AppliedMutant Killed="true">
-              <Description>0138: Brtrue =&gt; Brfalse</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0138: Brtrue =&gt; Br</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0138: Brtrue =&gt; Nop</Description>
-            </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
         <SequencePoint StartLine="47" StartColumn="17" EndLine="47" EndColumn="34">
           <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>0094: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0094: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0094: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>0103: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
@@ -86,10 +80,73 @@
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
+        <SequencePoint StartLine="42" StartColumn="36" EndLine="42" EndColumn="38">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>00ad: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00ad: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00ad: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0138: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0138: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0138: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="41" StartColumn="31" EndLine="41" EndColumn="43">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>0038: Br =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>005e: Br =&gt; Nop</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
         <SequencePoint StartLine="44" StartColumn="56" EndLine="44" EndColumn="65">
           <AppliedMutants>
             <AppliedMutant Killed="true">
+              <Description>0064: Br =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
               <Description>00b3: Br =&gt; Nop</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="48" StartColumn="13" EndLine="48" EndColumn="14">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>011f: Add =&gt; Sub</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>011f: Add =&gt; Mul</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>011f: Add =&gt; Div</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>011f: Add =&gt; Rem</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>009e: Add =&gt; Sub</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>009e: Add =&gt; Mul</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>009e: Add =&gt; Div</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>009e: Add =&gt; Rem</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -395,10 +452,10 @@
               <Description>00e4: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>00f1: Brtrue =&gt; Nop</Description>
+              <Description>00e4: Brtrue =&gt; Br</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>00e4: Brtrue =&gt; Br</Description>
+              <Description>00f1: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>00f1: Brtrue =&gt; Brfalse</Description>
@@ -428,29 +485,29 @@
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="87" StartColumn="4" EndLine="87" EndColumn="19">
-          <AppliedMutants>
-            <AppliedMutant Killed="true">
-              <Description>0133: Brtrue =&gt; Nop</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0133: Brtrue =&gt; Br</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0133: Brtrue =&gt; Brfalse</Description>
-            </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
         <SequencePoint StartLine="92" StartColumn="4" EndLine="92" EndColumn="21">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>0154: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0154: Brtrue =&gt; Nop</Description>
+              <Description>0154: Brtrue =&gt; Br</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0154: Brtrue =&gt; Br</Description>
+              <Description>0154: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="87" StartColumn="4" EndLine="87" EndColumn="19">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>0133: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0133: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0133: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -533,13 +590,29 @@
         <SequencePoint StartLine="122" StartColumn="5" EndLine="122" EndColumn="23">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>0052: Brtrue =&gt; Brfalse</Description>
+              <Description>0052: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>0052: Brtrue =&gt; Br</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0052: Brtrue =&gt; Nop</Description>
+              <Description>0052: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="133" StartColumn="13" EndLine="137" EndColumn="37">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>009a: Br =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0093: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0093: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0093: Brtrue =&gt; Br</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -552,39 +625,23 @@
               <Description>007e: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>007e: Brtrue =&gt; Br</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
               <Description>0081: Br =&gt; Nop</Description>
             </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
-        <SequencePoint StartLine="133" StartColumn="13" EndLine="137" EndColumn="37">
-          <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>009a: Br =&gt; Nop</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0093: Brtrue =&gt; Nop</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0093: Brtrue =&gt; Brfalse</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0093: Brtrue =&gt; Br</Description>
+              <Description>007e: Brtrue =&gt; Br</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="140" StartColumn="13" EndLine="140" EndColumn="33">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>00cf: Brtrue =&gt; Nop</Description>
+              <Description>00cf: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>00cf: Brtrue =&gt; Br</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>00cf: Brtrue =&gt; Brfalse</Description>
+              <Description>00cf: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
