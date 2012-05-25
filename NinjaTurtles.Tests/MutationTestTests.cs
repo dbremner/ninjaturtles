@@ -135,7 +135,7 @@ namespace NinjaTurtles.Tests
 		public void Run_Mutation_Tests()
 		{
 			MutationTestBuilder.For("NinjaTurtles.MutationTest", "Run")
-                .MergeReportTo("C:\\Working\\hg\\ninjaturtles\\SampleReport.xml")
+                .MergeReportTo("SampleReport.xml")
                 .Run();
 		}
 
@@ -143,7 +143,7 @@ namespace NinjaTurtles.Tests
         public void RunMutation_Mutation_Tests()
         {
             MutationTestBuilder.For("NinjaTurtles.MutationTest", "RunMutation")
-                .MergeReportTo("C:\\Working\\hg\\ninjaturtles\\SampleReport.xml")
+                .MergeReportTo("SampleReport.xml")
                 .Run();
         }
 
@@ -151,7 +151,7 @@ namespace NinjaTurtles.Tests
         public void CheckTestProcessFails_Mutation_Tests()
         {
             MutationTestBuilder.For("NinjaTurtles.MutationTest", "CheckTestProcessFails")
-                .MergeReportTo("C:\\Working\\hg\\ninjaturtles\\SampleReport.xml")
+                .MergeReportTo("SampleReport.xml")
                 .Run();
         }
     }
