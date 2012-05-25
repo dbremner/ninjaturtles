@@ -26,7 +26,169 @@
                     }
                 </style></head>
    <body>
-      <h1>TypeResolver.cs</h1><pre class="brush:csharp"><span class="title">Line: Mutants: Source code                                                                       </span>
+      <h1>MethodDefinitionResolver.cs</h1><pre class="brush:csharp"><span class="title">Line: Mutants: Source code                                                                       </span>
+   1:        : <span class="white">#region Copyright & licence&#x200b;</span>
+   2:        : <span class="white">&#x200b;</span>
+   3:        : <span class="white">// This file is part of NinjaTurtles.&#x200b;</span>
+   4:        : <span class="white">// &#x200b;</span>
+   5:        : <span class="white">// NinjaTurtles is free software: you can redistribute it and/or modify&#x200b;</span>
+   6:        : <span class="white">// it under the terms of the GNU Lesser General Public License as&#x200b;</span>
+   7:        : <span class="white">// published by the Free Software Foundation, either version 3 of the&#x200b;</span>
+   8:        : <span class="white">// License, or (at your option) any later version.&#x200b;</span>
+   9:        : <span class="white">// &#x200b;</span>
+  10:        : <span class="white">// NinjaTurtles is distributed in the hope that it will be useful,&#x200b;</span>
+  11:        : <span class="white">// but WITHOUT ANY WARRANTY; without even the implied warranty of&#x200b;</span>
+  12:        : <span class="white">// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&#x200b;</span>
+  13:        : <span class="white">// GNU Lesser General Public License for more details.&#x200b;</span>
+  14:        : <span class="white">// &#x200b;</span>
+  15:        : <span class="white">// You should have received a copy of the GNU Lesser General Public&#x200b;</span>
+  16:        : <span class="white">// License along with Refix.  If not, see <http://www.gnu.org/licenses/>.&#x200b;</span>
+  17:        : <span class="white">// &#x200b;</span>
+  18:        : <span class="white">// Copyright (C) 2012 David Musgrove and others.&#x200b;</span>
+  19:        : <span class="white">&#x200b;</span>
+  20:        : <span class="white">#endregion&#x200b;</span>
+  21:        : <span class="white">&#x200b;</span>
+  22:        : <span class="white">using System;&#x200b;</span>
+  23:        : <span class="white">using System.Collections;&#x200b;</span>
+  24:        : <span class="white">using System.Linq;&#x200b;</span>
+  25:        : <span class="white">&#x200b;</span>
+  26:        : <span class="white">using Mono.Cecil;&#x200b;</span>
+  27:        : <span class="white">&#x200b;</span>
+  28:        : <span class="white">namespace NinjaTurtles&#x200b;</span>
+  29:        : <span class="white">{&#x200b;</span>
+  30:        : <span class="white">    internal class MethodDefinitionResolver&#x200b;</span>
+  31:        : <span class="white">    {&#x200b;</span>
+  32:        : <span class="white">        public static MethodDefinition ResolveMethod(TypeDefinition typeDefinition, string methodName)&#x200b;</span>
+  33:        : <span class="amber">        {&#x200b;</span>
+  34:        : <span class="white">            try&#x200b;</span>
+  35:        : <span class="amber">            {&#x200b;</span>
+  36:     3/3: <span class="green">                return typeDefinition.Methods.Single(m => m.Name == methodName);&#x200b;</span>
+  37:        : <span class="white">            }&#x200b;</span>
+  38:        : <span class="amber">            catch&#x200b;</span>
+  39:        : <span class="amber">            {&#x200b;</span>
+  40:        : <span class="amber">                return null;&#x200b;</span>
+  41:        : <span class="white">            }&#x200b;</span>
+  42:        : <span class="amber">        }&#x200b;</span>
+  43:        : <span class="white">&#x200b;</span>
+  44:        : <span class="white">        public static MethodDefinition ResolveMethod(TypeDefinition typeDefinition, string methodName, Type[] parameterTypes)&#x200b;</span>
+  45:        : <span class="amber">        {&#x200b;</span>
+  46:     3/3: <span class="green">            if (parameterTypes == null)&#x200b;</span>
+  47:        : <span class="amber">            {&#x200b;</span>
+  48:     1/1: <span class="green">                return ResolveMethod(typeDefinition, methodName);&#x200b;</span>
+  49:        : <span class="white">            }&#x200b;</span>
+  50:        : <span class="white">            try&#x200b;</span>
+  51:        : <span class="amber">            {&#x200b;</span>
+  52:     3/3: <span class="green">                return typeDefinition.Methods.Single(m => m.Name == methodName&#x200b;</span>
+  53:     3/3: <span class="green">                                                          &&&#x200b;</span>
+  54:     3/3: <span class="green">                                                          Enumerable.SequenceEqual(&#x200b;</span>
+  55:     3/3: <span class="green">                                                              m.Parameters.Select(p => p.ParameterType.Name.Replace("TypeDefinition", "Type")),&#x200b;</span>
+  56:     3/3: <span class="green">                                                              parameterTypes.Select(p => p.Name)));&#x200b;</span>
+  57:        : <span class="white">            }&#x200b;</span>
+  58:        : <span class="amber">            catch&#x200b;</span>
+  59:        : <span class="amber">            {&#x200b;</span>
+  60:        : <span class="amber">                return null;&#x200b;</span>
+  61:        : <span class="white">            }&#x200b;</span>
+  62:        : <span class="amber">        }&#x200b;</span>
+  63:        : <span class="white">    }&#x200b;</span>
+  64:        : <span class="white">}&#x200b;</span>
+</pre><h1>Module.cs</h1><pre class="brush:csharp"><span class="title">Line: Mutants: Source code                                                                       </span>
+   1:        : <span class="white">#region Copyright & licence&#x200b;</span>
+   2:        : <span class="white">&#x200b;</span>
+   3:        : <span class="white">// This file is part of NinjaTurtles.&#x200b;</span>
+   4:        : <span class="white">// &#x200b;</span>
+   5:        : <span class="white">// NinjaTurtles is free software: you can redistribute it and/or modify&#x200b;</span>
+   6:        : <span class="white">// it under the terms of the GNU Lesser General Public License as&#x200b;</span>
+   7:        : <span class="white">// published by the Free Software Foundation, either version 3 of the&#x200b;</span>
+   8:        : <span class="white">// License, or (at your option) any later version.&#x200b;</span>
+   9:        : <span class="white">// &#x200b;</span>
+  10:        : <span class="white">// NinjaTurtles is distributed in the hope that it will be useful,&#x200b;</span>
+  11:        : <span class="white">// but WITHOUT ANY WARRANTY; without even the implied warranty of&#x200b;</span>
+  12:        : <span class="white">// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&#x200b;</span>
+  13:        : <span class="white">// GNU Lesser General Public License for more details.&#x200b;</span>
+  14:        : <span class="white">// &#x200b;</span>
+  15:        : <span class="white">// You should have received a copy of the GNU Lesser General Public&#x200b;</span>
+  16:        : <span class="white">// License along with Refix.  If not, see <http://www.gnu.org/licenses/>.&#x200b;</span>
+  17:        : <span class="white">// &#x200b;</span>
+  18:        : <span class="white">// Copyright (C) 2012 David Musgrove and others.&#x200b;</span>
+  19:        : <span class="white">&#x200b;</span>
+  20:        : <span class="white">#endregion&#x200b;</span>
+  21:        : <span class="white">&#x200b;</span>
+  22:        : <span class="white">using System.Collections.Generic;&#x200b;</span>
+  23:        : <span class="white">using System.IO;&#x200b;</span>
+  24:        : <span class="white">using System.Linq;&#x200b;</span>
+  25:        : <span class="white">&#x200b;</span>
+  26:        : <span class="white">using Mono.Cecil;&#x200b;</span>
+  27:        : <span class="white">using Mono.Cecil.Cil;&#x200b;</span>
+  28:        : <span class="white">using Mono.Cecil.Mdb;&#x200b;</span>
+  29:        : <span class="white">using Mono.Cecil.Pdb;&#x200b;</span>
+  30:        : <span class="white">&#x200b;</span>
+  31:        : <span class="white">namespace NinjaTurtles&#x200b;</span>
+  32:        : <span class="white">{&#x200b;</span>
+  33:        : <span class="white">    public class Module&#x200b;</span>
+  34:        : <span class="white">    {&#x200b;</span>
+  35:        : <span class="white">        public Module(string assemblyLocation)&#x200b;</span>
+  36:        : <span class="white">        {&#x200b;</span>
+  37:        : <span class="white">            AssemblyLocation = assemblyLocation;&#x200b;</span>
+  38:        : <span class="white">            var readerParameters = new ReaderParameters(ReadingMode.Immediate);&#x200b;</span>
+  39:        : <span class="white">            AssemblyDefinition = AssemblyDefinition.ReadAssembly(assemblyLocation, readerParameters);&#x200b;</span>
+  40:        : <span class="white">            Definition = AssemblyDefinition.MainModule;&#x200b;</span>
+  41:        : <span class="white">            SourceFiles = new Dictionary<string, string[]>();&#x200b;</span>
+  42:        : <span class="white">        }&#x200b;</span>
+  43:        : <span class="white">&#x200b;</span>
+  44:        : <span class="white">        public string AssemblyLocation { get; private set; }&#x200b;</span>
+  45:        : <span class="white">        public AssemblyDefinition AssemblyDefinition { get; private set; }&#x200b;</span>
+  46:        : <span class="white">        public ModuleDefinition Definition { get; private set; }&#x200b;</span>
+  47:        : <span class="white">        public IDictionary<string, string[]> SourceFiles { get; private set; } &#x200b;</span>
+  48:        : <span class="white">&#x200b;</span>
+  49:        : <span class="white">        public void LoadDebugInformation()&#x200b;</span>
+  50:        : <span class="amber">        {&#x200b;</span>
+  51:        : <span class="amber">            var reader = ResolveSymbolReader();&#x200b;</span>
+  52:     4/4: <span class="green">            if (reader == null) return;&#x200b;</span>
+  53:        : <span class="white">&#x200b;</span>
+  54:        : <span class="amber">            Definition.ReadSymbols(reader);&#x200b;</span>
+  55:        : <span class="white">&#x200b;</span>
+  56:   13/13: <span class="green">            foreach (var method in Definition.Types&#x200b;</span>
+  57:     7/7: <span class="green">                .SelectMany(t => t.Methods)&#x200b;</span>
+  58:     7/7: <span class="green">                .Where(m => m.HasBody))&#x200b;</span>
+  59:        : <span class="amber">            {&#x200b;</span>
+  60:     3/3: <span class="green">                reader.Read(method.Body,&#x200b;</span>
+  61:     3/3: <span class="green">                    o => method.Body.Instructions.FirstOrDefault(i => i.Offset == o));&#x200b;</span>
+  62:     6/6: <span class="green">                var sourceFiles = method.Body.Instructions.Where(i => i.SequencePoint != null)&#x200b;</span>
+  63:     6/6: <span class="green">                    .Select(i => i.SequencePoint.Document.Url)&#x200b;</span>
+  64:     6/6: <span class="green">                    .Distinct();&#x200b;</span>
+  65:     7/7: <span class="green">                foreach (var sourceFile in sourceFiles)&#x200b;</span>
+  66:        : <span class="amber">                {&#x200b;</span>
+  67:     7/7: <span class="green">                    if (!SourceFiles.ContainsKey(sourceFile) && File.Exists(sourceFile))&#x200b;</span>
+  68:        : <span class="amber">                    {&#x200b;</span>
+  69:        : <span class="amber">                        SourceFiles.Add(sourceFile, File.ReadAllLines(sourceFile));&#x200b;</span>
+  70:        : <span class="amber">                    }&#x200b;</span>
+  71:        : <span class="amber">                }&#x200b;</span>
+  72:        : <span class="amber">            }&#x200b;</span>
+  73:        : <span class="amber">        }&#x200b;</span>
+  74:        : <span class="white">&#x200b;</span>
+  75:        : <span class="white">        private ISymbolReader ResolveSymbolReader()&#x200b;</span>
+  76:        : <span class="white">        {&#x200b;</span>
+  77:        : <span class="white">            string symbolLocation = null;&#x200b;</span>
+  78:        : <span class="white">            string pdbLocation = Path.ChangeExtension(AssemblyLocation, "pdb");&#x200b;</span>
+  79:        : <span class="white">            string mdbLocation = AssemblyLocation + ".mdb";&#x200b;</span>
+  80:        : <span class="white">            ISymbolReaderProvider provider = null;&#x200b;</span>
+  81:        : <span class="white">            if (File.Exists(pdbLocation))&#x200b;</span>
+  82:        : <span class="white">            {&#x200b;</span>
+  83:        : <span class="white">                symbolLocation = pdbLocation;&#x200b;</span>
+  84:        : <span class="white">                provider = new PdbReaderProvider();&#x200b;</span>
+  85:        : <span class="white">            }&#x200b;</span>
+  86:        : <span class="white">            else if (File.Exists(mdbLocation))&#x200b;</span>
+  87:        : <span class="white">            {&#x200b;</span>
+  88:        : <span class="white">                symbolLocation = AssemblyLocation;&#x200b;</span>
+  89:        : <span class="white">                provider = new MdbReaderProvider();&#x200b;</span>
+  90:        : <span class="white">            }&#x200b;</span>
+  91:        : <span class="white">            if (provider == null) return null;&#x200b;</span>
+  92:        : <span class="white">            var reader = provider.GetSymbolReader(Definition, symbolLocation);&#x200b;</span>
+  93:        : <span class="white">            return reader;&#x200b;</span>
+  94:        : <span class="white">        }&#x200b;</span>
+  95:        : <span class="white">    }&#x200b;</span>
+  96:        : <span class="white">}&#x200b;</span>
+</pre><h1>TypeResolver.cs</h1><pre class="brush:csharp"><span class="title">Line: Mutants: Source code                                                                       </span>
    1:        : <span class="white">#region Copyright & licence&#x200b;</span>
    2:        : <span class="white">&#x200b;</span>
    3:        : <span class="white">// This file is part of NinjaTurtles.&#x200b;</span>
@@ -53,33 +215,31 @@
   24:        : <span class="white">using System.Linq;&#x200b;</span>
   25:        : <span class="white">using System.Reflection;&#x200b;</span>
   26:        : <span class="white">&#x200b;</span>
-  27:        : <span class="white">using Mono.Cecil;&#x200b;</span>
-  28:        : <span class="white">&#x200b;</span>
-  29:        : <span class="white">namespace NinjaTurtles&#x200b;</span>
-  30:        : <span class="white">{&#x200b;</span>
-  31:        : <span class="white">    internal class TypeResolver&#x200b;</span>
-  32:        : <span class="white">    {&#x200b;</span>
-  33:        : <span class="white">        internal static Type ResolveTypeFromReferences(Assembly callingAssembly, string className)&#x200b;</span>
-  34:        : <span class="amber">        {&#x200b;</span>
-  35:        : <span class="amber">            return ResolveTypeFromReferences(callingAssembly, className, new List<string>());&#x200b;</span>
-  36:        : <span class="amber">        }&#x200b;</span>
-  37:        : <span class="white">        &#x200b;</span>
-  38:        : <span class="white">        private static Type ResolveTypeFromReferences(Assembly assembly, string className, IList<string> consideredAssemblies)&#x200b;</span>
-  39:        : <span class="amber">        {&#x200b;</span>
-  40:        : <span class="amber">            var type = assembly.GetTypes().SingleOrDefault(t => t.FullName == className);&#x200b;</span>
-  41:     8/8: <span class="green">            if (type != null) return type;&#x200b;</span>
-  42:     8/8: <span class="green">            foreach (var reference in assembly.GetReferencedAssemblies())&#x200b;</span>
-  43:        : <span class="amber">            {&#x200b;</span>
-  44:     8/8: <span class="green">                if (consideredAssemblies.Contains(reference.Name)) continue;&#x200b;</span>
-  45:        : <span class="amber">                consideredAssemblies.Add(reference.Name);&#x200b;</span>
-  46:        : <span class="amber">                type = ResolveTypeFromReferences(Assembly.Load(reference), className, consideredAssemblies);&#x200b;</span>
-  47:     6/6: <span class="green">                if (type != null) return type;&#x200b;</span>
-  48:     8/8: <span class="green">            }&#x200b;</span>
-  49:        : <span class="amber">            return null;&#x200b;</span>
-  50:        : <span class="amber">        }&#x200b;</span>
-  51:        : <span class="white">    }&#x200b;</span>
-  52:        : <span class="white">}&#x200b;</span>
-  53:        : <span class="white">&#x200b;</span>
+  27:        : <span class="white">namespace NinjaTurtles&#x200b;</span>
+  28:        : <span class="white">{&#x200b;</span>
+  29:        : <span class="white">    internal class TypeResolver&#x200b;</span>
+  30:        : <span class="white">    {&#x200b;</span>
+  31:        : <span class="white">        internal static Type ResolveTypeFromReferences(Assembly callingAssembly, string className)&#x200b;</span>
+  32:        : <span class="amber">        {&#x200b;</span>
+  33:        : <span class="amber">            return ResolveTypeFromReferences(callingAssembly, className, new List<string>());&#x200b;</span>
+  34:        : <span class="amber">        }&#x200b;</span>
+  35:        : <span class="white">&#x200b;</span>
+  36:        : <span class="white">        private static Type ResolveTypeFromReferences(Assembly assembly, string className, IList<string> consideredAssemblies)&#x200b;</span>
+  37:        : <span class="amber">        {&#x200b;</span>
+  38:        : <span class="amber">            var type = assembly.GetTypes().SingleOrDefault(t => t.FullName == className);&#x200b;</span>
+  39:     4/4: <span class="green">            if (type != null) return type;&#x200b;</span>
+  40:     4/4: <span class="green">            foreach (var reference in assembly.GetReferencedAssemblies())&#x200b;</span>
+  41:        : <span class="amber">            {&#x200b;</span>
+  42:     4/4: <span class="green">                if (consideredAssemblies.Contains(reference.Name)) continue;&#x200b;</span>
+  43:        : <span class="amber">                consideredAssemblies.Add(reference.Name);&#x200b;</span>
+  44:        : <span class="amber">                type = ResolveTypeFromReferences(Assembly.Load(reference), className, consideredAssemblies);&#x200b;</span>
+  45:     3/3: <span class="green">                if (type != null) return type;&#x200b;</span>
+  46:     4/4: <span class="green">            }&#x200b;</span>
+  47:        : <span class="amber">            return null;&#x200b;</span>
+  48:        : <span class="amber">        }&#x200b;</span>
+  49:        : <span class="white">    }&#x200b;</span>
+  50:        : <span class="white">}&#x200b;</span>
+  51:        : <span class="white">&#x200b;</span>
 </pre><h1>MethodTurtleBase.cs</h1><pre class="brush:csharp"><span class="title">Line: Mutants: Source code                                                                       </span>
    1:        : <span class="white">#region Copyright & licence&#x200b;</span>
    2:        : <span class="white">&#x200b;</span>
@@ -338,7 +498,7 @@
  144:        : <span class="amber">                    turtle.GetOriginalSourceFileName(mutation.ILIndex),&#x200b;</span>
  145:        : <span class="amber">                    turtle.GetOriginalSourceCode(mutation.ILIndex));&#x200b;</span>
  146:        : <span class="amber">            }&#x200b;</span>
- 147:        : <span class="amber">&#x200b;</span>
+ 147:        : <span class="white">&#x200b;</span>
  148:        : <span class="amber">            Console.WriteLine(result);&#x200b;</span>
  149:        : <span class="white">&#x200b;</span>
  150:        : <span class="amber">            return !testSuitePassed;&#x200b;</span>
@@ -542,59 +702,5 @@
   50:        : <span class="white">    }&#x200b;</span>
   51:        : <span class="white">}&#x200b;</span>
   52:        : <span class="white">&#x200b;</span>
-</pre><h1></h1><pre class="brush:csharp"><span class="title">Line: Mutants: Source code                                                                       </span>
-   1:        : <span class="white">#region Copyright & licence&#x200b;</span>
-   2:        : <span class="white">&#x200b;</span>
-   3:        : <span class="white">// This file is part of NinjaTurtles.&#x200b;</span>
-   4:        : <span class="white">// &#x200b;</span>
-   5:        : <span class="white">// NinjaTurtles is free software: you can redistribute it and/or modify&#x200b;</span>
-   6:        : <span class="white">// it under the terms of the GNU Lesser General Public License as&#x200b;</span>
-   7:        : <span class="white">// published by the Free Software Foundation, either version 3 of the&#x200b;</span>
-   8:        : <span class="white">// License, or (at your option) any later version.&#x200b;</span>
-   9:        : <span class="white">// &#x200b;</span>
-  10:        : <span class="white">// NinjaTurtles is distributed in the hope that it will be useful,&#x200b;</span>
-  11:        : <span class="white">// but WITHOUT ANY WARRANTY; without even the implied warranty of&#x200b;</span>
-  12:        : <span class="white">// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&#x200b;</span>
-  13:        : <span class="white">// GNU Lesser General Public License for more details.&#x200b;</span>
-  14:        : <span class="white">// &#x200b;</span>
-  15:        : <span class="white">// You should have received a copy of the GNU Lesser General Public&#x200b;</span>
-  16:        : <span class="white">// License along with Refix.  If not, see <http://www.gnu.org/licenses/>.&#x200b;</span>
-  17:        : <span class="white">// &#x200b;</span>
-  18:        : <span class="white">// Copyright (C) 2012 David Musgrove and others.&#x200b;</span>
-  19:        : <span class="white">&#x200b;</span>
-  20:        : <span class="white">#endregion&#x200b;</span>
-  21:        : <span class="white">&#x200b;</span>
-  22:        : <span class="white">using System;&#x200b;</span>
-  23:        : <span class="white">using System.Collections.Generic;&#x200b;</span>
-  24:        : <span class="white">using System.Linq;&#x200b;</span>
-  25:        : <span class="white">using System.Reflection;&#x200b;</span>
-  26:        : <span class="white">&#x200b;</span>
-  27:        : <span class="white">using Mono.Cecil;&#x200b;</span>
-  28:        : <span class="white">&#x200b;</span>
-  29:        : <span class="white">namespace NinjaTurtles&#x200b;</span>
-  30:        : <span class="white">{&#x200b;</span>
-  31:        : <span class="white">    internal class TypeResolver&#x200b;</span>
-  32:        : <span class="white">    {&#x200b;</span>
-  33:        : <span class="white">        internal static Type ResolveTypeFromReferences(Assembly callingAssembly, string className)&#x200b;</span>
-  34:        : <span class="amber">        {&#x200b;</span>
-  35:        : <span class="amber">            return ResolveTypeFromReferences(callingAssembly, className, new List<string>());&#x200b;</span>
-  36:        : <span class="amber">        }&#x200b;</span>
-  37:        : <span class="white">&#x200b;</span>
-  38:        : <span class="white">        private static Type ResolveTypeFromReferences(Assembly assembly, string className, IList<string> consideredAssemblies)&#x200b;</span>
-  39:        : <span class="amber">        {&#x200b;</span>
-  40:        : <span class="amber">            var type = assembly.GetTypes().SingleOrDefault(t => t.FullName == className);&#x200b;</span>
-  41:        : <span class="amber">            if (type != null) return type;&#x200b;</span>
-  42:        : <span class="amber">            foreach (var reference in assembly.GetReferencedAssemblies())&#x200b;</span>
-  43:        : <span class="amber">            {&#x200b;</span>
-  44:        : <span class="amber">                if (consideredAssemblies.Contains(reference.Name)) continue;&#x200b;</span>
-  45:        : <span class="amber">                consideredAssemblies.Add(reference.Name);&#x200b;</span>
-  46:        : <span class="amber">                type = ResolveTypeFromReferences(Assembly.Load(reference), className, consideredAssemblies);&#x200b;</span>
-  47:        : <span class="amber">                if (type != null) return type;&#x200b;</span>
-  48:        : <span class="amber">            }&#x200b;</span>
-  49:        : <span class="amber">            return null;&#x200b;</span>
-  50:        : <span class="amber">        }&#x200b;</span>
-  51:        : <span class="white">    }&#x200b;</span>
-  52:        : <span class="white">}&#x200b;</span>
-  53:        : <span class="white">&#x200b;</span>
 </pre></body>
 </html>

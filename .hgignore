@@ -35,3 +35,4 @@ test-results
 Debug
 NinjaTurtles.*sdf
 TestResult.xml
+*.tssettings

@@ -22,49 +22,59 @@
 using System;
 using System.IO;
 
+using NLog;
+
 namespace NinjaTurtles
 {
 	public class TestDirectory : IDisposable
-	{
-		private readonly string _folder;
+    {
+        #region Logging
 
-		public TestDirectory() : this(null)
+        private static Logger _log = LogManager.GetCurrentClassLogger();
+
+        #endregion
+
+        private readonly string _folder;
+
+		public TestDirectory()
 		{
-		}
+            _folder = Path.Combine(Path.GetTempPath(),
+                                   "NinjaTurtles",
+                                   Guid.NewGuid().ToString("N"));
+            _log.Debug("Creating folder \"{0}\".", _folder);
+            Directory.CreateDirectory(_folder);
+        }
 		
-		public TestDirectory(string sourceFolder)
+		public TestDirectory(string sourceFolder) : this()
 		{
-			_folder = Path.Combine(Path.GetTempPath(),
-			                       "NinjaTurtles",
-			                       Guid.NewGuid().ToString("N"));
-			if (!Directory.Exists(_folder))
-			{
-				Directory.CreateDirectory(_folder);
-			}
-			
-			if (!string.IsNullOrEmpty(sourceFolder))
-			{
-				CopyDirectoryContents(sourceFolder, _folder);
-			}
+            _log.Debug("Copying contents from folder \"{0}\".", sourceFolder);
+            CopyDirectoryContents(sourceFolder, _folder);
 		}
 		
 		public void SaveAssembly(Module module)
 		{
-			module.AssemblyDefinition.Write(Path.Combine(_folder, Path.GetFileName(module.AssemblyLocation)));
+		    string fileName = Path.GetFileName(module.AssemblyLocation);
+		    string path = Path.Combine(_folder, fileName);
+            _log.Debug("Writing assembly \"{0}\" to \"{1}\".", fileName, _folder);
+            module.AssemblyDefinition.Write(path);
 		}
-		
-		private static void CopyDirectoryContents(string sourceFolder, string targetFolder)
+
+	    private static void CopyDirectoryContents
+            (string directory, string targetDirectory)
 		{
-			foreach (var file in Directory.GetFiles(sourceFolder))
+			foreach (var file in Directory.GetFiles(directory))
 			{
-				string targetFile = Path.Combine(targetFolder, Path.GetFileName(file));
-				File.Copy(file, targetFile);
+				string target = Path.Combine(targetDirectory, Path.GetFileName(file));
+                _log.Trace("Copying file \"{0}\".", Path.GetFileName(file));
+				File.Copy(file, target);
 			}
-			foreach (var directory in Directory.GetDirectories(sourceFolder))
+			foreach (var subDirectory in Directory.GetDirectories(directory))
 			{
-				string targetDirectory = Path.Combine(targetFolder, Path.GetFileName(directory));
-				Directory.CreateDirectory(targetDirectory);
-				CopyDirectoryContents(directory, targetDirectory);
+			    string subDirectoryName = Path.GetFileName(subDirectory);
+			    string target = Path.Combine(targetDirectory, subDirectoryName);
+                _log.Trace("Creating subdirectory \"{0}\".", subDirectoryName);
+                Directory.CreateDirectory(target);
+				CopyDirectoryContents(subDirectory, target);
 			}
 		}
 		
@@ -77,9 +87,14 @@ namespace NinjaTurtles
 		{
             try
             {
+                _log.Debug("Deleting folder \"{0}\".", _folder);
                 Directory.Delete(_folder, true);
             }
-            catch {}
+            catch (Exception ex)
+            {
+                string message = string.Format("Failed to delete folder \"{0}\".", _folder);
+                _log.ErrorException(message, ex);
+            }
 		}
 	}
 }

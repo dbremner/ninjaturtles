@@ -15,18 +15,20 @@ namespace NinjaTurtles.Tests
         [Test]
         public void CreateProcess_Redirects_Standard_Output()
         {
-            var process = ConsoleProcessFactory.CreateProcess("cmd.exe", "");
-
-            Assert.IsFalse(process.StartInfo.UseShellExecute);
-            Assert.IsTrue(process.StartInfo.RedirectStandardOutput);
+            using (var process = ConsoleProcessFactory.CreateProcess("cmd.exe", ""))
+            {
+                Assert.IsFalse(process.StartInfo.UseShellExecute);
+                Assert.IsTrue(process.StartInfo.RedirectStandardOutput);
+            }
         }
 
         [Test]
         public void CreateProcess_Hides_Window()
         {
-            var process = ConsoleProcessFactory.CreateProcess("cmd.exe", "");
-
-            Assert.IsTrue(process.StartInfo.CreateNoWindow);
+            using (var process = ConsoleProcessFactory.CreateProcess("cmd.exe", ""))
+            {
+                Assert.IsTrue(process.StartInfo.CreateNoWindow);
+            }
         }
 
         [Test]
@@ -34,10 +36,11 @@ namespace NinjaTurtles.Tests
         {
             bool isMono = ConsoleProcessFactory.IsMono;
             ConsoleProcessFactory.IsMono = false;
-            var process = ConsoleProcessFactory.CreateProcess("cmd.exe", "");
-            ConsoleProcessFactory.IsMono = isMono;
-
-            StringAssert.Contains("cmd.exe", process.StartInfo.FileName);
+            using (var process = ConsoleProcessFactory.CreateProcess("cmd.exe", ""))
+            {
+                ConsoleProcessFactory.IsMono = isMono;
+                StringAssert.Contains("cmd.exe", process.StartInfo.FileName);
+            }
         }
 
         [Test]
@@ -45,12 +48,13 @@ namespace NinjaTurtles.Tests
         {
             bool isMono = ConsoleProcessFactory.IsMono;
             ConsoleProcessFactory.IsMono = true;
-            var process = ConsoleProcessFactory.CreateProcess("cmd.exe", "");
-            ConsoleProcessFactory.IsMono = isMono;
-
-            Assert.AreEqual("mono", process.StartInfo.FileName);
-            StringAssert.StartsWith("--runtime=v4.0", process.StartInfo.Arguments);
-            StringAssert.Contains("cmd.exe\"", process.StartInfo.Arguments);
+            using (var process = ConsoleProcessFactory.CreateProcess("cmd.exe", ""))
+            {
+                ConsoleProcessFactory.IsMono = isMono;
+                Assert.AreEqual("mono", process.StartInfo.FileName);
+                StringAssert.StartsWith("--runtime=v4.0", process.StartInfo.Arguments);
+                StringAssert.Contains("cmd.exe\"", process.StartInfo.Arguments);
+            }
         }
 
         [Test]
@@ -59,11 +63,12 @@ namespace NinjaTurtles.Tests
 			string exeName = ConsoleProcessFactory.IsWindows ? "cmd.exe" : "mono";
 			bool isMono = ConsoleProcessFactory.IsMono;
             ConsoleProcessFactory.IsMono = false;
-            var process = ConsoleProcessFactory.CreateProcess(exeName, "");
-            ConsoleProcessFactory.IsMono = isMono;
-
-            Assert.AreNotEqual(exeName, process.StartInfo.FileName);
-            Assert.IsTrue(File.Exists(process.StartInfo.FileName));
+            using (var process = ConsoleProcessFactory.CreateProcess(exeName, ""))
+            {
+                ConsoleProcessFactory.IsMono = isMono;
+                Assert.AreNotEqual(exeName, process.StartInfo.FileName);
+                Assert.IsTrue(File.Exists(process.StartInfo.FileName));
+            }
         }
 
         [Test]
@@ -71,10 +76,11 @@ namespace NinjaTurtles.Tests
         {
             bool isWindows = ConsoleProcessFactory.IsWindows;
             ConsoleProcessFactory.IsWindows = true;
-            var process = ConsoleProcessFactory.CreateProcess("cmd.exe", "{0}arg=val");
-            ConsoleProcessFactory.IsWindows = isWindows;
-
-            StringAssert.Contains("/arg=val", process.StartInfo.Arguments);
+            using (var process = ConsoleProcessFactory.CreateProcess("cmd.exe", "{0}arg=val"))
+            {
+                ConsoleProcessFactory.IsWindows = isWindows;
+                StringAssert.Contains("/arg=val", process.StartInfo.Arguments);
+            }
         }
 
         [Test]
@@ -82,10 +88,11 @@ namespace NinjaTurtles.Tests
         {
             bool isWindows = ConsoleProcessFactory.IsWindows;
             ConsoleProcessFactory.IsWindows = false;
-            var process = ConsoleProcessFactory.CreateProcess("cmd.exe", "{0}arg=val");
-            ConsoleProcessFactory.IsWindows = isWindows;
-
-            StringAssert.Contains("-arg=val", process.StartInfo.Arguments);
+            using (var process = ConsoleProcessFactory.CreateProcess("cmd.exe", "{0}arg=val"))
+            {
+                ConsoleProcessFactory.IsWindows = isWindows;
+                StringAssert.Contains("-arg=val", process.StartInfo.Arguments);
+            }
         }
     }
 }
