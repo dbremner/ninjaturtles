@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace NinjaTurtles.Tests
+namespace NinjaTurtles.Tests.TestUtilities
 {
 	public class ConsoleCapturer : IDisposable
 	{

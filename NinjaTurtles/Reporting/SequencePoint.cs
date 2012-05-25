@@ -47,15 +47,6 @@ namespace NinjaTurtles.Reporting
             EndColumn = sequencePoint.EndColumn;
         }
 
-        public SequencePoint(SequencePoint sequencePoint)
-            : this()
-        {
-            StartLine = sequencePoint.StartLine;
-            StartColumn = sequencePoint.StartColumn;
-            EndLine = sequencePoint.EndLine;
-            EndColumn = sequencePoint.EndColumn;
-        }
-
         [XmlAttribute]
         public int StartLine { get; set; }
 

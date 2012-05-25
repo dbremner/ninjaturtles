@@ -4,6 +4,7 @@ using System.Text;
 
 using NUnit.Framework;
 
+using NinjaTurtles.Tests.TestUtilities;
 using NinjaTurtles.Turtles;
 
 namespace NinjaTurtles.Tests.Turtles.ArithmeticOperatorTurtleTestSuite.Tests

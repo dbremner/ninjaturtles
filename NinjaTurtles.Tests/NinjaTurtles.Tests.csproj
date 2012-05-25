@@ -29,6 +29,9 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.0.12054\lib\nunit.framework.dll</HintPath>
@@ -42,9 +45,17 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="TestLibraryMono">
+      <HintPath>..\lib\TestLibraryMono.dll</HintPath>
+    </Reference>
+    <Reference Include="TestLibraryNoPdb">
+      <HintPath>..\lib\TestLibraryNoPdb.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestDirectoryLoggingTests.cs" />
     <Compile Include="InstructionExtensionsTests.cs" />
+    <Compile Include="TestUtilities\LoggingTestFixture.cs" />
     <Compile Include="MethodDefinitionResolverTests.cs" />
     <Compile Include="ModuleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -54,7 +65,7 @@
     <Compile Include="Turtles\ArithmeticOperatorTurtleTestSuite\Tests\AdditionClassUnderTestTests.cs" />
     <Compile Include="Turtles\ArithmeticOperatorTurtleTestSuite\AdditionClassUnderTest.cs" />
     <Compile Include="MutationTestTests.cs" />
-    <Compile Include="ConsoleCapturer.cs" />
+    <Compile Include="TestUtilities\ConsoleCapturer.cs" />
     <Compile Include="TestDirectoryTests.cs" />
     <Compile Include="Turtles\BranchConditionTurtleTests.cs" />
     <Compile Include="Turtles\BranchConditionTurtleTestSuite\BranchConditionClassUnderTest.cs" />
@@ -69,5 +80,10 @@
       <Name>NinjaTurtles</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="..\lib\TestLibraryMono.dll.mdb">
+      <Link>TestLibraryMono.dll.mdb</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

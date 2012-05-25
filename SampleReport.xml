@@ -2,9 +2,475 @@
 <MutationTestingReport xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFiles>
     <SourceFile>
+      <Url>C:\Working\hg\ninjaturtles\NinjaTurtles\MethodDefinitionResolver.cs</Url>
+      <SequencePoints>
+        <SequencePoint StartLine="46" StartColumn="13" EndLine="46" EndColumn="40">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>0025: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0025: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0025: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="48" StartColumn="17" EndLine="48" EndColumn="66">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>0035: Br =&gt; Nop</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="52" StartColumn="17" EndLine="56" EndColumn="100">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>003f: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>003f: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>003f: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="16707566" StartColumn="0" EndLine="16707566" EndColumn="0">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="45" StartColumn="9" EndLine="45" EndColumn="10">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="47" StartColumn="13" EndLine="47" EndColumn="14">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="51" StartColumn="13" EndLine="51" EndColumn="14">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="58" StartColumn="13" EndLine="58" EndColumn="18">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="59" StartColumn="13" EndLine="59" EndColumn="14">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="60" StartColumn="17" EndLine="60" EndColumn="29">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="62" StartColumn="9" EndLine="62" EndColumn="10">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="36" StartColumn="17" EndLine="36" EndColumn="81">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>0018: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0018: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0018: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="33" StartColumn="9" EndLine="33" EndColumn="10">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="35" StartColumn="13" EndLine="35" EndColumn="14">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="38" StartColumn="13" EndLine="38" EndColumn="18">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="39" StartColumn="13" EndLine="39" EndColumn="14">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="40" StartColumn="17" EndLine="40" EndColumn="29">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="42" StartColumn="9" EndLine="42" EndColumn="10">
+          <AppliedMutants />
+        </SequencePoint>
+      </SequencePoints>
+      <Lines>
+        <Line Number="1">#region Copyright &amp; licence</Line>
+        <Line Number="2" />
+        <Line Number="3">// This file is part of NinjaTurtles.</Line>
+        <Line Number="4">// </Line>
+        <Line Number="5">// NinjaTurtles is free software: you can redistribute it and/or modify</Line>
+        <Line Number="6">// it under the terms of the GNU Lesser General Public License as</Line>
+        <Line Number="7">// published by the Free Software Foundation, either version 3 of the</Line>
+        <Line Number="8">// License, or (at your option) any later version.</Line>
+        <Line Number="9">// </Line>
+        <Line Number="10">// NinjaTurtles is distributed in the hope that it will be useful,</Line>
+        <Line Number="11">// but WITHOUT ANY WARRANTY; without even the implied warranty of</Line>
+        <Line Number="12">// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</Line>
+        <Line Number="13">// GNU Lesser General Public License for more details.</Line>
+        <Line Number="14">// </Line>
+        <Line Number="15">// You should have received a copy of the GNU Lesser General Public</Line>
+        <Line Number="16">// License along with Refix.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</Line>
+        <Line Number="17">// </Line>
+        <Line Number="18">// Copyright (C) 2012 David Musgrove and others.</Line>
+        <Line Number="19" />
+        <Line Number="20">#endregion</Line>
+        <Line Number="21" />
+        <Line Number="22">using System;</Line>
+        <Line Number="23">using System.Collections;</Line>
+        <Line Number="24">using System.Linq;</Line>
+        <Line Number="25" />
+        <Line Number="26">using Mono.Cecil;</Line>
+        <Line Number="27" />
+        <Line Number="28">namespace NinjaTurtles</Line>
+        <Line Number="29">{</Line>
+        <Line Number="30">    internal class MethodDefinitionResolver</Line>
+        <Line Number="31">    {</Line>
+        <Line Number="32">        public static MethodDefinition ResolveMethod(TypeDefinition typeDefinition, string methodName)</Line>
+        <Line Number="33">        {</Line>
+        <Line Number="34">            try</Line>
+        <Line Number="35">            {</Line>
+        <Line Number="36">                return typeDefinition.Methods.Single(m =&gt; m.Name == methodName);</Line>
+        <Line Number="37">            }</Line>
+        <Line Number="38">            catch</Line>
+        <Line Number="39">            {</Line>
+        <Line Number="40">                return null;</Line>
+        <Line Number="41">            }</Line>
+        <Line Number="42">        }</Line>
+        <Line Number="43" />
+        <Line Number="44">        public static MethodDefinition ResolveMethod(TypeDefinition typeDefinition, string methodName, Type[] parameterTypes)</Line>
+        <Line Number="45">        {</Line>
+        <Line Number="46">            if (parameterTypes == null)</Line>
+        <Line Number="47">            {</Line>
+        <Line Number="48">                return ResolveMethod(typeDefinition, methodName);</Line>
+        <Line Number="49">            }</Line>
+        <Line Number="50">            try</Line>
+        <Line Number="51">            {</Line>
+        <Line Number="52">                return typeDefinition.Methods.Single(m =&gt; m.Name == methodName</Line>
+        <Line Number="53">                                                          &amp;&amp;</Line>
+        <Line Number="54">                                                          Enumerable.SequenceEqual(</Line>
+        <Line Number="55">                                                              m.Parameters.Select(p =&gt; p.ParameterType.Name.Replace("TypeDefinition", "Type")),</Line>
+        <Line Number="56">                                                              parameterTypes.Select(p =&gt; p.Name)));</Line>
+        <Line Number="57">            }</Line>
+        <Line Number="58">            catch</Line>
+        <Line Number="59">            {</Line>
+        <Line Number="60">                return null;</Line>
+        <Line Number="61">            }</Line>
+        <Line Number="62">        }</Line>
+        <Line Number="63">    }</Line>
+        <Line Number="64">}</Line>
+      </Lines>
+    </SourceFile>
+    <SourceFile>
+      <Url>C:\Working\hg\ninjaturtles\NinjaTurtles\Module.cs</Url>
+      <SequencePoints>
+        <SequencePoint StartLine="52" StartColumn="13" EndLine="52" EndColumn="32">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>0013: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0013: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0013: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="56" StartColumn="36" EndLine="58" EndColumn="39">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>0038: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0038: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0038: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>005c: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>005c: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>008b: Br =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>005c: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="52" StartColumn="33" EndLine="52" EndColumn="40">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>0015: Br =&gt; Nop</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="60" StartColumn="17" EndLine="61" EndColumn="87">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>00ad: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00ad: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00ad: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="62" StartColumn="17" EndLine="64" EndColumn="33">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>00dc: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00dc: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0100: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00dc: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0100: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0100: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="65" StartColumn="44" EndLine="65" EndColumn="55">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>012e: Br =&gt; Nop</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="67" StartColumn="21" EndLine="67" EndColumn="89">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>0145: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0145: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0145: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0150: Br =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0157: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0157: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0157: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="65" StartColumn="41" EndLine="65" EndColumn="43">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>017a: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>017a: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>017a: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0187: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0187: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0187: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="56" StartColumn="33" EndLine="56" EndColumn="35">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>019f: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>019f: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>019f: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>01af: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>01af: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>01af: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="50" StartColumn="9" EndLine="50" EndColumn="10">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="51" StartColumn="13" EndLine="51" EndColumn="48">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="16707566" StartColumn="0" EndLine="16707566" EndColumn="0">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="54" StartColumn="13" EndLine="54" EndColumn="44">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="56" StartColumn="13" EndLine="56" EndColumn="20">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="56" StartColumn="22" EndLine="56" EndColumn="32">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="59" StartColumn="13" EndLine="59" EndColumn="14">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="65" StartColumn="17" EndLine="65" EndColumn="24">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="65" StartColumn="26" EndLine="65" EndColumn="40">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="66" StartColumn="17" EndLine="66" EndColumn="18">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="68" StartColumn="21" EndLine="68" EndColumn="22">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="69" StartColumn="25" EndLine="69" EndColumn="84">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="70" StartColumn="21" EndLine="70" EndColumn="22">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="71" StartColumn="17" EndLine="71" EndColumn="18">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="72" StartColumn="13" EndLine="72" EndColumn="14">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="73" StartColumn="9" EndLine="73" EndColumn="10">
+          <AppliedMutants />
+        </SequencePoint>
+      </SequencePoints>
+      <Lines>
+        <Line Number="1">#region Copyright &amp; licence</Line>
+        <Line Number="2" />
+        <Line Number="3">// This file is part of NinjaTurtles.</Line>
+        <Line Number="4">// </Line>
+        <Line Number="5">// NinjaTurtles is free software: you can redistribute it and/or modify</Line>
+        <Line Number="6">// it under the terms of the GNU Lesser General Public License as</Line>
+        <Line Number="7">// published by the Free Software Foundation, either version 3 of the</Line>
+        <Line Number="8">// License, or (at your option) any later version.</Line>
+        <Line Number="9">// </Line>
+        <Line Number="10">// NinjaTurtles is distributed in the hope that it will be useful,</Line>
+        <Line Number="11">// but WITHOUT ANY WARRANTY; without even the implied warranty of</Line>
+        <Line Number="12">// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</Line>
+        <Line Number="13">// GNU Lesser General Public License for more details.</Line>
+        <Line Number="14">// </Line>
+        <Line Number="15">// You should have received a copy of the GNU Lesser General Public</Line>
+        <Line Number="16">// License along with Refix.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</Line>
+        <Line Number="17">// </Line>
+        <Line Number="18">// Copyright (C) 2012 David Musgrove and others.</Line>
+        <Line Number="19" />
+        <Line Number="20">#endregion</Line>
+        <Line Number="21" />
+        <Line Number="22">using System.Collections.Generic;</Line>
+        <Line Number="23">using System.IO;</Line>
+        <Line Number="24">using System.Linq;</Line>
+        <Line Number="25" />
+        <Line Number="26">using Mono.Cecil;</Line>
+        <Line Number="27">using Mono.Cecil.Cil;</Line>
+        <Line Number="28">using Mono.Cecil.Mdb;</Line>
+        <Line Number="29">using Mono.Cecil.Pdb;</Line>
+        <Line Number="30" />
+        <Line Number="31">namespace NinjaTurtles</Line>
+        <Line Number="32">{</Line>
+        <Line Number="33">    public class Module</Line>
+        <Line Number="34">    {</Line>
+        <Line Number="35">        public Module(string assemblyLocation)</Line>
+        <Line Number="36">        {</Line>
+        <Line Number="37">            AssemblyLocation = assemblyLocation;</Line>
+        <Line Number="38">            var readerParameters = new ReaderParameters(ReadingMode.Immediate);</Line>
+        <Line Number="39">            AssemblyDefinition = AssemblyDefinition.ReadAssembly(assemblyLocation, readerParameters);</Line>
+        <Line Number="40">            Definition = AssemblyDefinition.MainModule;</Line>
+        <Line Number="41">            SourceFiles = new Dictionary&lt;string, string[]&gt;();</Line>
+        <Line Number="42">        }</Line>
+        <Line Number="43" />
+        <Line Number="44">        public string AssemblyLocation { get; private set; }</Line>
+        <Line Number="45">        public AssemblyDefinition AssemblyDefinition { get; private set; }</Line>
+        <Line Number="46">        public ModuleDefinition Definition { get; private set; }</Line>
+        <Line Number="47">        public IDictionary&lt;string, string[]&gt; SourceFiles { get; private set; } </Line>
+        <Line Number="48" />
+        <Line Number="49">        public void LoadDebugInformation()</Line>
+        <Line Number="50">        {</Line>
+        <Line Number="51">            var reader = ResolveSymbolReader();</Line>
+        <Line Number="52">            if (reader == null) return;</Line>
+        <Line Number="53" />
+        <Line Number="54">            Definition.ReadSymbols(reader);</Line>
+        <Line Number="55" />
+        <Line Number="56">            foreach (var method in Definition.Types</Line>
+        <Line Number="57">                .SelectMany(t =&gt; t.Methods)</Line>
+        <Line Number="58">                .Where(m =&gt; m.HasBody))</Line>
+        <Line Number="59">            {</Line>
+        <Line Number="60">                reader.Read(method.Body,</Line>
+        <Line Number="61">                    o =&gt; method.Body.Instructions.FirstOrDefault(i =&gt; i.Offset == o));</Line>
+        <Line Number="62">                var sourceFiles = method.Body.Instructions.Where(i =&gt; i.SequencePoint != null)</Line>
+        <Line Number="63">                    .Select(i =&gt; i.SequencePoint.Document.Url)</Line>
+        <Line Number="64">                    .Distinct();</Line>
+        <Line Number="65">                foreach (var sourceFile in sourceFiles)</Line>
+        <Line Number="66">                {</Line>
+        <Line Number="67">                    if (!SourceFiles.ContainsKey(sourceFile) &amp;&amp; File.Exists(sourceFile))</Line>
+        <Line Number="68">                    {</Line>
+        <Line Number="69">                        SourceFiles.Add(sourceFile, File.ReadAllLines(sourceFile));</Line>
+        <Line Number="70">                    }</Line>
+        <Line Number="71">                }</Line>
+        <Line Number="72">            }</Line>
+        <Line Number="73">        }</Line>
+        <Line Number="74" />
+        <Line Number="75">        private ISymbolReader ResolveSymbolReader()</Line>
+        <Line Number="76">        {</Line>
+        <Line Number="77">            string symbolLocation = null;</Line>
+        <Line Number="78">            string pdbLocation = Path.ChangeExtension(AssemblyLocation, "pdb");</Line>
+        <Line Number="79">            string mdbLocation = AssemblyLocation + ".mdb";</Line>
+        <Line Number="80">            ISymbolReaderProvider provider = null;</Line>
+        <Line Number="81">            if (File.Exists(pdbLocation))</Line>
+        <Line Number="82">            {</Line>
+        <Line Number="83">                symbolLocation = pdbLocation;</Line>
+        <Line Number="84">                provider = new PdbReaderProvider();</Line>
+        <Line Number="85">            }</Line>
+        <Line Number="86">            else if (File.Exists(mdbLocation))</Line>
+        <Line Number="87">            {</Line>
+        <Line Number="88">                symbolLocation = AssemblyLocation;</Line>
+        <Line Number="89">                provider = new MdbReaderProvider();</Line>
+        <Line Number="90">            }</Line>
+        <Line Number="91">            if (provider == null) return null;</Line>
+        <Line Number="92">            var reader = provider.GetSymbolReader(Definition, symbolLocation);</Line>
+        <Line Number="93">            return reader;</Line>
+        <Line Number="94">        }</Line>
+        <Line Number="95">    }</Line>
+        <Line Number="96">}</Line>
+      </Lines>
+    </SourceFile>
+    <SourceFile>
       <Url>C:\Working\hg\ninjaturtles\NinjaTurtles\TypeResolver.cs</Url>
       <SequencePoints>
-        <SequencePoint StartLine="41" StartColumn="13" EndLine="41" EndColumn="30">
+        <SequencePoint StartLine="39" StartColumn="13" EndLine="39" EndColumn="30">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>0034: Brtrue =&gt; Nop</Description>
@@ -15,28 +481,9 @@
             <AppliedMutant Killed="true">
               <Description>0034: Brtrue =&gt; Br</Description>
             </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0051: Brtrue =&gt; Nop</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0051: Brtrue =&gt; Brfalse</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0051: Brtrue =&gt; Br</Description>
-            </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="42" StartColumn="39" EndLine="42" EndColumn="73">
-          <AppliedMutants>
-            <AppliedMutant Killed="true">
-              <Description>0046: Br =&gt; Nop</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>007a: Br =&gt; Nop</Description>
-            </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
-        <SequencePoint StartLine="44" StartColumn="5" EndLine="44" EndColumn="55">
+        <SequencePoint StartLine="42" StartColumn="5" EndLine="42" EndColumn="55">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>0062: Brtrue =&gt; Nop</Description>
@@ -47,18 +494,9 @@
             <AppliedMutant Killed="true">
               <Description>0062: Brtrue =&gt; Br</Description>
             </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>00ae: Brtrue =&gt; Nop</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>00ae: Brtrue =&gt; Brfalse</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>00ae: Brtrue =&gt; Br</Description>
-            </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="47" StartColumn="17" EndLine="47" EndColumn="34">
+        <SequencePoint StartLine="45" StartColumn="17" EndLine="45" EndColumn="34">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>0094: Brtrue =&gt; Nop</Description>
@@ -69,60 +507,43 @@
             <AppliedMutant Killed="true">
               <Description>0094: Brtrue =&gt; Br</Description>
             </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="39" StartColumn="31" EndLine="39" EndColumn="43">
+          <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>0103: Brtrue =&gt; Nop</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0103: Brtrue =&gt; Brfalse</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0103: Brtrue =&gt; Br</Description>
+              <Description>0038: Br =&gt; Nop</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="42" StartColumn="36" EndLine="42" EndColumn="38">
+        <SequencePoint StartLine="40" StartColumn="36" EndLine="40" EndColumn="38">
           <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>00ad: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>00ad: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>00ad: Brtrue =&gt; Br</Description>
             </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>00ad: Brtrue =&gt; Nop</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0138: Brtrue =&gt; Brfalse</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0138: Brtrue =&gt; Br</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0138: Brtrue =&gt; Nop</Description>
-            </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="41" StartColumn="31" EndLine="41" EndColumn="43">
-          <AppliedMutants>
-            <AppliedMutant Killed="true">
-              <Description>0038: Br =&gt; Nop</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>005e: Br =&gt; Nop</Description>
-            </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
-        <SequencePoint StartLine="44" StartColumn="56" EndLine="44" EndColumn="65">
+        <SequencePoint StartLine="42" StartColumn="56" EndLine="42" EndColumn="65">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>0064: Br =&gt; Nop</Description>
             </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="40" StartColumn="39" EndLine="40" EndColumn="73">
+          <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>00b3: Br =&gt; Nop</Description>
+              <Description>0046: Br =&gt; Nop</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="48" StartColumn="13" EndLine="48" EndColumn="14">
+        <SequencePoint StartLine="46" StartColumn="13" EndLine="46" EndColumn="14">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>011f: Add =&gt; Sub</Description>
@@ -136,73 +557,48 @@
             <AppliedMutant Killed="true">
               <Description>011f: Add =&gt; Rem</Description>
             </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>009e: Add =&gt; Sub</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>009e: Add =&gt; Mul</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>009e: Add =&gt; Div</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>009e: Add =&gt; Rem</Description>
-            </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="16707566" StartColumn="0" EndLine="16707566" EndColumn="0">
-          <AppliedMutants>
-            <AppliedMutant Killed="true">
-              <Description>009e: Add =&gt; Sub</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>009e: Add =&gt; Div</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>009e: Add =&gt; Mul</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>009e: Add =&gt; Rem</Description>
-            </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
-        <SequencePoint StartLine="39" StartColumn="3" EndLine="39" EndColumn="4">
           <AppliedMutants />
         </SequencePoint>
-        <SequencePoint StartLine="40" StartColumn="7" EndLine="40" EndColumn="84">
+        <SequencePoint StartLine="37" StartColumn="3" EndLine="37" EndColumn="4">
           <AppliedMutants />
         </SequencePoint>
-        <SequencePoint StartLine="42" StartColumn="13" EndLine="42" EndColumn="20">
+        <SequencePoint StartLine="38" StartColumn="7" EndLine="38" EndColumn="84">
           <AppliedMutants />
         </SequencePoint>
-        <SequencePoint StartLine="42" StartColumn="22" EndLine="42" EndColumn="35">
+        <SequencePoint StartLine="40" StartColumn="13" EndLine="40" EndColumn="20">
           <AppliedMutants />
         </SequencePoint>
-        <SequencePoint StartLine="43" StartColumn="13" EndLine="43" EndColumn="14">
+        <SequencePoint StartLine="40" StartColumn="22" EndLine="40" EndColumn="35">
           <AppliedMutants />
         </SequencePoint>
-        <SequencePoint StartLine="45" StartColumn="5" EndLine="45" EndColumn="46">
+        <SequencePoint StartLine="41" StartColumn="13" EndLine="41" EndColumn="14">
           <AppliedMutants />
         </SequencePoint>
-        <SequencePoint StartLine="46" StartColumn="17" EndLine="46" EndColumn="109">
+        <SequencePoint StartLine="43" StartColumn="5" EndLine="43" EndColumn="46">
           <AppliedMutants />
         </SequencePoint>
-        <SequencePoint StartLine="47" StartColumn="35" EndLine="47" EndColumn="47">
+        <SequencePoint StartLine="44" StartColumn="17" EndLine="44" EndColumn="109">
           <AppliedMutants />
         </SequencePoint>
-        <SequencePoint StartLine="49" StartColumn="13" EndLine="49" EndColumn="25">
+        <SequencePoint StartLine="45" StartColumn="35" EndLine="45" EndColumn="47">
           <AppliedMutants />
         </SequencePoint>
-        <SequencePoint StartLine="50" StartColumn="9" EndLine="50" EndColumn="10">
+        <SequencePoint StartLine="47" StartColumn="13" EndLine="47" EndColumn="25">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="48" StartColumn="9" EndLine="48" EndColumn="10">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="32" StartColumn="3" EndLine="32" EndColumn="4">
+          <AppliedMutants />
+        </SequencePoint>
+        <SequencePoint StartLine="33" StartColumn="4" EndLine="33" EndColumn="85">
           <AppliedMutants />
         </SequencePoint>
         <SequencePoint StartLine="34" StartColumn="3" EndLine="34" EndColumn="4">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="35" StartColumn="4" EndLine="35" EndColumn="85">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="36" StartColumn="3" EndLine="36" EndColumn="4">
           <AppliedMutants />
         </SequencePoint>
       </SequencePoints>
@@ -233,33 +629,31 @@
         <Line Number="24">using System.Linq;</Line>
         <Line Number="25">using System.Reflection;</Line>
         <Line Number="26" />
-        <Line Number="27">using Mono.Cecil;</Line>
-        <Line Number="28" />
-        <Line Number="29">namespace NinjaTurtles</Line>
-        <Line Number="30">{</Line>
-        <Line Number="31">    internal class TypeResolver</Line>
-        <Line Number="32">    {</Line>
-        <Line Number="33">        internal static Type ResolveTypeFromReferences(Assembly callingAssembly, string className)</Line>
-        <Line Number="34">        {</Line>
-        <Line Number="35">            return ResolveTypeFromReferences(callingAssembly, className, new List&lt;string&gt;());</Line>
-        <Line Number="36">        }</Line>
-        <Line Number="37">        </Line>
-        <Line Number="38">        private static Type ResolveTypeFromReferences(Assembly assembly, string className, IList&lt;string&gt; consideredAssemblies)</Line>
-        <Line Number="39">        {</Line>
-        <Line Number="40">            var type = assembly.GetTypes().SingleOrDefault(t =&gt; t.FullName == className);</Line>
-        <Line Number="41">            if (type != null) return type;</Line>
-        <Line Number="42">            foreach (var reference in assembly.GetReferencedAssemblies())</Line>
-        <Line Number="43">            {</Line>
-        <Line Number="44">                if (consideredAssemblies.Contains(reference.Name)) continue;</Line>
-        <Line Number="45">                consideredAssemblies.Add(reference.Name);</Line>
-        <Line Number="46">                type = ResolveTypeFromReferences(Assembly.Load(reference), className, consideredAssemblies);</Line>
-        <Line Number="47">                if (type != null) return type;</Line>
-        <Line Number="48">            }</Line>
-        <Line Number="49">            return null;</Line>
-        <Line Number="50">        }</Line>
-        <Line Number="51">    }</Line>
-        <Line Number="52">}</Line>
-        <Line Number="53" />
+        <Line Number="27">namespace NinjaTurtles</Line>
+        <Line Number="28">{</Line>
+        <Line Number="29">    internal class TypeResolver</Line>
+        <Line Number="30">    {</Line>
+        <Line Number="31">        internal static Type ResolveTypeFromReferences(Assembly callingAssembly, string className)</Line>
+        <Line Number="32">        {</Line>
+        <Line Number="33">            return ResolveTypeFromReferences(callingAssembly, className, new List&lt;string&gt;());</Line>
+        <Line Number="34">        }</Line>
+        <Line Number="35" />
+        <Line Number="36">        private static Type ResolveTypeFromReferences(Assembly assembly, string className, IList&lt;string&gt; consideredAssemblies)</Line>
+        <Line Number="37">        {</Line>
+        <Line Number="38">            var type = assembly.GetTypes().SingleOrDefault(t =&gt; t.FullName == className);</Line>
+        <Line Number="39">            if (type != null) return type;</Line>
+        <Line Number="40">            foreach (var reference in assembly.GetReferencedAssemblies())</Line>
+        <Line Number="41">            {</Line>
+        <Line Number="42">                if (consideredAssemblies.Contains(reference.Name)) continue;</Line>
+        <Line Number="43">                consideredAssemblies.Add(reference.Name);</Line>
+        <Line Number="44">                type = ResolveTypeFromReferences(Assembly.Load(reference), className, consideredAssemblies);</Line>
+        <Line Number="45">                if (type != null) return type;</Line>
+        <Line Number="46">            }</Line>
+        <Line Number="47">            return null;</Line>
+        <Line Number="48">        }</Line>
+        <Line Number="49">    }</Line>
+        <Line Number="50">}</Line>
+        <Line Number="51" />
       </Lines>
     </SourceFile>
     <SourceFile>
@@ -409,13 +803,13 @@
         <SequencePoint StartLine="101" StartColumn="4" EndLine="101" EndColumn="27">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>000d: Brtrue =&gt; Br</Description>
+              <Description>000d: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>000d: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>000d: Brtrue =&gt; Brfalse</Description>
+              <Description>000d: Brtrue =&gt; Br</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -446,16 +840,16 @@
         <SequencePoint StartLine="77" StartColumn="28" EndLine="77" EndColumn="30">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>00e4: Brtrue =&gt; Nop</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
               <Description>00e4: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>00e4: Brtrue =&gt; Br</Description>
+              <Description>00e4: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>00f1: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00e4: Brtrue =&gt; Br</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>00f1: Brtrue =&gt; Brfalse</Description>
@@ -488,13 +882,13 @@
         <SequencePoint StartLine="92" StartColumn="4" EndLine="92" EndColumn="21">
           <AppliedMutants>
             <AppliedMutant Killed="true">
+              <Description>0154: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
               <Description>0154: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>0154: Brtrue =&gt; Br</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0154: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -587,6 +981,22 @@
         <SequencePoint StartLine="96" StartColumn="3" EndLine="96" EndColumn="4">
           <AppliedMutants />
         </SequencePoint>
+        <SequencePoint StartLine="133" StartColumn="13" EndLine="137" EndColumn="37">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>009a: Br =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0093: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0093: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0093: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
         <SequencePoint StartLine="122" StartColumn="5" EndLine="122" EndColumn="23">
           <AppliedMutants>
             <AppliedMutant Killed="true">
@@ -600,48 +1010,32 @@
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="133" StartColumn="13" EndLine="137" EndColumn="37">
-          <AppliedMutants>
-            <AppliedMutant Killed="true">
-              <Description>009a: Br =&gt; Nop</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0093: Brtrue =&gt; Brfalse</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0093: Brtrue =&gt; Nop</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0093: Brtrue =&gt; Br</Description>
-            </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
         <SequencePoint StartLine="132" StartColumn="7" EndLine="132" EndColumn="60">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>007e: Brtrue =&gt; Nop</Description>
+              <Description>007e: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>007e: Brtrue =&gt; Brfalse</Description>
+              <Description>007e: Brtrue =&gt; Br</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>0081: Br =&gt; Nop</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>007e: Brtrue =&gt; Br</Description>
+              <Description>007e: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="140" StartColumn="13" EndLine="140" EndColumn="33">
           <AppliedMutants>
             <AppliedMutant Killed="true">
+              <Description>00cf: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
               <Description>00cf: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>00cf: Brtrue =&gt; Br</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>00cf: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -715,24 +1109,6 @@
           <AppliedMutants />
         </SequencePoint>
         <SequencePoint StartLine="151" StartColumn="3" EndLine="151" EndColumn="4">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="133" StartColumn="7" EndLine="137" EndColumn="37">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="142" StartColumn="17" EndLine="142" EndColumn="145">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="143" StartColumn="17" EndLine="143" EndColumn="83">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="144" StartColumn="13" EndLine="144" EndColumn="14">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="146" StartColumn="13" EndLine="146" EndColumn="37">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="147" StartColumn="3" EndLine="147" EndColumn="4">
           <AppliedMutants />
         </SequencePoint>
       </SequencePoints>
@@ -1108,378 +1484,6 @@
         <Line Number="50">    }</Line>
         <Line Number="51">}</Line>
         <Line Number="52" />
-      </Lines>
-    </SourceFile>
-    <SourceFile>
-      <SequencePoints>
-        <SequencePoint StartLine="34" StartColumn="3" EndLine="34" EndColumn="4">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="35" StartColumn="4" EndLine="35" EndColumn="85">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="36" StartColumn="3" EndLine="36" EndColumn="4">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="40" StartColumn="9" EndLine="40" EndColumn="10">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="41" StartColumn="13" EndLine="41" EndColumn="46">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="42" StartColumn="9" EndLine="42" EndColumn="10">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="59" StartColumn="9" EndLine="59" EndColumn="10">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="60" StartColumn="13" EndLine="60" EndColumn="99">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="61" StartColumn="13" EndLine="61" EndColumn="48">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="62" StartColumn="13" EndLine="68" EndColumn="15">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="69" StartColumn="9" EndLine="69" EndColumn="10">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="99" StartColumn="3" EndLine="99" EndColumn="4">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="100" StartColumn="4" EndLine="100" EndColumn="69">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="101" StartColumn="4" EndLine="101" EndColumn="27">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="16707566" StartColumn="0" EndLine="16707566" EndColumn="0">
-          <AppliedMutants>
-            <AppliedMutant Killed="true">
-              <Description>009e: Add =&gt; Sub</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>009e: Add =&gt; Mul</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>009e: Add =&gt; Div</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>009e: Add =&gt; Rem</Description>
-            </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
-        <SequencePoint StartLine="102" StartColumn="4" EndLine="102" EndColumn="5">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="103" StartColumn="5" EndLine="103" EndColumn="41">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="104" StartColumn="4" EndLine="104" EndColumn="5">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="105" StartColumn="4" EndLine="105" EndColumn="37">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="106" StartColumn="3" EndLine="106" EndColumn="4">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="67" StartColumn="3" EndLine="67" EndColumn="4">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="68" StartColumn="4" EndLine="68" EndColumn="47">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="69" StartColumn="13" EndLine="69" EndColumn="44">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="70" StartColumn="7" EndLine="70" EndColumn="45">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="71" StartColumn="4" EndLine="71" EndColumn="63">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="72" StartColumn="4" EndLine="72" EndColumn="39">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="73" StartColumn="4" EndLine="73" EndColumn="41">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="74" StartColumn="4" EndLine="74" EndColumn="18">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="75" StartColumn="4" EndLine="75" EndColumn="21">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="76" StartColumn="4" EndLine="76" EndColumn="37">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="76" StartColumn="38" EndLine="76" EndColumn="63">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="77" StartColumn="4" EndLine="77" EndColumn="11">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="77" StartColumn="31" EndLine="77" EndColumn="48">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="77" StartColumn="13" EndLine="77" EndColumn="27">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="78" StartColumn="4" EndLine="78" EndColumn="5">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="79" StartColumn="5" EndLine="79" EndColumn="70">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="80" StartColumn="5" EndLine="81" EndColumn="90">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="82" StartColumn="4" EndLine="82" EndColumn="5">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="77" StartColumn="28" EndLine="77" EndColumn="30">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="84" StartColumn="13" EndLine="84" EndColumn="44">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="85" StartColumn="13" EndLine="85" EndColumn="70">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="87" StartColumn="4" EndLine="87" EndColumn="19">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="88" StartColumn="4" EndLine="88" EndColumn="5">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="89" StartColumn="5" EndLine="89" EndColumn="67">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="90" StartColumn="5" EndLine="90" EndColumn="12">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="92" StartColumn="4" EndLine="92" EndColumn="21">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="93" StartColumn="4" EndLine="93" EndColumn="5">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="94" StartColumn="5" EndLine="94" EndColumn="46">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="96" StartColumn="3" EndLine="96" EndColumn="4">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="109" StartColumn="3" EndLine="109" EndColumn="4">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="110" StartColumn="4" EndLine="110" EndColumn="116">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="112" StartColumn="7" EndLine="112" EndColumn="129">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="114" StartColumn="13" EndLine="114" EndColumn="95">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="116" StartColumn="4" EndLine="116" EndColumn="20">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="117" StartColumn="4" EndLine="117" EndColumn="51">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="118" StartColumn="4" EndLine="118" EndColumn="22">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="121" StartColumn="4" EndLine="121" EndColumn="5">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="122" StartColumn="5" EndLine="122" EndColumn="23">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="123" StartColumn="5" EndLine="123" EndColumn="6">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="124" StartColumn="6" EndLine="124" EndColumn="41">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="125" StartColumn="5" EndLine="125" EndColumn="6">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="126" StartColumn="5" EndLine="126" EndColumn="33">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="127" StartColumn="4" EndLine="127" EndColumn="5">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="128" StartColumn="4" EndLine="128" EndColumn="9">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="128" StartColumn="10" EndLine="128" EndColumn="11">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="128" StartColumn="11" EndLine="128" EndColumn="12">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="130" StartColumn="4" EndLine="130" EndColumn="36">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="132" StartColumn="7" EndLine="132" EndColumn="60">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="133" StartColumn="7" EndLine="137" EndColumn="37">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="138" StartColumn="13" EndLine="138" EndColumn="109">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="140" StartColumn="13" EndLine="140" EndColumn="33">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="141" StartColumn="13" EndLine="141" EndColumn="14">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="142" StartColumn="17" EndLine="142" EndColumn="145">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="143" StartColumn="17" EndLine="143" EndColumn="83">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="144" StartColumn="13" EndLine="144" EndColumn="14">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="146" StartColumn="13" EndLine="146" EndColumn="37">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="147" StartColumn="3" EndLine="147" EndColumn="4">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="39" StartColumn="9" EndLine="39" EndColumn="10">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="40" StartColumn="13" EndLine="40" EndColumn="65">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="41" StartColumn="13" EndLine="41" EndColumn="102">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="43" StartColumn="13" EndLine="43" EndColumn="94">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="44" StartColumn="9" EndLine="44" EndColumn="10">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="39" StartColumn="3" EndLine="39" EndColumn="4">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="40" StartColumn="7" EndLine="40" EndColumn="84">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="41" StartColumn="13" EndLine="41" EndColumn="30">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="41" StartColumn="31" EndLine="41" EndColumn="43">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="42" StartColumn="13" EndLine="42" EndColumn="20">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="42" StartColumn="39" EndLine="42" EndColumn="73">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="42" StartColumn="22" EndLine="42" EndColumn="35">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="43" StartColumn="13" EndLine="43" EndColumn="14">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="44" StartColumn="5" EndLine="44" EndColumn="55">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="44" StartColumn="56" EndLine="44" EndColumn="65">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="45" StartColumn="5" EndLine="45" EndColumn="46">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="46" StartColumn="17" EndLine="46" EndColumn="109">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="47" StartColumn="17" EndLine="47" EndColumn="34">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="47" StartColumn="35" EndLine="47" EndColumn="47">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="48" StartColumn="13" EndLine="48" EndColumn="14">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="42" StartColumn="36" EndLine="42" EndColumn="38">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="49" StartColumn="13" EndLine="49" EndColumn="25">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="50" StartColumn="9" EndLine="50" EndColumn="10">
-          <AppliedMutants />
-        </SequencePoint>
-      </SequencePoints>
-      <Lines>
-        <Line Number="1">#region Copyright &amp; licence</Line>
-        <Line Number="2" />
-        <Line Number="3">// This file is part of NinjaTurtles.</Line>
-        <Line Number="4">// </Line>
-        <Line Number="5">// NinjaTurtles is free software: you can redistribute it and/or modify</Line>
-        <Line Number="6">// it under the terms of the GNU Lesser General Public License as</Line>
-        <Line Number="7">// published by the Free Software Foundation, either version 3 of the</Line>
-        <Line Number="8">// License, or (at your option) any later version.</Line>
-        <Line Number="9">// </Line>
-        <Line Number="10">// NinjaTurtles is distributed in the hope that it will be useful,</Line>
-        <Line Number="11">// but WITHOUT ANY WARRANTY; without even the implied warranty of</Line>
-        <Line Number="12">// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</Line>
-        <Line Number="13">// GNU Lesser General Public License for more details.</Line>
-        <Line Number="14">// </Line>
-        <Line Number="15">// You should have received a copy of the GNU Lesser General Public</Line>
-        <Line Number="16">// License along with Refix.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</Line>
-        <Line Number="17">// </Line>
-        <Line Number="18">// Copyright (C) 2012 David Musgrove and others.</Line>
-        <Line Number="19" />
-        <Line Number="20">#endregion</Line>
-        <Line Number="21" />
-        <Line Number="22">using System;</Line>
-        <Line Number="23">using System.Collections.Generic;</Line>
-        <Line Number="24">using System.Linq;</Line>
-        <Line Number="25">using System.Reflection;</Line>
-        <Line Number="26" />
-        <Line Number="27">using Mono.Cecil;</Line>
-        <Line Number="28" />
-        <Line Number="29">namespace NinjaTurtles</Line>
-        <Line Number="30">{</Line>
-        <Line Number="31">    internal class TypeResolver</Line>
-        <Line Number="32">    {</Line>
-        <Line Number="33">        internal static Type ResolveTypeFromReferences(Assembly callingAssembly, string className)</Line>
-        <Line Number="34">        {</Line>
-        <Line Number="35">            return ResolveTypeFromReferences(callingAssembly, className, new List&lt;string&gt;());</Line>
-        <Line Number="36">        }</Line>
-        <Line Number="37" />
-        <Line Number="38">        private static Type ResolveTypeFromReferences(Assembly assembly, string className, IList&lt;string&gt; consideredAssemblies)</Line>
-        <Line Number="39">        {</Line>
-        <Line Number="40">            var type = assembly.GetTypes().SingleOrDefault(t =&gt; t.FullName == className);</Line>
-        <Line Number="41">            if (type != null) return type;</Line>
-        <Line Number="42">            foreach (var reference in assembly.GetReferencedAssemblies())</Line>
-        <Line Number="43">            {</Line>
-        <Line Number="44">                if (consideredAssemblies.Contains(reference.Name)) continue;</Line>
-        <Line Number="45">                consideredAssemblies.Add(reference.Name);</Line>
-        <Line Number="46">                type = ResolveTypeFromReferences(Assembly.Load(reference), className, consideredAssemblies);</Line>
-        <Line Number="47">                if (type != null) return type;</Line>
-        <Line Number="48">            }</Line>
-        <Line Number="49">            return null;</Line>
-        <Line Number="50">        }</Line>
-        <Line Number="51">    }</Line>
-        <Line Number="52">}</Line>
-        <Line Number="53" />
       </Lines>
     </SourceFile>
   </SourceFiles>

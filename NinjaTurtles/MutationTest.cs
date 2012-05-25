@@ -219,7 +219,10 @@ namespace NinjaTurtles
             if (_parameterTypes != null
                 && attribute.HasProperties
                 && attribute.Properties.Any(p => p.Name == "ParameterTypes")
-                && !Enumerable.SequenceEqual(_parameterTypes, (Type[])attribute.Properties.Single(p => p.Name == "ParameterTypes").Argument.Value))
+                && !Enumerable.SequenceEqual(
+                    _parameterTypes.Select(t => t.Name),
+                    Array.ConvertAll((CustomAttributeArgument[])attribute.Properties.Single(p => p.Name == "ParameterTypes").Argument.Value, a => (TypeReference)a.Value)
+                        .Select(t => t.Name)))
             {
                 return false;
             }

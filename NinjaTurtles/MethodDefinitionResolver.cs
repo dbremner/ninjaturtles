@@ -52,12 +52,11 @@ namespace NinjaTurtles
                 return typeDefinition.Methods.Single(m => m.Name == methodName
                                                           &&
                                                           Enumerable.SequenceEqual(
-                                                              m.Parameters.Select(p => p.ParameterType.Name),
+                                                              m.Parameters.Select(p => p.ParameterType.Name.Replace("TypeDefinition", "Type")),
                                                               parameterTypes.Select(p => p.Name)));
             }
             catch
             {
-
                 return null;
             }
         }

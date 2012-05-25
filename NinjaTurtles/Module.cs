@@ -64,17 +64,12 @@ namespace NinjaTurtles
                     .Distinct();
                 foreach (var sourceFile in sourceFiles)
                 {
-                    if (!SourceFiles.ContainsKey(sourceFile))
+                    if (!SourceFiles.ContainsKey(sourceFile) && File.Exists(sourceFile))
                     {
                         SourceFiles.Add(sourceFile, File.ReadAllLines(sourceFile));
                     }
                 }
             }
-        }
-
-        private static Instruction FirstOrDefault(int o, MethodDefinition method)
-        {
-            return method.Body.Instructions.FirstOrDefault(i => i.Offset == o);
         }
 
         private ISymbolReader ResolveSymbolReader()
