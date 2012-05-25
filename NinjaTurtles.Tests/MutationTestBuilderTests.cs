@@ -43,7 +43,7 @@ namespace NinjaTurtles.Tests
 		public void For_Mutation_Tests()
 		{
 			MutationTestBuilder<MutationTestBuilder>.For("For", new[] { typeof(string), typeof(string), typeof(Type[]) })
-                .MergeReportTo("C:\\Working\\hg\\ninjaturtles\\SampleReport.xml")
+                .MergeReportTo("SampleReport.xml")
                 .Run();
 		}
 	}

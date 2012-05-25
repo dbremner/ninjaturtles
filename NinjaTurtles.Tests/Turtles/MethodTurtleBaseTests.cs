@@ -162,7 +162,7 @@ namespace NinjaTurtles.Tests.Turtles
         public void Mutate_Mutation_Tests()
         {
             MutationTestBuilder<MethodTurtleBase>.For("Mutate")
-                .MergeReportTo("C:\\Working\\hg\\ninjaturtles\\SampleReport.xml")
+                .MergeReportTo("SampleReport.xml")
                 .Run();
         }
 
@@ -170,7 +170,7 @@ namespace NinjaTurtles.Tests.Turtles
         public void MutantComplete_Mutation_Tests()
         {
             MutationTestBuilder<MethodTurtleBase>.For("MutantComplete")
-                .MergeReportTo("C:\\Working\\hg\\ninjaturtles\\SampleReport.xml")
+                .MergeReportTo("SampleReport.xml")
                 .Run();
         }
 
@@ -178,7 +178,7 @@ namespace NinjaTurtles.Tests.Turtles
         public void DoYield_Mutation_Tests()
         {
             MutationTestBuilder<MethodTurtleBase>.For("DoYield")
-                .MergeReportTo("C:\\Working\\hg\\ninjaturtles\\SampleReport.xml")
+                .MergeReportTo("SampleReport.xml")
                 .Run();
         }
 
