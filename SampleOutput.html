@@ -1,8 +1,30 @@
-﻿<html xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.w3.org/1999/xhtml">
    <head><style type="text/css">
                     body {
                         font-family: Trebuchet MS,Verdana,Arial;
                         font-size: 0.8em;
+                    }
+                    table {
+                    	font-size: 1em;
+                    	border-spacing: 0;
+                    }
+                    table td {
+                    	padding: 0;
+                    	border-left: solid 1px #888;
+                    	border-right: solid 1px #888;
+                    	border-bottom: solid 1px #888;
+                    }
+                    table th {
+                    	padding: 2px;
+                    }
+                    table tr {
+                    	 height: 20px;
+                    }
+                    th.file {
+                    	width: 400px;
+                    }
+                    th.mutants, th.sequence_points {
+                    	width: 118px;
                     }
                     h1 {
                         font-size: 1.5em;
@@ -19,13 +41,157 @@
                     .green {
                         background-color: #cfc;
                     }
-                    .title {
+                    .title, th {
                         background-color: #000;
                         color: #fff;
                         font-weight: bold;
+                        text-align: left;
+                    }
+                    .bar-wrap {
+                    	position: relative;
+                    }
+                    .bar-wrap, .bar-value, .bar-text {
+                    	width: 120px;
+                    	height: 20px;
+                    }
+                    .bar-wrap, .bar-value {
+                    	background-color: #fdd;
+                    }
+                    .bar-text {
+                    	position: absolute;
+                    	top: 0; left: 0;
+                    	padding-top: 2px;
+                    	color: #000;
+                    	text-align: center;
+                    	width: 100%;
                     }
                 </style></head>
    <body>
+      <table>
+         <thead>
+            <tr>
+               <th class="file">File</th>
+               <th class="mutants">Mutants</th>
+               <th class="sequence_points">Sequence points</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr>
+               <td>MethodDefinitionResolver.cs</td>
+               <td>
+                  <div class="bar-wrap">
+                     <div class="bar-value" style="background: #dfd; width: 100%">
+                        <div class="bar-text">10 /
+                           			10
+                        </div>
+                     </div>
+                  </div>
+               </td>
+               <td>
+                  <div class="bar-wrap">
+                     <div class="bar-value" style="background: #dfd; width: 22.222222222222222222%">
+                        <div class="bar-text">4 /
+                           			18
+                        </div>
+                     </div>
+                  </div>
+               </td>
+            </tr>
+            <tr>
+               <td>Module.cs</td>
+               <td>
+                  <div class="bar-wrap">
+                     <div class="bar-value" style="background: #dfd; width: 100%">
+                        <div class="bar-text">40 /
+                           			40
+                        </div>
+                     </div>
+                  </div>
+               </td>
+               <td>
+                  <div class="bar-wrap">
+                     <div class="bar-value" style="background: #dfd; width: 36%">
+                        <div class="bar-text">9 /
+                           			25
+                        </div>
+                     </div>
+                  </div>
+               </td>
+            </tr>
+            <tr>
+               <td>TypeResolver.cs</td>
+               <td>
+                  <div class="bar-wrap">
+                     <div class="bar-value" style="background: #dfd; width: 100%">
+                        <div class="bar-text">19 /
+                           			19
+                        </div>
+                     </div>
+                  </div>
+               </td>
+               <td>
+                  <div class="bar-wrap">
+                     <div class="bar-value" style="background: #dfd; width: 36.363636363636363636%">
+                        <div class="bar-text">8 /
+                           			22
+                        </div>
+                     </div>
+                  </div>
+               </td>
+            </tr>
+            <tr>
+               <td>MethodTurtleBase.cs</td>
+               <td>
+                  <div class="bar-wrap"></div>
+               </td>
+               <td>
+                  <div class="bar-wrap">
+                     <div class="bar-value" style="background: #dfd; width: 0%">
+                        <div class="bar-text">0 /
+                           			8
+                        </div>
+                     </div>
+                  </div>
+               </td>
+            </tr>
+            <tr>
+               <td>MutationTest.cs</td>
+               <td>
+                  <div class="bar-wrap">
+                     <div class="bar-value" style="background: #dfd; width: 100%">
+                        <div class="bar-text">34 /
+                           			34
+                        </div>
+                     </div>
+                  </div>
+               </td>
+               <td>
+                  <div class="bar-wrap">
+                     <div class="bar-value" style="background: #dfd; width: 16.666666666666666667%">
+                        <div class="bar-text">11 /
+                           			66
+                        </div>
+                     </div>
+                  </div>
+               </td>
+            </tr>
+            <tr>
+               <td>MutationTestBuilder.cs</td>
+               <td>
+                  <div class="bar-wrap"></div>
+               </td>
+               <td>
+                  <div class="bar-wrap">
+                     <div class="bar-value" style="background: #dfd; width: 0%">
+                        <div class="bar-text">0 /
+                           			5
+                        </div>
+                     </div>
+                  </div>
+               </td>
+            </tr>
+         </tbody>
+      </table>
       <h1>MethodDefinitionResolver.cs</h1><pre class="brush:csharp"><span class="title">Line: Mutants: Source code                                                                       </span>
    1:        : <span class="white">#region Copyright & licence&#x200b;</span>
    2:        : <span class="white">&#x200b;</span>
