@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!-- Created with Liquid XML Studio 2012 Developer Edition (Trial) 10.0.5.3999 (http://www.liquid-technologies.com) -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.w3.org/1999/xhtml">
     <xsl:output method="html" omit-xml-declaration="yes" encoding="utf8" />
@@ -10,6 +10,28 @@
                     body {
                         font-family: Trebuchet MS,Verdana,Arial;
                         font-size: 0.8em;
+                    }
+                    table {
+                    	font-size: 1em;
+                    	border-spacing: 0;
+                    }
+                    table td {
+                    	padding: 0;
+                    	border-left: solid 1px #888;
+                    	border-right: solid 1px #888;
+                    	border-bottom: solid 1px #888;
+                    }
+                    table th {
+                    	padding: 2px;
+                    }
+                    table tr {
+                    	 height: 20px;
+                    }
+                    th.file {
+                    	width: 400px;
+                    }
+                    th.mutants, th.sequence_points {
+                    	width: 118px;
                     }
                     h1 {
                         font-size: 1.5em;
@@ -26,20 +48,90 @@
                     .green {
                         background-color: #cfc;
                     }
-                    .title {
+                    .title, th {
                         background-color: #000;
                         color: #fff;
                         font-weight: bold;
+                        text-align: left;
+                    }
+                    .bar-wrap {
+                    	position: relative;
+                    }
+                    .bar-wrap, .bar-value, .bar-text {
+                    	width: 120px;
+                    	height: 20px;
+                    }
+                    .bar-wrap, .bar-value {
+                    	background-color: #fdd;
+                    }
+                    .bar-text {
+                    	position: absolute;
+                    	top: 0; left: 0;
+                    	padding-top: 2px;
+                    	color: #000;
+                    	text-align: center;
+                    	width: 100%;
                     }
                 </style>
             </head>
             <body>
-                <xsl:apply-templates select="//SourceFile" />
+                <xsl:apply-templates select="/" mode="summary" />
+                <xsl:apply-templates select="//SourceFile" mode="detail" />
             </body>
         </html>
     </xsl:template>
     
-    <xsl:template match="SourceFile">
+    <xsl:template match="/" mode="summary">
+    	<table>
+    		<thead>
+    			<tr>
+    				<th class="file">File</th>
+    				<th class="mutants">Mutants</th>
+    				<th class="sequence_points">Sequence points</th>
+    			</tr>
+    		</thead>
+    		<tbody>
+	             	<xsl:apply-templates select="//SourceFile" mode="summary" />
+    		</tbody>
+    	</table>
+    </xsl:template>
+    
+    <xsl:template match="SourceFile" mode="summary">
+    	<tr>
+    		<td>
+    		<xsl:call-template name="substring-after-last">
+                <xsl:with-param name="string" select="Url" />
+                <xsl:with-param name="delimiter" select="'\'" />
+            </xsl:call-template>
+    		</td>
+    		<td>
+    			<div class="bar-wrap">
+    			<xsl:if test=".//AppliedMutant">
+    				<div class="bar-value" style="background: #dfd; width: {100 * count(.//AppliedMutant[@Killed='true']) div count(.//AppliedMutant)}%">
+    				<div class="bar-text" >
+    			<xsl:value-of select="count(.//AppliedMutant[@Killed='true'])" /> /
+    			<xsl:value-of select="count(.//AppliedMutant)" />
+    				</div>
+    				</div>
+    			</xsl:if>
+    			</div>
+    		</td>
+    		<td>
+    			<div class="bar-wrap">
+    			<xsl:if test=".//SequencePoint">
+    				<div class="bar-value" style="background: #dfd; width: {100 * count(.//SequencePoint[.//AppliedMutant]) div count(.//SequencePoint)}%">
+    				<div class="bar-text" >
+    			<xsl:value-of select="count(.//SequencePoint[.//AppliedMutant])" /> /
+    			<xsl:value-of select="count(.//SequencePoint)" />
+    				</div>
+    				</div>
+    			</xsl:if>
+    			</div>
+    		</td>
+    	</tr>
+    </xsl:template>
+    
+    <xsl:template match="SourceFile" mode="detail">
         <h1>
             <xsl:call-template name="substring-after-last">
                 <xsl:with-param name="string" select="Url" />
