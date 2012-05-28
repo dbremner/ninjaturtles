@@ -53,6 +53,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MethodTestedAttributeTests.cs" />
     <Compile Include="TestDirectoryLoggingTests.cs" />
     <Compile Include="InstructionExtensionsTests.cs" />
     <Compile Include="TestUtilities\LoggingTestFixture.cs" />
@@ -71,6 +72,9 @@
     <Compile Include="Turtles\BranchConditionTurtleTestSuite\BranchConditionClassUnderTest.cs" />
     <Compile Include="Turtles\BranchConditionTurtleTestSuite\Tests\BranchConditionClassUnderTestTests.cs" />
     <Compile Include="Turtles\MethodTurtleBaseTests.cs" />
+    <Compile Include="Turtles\SequencePointDeletionTurtleTests.cs" />
+    <Compile Include="Turtles\SequencePointDeletionTurtleTestSuite\SequencePointDeletionClassUnderTest.cs" />
+    <Compile Include="Turtles\SequencePointDeletionTurtleTestSuite\Tests\SequencePointDeletionClassUnderTestTests.cs" />
     <Compile Include="TypeResolverTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

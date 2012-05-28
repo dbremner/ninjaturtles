@@ -19,26 +19,10 @@
 
 #endregion
 
-namespace NinjaTurtles.Tests.Turtles.BranchConditionTurtleTestSuite
+namespace NinjaTurtles
 {
-    public class BranchConditionClassUnderTest
+    static public class Methods
     {
-        public int StupidParse(string input)
-        {
-            if (input == "Seven")
-            {
-                return 7;
-            }
-            return -1;
-        }
-
-        public int WorkingStupidParse(string input)
-        {
-            if (input == "Seven")
-            {
-                return 7;
-            }
-            return -1;
-        }
+        public const string CONSTRUCTOR = ".ctor";
     }
 }

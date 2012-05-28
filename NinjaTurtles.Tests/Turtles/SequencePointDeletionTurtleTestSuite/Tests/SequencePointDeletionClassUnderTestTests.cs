@@ -23,24 +23,25 @@ using NUnit.Framework;
 
 using NinjaTurtles.Turtles;
 
-namespace NinjaTurtles.Tests.Turtles.BranchConditionTurtleTestSuite.Tests
+namespace NinjaTurtles.Tests.Turtles.SequencePointDeletionTurtleTestSuite.Tests
 {
     [TestFixture]
-    public class BranchConditionClassUnderTestTests
+    public class SequencePointDeletionClassUnderTestTests
     {
         [Test]
-        [MethodTested(typeof(BranchConditionClassUnderTest), "StupidParse")]
+        [MethodTested(typeof(SequencePointDeletionClassUnderTest), "SimpleMethod")]
         public void StupidParse_Works()
         {
-            Assert.AreEqual(7, new BranchConditionClassUnderTest().StupidParse("Seven"));
+            Assert.AreEqual(7, new SequencePointDeletionClassUnderTest().SimpleMethod(1, 0, 3, 2));
         }
 
         [Test]
-        [MethodTested(typeof(BranchConditionClassUnderTest), "WorkingStupidParse")]
+        [MethodTested(typeof(SequencePointDeletionClassUnderTest), "WorkingSimpleMethod")]
         public void WorkingStupidParse_Works()
         {
-            Assert.AreEqual(7, new BranchConditionClassUnderTest().WorkingStupidParse("Seven"));
-            Assert.AreEqual(-1, new BranchConditionClassUnderTest().WorkingStupidParse("Not Seven"));
+            Assert.AreEqual(7, new SequencePointDeletionClassUnderTest().WorkingSimpleMethod(1, 0, 3, 2));
+            Assert.AreEqual(11, new SequencePointDeletionClassUnderTest().WorkingSimpleMethod(1, 2, 3, 2));
+            Assert.AreEqual(24, new SequencePointDeletionClassUnderTest().WorkingSimpleMethod(2, -1, 3, -3));
         }
 
         [Test]
@@ -48,14 +49,15 @@ namespace NinjaTurtles.Tests.Turtles.BranchConditionTurtleTestSuite.Tests
         [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
         [MethodTested(typeof(MethodTurtleBase), "Mutate")]
         [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(BranchConditionTurtle), "DoMutate")]
+        [MethodTested(typeof(SequencePointDeletionTurtle), "DoMutate")]
+        [MethodTested(typeof(SequencePointDeletionTurtle), "ShouldDeleteSequence")]
         public void StupidParse_Mutation_Tests_Fail()
         {
             try
             {
-                MutationTestBuilder<BranchConditionClassUnderTest>
-                    .For("StupidParse")
-                    .With<BranchConditionTurtle>()
+                MutationTestBuilder<SequencePointDeletionClassUnderTest>
+                    .For("SimpleMethod")
+                    .With<SequencePointDeletionTurtle>()
                     .Run();
             }
             catch (MutationTestFailureException)
@@ -70,12 +72,13 @@ namespace NinjaTurtles.Tests.Turtles.BranchConditionTurtleTestSuite.Tests
         [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
         [MethodTested(typeof(MethodTurtleBase), "Mutate")]
         [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(BranchConditionTurtle), "DoMutate")]
+        [MethodTested(typeof(SequencePointDeletionTurtle), "DoMutate")]
+        [MethodTested(typeof(SequencePointDeletionTurtle), "ShouldDeleteSequence")]
         public void WorkingStupidParse_Mutation_Tests_Pass()
         {
-            MutationTestBuilder<BranchConditionClassUnderTest>
-                .For("WorkingStupidParse")
-                .With<BranchConditionTurtle>()
+            MutationTestBuilder<SequencePointDeletionClassUnderTest>
+                .For("WorkingSimpleMethod")
+                .With<SequencePointDeletionTurtle>()
                 .Run();
         }
     }

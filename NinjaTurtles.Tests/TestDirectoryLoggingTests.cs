@@ -32,6 +32,7 @@ namespace NinjaTurtles.Tests
 	public class TestDirectoryLoggingTests : LoggingTestFixture
 	{
         [Test]
+        [MethodTested(typeof(TestDirectory), Methods.CONSTRUCTOR)]
         public void Constructor_Logs_Created_Directory()
         {
             string path;
@@ -44,6 +45,7 @@ namespace NinjaTurtles.Tests
         }
         
         [Test]
+        [MethodTested(typeof(TestDirectory), Methods.CONSTRUCTOR)]
         public void Constructor_With_Copy_Logs_Source_Copy()
         {
             string tempFolder = Path.GetTempPath();
@@ -65,6 +67,7 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
+        [MethodTested(typeof(TestDirectory), "Dispose")]
         public void Dispose_Logs_Removal_Of_Directory()
         {
             string path;
@@ -77,6 +80,7 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
+        [MethodTested(typeof(TestDirectory), "Dispose")]
         public void Dispose_Logs_Exception_When_Folder_Is_Locked()
         {
             string path;
@@ -96,6 +100,7 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
+        [MethodTested(typeof(TestDirectory), "SaveAssembly")]
         public void SaveAssembly_Logs_Save()
         {
             var module = new Module(GetType().Assembly.Location);

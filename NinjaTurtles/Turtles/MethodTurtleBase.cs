@@ -41,16 +41,17 @@ namespace NinjaTurtles.Turtles
             metaData.TestDirectory.Dispose();
         }
 
-        public IEnumerable<MutationTestMetaData> Mutate(MethodDefinition method, Module module)
+        public IEnumerable<MutationTestMetaData> Mutate(MethodDefinition method, Module module, int[] originalOffsets)
         {
             _module = module;
             _method = method;
-            _originalOffsets = method.Body.Instructions.Select(i => i.Offset).ToArray();
+            _originalOffsets = originalOffsets;
             method.Body.SimplifyMacros();
             foreach (var mutation in DoMutate(method, module))
             {
                 yield return mutation;
             }
+            method.Body.OptimizeMacros();
         }
 
         protected abstract IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, Module module);

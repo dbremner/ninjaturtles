@@ -1,3 +1,24 @@
+#region Copyright & licence
+
+// This file is part of NinjaTurtles.
+// 
+// NinjaTurtles is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+// 
+// NinjaTurtles is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with Refix.  If not, see <http://www.gnu.org/licenses/>.
+// 
+// Copyright (C) 2012 David Musgrove and others.
+
+#endregion
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -81,7 +102,7 @@ namespace NinjaTurtles.Tests.Turtles
 			
 			var mutator = new ArithmeticOperatorTurtle();
 			IEnumerable<MutationTestMetaData> mutations = mutator
-				.Mutate(addMethod, module);
+                .Mutate(addMethod, module, addMethod.Body.Instructions.Select(i => i.Offset).ToArray());
 			
 			int sub = 0;
 			int mul = 0;
@@ -122,7 +143,7 @@ namespace NinjaTurtles.Tests.Turtles
 
             var mutator = new ArithmeticOperatorTurtle();
             IEnumerable<MutationTestMetaData> mutations = mutator
-                .Mutate(subtractMethod, module);
+                .Mutate(subtractMethod, module, subtractMethod.Body.Instructions.Select(i => i.Offset).ToArray());
 			
 			int add = 0;
 			int mul = 0;
@@ -163,7 +184,7 @@ namespace NinjaTurtles.Tests.Turtles
 
             var mutator = new ArithmeticOperatorTurtle();
             IEnumerable<MutationTestMetaData> mutations = mutator
-                .Mutate(divideMethod, module);
+                .Mutate(divideMethod, module, divideMethod.Body.Instructions.Select(i => i.Offset).ToArray());
 			
 			int add = 0;
 			int sub = 0;
@@ -216,7 +237,7 @@ namespace NinjaTurtles.Tests.Turtles
 
             var mutator = new ArithmeticOperatorTurtle();
             IEnumerable<MutationTestMetaData> mutations = mutator
-                .Mutate(multiplicationMethod, module);
+                .Mutate(multiplicationMethod, module, multiplicationMethod.Body.Instructions.Select(i => i.Offset).ToArray());
 			
 			int add = 0;
 			int sub = 0;
@@ -257,7 +278,7 @@ namespace NinjaTurtles.Tests.Turtles
 
             var mutator = new ArithmeticOperatorTurtle();
             IEnumerable<MutationTestMetaData> mutations = mutator
-                .Mutate(remainderMethod, module);
+                .Mutate(remainderMethod, module, remainderMethod.Body.Instructions.Select(i => i.Offset).ToArray());
 			
 			int add = 0;
 			int sub = 0;
@@ -284,7 +305,8 @@ namespace NinjaTurtles.Tests.Turtles
 	    public void DoMutate_Mutation_Tests()
 	    {
 	        MutationTestBuilder<ArithmeticOperatorTurtle>.For("DoMutate")
-	            .Run();
+                .MergeReportTo("SampleReport.xml")
+                .Run();
 	    }
 	}
 }

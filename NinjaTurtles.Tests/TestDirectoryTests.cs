@@ -30,6 +30,7 @@ namespace NinjaTurtles.Tests
 	public class TestDirectoryTests
 	{
 	    [Test]
+        [MethodTested(typeof(TestDirectory), Methods.CONSTRUCTOR, ParameterTypes = new Type[0])]
 		public void Constructor_Creates_Directory_And_Returns_In_FullName_Property()
 	    {
 			using (var testDirectory = new TestDirectory())
@@ -39,7 +40,9 @@ namespace NinjaTurtles.Tests
 		}
 
 	    [Test]
-		public void Constructor_Copies_Non_Empty_Source_Directory()
+        [MethodTested(typeof(TestDirectory), Methods.CONSTRUCTOR)]
+        [MethodTested(typeof(TestDirectory), "CopyDirectoryContents")]
+        public void Constructor_Copies_Non_Empty_Source_Directory()
 		{
 			string tempFolder = Path.GetTempPath();
 			string sourceFolder = Path.Combine(tempFolder, Guid.NewGuid().ToString("N"));
@@ -56,7 +59,9 @@ namespace NinjaTurtles.Tests
 		}
 
 	    [Test]
-		public void Constructor_Copies_Source_Directory_Recursively()
+        [MethodTested(typeof(TestDirectory), Methods.CONSTRUCTOR)]
+        [MethodTested(typeof(TestDirectory), "CopyDirectoryContents")]
+        public void Constructor_Copies_Source_Directory_Recursively()
 		{
 			string tempFolder = Path.GetTempPath();
 			string sourceFolder = Path.Combine(tempFolder, Guid.NewGuid().ToString("N"));
@@ -74,7 +79,8 @@ namespace NinjaTurtles.Tests
 		}
 
         [Test]
-		public void Directory_Name_Contains_NinjaTurtles()
+        [MethodTested(typeof(TestDirectory), Methods.CONSTRUCTOR, ParameterTypes = new Type[0])]
+        public void Directory_Name_Contains_NinjaTurtles()
 		{
 			using (var testDirectory = new TestDirectory())
 			{
@@ -83,7 +89,8 @@ namespace NinjaTurtles.Tests
 		}
 		
 		[Test]
-		public void Dispose_Removes_Empty_Directory()
+        [MethodTested(typeof(TestDirectory), "Dispose")]
+        public void Dispose_Removes_Empty_Directory()
 		{
 			string path;
 			using (var testDirectory = new TestDirectory())
@@ -94,7 +101,8 @@ namespace NinjaTurtles.Tests
         }
 
 		[Test]
-		public void Dispose_Removes_Non_Empty_Directory()
+        [MethodTested(typeof(TestDirectory), "Dispose")]
+        public void Dispose_Removes_Non_Empty_Directory()
 		{
 			string tempFolder = Path.GetTempPath();
 			string sourceFolder = Path.Combine(tempFolder, Guid.NewGuid().ToString("N"));
@@ -114,6 +122,7 @@ namespace NinjaTurtles.Tests
 		}
 
         [Test]
+        [MethodTested(typeof(TestDirectory), "Dispose")]
         public void Dispose_Disposes_Without_Exception_When_Folder_Is_Locked()
         {
             string path;
@@ -132,7 +141,8 @@ namespace NinjaTurtles.Tests
         }
 
 	    [Test]
-		public void SaveAssembly_Saves_Assembly()
+        [MethodTested(typeof(TestDirectory), "SaveAssembly")]
+        public void SaveAssembly_Saves_Assembly()
 		{
 		    var module = new Module(GetType().Assembly.Location);
 			string fileName = Path.GetFileName(module.AssemblyLocation);
@@ -143,6 +153,46 @@ namespace NinjaTurtles.Tests
 				Assert.IsTrue(File.Exists(Path.Combine(testDirectory.FullName, fileName)));
 			}
 		}
-	}
+
+        [Test, Category("Mutation")]
+        public void Default_Constructor_Mutation_Tests()
+        {
+            MutationTestBuilder<TestDirectory>.For(Methods.CONSTRUCTOR, new Type[0])
+                .MergeReportTo("SampleReport.xml")
+                .Run();
+        }
+
+        [Test, Category("Mutation")]
+        public void Overloaded_Constructor_Mutation_Tests()
+        {
+            MutationTestBuilder<TestDirectory>.For(Methods.CONSTRUCTOR, new[] { typeof(string) })
+                .MergeReportTo("SampleReport.xml")
+                .Run();
+        }
+
+        [Test, Category("Mutation")]
+        public void CopyDirectoryContents_Mutation_Tests()
+        {
+            MutationTestBuilder<TestDirectory>.For("CopyDirectoryContents")
+                .MergeReportTo("SampleReport.xml")
+                .Run();
+        }
+
+        [Test, Category("Mutation")]
+        public void Dispose_Mutation_Tests()
+        {
+            MutationTestBuilder<TestDirectory>.For("Dispose")
+                .MergeReportTo("SampleReport.xml")
+                .Run();
+        }
+
+        [Test, Category("Mutation")]
+        public void SaveAssembly_Mutation_Tests()
+        {
+            MutationTestBuilder<TestDirectory>.For("SaveAssembly")
+                .MergeReportTo("SampleReport.xml")
+                .Run();
+        }
+    }
 }
 

@@ -35,8 +35,7 @@ namespace NinjaTurtles
         public Module(string assemblyLocation)
         {
             AssemblyLocation = assemblyLocation;
-            var readerParameters = new ReaderParameters(ReadingMode.Immediate);
-            AssemblyDefinition = AssemblyDefinition.ReadAssembly(assemblyLocation, readerParameters);
+            AssemblyDefinition = AssemblyDefinition.ReadAssembly(assemblyLocation);
             Definition = AssemblyDefinition.MainModule;
             SourceFiles = new Dictionary<string, string[]>();
         }
@@ -57,8 +56,8 @@ namespace NinjaTurtles
                 .SelectMany(t => t.Methods)
                 .Where(m => m.HasBody))
             {
-                reader.Read(method.Body,
-                    o => method.Body.Instructions.FirstOrDefault(i => i.Offset == o));
+//                reader.Read(method.Body,
+//                    o => method.Body.Instructions.FirstOrDefault(i => i.Offset == o));
                 var sourceFiles = method.Body.Instructions.Where(i => i.SequencePoint != null)
                     .Select(i => i.SequencePoint.Document.Url)
                     .Distinct();
