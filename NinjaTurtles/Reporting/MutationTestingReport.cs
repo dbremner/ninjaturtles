@@ -99,6 +99,7 @@ namespace NinjaTurtles.Reporting
 
         public void AddResult(Mono.Cecil.Cil.SequencePoint sequencePoint, MutationTestMetaData mutationTestMetaData, bool mutantKilled)
         {
+            if (sequencePoint == null || sequencePoint.Document == null) return;
             string sourceFileUrl = sequencePoint.Document.Url;
             _readerWriterLock.EnterUpgradeableReadLock();
             try

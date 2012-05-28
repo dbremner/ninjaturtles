@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="InstructionExtensions.cs" />
     <Compile Include="MethodDefinitionResolver.cs" />
+    <Compile Include="Methods.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ConsoleProcessFactory.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="MethodTestedAttribute.cs" />
     <Compile Include="TestDirectory.cs" />
     <Compile Include="Turtles\MethodTurtleBase.cs" />
+    <Compile Include="Turtles\SequencePointDeletionTurtle.cs" />
     <Compile Include="TypeResolver.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -67,23 +67,7 @@ namespace NinjaTurtles
         private static string FindExecutable(string exeName)
         {
             var searchPath = new List<string>();
-			searchPath.Add("/Users/david/Documents/hg/ninjaturtles/packages/NUnit.Runners.2.6.0.12051/tools/");
-            string programFilesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-            searchPath.AddRange(new[]
-                                    {
-                                        Path.Combine(programFilesFolder, "NUnit 2.6\\bin"),
-                                        Path.Combine(programFilesFolder, "NUnit 2.5\\bin")
-                                    });
-            string programFilesX86Folder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
-            if (!string.IsNullOrEmpty(programFilesX86Folder))
-            {
-                searchPath.AddRange(new[]
-                        {
-                            Path.Combine(programFilesX86Folder, "NUnit 2.6\\bin"),
-                            Path.Combine(programFilesX86Folder, "NUnit 2.5\\bin")
-                        });
-            }
-            string environmentSearchPath = Environment.GetEnvironmentVariable("PATH") ?? "";
+            string environmentSearchPath = Environment.GetEnvironmentVariable("PATH");
             searchPath.AddRange(environmentSearchPath
                 .Split(IsWindows ? ';' : ':'));
 

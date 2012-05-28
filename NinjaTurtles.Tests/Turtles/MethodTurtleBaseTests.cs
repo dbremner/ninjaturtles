@@ -1,8 +1,28 @@
-﻿using System;
+﻿#region Copyright & licence
+
+// This file is part of NinjaTurtles.
+// 
+// NinjaTurtles is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+// 
+// NinjaTurtles is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with Refix.  If not, see <http://www.gnu.org/licenses/>.
+// 
+// Copyright (C) 2012 David Musgrove and others.
+
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -79,7 +99,7 @@ namespace NinjaTurtles.Tests.Turtles
             assembly.Write(tempAssemblyFileName);
             var module = new Module(tempAssemblyFileName);
 
-            var mutation = turtle.Mutate(method, module).First();
+            var mutation = turtle.Mutate(method, module, method.Body.Instructions.Select(i => i.Offset).ToArray()).First();
             Assert.AreEqual(OpCodes.Ldarg, mutation.MethodDefinition.Body.Instructions[0].OpCode);
         }
 
@@ -97,7 +117,7 @@ namespace NinjaTurtles.Tests.Turtles
             var method = module.Definition.Types
                 .Single(t => t.Name == "TestClass")
                 .Methods.Single(m => m.Name == "TestMethod");
-            turtle.Mutate(method, module).First();
+            turtle.Mutate(method, module, method.Body.Instructions.Select(i => i.Offset).ToArray()).First();
             var ilCount = method.Body.Instructions.Count;
             Assert.AreNotEqual(turtle.GetOriginalOffset(ilCount - 1), method.Body.Instructions[ilCount - 1].Offset);
         }
@@ -114,12 +134,12 @@ namespace NinjaTurtles.Tests.Turtles
                 .Single(t => t.Name == "AdditionClassUnderTest")
                 .Methods.Single(m => m.Name == "Add");
 
-            turtle.Mutate(method, module).First();
-            Assert.AreEqual(@"  12:         public int Add(int left, int right)
-  13:         {
-  14:             return left + right;
-  15:         }
-  16: ".Replace("\r\n", "\n").Replace("\n", Environment.NewLine), turtle.GetOriginalSourceCode(3));
+            turtle.Mutate(method, module, method.Body.Instructions.Select(i => i.Offset).ToArray()).First();
+            Assert.AreEqual(@"  31:         public int Add(int left, int right)
+  32:         {
+  33:             return left + right;
+  34:         }
+  35: ".Replace("\r\n", "\n").Replace("\n", Environment.NewLine), turtle.GetOriginalSourceCode(3));
         }
 
         [Test]
@@ -140,7 +160,7 @@ namespace NinjaTurtles.Tests.Turtles
 
             var mutator = new DummyTurtle();
             IEnumerable<MutationTestMetaData> mutations = mutator
-                .Mutate(addMethod, module);
+                .Mutate(addMethod, module, addMethod.Body.Instructions.Select(i => i.Offset).ToArray());
 
             var directories = new List<string>();
 

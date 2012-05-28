@@ -67,6 +67,7 @@ namespace NinjaTurtles
 		{
 			MethodDefinition method = ValidateMethod();
             _module.LoadDebugInformation();
+            int[] originalOffsets = method.Body.Instructions.Select(i => i.Offset).ToArray();
 		    _report = new MutationTestingReport();
 			IEnumerable<string> tests = GetMatchingTestsOrFail(method);
 			_testList = Path.GetTempFileName();
@@ -76,9 +77,9 @@ namespace NinjaTurtles
 			if (_mutationsToApply.Count == 0) PopulateDefaultTurtles();
 			foreach (var turtleType in _mutationsToApply)
 			{
-				var turtle = (IMethodTurtle)Activator.CreateInstance(turtleType);
-				Parallel.ForEach(turtle.Mutate(method, _module),
-				                 mutation => RunMutation(turtle, mutation, ref failures, ref count));
+                var turtle = (IMethodTurtle)Activator.CreateInstance(turtleType);
+                Parallel.ForEach(turtle.Mutate(method, _module, originalOffsets),
+        		    mutation => RunMutation(turtle, mutation, ref failures, ref count));
 			}
 
             _report.RegisterMethod(method);
@@ -232,7 +233,7 @@ namespace NinjaTurtles
 	    private MethodDefinition ValidateMethod()
 	    {
             _module = new Module(TargetType.Assembly.Location);
-		    var type = _module.Definition.Types
+            var type = _module.Definition.Types
 		        .Single(t => t.FullName == TargetType.FullName);
 		    var method = MethodDefinitionResolver.ResolveMethod(type, TargetMethod, _parameterTypes);
 		    if (method == null)

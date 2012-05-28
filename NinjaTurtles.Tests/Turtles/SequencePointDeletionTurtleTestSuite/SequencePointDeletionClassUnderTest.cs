@@ -19,26 +19,24 @@
 
 #endregion
 
-namespace NinjaTurtles.Tests.Turtles.BranchConditionTurtleTestSuite
+namespace NinjaTurtles.Tests.Turtles.SequencePointDeletionTurtleTestSuite
 {
-    public class BranchConditionClassUnderTest
+    public class SequencePointDeletionClassUnderTest
     {
-        public int StupidParse(string input)
+        public int SimpleMethod(int a, int b, int c, int x)
         {
-            if (input == "Seven")
-            {
-                return 7;
-            }
-            return -1;
+            int result = c;
+            result += x * b;
+            result += x * x * a;
+            return result;
         }
 
-        public int WorkingStupidParse(string input)
+        public int WorkingSimpleMethod(int a, int b, int c, int x)
         {
-            if (input == "Seven")
-            {
-                return 7;
-            }
-            return -1;
+            int result = c;
+            result += x * b;
+            result += x * x * a;
+            return result;
         }
     }
 }
