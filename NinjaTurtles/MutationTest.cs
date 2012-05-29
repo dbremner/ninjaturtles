@@ -69,7 +69,8 @@ namespace NinjaTurtles
 		{
 		    var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\Windows Error Reporting", RegistryKeyPermissionCheck.ReadWriteSubTree);
             var errorReportingValue = key.GetValue("DontShowUI", null);
-            key.SetValue("DontShowUI", 0, RegistryValueKind.DWord);
+            key.SetValue("DontShowUI", 1, RegistryValueKind.DWord);
+		    key.Close();
 
 			MethodDefinition method = ValidateMethod();
             _module.LoadDebugInformation();
@@ -91,6 +92,7 @@ namespace NinjaTurtles
             _report.RegisterMethod(method);
             _reportingStrategy.WriteReport(_report, _reportFileName);
 
+            key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\Windows Error Reporting", RegistryKeyPermissionCheck.ReadWriteSubTree);
             if (errorReportingValue == null)
             {
                 key.DeleteValue("DontShowUI");
@@ -99,6 +101,7 @@ namespace NinjaTurtles
             {
                 key.SetValue("DontShowUI", errorReportingValue, RegistryValueKind.DWord);
             }
+            key.Close();
 
 			if (count == 0)
 			{
