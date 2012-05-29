@@ -13,7 +13,7 @@
 // GNU Lesser General Public License for more details.
 // 
 // You should have received a copy of the GNU Lesser General Public
-// License along with Refix.  If not, see <http://www.gnu.org/licenses/>.
+// License along with NinjaTurtles.  If not, see <http://www.gnu.org/licenses/>.
 // 
 // Copyright (C) 2012 David Musgrove and others.
 
@@ -28,6 +28,8 @@ using System.Management;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+
+using Microsoft.Win32;
 
 using Mono.Cecil;
 
@@ -65,6 +67,10 @@ namespace NinjaTurtles
 		
 		public void Run()
 		{
+		    var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\Windows Error Reporting", RegistryKeyPermissionCheck.ReadWriteSubTree);
+            var errorReportingValue = key.GetValue("DontShowUI", null);
+            key.SetValue("DontShowUI", 0, RegistryValueKind.DWord);
+
 			MethodDefinition method = ValidateMethod();
             _module.LoadDebugInformation();
             int[] originalOffsets = method.Body.Instructions.Select(i => i.Offset).ToArray();
@@ -84,6 +90,15 @@ namespace NinjaTurtles
 
             _report.RegisterMethod(method);
             _reportingStrategy.WriteReport(_report, _reportFileName);
+
+            if (errorReportingValue == null)
+            {
+                key.DeleteValue("DontShowUI");
+            }
+            else
+            {
+                key.SetValue("DontShowUI", errorReportingValue, RegistryValueKind.DWord);
+            }
 
 			if (count == 0)
 			{

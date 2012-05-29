@@ -13,7 +13,7 @@
 // GNU Lesser General Public License for more details.
 // 
 // You should have received a copy of the GNU Lesser General Public
-// License along with Refix.  If not, see <http://www.gnu.org/licenses/>.
+// License along with NinjaTurtles.  If not, see <http://www.gnu.org/licenses/>.
 // 
 // Copyright (C) 2012 David Musgrove and others.
 
@@ -56,8 +56,8 @@ namespace NinjaTurtles
                 .SelectMany(t => t.Methods)
                 .Where(m => m.HasBody))
             {
-//                reader.Read(method.Body,
-//                    o => method.Body.Instructions.FirstOrDefault(i => i.Offset == o));
+                reader.Read(method.Body,
+                    o => method.Body.Instructions.FirstOrDefault(i => i.Offset == o));
                 var sourceFiles = method.Body.Instructions.Where(i => i.SequencePoint != null)
                     .Select(i => i.SequencePoint.Document.Url)
                     .Distinct();

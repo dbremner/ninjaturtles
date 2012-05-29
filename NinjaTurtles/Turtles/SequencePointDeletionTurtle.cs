@@ -13,7 +13,7 @@
 // GNU Lesser General Public License for more details.
 // 
 // You should have received a copy of the GNU Lesser General Public
-// License along with Refix.  If not, see <http://www.gnu.org/licenses/>.
+// License along with NinjaTurtles.  If not, see <http://www.gnu.org/licenses/>.
 // 
 // Copyright (C) 2012 David Musgrove and others.
 
@@ -31,7 +31,7 @@ namespace NinjaTurtles.Turtles
     {
         protected override IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, Module module)
         {
-            var originals = new Dictionary<int, OpCode>();
+            var sequence = new Dictionary<int, OpCode>();
             int startIndex = -1;
             for (int index = 0; index < method.Body.Instructions.Count; index++)
             {
@@ -39,24 +39,28 @@ namespace NinjaTurtles.Turtles
                 if (instruction.SequencePoint != null)
                 {
                     startIndex = index;
-                    originals.Clear();
+                    sequence.Clear();
                 }
                 if (startIndex >= 0)
                 {
-                    originals.Add(index, instruction.OpCode);
-                    instruction.OpCode = OpCodes.Nop;
+                    sequence.Add(index, instruction.OpCode);
                 }
                 if (index == method.Body.Instructions.Count - 1 || instruction.Next.SequencePoint != null)
                 {
-                    if (!ShouldDeleteSequence(method.Body, originals)) continue;
-                    var codes = string.Join(", ", originals.Values.Select(o => o.Code));
+                    if (!ShouldDeleteSequence(method.Body, sequence)) continue;
+
+                    OpCode originalOpCode = method.Body.Instructions[startIndex].OpCode;
+                    object originalOperand = method.Body.Instructions[startIndex].Operand;
+                    method.Body.Instructions[startIndex].OpCode = OpCodes.Br;
+                    method.Body.Instructions[startIndex].Operand = instruction.Next;
+
+                    var codes = string.Join(", ", sequence.Values.Select(o => o.Code));
                     var description = string.Format("{0:x4}: deleting {1}", GetOriginalOffset(startIndex), codes);
                     MutationTestMetaData mutation = DoYield(method, module, description, startIndex);
                     yield return mutation;
-                }
-                foreach (var original in originals)
-                {
-                    method.Body.Instructions[original.Key].OpCode = original.Value;
+
+                    method.Body.Instructions[startIndex].OpCode = originalOpCode;
+                    method.Body.Instructions[startIndex].Operand = originalOperand;
                 }
             }
         }
@@ -64,6 +68,7 @@ namespace NinjaTurtles.Turtles
         private bool ShouldDeleteSequence(MethodBody method, IDictionary<int, OpCode> opCodes)
         {
             if (opCodes.Values.All(o => o == OpCodes.Nop)) return false;
+            if (opCodes.Values.All(o => o == OpCodes.Leave)) return false;
             if (opCodes.Values.Any(o => o == OpCodes.Ret)) return false;
 
             // If just setting compiler-generated return variable in Debug mode, don't delete.
