@@ -13,7 +13,7 @@
 // GNU Lesser General Public License for more details.
 // 
 // You should have received a copy of the GNU Lesser General Public
-// License along with Refix.  If not, see <http://www.gnu.org/licenses/>.
+// License along with NinjaTurtles.  If not, see <http://www.gnu.org/licenses/>.
 // 
 // Copyright (C) 2012 David Musgrove and others.
 
@@ -40,12 +40,13 @@ namespace NinjaTurtles.Tests
             {
                 path = testDirectory.FullName;
             }
-            string expectedMessage = string.Format("DEBUG|Creating folder \"{0}\".", path);
+            string expectedMessage = string.Format("DEBUG|Creating folder \"{0}\".|", path);
             AssertLogContains(expectedMessage);
         }
         
         [Test]
         [MethodTested(typeof(TestDirectory), Methods.CONSTRUCTOR)]
+        [MethodTested(typeof(TestDirectory), "CopyDirectoryContents")]
         public void Constructor_With_Copy_Logs_Source_Copy()
         {
             string tempFolder = Path.GetTempPath();
@@ -58,11 +59,11 @@ namespace NinjaTurtles.Tests
             using (new TestDirectory(sourceFolder))
             {
             }
-            string expectedMessage = string.Format("DEBUG|Copying contents from folder \"{0}\".", sourceFolder);
+            string expectedMessage = string.Format("DEBUG|Copying contents from folder \"{0}\".|", sourceFolder);
             AssertLogContains(expectedMessage);
-            expectedMessage = string.Format("TRACE|Creating subdirectory \"{0}\".", "Ninja");
+            expectedMessage = string.Format("TRACE|Creating subdirectory \"{0}\".|", "Ninja");
             AssertLogContains(expectedMessage);
-            expectedMessage = string.Format("TRACE|Copying file \"{0}\".", fileName);
+            expectedMessage = string.Format("TRACE|Copying file \"{0}\".|", fileName);
             AssertLogContains(expectedMessage);
         }
 
@@ -75,7 +76,7 @@ namespace NinjaTurtles.Tests
             {
                 path = testDirectory.FullName;
             }
-            string expectedMessage = string.Format("DEBUG|Deleting folder \"{0}\".", path);
+            string expectedMessage = string.Format("DEBUG|Deleting folder \"{0}\".|", path);
             AssertLogContains(expectedMessage);
         }
 
@@ -95,7 +96,7 @@ namespace NinjaTurtles.Tests
             fileStream.Dispose();
             Directory.Delete(path, true);
 
-            string expectedMessage = string.Format("ERROR|Failed to delete folder \"{0}\".", path);
+            string expectedMessage = string.Format("ERROR|Failed to delete folder \"{0}\".|System.IO.IOException", path);
             AssertLogContains(expectedMessage, true);
         }
 
@@ -113,7 +114,7 @@ namespace NinjaTurtles.Tests
                 path = testDirectory.FullName;
             }
 
-            string expectedMessage = string.Format("DEBUG|Writing assembly \"{0}\" to \"{1}\".", fileName, path);
+            string expectedMessage = string.Format("DEBUG|Writing assembly \"{0}\" to \"{1}\".|", fileName, path);
             AssertLogContains(expectedMessage);
         }
 	}

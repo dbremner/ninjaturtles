@@ -13,7 +13,7 @@
 // GNU Lesser General Public License for more details.
 // 
 // You should have received a copy of the GNU Lesser General Public
-// License along with Refix.  If not, see <http://www.gnu.org/licenses/>.
+// License along with NinjaTurtles.  If not, see <http://www.gnu.org/licenses/>.
 // 
 // Copyright (C) 2012 David Musgrove and others.
 
@@ -41,11 +41,11 @@ namespace NinjaTurtles.Tests.TestUtilities
             var config = new LoggingConfiguration();
 
             _logTarget = new MemoryTarget();
-            _logTarget.Layout = "${level:uppercase=true}|${message}";
+            _logTarget.Layout = "${level:uppercase=true}|${message}|${exception:format=tostring}";
             config.AddTarget("memory", _logTarget);
 
             var consoleTarget = new ConsoleTarget();
-            consoleTarget.Layout = "${longdate}|${logger}|${level:uppercase=true}|${message}";
+            consoleTarget.Layout = "${longdate}|${logger}|${level:uppercase=true}|${message}|${exception:format=tostring}";
             config.AddTarget("console", consoleTarget);
 
             var rule = new LoggingRule("*", LogLevel.Trace, _logTarget);
