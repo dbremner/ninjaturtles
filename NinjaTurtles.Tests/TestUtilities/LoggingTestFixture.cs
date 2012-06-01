@@ -64,8 +64,8 @@ namespace NinjaTurtles.Tests.TestUtilities
         [SetUp]
         public void SetUp()
         {
-            _logTarget.Logs.Clear();
-            Assert.AreEqual(0, _logTarget.Logs.Count);
+            Logs.Clear();
+            Assert.AreEqual(0, Logs.Count);
         }
 
         protected IList<string> Logs
@@ -82,6 +82,18 @@ namespace NinjaTurtles.Tests.TestUtilities
             else
             {
                 Assert.IsTrue(Logs.Any(m => m == message));
+            }
+        }
+
+        public void AssertLogDoesNotContain(string message, bool startOfMessageOnly = false)
+        {
+            if (startOfMessageOnly)
+            {
+                Assert.IsFalse(Logs.Any(m => m.StartsWith(message)));
+            }
+            else
+            {
+                Assert.IsFalse(Logs.Any(m => m == message));
             }
         }
     }
