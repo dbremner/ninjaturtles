@@ -53,6 +53,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MethodDefinitionResolverLoggingTests.cs" />
     <Compile Include="MethodTestedAttributeTests.cs" />
     <Compile Include="TestDirectoryLoggingTests.cs" />
     <Compile Include="InstructionExtensionsTests.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Turtles\SequencePointDeletionTurtleTests.cs" />
     <Compile Include="Turtles\SequencePointDeletionTurtleTestSuite\SequencePointDeletionClassUnderTest.cs" />
     <Compile Include="Turtles\SequencePointDeletionTurtleTestSuite\Tests\SequencePointDeletionClassUnderTestTests.cs" />
+    <Compile Include="TypeResolverLoggingTests.cs" />
     <Compile Include="TypeResolverTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

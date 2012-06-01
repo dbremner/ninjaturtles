@@ -68,6 +68,7 @@ namespace NinjaTurtles.Turtles
         private bool ShouldDeleteSequence(MethodBody method, IDictionary<int, OpCode> opCodes)
         {
             if (opCodes.Values.All(o => o == OpCodes.Nop)) return false;
+            if (opCodes.Values.All(o => o == OpCodes.Pop)) return false;
             if (opCodes.Values.All(o => o == OpCodes.Leave)) return false;
             if (opCodes.Values.Any(o => o == OpCodes.Ret)) return false;
 

@@ -24,25 +24,48 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using NLog;
+
 namespace NinjaTurtles
 {
 	internal class TypeResolver
 	{
-		internal static Type ResolveTypeFromReferences(Assembly callingAssembly, string className)
+        #region Logging
+
+        private static Logger _log = LogManager.GetCurrentClassLogger();
+
+        #endregion
+        
+        internal static Type ResolveTypeFromReferences(Assembly callingAssembly, string className)
 		{
-			return ResolveTypeFromReferences(callingAssembly, className, new List<string>());
+            _log.Debug("Resolving type \"{0}\" in \"{1}\".", className, callingAssembly.GetName().Name);
+            Type type = ResolveTypeFromReferences(callingAssembly, className, new List<string>());
+            if (type == null)
+            {
+                _log.Error("Could not find type \"{0}\".", className);
+            }
+            return type;
 		}
 		
 		private static Type ResolveTypeFromReferences(Assembly assembly, string className, IList<string> consideredAssemblies)
 		{
-		    var type = assembly.GetTypes().SingleOrDefault(t => t.FullName == className);
-            if (type != null) return type;
+            _log.Trace("Searching for type \"{0}\" in \"{1}\".", className, assembly.GetName().Name);
+            var type = assembly.GetTypes().SingleOrDefault(t => t.FullName == className);
+            if (type != null)
+            {
+                _log.Trace("Found type \"{0}\" in \"{1}\".", className, assembly.GetName().Name);
+                return type;
+            }
             foreach (var reference in assembly.GetReferencedAssemblies())
             {
 				if (consideredAssemblies.Contains(reference.Name)) continue;
 				consideredAssemblies.Add(reference.Name);
-                type = ResolveTypeFromReferences(Assembly.Load(reference), className, consideredAssemblies);
-                if (type != null) return type;
+                Assembly referencedAssembly = Assembly.Load(reference);
+                type = ResolveTypeFromReferences(referencedAssembly, className, consideredAssemblies);
+                if (type != null)
+                {
+                    return type;
+                }
             }
             return null;
         }

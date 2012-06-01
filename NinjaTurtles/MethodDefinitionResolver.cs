@@ -20,23 +20,41 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Linq;
 
 using Mono.Cecil;
+
+using NLog;
 
 namespace NinjaTurtles
 {
     internal class MethodDefinitionResolver
     {
+        #region Logging
+
+        private static Logger _log = LogManager.GetCurrentClassLogger();
+
+        #endregion
+
         public static MethodDefinition ResolveMethod(TypeDefinition typeDefinition, string methodName)
         {
+            _log.Debug("Resolving method \"{0}\" in \"{1}\".", methodName, typeDefinition.FullName);
             try
             {
-                return typeDefinition.Methods.Single(m => m.Name == methodName);
+                MethodDefinition methodDefinition = typeDefinition.Methods.Single(m => m.Name == methodName);
+                _log.Debug("Method \"{0}\" successfully resolved in \"{1}\".", methodName, typeDefinition.FullName);
+                return methodDefinition;
             }
-            catch
+            catch (InvalidOperationException ex)
             {
+                if (ex.Message == "Sequence contains no matching element")
+                {
+                    _log.Error("Method \"{0}\" is unrecognised.", methodName);
+                }
+                else
+                {
+                    _log.Error("Method \"{0}\" is overloaded.", methodName);
+                }
                 return null;
             }
         }
@@ -45,18 +63,23 @@ namespace NinjaTurtles
         {
             if (parameterTypes == null)
             {
+                _log.Warn("\"ResolveMethod\" overload with parameter types called unnecessarily.");
                 return ResolveMethod(typeDefinition, methodName);
             }
             try
             {
-                return typeDefinition.Methods.Single(m => m.Name == methodName
-                                                          &&
-                                                          Enumerable.SequenceEqual(
-                                                              m.Parameters.Select(p => p.ParameterType.Name.Replace("TypeDefinition", "Type")),
-                                                              parameterTypes.Select(p => p.Name)));
+                MethodDefinition methodDefinition =
+                    typeDefinition.Methods.Single(
+                        m => m.Name == methodName
+                            && Enumerable.SequenceEqual(
+                                m.Parameters.Select(p => p.ParameterType.Name.Replace("TypeDefinition", "Type")),
+                                parameterTypes.Select(p => p.Name)));
+                _log.Debug("Method \"{0}\" successfully resolved in \"{1}\".", methodName, typeDefinition.FullName);
+                return methodDefinition;
             }
-            catch
+            catch (InvalidOperationException)
             {
+                _log.Error("Method \"{0}\" with specified parameter types is unrecognised.", methodName);
                 return null;
             }
         }
