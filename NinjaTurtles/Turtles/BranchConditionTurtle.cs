@@ -21,41 +21,20 @@
 
 using System.Collections.Generic;
 
-using Mono.Cecil;
 using Mono.Cecil.Cil;
 
 namespace NinjaTurtles.Turtles
 {
-    public class BranchConditionTurtle : MethodTurtleBase
+    public class BranchConditionTurtle : OpCodeRotationTurtle
     {
-        private static readonly IDictionary<OpCode, IEnumerable<OpCode>> _opCodes = new Dictionary<OpCode, IEnumerable<OpCode>> {
-            { OpCodes.Br, new[] { OpCodes.Nop } },
-            { OpCodes.Brtrue, new[] { OpCodes.Nop, OpCodes.Brfalse, OpCodes.Br } },
-            { OpCodes.Brfalse, new[] { OpCodes.Nop, OpCodes.Brtrue, OpCodes.Br } }
-        };
-        
-        protected override IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, Module module)
+        public BranchConditionTurtle()
         {
-            for (int index = 0; index < method.Body.Instructions.Count; index++)
-            {
-                var instruction = method.Body.Instructions[index];
-                if (_opCodes.ContainsKey(instruction.OpCode))
-                {
-                    if (instruction.IsMeaninglessUnconditionalBranch()) continue;
-
-                    var originalOpCode = instruction.OpCode;
-
-                    foreach (var opCode in _opCodes[originalOpCode])
-                    {
-                        instruction.OpCode = opCode;
-                        var description = string.Format("{0:x4}: {1} => {2}", GetOriginalOffset(index), originalOpCode.Code, opCode.Code);
-                        MutationTestMetaData mutation = DoYield(method, module, description, index);
-                        yield return mutation;
-                    }
-
-                    instruction.OpCode = originalOpCode;
-                }
-            }
+            _opCodes = new Dictionary<OpCode, IEnumerable<OpCode>>
+                           {
+                               {OpCodes.Br, new[] {OpCodes.Nop}},
+                               {OpCodes.Brtrue, new[] {OpCodes.Nop, OpCodes.Brfalse, OpCodes.Br}},
+                               {OpCodes.Brfalse, new[] {OpCodes.Nop, OpCodes.Brtrue, OpCodes.Br}}
+                           };
         }
     }
 }

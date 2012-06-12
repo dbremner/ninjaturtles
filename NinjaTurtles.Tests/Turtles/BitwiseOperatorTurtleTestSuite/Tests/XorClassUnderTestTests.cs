@@ -22,34 +22,34 @@
 using NUnit.Framework;
 
 using NinjaTurtles.Tests.TestUtilities;
-using NinjaTurtles.Tests.Turtles.BitwiseOperatorTurtleTestSuite;
+using NinjaTurtles.Tests.Turtles.ArithmeticOperatorTurtleTestSuite;
 using NinjaTurtles.Turtles;
 
-namespace NinjaTurtles.Tests.Turtles.ArithmeticOperatorTurtleTestSuite.Tests
+namespace NinjaTurtles.Tests.Turtles.BitwiseOperatorTurtleTestSuite.Tests
 {
 	[TestFixture]
-	public class AdditionClassUnderTestTests
+	public class XorClassUnderTestTests
 	{
 		[Test]
-		[MethodTested(typeof(AdditionClassUnderTest), "Dummy")]
+		[MethodTested(typeof(XorClassUnderTest), "Dummy")]
 		public void Dummy_Dummies()
 		{
-			Assert.AreEqual(0, new AdditionClassUnderTest().Dummy());
+			Assert.AreEqual(0, new XorClassUnderTest().Dummy());
 		}
 		
 		[Test]
-		[MethodTested(typeof(AdditionClassUnderTest), "Add")]
-		public void Add_Works()
+        [MethodTested(typeof(XorClassUnderTest), "Xor")]
+        public void Xor_Works()
 		{
-			Assert.AreEqual(3, new AdditionClassUnderTest().Add(3, 0));
+			Assert.AreEqual(11, new XorClassUnderTest().Xor(3, 8));
 		}
 		
 		[Test]
-		[MethodTested(typeof(AdditionClassUnderTest), "WorkingAdd")]
-		public void WorkingAdd_Works()
+        [MethodTested(typeof(XorClassUnderTest), "WorkingXor")]
+		public void WorkingXor_Works()
 		{
-			Assert.AreEqual(3, new AdditionClassUnderTest().WorkingAdd(3, 0));
-			Assert.AreEqual(7, new AdditionClassUnderTest().WorkingAdd(3, 4));
+			Assert.AreEqual(11, new XorClassUnderTest().WorkingXor(3, 8));
+            Assert.AreEqual(4, new XorClassUnderTest().WorkingXor(3, 7));
 		}
 		
 		[Test]
@@ -59,9 +59,9 @@ namespace NinjaTurtles.Tests.Turtles.ArithmeticOperatorTurtleTestSuite.Tests
 		{
 			using (var console = new ConsoleCapturer())
 			{
-				MutationTestBuilder<AdditionClassUnderTest>
+				MutationTestBuilder<XorClassUnderTest>
 					.For("Dummy")
-					.With<ArithmeticOperatorTurtle>()
+					.With<BitwiseOperatorTurtle>()
 					.Run();
 				StringAssert.Contains("No valid mutations found (this is fine).", console.Output);
 			}
@@ -72,14 +72,14 @@ namespace NinjaTurtles.Tests.Turtles.ArithmeticOperatorTurtleTestSuite.Tests
         [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
         [MethodTested(typeof(MethodTurtleBase), "Mutate")]
         [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(ArithmeticOperatorTurtle), "DoMutate")]
-        public void Add_Mutation_Tests_Fail()
+        [MethodTested(typeof(OpCodeRotationTurtle), "DoMutate")]
+        public void Xor_Mutation_Tests_Fail()
 		{
 			try
 			{
-				MutationTestBuilder<AdditionClassUnderTest>
-					.For("Add")
-					.With<ArithmeticOperatorTurtle>()
+				MutationTestBuilder<XorClassUnderTest>
+                    .For("Xor")
+                    .With<BitwiseOperatorTurtle>()
 					.Run();
 			}
 			catch (MutationTestFailureException)
@@ -94,12 +94,12 @@ namespace NinjaTurtles.Tests.Turtles.ArithmeticOperatorTurtleTestSuite.Tests
 		[MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
         [MethodTested(typeof(MethodTurtleBase), "Mutate")]
         [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(ArithmeticOperatorTurtle), "DoMutate")]
-        public void WorkingAdd_Mutation_Tests_Pass()
+        [MethodTested(typeof(OpCodeRotationTurtle), "DoMutate")]
+        public void WorkingXor_Mutation_Tests_Pass()
 		{
-			MutationTestBuilder<AdditionClassUnderTest>
-				.For("WorkingAdd")
-				.With<ArithmeticOperatorTurtle>()
+			MutationTestBuilder<XorClassUnderTest>
+                .For("WorkingXor")
+                .With<BitwiseOperatorTurtle>()
 				.Run();
 		}
 	}

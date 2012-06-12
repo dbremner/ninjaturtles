@@ -69,10 +69,14 @@
     <Compile Include="MutationTestTests.cs" />
     <Compile Include="TestUtilities\ConsoleCapturer.cs" />
     <Compile Include="TestDirectoryTests.cs" />
+    <Compile Include="Turtles\BitwiseOperatorTurtleTestSuite\Tests\XorClassUnderTestTests.cs" />
+    <Compile Include="Turtles\BitwiseOperatorTurtleTestSuite\XorClassUnderTest.cs" />
     <Compile Include="Turtles\BranchConditionTurtleTests.cs" />
     <Compile Include="Turtles\BranchConditionTurtleTestSuite\BranchConditionClassUnderTest.cs" />
     <Compile Include="Turtles\BranchConditionTurtleTestSuite\Tests\BranchConditionClassUnderTestTests.cs" />
+    <Compile Include="Turtles\BitwiseOperatorTurtleTests.cs" />
     <Compile Include="Turtles\MethodTurtleBaseTests.cs" />
+    <Compile Include="Turtles\OpCodeRotationTurtleTests.cs" />
     <Compile Include="Turtles\SequencePointDeletionTurtleTests.cs" />
     <Compile Include="Turtles\SequencePointDeletionTurtleTestSuite\SequencePointDeletionClassUnderTest.cs" />
     <Compile Include="Turtles\SequencePointDeletionTurtleTestSuite\Tests\SequencePointDeletionClassUnderTestTests.cs" />
@@ -92,4 +96,5 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup />
 </Project>

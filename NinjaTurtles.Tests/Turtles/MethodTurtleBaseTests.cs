@@ -30,6 +30,7 @@ using Mono.Cecil.Cil;
 using NUnit.Framework;
 
 using NinjaTurtles.Tests.Turtles.ArithmeticOperatorTurtleTestSuite;
+using NinjaTurtles.Tests.Turtles.BitwiseOperatorTurtleTestSuite;
 using NinjaTurtles.Turtles;
 
 namespace NinjaTurtles.Tests.Turtles
