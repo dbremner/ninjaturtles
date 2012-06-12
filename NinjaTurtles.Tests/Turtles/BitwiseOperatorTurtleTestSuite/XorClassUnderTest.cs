@@ -19,28 +19,28 @@
 
 #endregion
 
-namespace NinjaTurtles.Tests.Turtles.ArithmeticOperatorTurtleTestSuite
+namespace NinjaTurtles.Tests.Turtles.BitwiseOperatorTurtleTestSuite
 {
-	public class XorClassUnderTest
+	public class AdditionClassUnderTest
 	{
 		public int Dummy()
 		{
 			return 0;
 		}
 		
-		public int Xor(int left, int right)
+		public int Add(int left, int right)
 		{
-			return left ^ right;
+			return left + right;
 		}
 		
-		public int WorkingXor(int left, int right)
+		public int WorkingAdd(int left, int right)
 		{
-			return left ^ right;
+			return left + right;
 		}
 		
-		public int UncoveredXor(int left, int right)
+		public int UncoveredAdd(int left, int right)
 		{
-			return left ^ right;
+			return left + right;
 		}
 	}
 }

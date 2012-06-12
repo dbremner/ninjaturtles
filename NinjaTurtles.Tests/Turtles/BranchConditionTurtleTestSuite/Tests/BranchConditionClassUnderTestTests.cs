@@ -48,7 +48,7 @@ namespace NinjaTurtles.Tests.Turtles.BranchConditionTurtleTestSuite.Tests
         [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
         [MethodTested(typeof(MethodTurtleBase), "Mutate")]
         [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(BranchConditionTurtle), "DoMutate")]
+        [MethodTested(typeof(OpCodeRotationTurtle), "DoMutate")]
         public void StupidParse_Mutation_Tests_Fail()
         {
             try
@@ -70,7 +70,7 @@ namespace NinjaTurtles.Tests.Turtles.BranchConditionTurtleTestSuite.Tests
         [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
         [MethodTested(typeof(MethodTurtleBase), "Mutate")]
         [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(BranchConditionTurtle), "DoMutate")]
+        [MethodTested(typeof(OpCodeRotationTurtle), "DoMutate")]
         public void WorkingStupidParse_Mutation_Tests_Pass()
         {
             MutationTestBuilder<BranchConditionClassUnderTest>

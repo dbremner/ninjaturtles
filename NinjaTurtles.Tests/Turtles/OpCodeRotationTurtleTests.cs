@@ -1,4 +1,4 @@
-#region Copyright & licence
+﻿#region Copyright & licence
 
 // This file is part of NinjaTurtles.
 // 
@@ -19,29 +19,21 @@
 
 #endregion
 
-namespace NinjaTurtles.Tests.Turtles.ArithmeticOperatorTurtleTestSuite
-{
-	public class XorClassUnderTest
-	{
-		public int Dummy()
-		{
-			return 0;
-		}
-		
-		public int Xor(int left, int right)
-		{
-			return left ^ right;
-		}
-		
-		public int WorkingXor(int left, int right)
-		{
-			return left ^ right;
-		}
-		
-		public int UncoveredXor(int left, int right)
-		{
-			return left ^ right;
-		}
-	}
-}
+using NUnit.Framework;
 
+using NinjaTurtles.Turtles;
+
+namespace NinjaTurtles.Tests.Turtles
+{
+    [TestFixture]
+    public class OpCodeRotationTurtleTests
+    {
+        [Test, Category("Mutation")]
+        public void DoMutate_Mutation_Tests()
+        {
+            MutationTestBuilder<OpCodeRotationTurtle>.For("DoMutate")
+                .MergeReportTo("SampleReport.xml")
+                .Run();
+        }
+    }
+}

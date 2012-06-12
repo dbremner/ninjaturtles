@@ -69,11 +69,13 @@
     <Compile Include="Turtles\ArithmeticOperatorTurtle.cs" />
     <Compile Include="MutationTestMetaData.cs" />
     <Compile Include="Turtles\BranchConditionTurtle.cs" />
+    <Compile Include="Turtles\BitwiseOperatorTurtle.cs" />
     <Compile Include="Turtles\IMethodTurtle.cs" />
     <Compile Include="MutationTestFailureException.cs" />
     <Compile Include="MethodTestedAttribute.cs" />
     <Compile Include="TestDirectory.cs" />
     <Compile Include="Turtles\MethodTurtleBase.cs" />
+    <Compile Include="Turtles\OpCodeRotationTurtle.cs" />
     <Compile Include="Turtles\SequencePointDeletionTurtle.cs" />
     <Compile Include="TypeResolver.cs" />
   </ItemGroup>
