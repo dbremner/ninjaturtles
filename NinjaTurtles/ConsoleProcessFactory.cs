@@ -87,10 +87,7 @@ namespace NinjaTurtles
         private static string FindExecutable(string exeName, string[] additionalSearchLocations)
         {
             var searchPath = new List<string>();
-            if (additionalSearchLocations != null)
-            {
-                searchPath.AddRange(additionalSearchLocations);
-            }
+            searchPath.AddRange(additionalSearchLocations);
             string environmentSearchPath = Environment.GetEnvironmentVariable("PATH") ?? string.Empty;
             searchPath.AddRange(environmentSearchPath.Split(IsWindows ? ';' : ':'));
 
