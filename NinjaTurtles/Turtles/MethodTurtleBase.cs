@@ -80,7 +80,7 @@ namespace NinjaTurtles.Turtles
 
         /// <summary>
         /// Performs the actual code mutations, returning each with
-        /// <code>yield</code> for the calling code to use.
+        /// <c>yield</c> for the calling code to use.
         /// </summary>
         /// <remarks>
         /// Implementing classes should yield the result obtained by calling
