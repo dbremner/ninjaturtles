@@ -33,7 +33,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyProduct("NinjaTurtles")]
 [assembly: AssemblyCopyright("Copyright © 2012 David Musgrove")]
 
-[assembly: AssemblyVersion("0.2.0.1")]
-[assembly: AssemblyFileVersion("0.2.0.1")]
+[assembly: AssemblyVersion("0.2.0.2")]
+[assembly: AssemblyFileVersion("0.2.0.2")]
 
 [assembly: InternalsVisibleTo("NinjaTurtles.Tests")]
