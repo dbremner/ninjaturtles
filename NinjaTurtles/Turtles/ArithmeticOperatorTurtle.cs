@@ -26,33 +26,30 @@ using Mono.Cecil.Cil;
 
 namespace NinjaTurtles.Turtles
 {
-	public class ArithmeticOperatorTurtle : MethodTurtleBase
+    /// <summary>
+    /// An implementation of <see cref="IMethodTurtle"/> that replaces each of
+    /// the arithmetic operators <see cref="OpCodes.Add" />,
+    /// <see cref="OpCodes.Sub" />, <see cref="OpCodes.Mul" />,
+    /// <see cref="OpCodes.Div" /> and <see cref="OpCodes.Rem" /> with each
+    /// of the others in turn.
+    /// </summary>
+    public class ArithmeticOperatorTurtle : OpCodeRotationTurtle
 	{
-		private static readonly List<OpCode> _opCodes = new List<OpCode> {
-			OpCodes.Add, OpCodes.Sub, OpCodes.Mul, OpCodes.Div, OpCodes.Rem };
-
-        protected override IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, Module module)
-		{
-		    for (int index = 0; index < method.Body.Instructions.Count; index++)
-		    {
-		        var instruction = method.Body.Instructions[index];
-		        if (_opCodes.Contains(instruction.OpCode))
-		        {
-		            var originalOpCode = instruction.OpCode;
-
-		            foreach (var opCode in _opCodes)
-		            {
-		                if (opCode == originalOpCode) continue;
-		                instruction.OpCode = opCode;
-		                var description = string.Format("{0:x4}: {1} => {2}", GetOriginalOffset(index), originalOpCode.Code, opCode.Code);
-                        MutationTestMetaData mutation = DoYield(method, module, description, index);
-		                yield return mutation;
-		            }
-
-		            instruction.OpCode = originalOpCode;
-		        }
-		    }
-		}
+        /// <summary>
+        /// Initializes a new instance of 
+        /// <see cref="ArithmeticOperatorTurtle" />.
+        /// </summary>
+        public ArithmeticOperatorTurtle()
+        {
+            _opCodes = new Dictionary<OpCode, IEnumerable<OpCode>>
+                           {
+                               {OpCodes.Add, new[] {OpCodes.Sub, OpCodes.Mul, OpCodes.Div, OpCodes.Rem}},
+                               {OpCodes.Sub, new[] {OpCodes.Add, OpCodes.Mul, OpCodes.Div, OpCodes.Rem}},
+                               {OpCodes.Mul, new[] {OpCodes.Add, OpCodes.Sub, OpCodes.Div, OpCodes.Rem}},
+                               {OpCodes.Div, new[] {OpCodes.Add, OpCodes.Sub, OpCodes.Mul, OpCodes.Rem}},
+                               {OpCodes.Rem, new[] {OpCodes.Add, OpCodes.Sub, OpCodes.Mul, OpCodes.Div}}
+                           };
+        }
 	}
 }
 

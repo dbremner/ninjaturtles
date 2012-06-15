@@ -25,15 +25,75 @@ using NinjaTurtles.Turtles;
 
 namespace NinjaTurtles
 {
-	public interface IMutationTest
+    /// <summary>
+    /// An interface forming the core of a fluent interface for defining
+    /// and running mutation tests using NinjaTurtles.
+    /// </summary>
+    /// <remarks>
+    /// Client code will not use this interface explicitly, nor attempt to
+    /// instantiate an implementing class. Instead, this interface is exposed
+    /// by the <see cref="MutationTestBuilder{T}" /> class's 
+    /// <see mref="MutationTestBuilder{T}.For" /> method, which forms the start
+    /// of a chain of fluent statements defining a set of mutation tests.
+    /// </remarks>
+    public interface IMutationTest
 	{
+        /// <summary>
+        /// Gets the type which is the target of the current mutation test.
+        /// </summary>
 		Type TargetType { get; }
+
+        /// <summary>
+        /// Gets the name of the method which is the target of the current
+        /// mutation test.
+        /// </summary>
 		string TargetMethod { get; }
-		
-		void Run();
-		IMutationTest With<T>() where T : IMethodTurtle;
-	    IMutationTest WriteReportTo(string fileName);
-	    IMutationTest MergeReportTo(string fileName);
+
+        /// <summary>
+        /// Runs the defined mutation tests.
+        /// </summary>
+        void Run();
+
+        /// <summary>
+        /// Adds a <see cref="IMethodTurtle" /> type to be used in mutation
+        /// testing. If no turtles are added, then all turtles from the
+        /// NinjaTurtles assembly are added by default.
+        /// </summary>
+        /// <typeparam name="T">
+        /// A type that implements <see cref="IMethodTurtle" />.
+        /// </typeparam>
+        /// <returns>
+        /// The original <see cref="IMutationTest" /> instance to allow fluent
+        /// method chaining.
+        /// </returns>
+        IMutationTest With<T>() where T : IMethodTurtle;
+
+        /// <summary>
+        /// Specifies a file name to which mutation test results should be
+        /// written. If the file already exists, it will be overwritten.
+        /// </summary>
+        /// <param name="fileName">
+        /// The path and file name of the output file.
+        /// </param>
+        /// <returns>
+        /// The original <see cref="IMutationTest" /> instance to allow fluent
+        /// method chaining.
+        /// </returns>
+        IMutationTest WriteReportTo(string fileName);
+
+        /// <summary>
+        /// Specifies a file name to which mutation test results should be
+        /// written. If the file already exists, then the results of the
+        /// current mutation test will be merged into it.
+        /// </summary>
+        /// <param name="fileName">
+        /// The path and file name of the output file.
+        /// </param>
+        /// <returns>
+        /// The original <see cref="IMutationTest" /> instance to allow fluent
+        /// method chaining.
+        /// </returns>
+        IMutationTest MergeReportTo(string fileName);
 	}
 }
 

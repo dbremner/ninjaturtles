@@ -26,7 +26,7 @@ using NLog;
 
 namespace NinjaTurtles
 {
-	public class TestDirectory : IDisposable
+	internal class TestDirectory : IDisposable
     {
         #region Logging
 

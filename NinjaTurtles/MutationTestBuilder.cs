@@ -24,17 +24,125 @@ using System.Reflection;
 
 namespace NinjaTurtles
 {
-	public sealed class MutationTestBuilder<T>
+    /// <summary>
+    /// A static class used as the starting point for a fluent definition of
+    /// a set of mutation tests.
+    /// </summary>
+    /// <typeparam name="T">
+    /// The type to be tested.
+    /// </typeparam>
+    /// <example>
+    /// <para>
+    /// This code creates and runs the default set of mutation tests for the
+    /// <b>ClassUnderTest</b> class's <b>MethodUnderTest</b> method:
+    /// </para>
+    /// <code lang="cs">
+    /// MutationTestBuilder&lt;ClassUnderTest&gt;
+    ///     .For("MethodUnderTest")
+    ///     .Run();
+    /// </code>
+    /// <code lang="vbnet">
+    /// Call MutationTestBuilder(Of ClassUnderTest) _
+    ///     .For("MethodUnderTest") _
+    ///     .Run
+    /// </code>
+    /// <code lang="cpp">
+    /// MutationTestBuilder&lt;ClassUnderTest^&gt;
+    ///     ::For("MethodUnderTest")
+    ///     ->Run();
+    /// </code>
+    /// <para>
+    /// When this code is included in a test, it causes the matching tests to
+    /// be run for each mutation that is found of the code under test. By
+    /// default, NinjaTurtles assumes it is running under NUnit, and thus uses
+    /// an NUnit runner to run the suite against the mutated code. This can be
+    /// changed using the fluent interface:
+    /// </para>
+    /// <code lang="cs">
+    /// MutationTestBuilder&lt;ClassUnderTest&gt;
+    ///     .For("MethodUnderTest")
+    ///     .UsingRunner&lt;GallioTestRunner&gt;()
+    ///     .Run();
+    /// </code>
+    /// <code lang="vbnet">
+    /// Call MutationTestBuilder(Of ClassUnderTest) _
+    ///     .For("MethodUnderTest") _
+    ///     .UsingRunner(Of GallioTestRunner)() _
+    ///     .Run
+    /// </code>
+    /// <code lang="cpp">
+    /// MutationTestBuilder&lt;ClassUnderTest^&gt;
+    ///     ::For("MethodUnderTest")
+    ///     ->UsingRunner&lt;GallioTestRunner^&gt;()
+    ///     ->Run();
+    /// </code>
+    /// <para>
+    /// Alternatively, this option can be set across all tests in a fixture by
+    /// including this line in the test fixture's setup method:
+    /// </para>
+    /// <code lang="cs">
+    /// MutationTestBuilder&lt;ClassUnderTest&gt;.UseRunner&lt;GallioTestRunner&gt;();
+    /// </code>
+    /// <code lang="vbnet">
+    /// Call MutationTestBuilder(Of ClassUnderTest).UseRunner(Of GallioTestRunner)
+    /// </code>
+    /// <code lang="cpp">
+    /// MutationTestBuilder&lt;ClassUnderTest^&gt;::UseRunner&lt;GallioTestRunner^&gt;();
+    /// </code>
+    /// </example>
+    public sealed class MutationTestBuilder<T>
 	{
-		public static IMutationTest For(string targetMethod, Type[] parameterTypes = null)
+        /// <summary>
+        /// Returns an <see cref="IMutationTest" /> instance allowing a fluent
+        /// definition of a set of mutation tests for a particular method.
+        /// </summary>
+        /// <param name="targetMethod">
+        /// The name of the method to mutate.
+        /// </param>
+        /// <param name="parameterTypes">
+        /// Optional parameter specifying an array of parameter types used to
+        /// identify a particular method overload.
+        /// </param>
+        /// <returns>
+        /// An <see cref="IMutationTest" /> instance to allow fluent
+        /// method chaining.
+        /// </returns>
+        public static IMutationTest For(string targetMethod, Type[] parameterTypes = null)
 		{
 			var callingAssembly = Assembly.GetCallingAssembly();
 			return MutationTestBuilder.For(callingAssembly.Location, typeof(T), targetMethod, parameterTypes);
 		}
 	}
-	
-	public sealed class MutationTestBuilder
+
+    /// <summary>
+    /// A static class used as the starting point for a fluent definition of
+    /// a set of mutation tests.
+    /// </summary>
+    /// <remarks>
+    /// For public classes, the generic <see cref="MutationTestBuilder{T}" />
+    /// is to be prefered. See that class for full documentation.
+    /// </remarks>
+    public sealed class MutationTestBuilder
 	{
+        /// <summary>
+        /// Returns an <see cref="IMutationTest" /> instance allowing a fluent
+        /// definition of a set of mutation tests for a particular method.
+        /// </summary>
+        /// <param name="targetClass">
+        /// The namespace-qualified name of the type for which mutation tests
+        /// are being defined.
+        /// </param>
+        /// <param name="targetMethod">
+        /// The name of the method to mutate.
+        /// </param>
+        /// <param name="parameterTypes">
+        /// Optional parameter specifying an array of parameter types used to
+        /// identify a particular method overload.
+        /// </param>
+        /// <returns>
+        /// An <see cref="IMutationTest" /> instance to allow fluent
+        /// method chaining.
+        /// </returns>
         public static IMutationTest For(string targetClass, string targetMethod, Type[] parameterTypes = null)
         {
             var callingAssembly = Assembly.GetCallingAssembly();

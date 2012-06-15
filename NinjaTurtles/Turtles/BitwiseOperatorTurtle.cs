@@ -25,8 +25,17 @@ using Mono.Cecil.Cil;
 
 namespace NinjaTurtles.Turtles
 {
+    /// <summary>
+    /// An implementation of <see cref="IMethodTurtle"/> that replaces each of
+    /// the bitwise operators <see cref="OpCodes.Or" />,
+    /// <see cref="OpCodes.And" /> and <see cref="OpCodes.Xor" /> with each
+    /// of the others in turn.
+    /// </summary>
     public class BitwiseOperatorTurtle : OpCodeRotationTurtle
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="BitwiseOperatorTurtle" />.
+        /// </summary>
         public BitwiseOperatorTurtle()
         {
             _opCodes = new Dictionary<OpCode, IEnumerable<OpCode>>

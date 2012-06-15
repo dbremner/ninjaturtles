@@ -24,26 +24,57 @@ using System.Reflection;
 
 namespace NinjaTurtles
 {
-	[AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+    /// <summary>
+    /// When applied to a unit test method, specifies a member of a class that
+    /// is tested by that method. This can be applied multiple times for a test
+    /// that exercises multiple methods.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
 	public class MethodTestedAttribute : Attribute
 	{
-		public MethodTestedAttribute(Type targetType, string targetMethod)
+        /// <summary>
+        /// Initializes a new instance of the
+        /// <see cref="MethodTestedAttribute" /> class.
+        /// </summary>
+        /// <param name="targetType">
+        /// The type for which the attributed class contains unit tests.
+        /// </param>
+        /// <param name="targetMethod">
+        /// The name of a method which is tested by the attributed unit test.
+        /// </param>
+        public MethodTestedAttribute(Type targetType, string targetMethod)
 		{
 			TargetType = targetType;
 			TargetMethod = targetMethod;
 		}
-		
-		public MethodTestedAttribute(string targetType, string targetMethod)
+
+        /// <summary>
+        /// Initializes a new instance of the
+        /// <see cref="MethodTestedAttribute" /> class. This overload is
+        /// designed to allow non-public class's methods to be tested.
+        /// </summary>
+        /// <param name="targetType">
+        /// The namespace-qualified name of the type for which the attributed
+        /// class contains unit tests.
+        /// </param>
+        /// <param name="targetMethod">
+        /// The name of a method which is tested by the attributed unit test.
+        /// </param>
+        public MethodTestedAttribute(string targetType, string targetMethod)
 		{
             Type resolvedType = TypeResolver.ResolveTypeFromReferences(Assembly.GetCallingAssembly(), targetType);
 			TargetType = resolvedType;
 			TargetMethod = targetMethod;
 		}
 		
-		public Type TargetType { get; private set; }
-		
-		public string TargetMethod { get; private set; }
+		internal Type TargetType { get; private set; }
 
+        internal string TargetMethod { get; private set; }
+
+        /// <summary>
+        /// Gets or sets a list of parameter types used to identify a
+        /// particular method overload.
+        /// </summary>
         public Type[] ParameterTypes { get; set; }
 	}
 }

@@ -19,19 +19,29 @@
 
 #endregion
 
-using System;
-
 using Mono.Cecil;
 
 namespace NinjaTurtles
 {
-	public class MutationTestMetaData
+    /// <summary>
+    /// A class containing metadata for a mutation test.
+    /// </summary>
+    public class MutationTestMetaData
 	{
-		public string Description { get; internal set; }
-		public MethodDefinition MethodDefinition { get; internal set; }
-        public int ILIndex { get; internal set; }
-		internal TestDirectory TestDirectory { get; set; }
-		public string TestDirectoryName
+        /// <summary>
+        /// Gets or sets the description of the mutation test being run.
+        /// </summary>
+        public string Description { get; internal set; }
+
+		internal MethodDefinition MethodDefinition { get; set; }
+        internal int ILIndex { get; set; }
+        internal TestDirectory TestDirectory { get; set; }
+
+        /// <summary>
+        /// Gets the name of the target directory for the mutation test, to
+        /// which the test DLLs and mutated assembly have been copied.
+        /// </summary>
+        public string TestDirectoryName
 		{
 			get { return TestDirectory.FullName; }
 		}

@@ -25,8 +25,19 @@ using Mono.Cecil.Cil;
 
 namespace NinjaTurtles.Turtles
 {
+    /// <summary>
+    /// An implementation of <see cref="IMethodTurtle"/> that replaces the
+    /// branching operator <see cref="OpCodes.Br" /> with a 
+    /// <see cref="OpCodes.Nop" />, and the conditional branch operators
+    /// <see cref="OpCodes.Brtrue" /> and <see cref="OpCodes.Brfalse"/> with
+    /// their converse and with the operators <see cref="OpCodes.Br"/> (always
+    /// branch) and <see cref="OpCodes.Nop" /> (never branch) in turn.
+    /// </summary>
     public class BranchConditionTurtle : OpCodeRotationTurtle
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="BranchConditionTurtle" />.
+        /// </summary>
         public BranchConditionTurtle()
         {
             _opCodes = new Dictionary<OpCode, IEnumerable<OpCode>>

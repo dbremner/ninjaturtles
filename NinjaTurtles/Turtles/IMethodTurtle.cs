@@ -19,7 +19,6 @@
 
 #endregion
 
-using System;
 using System.Collections.Generic;
 
 using Mono.Cecil;
@@ -27,14 +26,33 @@ using Mono.Cecil.Cil;
 
 namespace NinjaTurtles.Turtles
 {
-	public interface IMethodTurtle
+    /// <summary>
+    /// An <b>interface</b> defining basic functionality for a turtle that
+    /// operates on the IL of a method body.
+    /// </summary>
+    public interface IMethodTurtle
 	{
-		void MutantComplete(MutationTestMetaData metaData);
+        /// <summary>
+        /// Returns an <see cref="IEnumerable{T}" /> of detailed descriptions
+        /// of mutations, having first carried out the mutation in question and
+        /// saved the modified assembly under test to disk.
+        /// </summary>
+        /// <param name="method">
+        /// A <see cref="MethodDefinition" /> for the method on which mutation
+        /// testing is to be carried out.
+        /// </param>
+        /// <param name="module">
+        /// A <see cref="Module" /> representing the main module of the
+        /// containing assembly.
+        /// </param>
+        /// <param name="originalOffsets">
+        /// An array of the original IL offsets before macros were expanded.
+        /// </param>
+        /// <returns>
+        /// An <see cref="IEnumerable{T}" /> of
+        /// <see cref="MutationTestMetaData" /> structures.
+        /// </returns>
         IEnumerable<MutationTestMetaData> Mutate(MethodDefinition method, Module module, int[] originalOffsets);
-	    int GetOriginalOffset(int index);
-	    string GetOriginalSourceFileName(int index);
-	    SequencePoint GetCurrentSequencePoint(int index);
-	    string GetOriginalSourceCode(int index);
 	}
 }
 

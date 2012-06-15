@@ -40,7 +40,10 @@ namespace NinjaTurtles
 {
 	internal class MutationTest : IMutationTest
 	{
-		private readonly IList<Type> _mutationsToApply = new List<Type>();
+	    private const string ERROR_REPORTING_KEY = @"SOFTWARE\Microsoft\Windows\Windows Error Reporting";
+	    private const string ERROR_REPORTING_VALUE = "DontShowUI";
+
+	    private readonly IList<Type> _mutationsToApply = new List<Type>();
 		private readonly string _testAssemblyLocation;
 	    private readonly Type[] _parameterTypes;
 	    private readonly AssemblyDefinition _testAssembly;
@@ -67,9 +70,9 @@ namespace NinjaTurtles
 		
 		public void Run()
 		{
-		    var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\Windows Error Reporting", RegistryKeyPermissionCheck.ReadWriteSubTree);
-            var errorReportingValue = key.GetValue("DontShowUI", null);
-            key.SetValue("DontShowUI", 1, RegistryValueKind.DWord);
+		    var key = Registry.LocalMachine.OpenSubKey(ERROR_REPORTING_KEY, RegistryKeyPermissionCheck.ReadWriteSubTree);
+            var errorReportingValue = key.GetValue(ERROR_REPORTING_VALUE, null);
+            key.SetValue(ERROR_REPORTING_VALUE, 1, RegistryValueKind.DWord);
 		    key.Close();
 
 			MethodDefinition method = ValidateMethod();
@@ -84,7 +87,7 @@ namespace NinjaTurtles
 			if (_mutationsToApply.Count == 0) PopulateDefaultTurtles();
 			foreach (var turtleType in _mutationsToApply)
 			{
-                var turtle = (IMethodTurtle)Activator.CreateInstance(turtleType);
+                var turtle = (MethodTurtleBase)Activator.CreateInstance(turtleType);
                 Parallel.ForEach(turtle.Mutate(method, _module, originalOffsets),
         		    mutation => RunMutation(turtle, mutation, ref failures, ref count));
 			}
@@ -92,14 +95,14 @@ namespace NinjaTurtles
             _report.RegisterMethod(method);
             _reportingStrategy.WriteReport(_report, _reportFileName);
 
-            key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\Windows Error Reporting", RegistryKeyPermissionCheck.ReadWriteSubTree);
+            key = Registry.LocalMachine.OpenSubKey(ERROR_REPORTING_KEY, RegistryKeyPermissionCheck.ReadWriteSubTree);
             if (errorReportingValue == null)
             {
-                key.DeleteValue("DontShowUI");
+                key.DeleteValue(ERROR_REPORTING_VALUE);
             }
             else
             {
-                key.SetValue("DontShowUI", errorReportingValue, RegistryValueKind.DWord);
+                key.SetValue(ERROR_REPORTING_VALUE, errorReportingValue, RegistryValueKind.DWord);
             }
             key.Close();
 
@@ -113,8 +116,8 @@ namespace NinjaTurtles
 				throw new MutationTestFailureException();
 			}
 		}
-		
-		private void RunMutation(IMethodTurtle turtle, MutationTestMetaData mutation, ref int failures, ref int count)
+
+        private void RunMutation(MethodTurtleBase turtle, MutationTestMetaData mutation, ref int failures, ref int count)
 		{
 			bool testProcessFailed = CheckTestProcessFails(turtle, mutation);
 			if (!testProcessFailed)
@@ -124,7 +127,7 @@ namespace NinjaTurtles
 			Interlocked.Increment(ref count);
 		}
 		
-		private bool CheckTestProcessFails(IMethodTurtle turtle, MutationTestMetaData mutation)
+		private bool CheckTestProcessFails(MethodTurtleBase turtle, MutationTestMetaData mutation)
 		{
 			string testAssemblyLocation = Path.Combine(mutation.TestDirectoryName, Path.GetFileName(_testAssemblyLocation));
 
