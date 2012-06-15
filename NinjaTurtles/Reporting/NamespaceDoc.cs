@@ -19,17 +19,15 @@
 
 #endregion
 
-using System;
-using System.Xml.Serialization;
+using System.Runtime.CompilerServices;
 
 namespace NinjaTurtles.Reporting
 {
-    [Serializable]
-    internal class AppliedMutant
+    /// <summary>
+    /// Contains classes used in generating XML mutation test reports.
+    /// </summary>
+    [CompilerGenerated]
+    class NamespaceDoc
     {
-        public string Description { get; set; }
-
-        [XmlAttribute]
-        public bool Killed { get; set; }
     }
 }

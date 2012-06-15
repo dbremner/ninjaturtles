@@ -25,7 +25,7 @@ using System.Xml.Serialization;
 namespace NinjaTurtles.Reporting
 {
     [Serializable]
-    public class Line
+    internal class Line
     {
         [XmlText]
         public string Text { get; set; }

@@ -26,10 +26,45 @@ using Mono.Cecil.Cil;
 
 namespace NinjaTurtles.Turtles
 {
+    /// <summary>
+    /// An abstract base class for implementations of
+    /// <see cref="IMethodTurtle" /> that operator by replacing a number of
+    /// IL OpCodes with a list of replacements in turn.
+    /// </summary>
+    /// <remarks>
+    /// Classes extending this one only need to set the value of the
+    /// <see fref="_opCodes" /> field to an appropriate dictionary of source
+    /// and target OpCodes.
+    /// </remarks>
     public abstract class OpCodeRotationTurtle : MethodTurtleBase
     {
+        /// <summary>
+        /// An <see cref="IDictionary{K,V}" /> containing source OpCodes as
+        /// keys, and <see cref="IEnumerable{T}" />s of OpCodes as each key's
+        /// possible replacements.
+        /// </summary>
         protected IDictionary<OpCode, IEnumerable<OpCode>> _opCodes;
 
+        /// <summary>
+        /// Performs the actual code mutations, returning each with
+        /// <code>yield</code> for the calling code to use.
+        /// </summary>
+        /// <remarks>
+        /// Implementing classes should yield the result obtained by calling
+        /// the <see mref="DoYield" /> method.
+        /// </remarks>
+        /// <param name="method">
+        /// A <see cref="MethodDefinition" /> for the method on which mutation
+        /// testing is to be carried out.
+        /// </param>
+        /// <param name="module">
+        /// A <see cref="Module" /> representing the main module of the
+        /// containing assembly.
+        /// </param>
+        /// <returns>
+        /// An <see cref="IEnumerable{T}" /> of
+        /// <see cref="MutationTestMetaData" /> structures.
+        /// </returns>
         protected override IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, Module module)
         {
             for (int index = 0; index < method.Body.Instructions.Count; index++)

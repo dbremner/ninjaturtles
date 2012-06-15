@@ -19,17 +19,17 @@
 
 #endregion
 
-using System;
-using System.Xml.Serialization;
+using System.Runtime.CompilerServices;
 
-namespace NinjaTurtles.Reporting
+namespace NinjaTurtles.Turtles
 {
-    [Serializable]
-    internal class AppliedMutant
+    /// <summary>
+    /// Contains interfaces defining core turtle functionality for
+    /// NinjaTurtles, as well as abstract and concrete implementation classes
+    /// for a number of mutations.
+    /// </summary>
+    [CompilerGenerated]
+    class NamespaceDoc
     {
-        public string Description { get; set; }
-
-        [XmlAttribute]
-        public bool Killed { get; set; }
     }
 }

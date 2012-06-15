@@ -27,8 +27,33 @@ using Mono.Cecil.Cil;
 
 namespace NinjaTurtles.Turtles
 {
+    /// <summary>
+    /// An implementation of <see cref="IMethodTurtle" /> that removes from the
+    /// compiled IL each sequence point in turn (with the exception of
+    /// structurally vital ones and compiler generated ones).
+    /// </summary>
     public class SequencePointDeletionTurtle : MethodTurtleBase
     {
+        /// <summary>
+        /// Performs the actual code mutations, returning each with
+        /// <code>yield</code> for the calling code to use.
+        /// </summary>
+        /// <remarks>
+        /// Implementing classes should yield the result obtained by calling
+        /// the <see mref="DoYield" /> method.
+        /// </remarks>
+        /// <param name="method">
+        /// A <see cref="MethodDefinition" /> for the method on which mutation
+        /// testing is to be carried out.
+        /// </param>
+        /// <param name="module">
+        /// A <see cref="Module" /> representing the main module of the
+        /// containing assembly.
+        /// </param>
+        /// <returns>
+        /// An <see cref="IEnumerable{T}" /> of
+        /// <see cref="MutationTestMetaData" /> structures.
+        /// </returns>
         protected override IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, Module module)
         {
             var sequence = new Dictionary<int, OpCode>();

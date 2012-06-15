@@ -19,17 +19,21 @@
 
 #endregion
 
-using System;
-using System.Xml.Serialization;
+using System.Runtime.CompilerServices;
 
-namespace NinjaTurtles.Reporting
+namespace NinjaTurtles
 {
-    [Serializable]
-    internal class AppliedMutant
+    /// <summary>
+    /// <para>
+    /// The <b>NinjaTurtles</b> namespace contains core classes that are used
+    /// to define and run mutation tests.
+    /// </para><para>
+    /// The best starting point to see how this is done is the
+    /// <see cref="MutationTestBuilder{T}" /> class.
+    /// </para>
+    /// </summary>
+    [CompilerGenerated]
+    class NamespaceDoc
     {
-        public string Description { get; set; }
-
-        [XmlAttribute]
-        public bool Killed { get; set; }
     }
 }

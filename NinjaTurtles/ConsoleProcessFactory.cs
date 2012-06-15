@@ -26,6 +26,10 @@ using System.IO;
 
 namespace NinjaTurtles
 {
+    /// <summary>
+    /// A factory class used to instatiate a <see cref="Process" /> instance,
+    /// taking into account the operating system and runtime.
+    /// </summary>
     public static class ConsoleProcessFactory
     {
         internal static bool IsMono { get; set; }
@@ -39,6 +43,20 @@ namespace NinjaTurtles
 
         }
 
+        /// <summary>
+        /// Creates a <see cref="Process" /> instance used to execute the
+        /// executable identifier by the <paramref name="exeName"/>
+        /// parameter, with the <paramref name="arguments"/> specified.
+        /// </summary>
+        /// <param name="exeName">
+        /// The name (and path) of the executable to run.
+        /// </param>
+        /// <param name="arguments">
+        /// The command line arguments to pass to the executable.
+        /// </param>
+        /// <returns>
+        /// An instance of <see cref="Process" />.
+        /// </returns>
         public static Process CreateProcess(string exeName, string arguments)
         {
             exeName = FindExecutable(exeName);
@@ -67,9 +85,8 @@ namespace NinjaTurtles
         private static string FindExecutable(string exeName)
         {
             var searchPath = new List<string>();
-            string environmentSearchPath = Environment.GetEnvironmentVariable("PATH");
-            searchPath.AddRange(environmentSearchPath
-                .Split(IsWindows ? ';' : ':'));
+            string environmentSearchPath = Environment.GetEnvironmentVariable("PATH") ?? string.Empty;
+            searchPath.AddRange(environmentSearchPath.Split(IsWindows ? ';' : ':'));
 
             foreach (string folder in searchPath)
             {

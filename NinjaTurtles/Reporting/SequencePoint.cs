@@ -28,7 +28,7 @@ using System.Xml.Serialization;
 namespace NinjaTurtles.Reporting
 {
     [Serializable]
-    public class SequencePoint
+    internal class SequencePoint
     {
         private readonly ReaderWriterLockSlim _readerWriterLock = new ReaderWriterLockSlim();
 

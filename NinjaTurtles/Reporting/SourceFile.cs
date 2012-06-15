@@ -28,7 +28,7 @@ using System.Threading;
 namespace NinjaTurtles.Reporting
 {
     [Serializable]
-    public class SourceFile
+    internal class SourceFile
     {
         private readonly ReaderWriterLockSlim _readerWriterLock = new ReaderWriterLockSlim();
 

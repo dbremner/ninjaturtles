@@ -31,7 +31,7 @@ using Mono.Cecil;
 namespace NinjaTurtles.Reporting
 {
     [Serializable]
-    public class MutationTestingReport
+    internal class MutationTestingReport
     {
         private readonly ReaderWriterLockSlim _readerWriterLock = new ReaderWriterLockSlim();
 

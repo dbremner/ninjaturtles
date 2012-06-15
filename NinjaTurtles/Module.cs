@@ -30,8 +30,18 @@ using Mono.Cecil.Pdb;
 
 namespace NinjaTurtles
 {
+    /// <summary>
+    /// Class representing the main module of a .NET assembly.
+    /// </summary>
     public class Module
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Module" /> class.
+        /// </summary>
+        /// <param name="assemblyLocation">
+        /// The location on disk of the assembly whose main module is to be
+        /// loaded.
+        /// </param>
         public Module(string assemblyLocation)
         {
             AssemblyLocation = assemblyLocation;
@@ -40,12 +50,28 @@ namespace NinjaTurtles
             SourceFiles = new Dictionary<string, string[]>();
         }
 
+        /// <summary>
+        /// Gets the location on disk of the assembly.
+        /// </summary>
         public string AssemblyLocation { get; private set; }
+
+        /// <summary>
+        /// Gets the <see cref="AssemblyDefinition" />.
+        /// </summary>
         public AssemblyDefinition AssemblyDefinition { get; private set; }
+
+        /// <summary>
+        /// Gets the <see cref="ModuleDefinition" />.
+        /// </summary>
         public ModuleDefinition Definition { get; private set; }
+
+        /// <summary>
+        /// Gets a dictionary of source code files with their contained lines
+        /// of code.
+        /// </summary>
         public IDictionary<string, string[]> SourceFiles { get; private set; } 
 
-        public void LoadDebugInformation()
+        internal void LoadDebugInformation()
         {
             var reader = ResolveSymbolReader();
             if (reader == null) return;
@@ -56,8 +82,10 @@ namespace NinjaTurtles
                 .SelectMany(t => t.Methods)
                 .Where(m => m.HasBody))
             {
-                reader.Read(method.Body,
-                    o => method.Body.Instructions.FirstOrDefault(i => i.Offset == o));
+                MethodDefinition capturedMethod = method;
+                reader.Read(capturedMethod.Body,
+                    o => capturedMethod.Body.Instructions.FirstOrDefault(i => i.Offset >= o));
+
                 var sourceFiles = method.Body.Instructions.Where(i => i.SequencePoint != null)
                     .Select(i => i.SequencePoint.Document.Url)
                     .Distinct();
