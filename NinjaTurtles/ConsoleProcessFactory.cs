@@ -40,7 +40,6 @@ namespace NinjaTurtles
             IsMono = Type.GetType("Mono.Runtime") != null;
             IsWindows = Environment.OSVersion.Platform.ToString().StartsWith("Win")
                         || Environment.OSVersion.Platform == PlatformID.Xbox;
-
         }
 
         /// <summary>
@@ -54,12 +53,15 @@ namespace NinjaTurtles
         /// <param name="arguments">
         /// The command line arguments to pass to the executable.
         /// </param>
+        /// <param name="additionalSearchLocations">
+        /// An optional list of additional search paths.
+        /// </param>
         /// <returns>
         /// An instance of <see cref="Process" />.
         /// </returns>
-        public static Process CreateProcess(string exeName, string arguments)
+        public static Process CreateProcess(string exeName, string arguments, params string[] additionalSearchLocations)
         {
-            exeName = FindExecutable(exeName);
+            exeName = FindExecutable(exeName, additionalSearchLocations);
 
             if (IsMono)
             {
@@ -82,9 +84,13 @@ namespace NinjaTurtles
             return process;
         }
 
-        private static string FindExecutable(string exeName)
+        private static string FindExecutable(string exeName, string[] additionalSearchLocations)
         {
             var searchPath = new List<string>();
+            if (additionalSearchLocations != null)
+            {
+                searchPath.AddRange(additionalSearchLocations);
+            }
             string environmentSearchPath = Environment.GetEnvironmentVariable("PATH") ?? string.Empty;
             searchPath.AddRange(environmentSearchPath.Split(IsWindows ? ';' : ':'));
 

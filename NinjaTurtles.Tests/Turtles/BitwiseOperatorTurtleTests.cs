@@ -101,7 +101,7 @@ namespace NinjaTurtles.Tests.Turtles
             var module = new Module(tempAssemblyFileName);
 
             var mutator = new BitwiseOperatorTurtle();
-            IEnumerable<MutationTestMetaData> mutations = mutator
+            IEnumerable<MutantMetaData> mutations = mutator
                 .Mutate(addMethod, module, addMethod.Body.Instructions.Select(i => i.Offset).ToArray());
 
             int and = 0;
@@ -136,7 +136,7 @@ namespace NinjaTurtles.Tests.Turtles
             var module = new Module(tempAssemblyFileName);
 
             var mutator = new BitwiseOperatorTurtle();
-            IEnumerable<MutationTestMetaData> mutations = mutator
+            IEnumerable<MutantMetaData> mutations = mutator
                 .Mutate(subtractMethod, module, subtractMethod.Body.Instructions.Select(i => i.Offset).ToArray());
 
             int or = 0;
@@ -171,7 +171,7 @@ namespace NinjaTurtles.Tests.Turtles
             var module = new Module(tempAssemblyFileName);
 
             var mutator = new BitwiseOperatorTurtle();
-            IEnumerable<MutationTestMetaData> mutations = mutator
+            IEnumerable<MutantMetaData> mutations = mutator
                 .Mutate(divideMethod, module, divideMethod.Body.Instructions.Select(i => i.Offset).ToArray());
 
             int or = 0;
@@ -189,7 +189,7 @@ namespace NinjaTurtles.Tests.Turtles
             Assert.AreEqual(1, and);
         }
 
-        private int MatchReplacement(MutationTestMetaData metaData, OpCode from, OpCode to)
+        private int MatchReplacement(MutantMetaData metaData, OpCode from, OpCode to)
         {
             int result = 0;
             if (metaData.MethodDefinition.Body.Instructions.Any(i => i.OpCode == to))

@@ -52,9 +52,9 @@ namespace NinjaTurtles.Turtles
         /// </param>
         /// <returns>
         /// An <see cref="IEnumerable{T}" /> of
-        /// <see cref="MutationTestMetaData" /> structures.
+        /// <see cref="MutantMetaData" /> structures.
         /// </returns>
-        protected override IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, Module module)
+        protected override IEnumerable<MutantMetaData> DoMutate(MethodDefinition method, Module module)
         {
             var sequence = new Dictionary<int, OpCode>();
             int startIndex = -1;
@@ -81,7 +81,7 @@ namespace NinjaTurtles.Turtles
 
                     var codes = string.Join(", ", sequence.Values.Select(o => o.Code));
                     var description = string.Format("{0:x4}: deleting {1}", GetOriginalOffset(startIndex), codes);
-                    MutationTestMetaData mutation = DoYield(method, module, description, startIndex);
+                    MutantMetaData mutation = DoYield(method, module, description, startIndex);
                     yield return mutation;
 
                     method.Body.Instructions[startIndex].OpCode = originalOpCode;

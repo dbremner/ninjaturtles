@@ -63,9 +63,9 @@ namespace NinjaTurtles.Turtles
         /// </param>
         /// <returns>
         /// An <see cref="IEnumerable{T}" /> of
-        /// <see cref="MutationTestMetaData" /> structures.
+        /// <see cref="MutantMetaData" /> structures.
         /// </returns>
-        protected override IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, Module module)
+        protected override IEnumerable<MutantMetaData> DoMutate(MethodDefinition method, Module module)
         {
             for (int index = 0; index < method.Body.Instructions.Count; index++)
             {
@@ -80,7 +80,7 @@ namespace NinjaTurtles.Turtles
                     {
                         instruction.OpCode = opCode;
                         var description = string.Format("{0:x4}: {1} => {2}", GetOriginalOffset(index), originalOpCode.Code, opCode.Code);
-                        MutationTestMetaData mutation = DoYield(method, module, description, index);
+                        MutantMetaData mutation = DoYield(method, module, description, index);
                         yield return mutation;
                     }
 

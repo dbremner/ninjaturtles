@@ -50,9 +50,9 @@ namespace NinjaTurtles.Turtles
         /// </param>
         /// <returns>
         /// An <see cref="IEnumerable{T}" /> of
-        /// <see cref="MutationTestMetaData" /> structures.
+        /// <see cref="MutantMetaData" /> structures.
         /// </returns>
-        IEnumerable<MutationTestMetaData> Mutate(MethodDefinition method, Module module, int[] originalOffsets);
+        IEnumerable<MutantMetaData> Mutate(MethodDefinition method, Module module, int[] originalOffsets);
 	}
 }
 

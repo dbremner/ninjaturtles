@@ -50,7 +50,7 @@ namespace NinjaTurtles.Tests.Turtles
                 .Methods.Single(t => t.Name == "SimpleMethod");
 
             var mutator = new SequencePointDeletionTurtle();
-            IList<MutationTestMetaData> mutations = mutator
+            IList<MutantMetaData> mutations = mutator
                 .Mutate(method, module, method.Body.Instructions.Select(i => i.Offset).ToArray()).ToList();
 
             Assert.AreEqual(3, mutations.Count);

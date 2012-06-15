@@ -34,6 +34,7 @@ using Microsoft.Win32;
 using Mono.Cecil;
 
 using NinjaTurtles.Reporting;
+using NinjaTurtles.TestRunners;
 using NinjaTurtles.Turtles;
 
 namespace NinjaTurtles
@@ -49,7 +50,8 @@ namespace NinjaTurtles
 	    private readonly AssemblyDefinition _testAssembly;
 		private readonly TypeReference _targetTypeReference;
 	    private Module _module;
-		private string _testList;
+	    private IEnumerable<string> _testsToRun;
+	    private ITestRunner _runner;
 	    private MutationTestingReport _report;
         private ReportingStrategy _reportingStrategy = new NullReportingStrategy();
 	    private string _reportFileName;
@@ -79,9 +81,7 @@ namespace NinjaTurtles
             _module.LoadDebugInformation();
             int[] originalOffsets = method.Body.Instructions.Select(i => i.Offset).ToArray();
 		    _report = new MutationTestingReport();
-			IEnumerable<string> tests = GetMatchingTestsOrFail(method);
-			_testList = Path.GetTempFileName();
-			File.WriteAllLines(_testList, tests);
+            _testsToRun = GetMatchingTestsOrFail(method);
 			int count = 0;
 			int failures = 0;
 			if (_mutationsToApply.Count == 0) PopulateDefaultTurtles();
@@ -117,7 +117,7 @@ namespace NinjaTurtles
 			}
 		}
 
-        private void RunMutation(MethodTurtleBase turtle, MutationTestMetaData mutation, ref int failures, ref int count)
+        private void RunMutation(MethodTurtleBase turtle, MutantMetaData mutation, ref int failures, ref int count)
 		{
 			bool testProcessFailed = CheckTestProcessFails(turtle, mutation);
 			if (!testProcessFailed)
@@ -127,13 +127,10 @@ namespace NinjaTurtles
 			Interlocked.Increment(ref count);
 		}
 		
-		private bool CheckTestProcessFails(MethodTurtleBase turtle, MutationTestMetaData mutation)
+		private bool CheckTestProcessFails(MethodTurtleBase turtle, MutantMetaData mutation)
 		{
-			string testAssemblyLocation = Path.Combine(mutation.TestDirectoryName, Path.GetFileName(_testAssemblyLocation));
-
-		    string arguments = string.Format("\"{0}\" {{0}}runlist=\"{1}\" {{0}}nologo {{0}}nodots", testAssemblyLocation, _testList);
-
-            var process = ConsoleProcessFactory.CreateProcess("nunit-console.exe", arguments);
+            if (_runner == null) _runner = new NUnitTestRunner();
+		    var process = _runner.GetRunnerProcess(mutation, _testAssemblyLocation, _testsToRun);
 
 			process.Start();
 			bool exitedInTime = process.WaitForExit(30000);
@@ -200,8 +197,8 @@ namespace NinjaTurtles
                 _mutationsToApply.Add(type);
             }
 		}
-		
-		private IEnumerable<string> GetMatchingTestsOrFail(MethodDefinition targetMethod)
+
+        private IEnumerable<string> GetMatchingTestsOrFail(MethodDefinition targetMethod)
 		{
 			var tests = new List<string>();
 			foreach (var type in _testAssembly.MainModule.Types)
@@ -270,6 +267,24 @@ namespace NinjaTurtles
 			_mutationsToApply.Add(typeof(T));
 			return this;
 		}
+
+	    /// <summary>
+	    /// Sets the unit test runner to be used, which is an implementation of
+	    /// <see cref="ITestRunner" />. If none is specified, then the default
+	    /// is to use <see cref="NUnitTestRunner" />.
+	    /// </summary>
+	    /// <typeparam name="T">
+	    /// A type that implements <see cref="ITestRunner" />.
+	    /// </typeparam>
+	    /// <returns>
+	    /// The original <see cref="IMutationTest" /> instance to allow fluent
+	    /// method chaining.
+	    /// </returns>
+	    public IMutationTest UsingRunner<T>() where T : ITestRunner, new()
+	    {
+	        _runner = new T();
+	        return this;
+	    }
 
 	    public IMutationTest WriteReportTo(string fileName)
 	    {

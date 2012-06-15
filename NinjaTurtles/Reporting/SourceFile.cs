@@ -27,11 +27,18 @@ using System.Threading;
 
 namespace NinjaTurtles.Reporting
 {
+    /// <summary>
+    /// Represents a source code file that is part of a mutation testing
+    /// report.
+    /// </summary>
     [Serializable]
-    internal class SourceFile
+    public class SourceFile
     {
         private readonly ReaderWriterLockSlim _readerWriterLock = new ReaderWriterLockSlim();
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="SourceFile" />.
+        /// </summary>
         public SourceFile()
         {
             SequencePoints = new List<SequencePoint>();
@@ -39,9 +46,12 @@ namespace NinjaTurtles.Reporting
             Lines = new List<Line>();
         }
 
+        /// <summary>
+        /// Gets or sets the URL of the file.
+        /// </summary>
         public string Url { get; set; }
 
-        public void SetUrl(string url)
+        internal void SetUrl(string url)
         {
             Url = url;
             if (File.Exists(url))
@@ -55,11 +65,17 @@ namespace NinjaTurtles.Reporting
             }
         }
 
+        /// <summary>
+        /// Gets or sets a list of <see cref="SequencePoint" />s in the file.
+        /// </summary>
         public List<SequencePoint> SequencePoints { get; set; }
 
+        /// <summary>
+        /// Gets or sets a list of <see cref="Line" />s of code in the file. 
+        /// </summary>
         public List<Line> Lines { get; set; } 
 
-        public void AddResult(Mono.Cecil.Cil.SequencePoint sequencePoint, MutationTestMetaData mutationTestMetaData, bool mutantKilled)
+        internal void AddResult(Mono.Cecil.Cil.SequencePoint sequencePoint, MutantMetaData mutantMetaData, bool mutantKilled)
         {
             string identifier = SequencePoint.GetIdentifier(sequencePoint);
             _readerWriterLock.EnterUpgradeableReadLock();
@@ -77,10 +93,10 @@ namespace NinjaTurtles.Reporting
                 _readerWriterLock.ExitUpgradeableReadLock();
             } 
             var sourceSequencePoint = SequencePoints.First(s => s.GetIdentifier() == identifier);
-            sourceSequencePoint.AddResult(mutationTestMetaData, mutantKilled);
+            sourceSequencePoint.AddResult(mutantMetaData, mutantKilled);
         }
 
-        public void MergeFrom(SourceFile sourceFile)
+        internal void MergeFrom(SourceFile sourceFile)
         {
             foreach (var sequencePoint in sourceFile.SequencePoints)
             {
@@ -96,7 +112,7 @@ namespace NinjaTurtles.Reporting
             }
         }
 
-        public void AddSequencePoint(Mono.Cecil.Cil.SequencePoint point)
+        internal void AddSequencePoint(Mono.Cecil.Cil.SequencePoint point)
         {
             if (!SequencePoints.Any(s => s.GetIdentifier() == SequencePoint.GetIdentifier(point)))
             {

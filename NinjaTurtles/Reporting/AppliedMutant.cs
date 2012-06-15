@@ -24,11 +24,21 @@ using System.Xml.Serialization;
 
 namespace NinjaTurtles.Reporting
 {
+    /// <summary>
+    /// Represents a mutant applied to the code.
+    /// </summary>
     [Serializable]
-    internal class AppliedMutant
+    public class AppliedMutant
     {
+        /// <summary>
+        /// Gets or sets a description of the mutant.
+        /// </summary>
         public string Description { get; set; }
 
+        /// <summary>
+        /// Gets or sets a flag indicating whether or not the mutant was
+        /// successfully killed.
+        /// </summary>
         [XmlAttribute]
         public bool Killed { get; set; }
     }

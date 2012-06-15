@@ -30,20 +30,30 @@ using Mono.Cecil;
 
 namespace NinjaTurtles.Reporting
 {
+    /// <summary>
+    /// Represents the top level of a mutation testing report for a project.
+    /// </summary>
     [Serializable]
-    internal class MutationTestingReport
+    public class MutationTestingReport
     {
         private readonly ReaderWriterLockSlim _readerWriterLock = new ReaderWriterLockSlim();
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="MutationTestingReport" />.
+        /// </summary>
         public MutationTestingReport()
         {
             SourceFiles = new List<SourceFile>();
             _readerWriterLock = new ReaderWriterLockSlim();
         }
 
+        /// <summary>
+        /// Gets or sets a list of the <see cref="SourceFile" />s covered by
+        /// this report.
+        /// </summary>
         public List<SourceFile> SourceFiles { get; set; }
 
-        public void MergeFromFile(string fileName)
+        internal void MergeFromFile(string fileName)
         {
             if (!File.Exists(fileName)) return;
 
@@ -66,7 +76,7 @@ namespace NinjaTurtles.Reporting
             }
         }
 
-        public void RegisterMethod(MethodDefinition method)
+        internal void RegisterMethod(MethodDefinition method)
         {
             if (method.Body.Instructions.All(i => i.SequencePoint == null)) return;
             string sourceFileUrl =
@@ -97,7 +107,7 @@ namespace NinjaTurtles.Reporting
             }
         }
 
-        public void AddResult(Mono.Cecil.Cil.SequencePoint sequencePoint, MutationTestMetaData mutationTestMetaData, bool mutantKilled)
+        internal void AddResult(Mono.Cecil.Cil.SequencePoint sequencePoint, MutantMetaData mutantMetaData, bool mutantKilled)
         {
             if (sequencePoint == null || sequencePoint.Document == null) return;
             string sourceFileUrl = sequencePoint.Document.Url;
@@ -118,7 +128,7 @@ namespace NinjaTurtles.Reporting
                 _readerWriterLock.ExitUpgradeableReadLock();
             }
             var sourceFile = SourceFiles.First(s => s.Url == sourceFileUrl);
-            sourceFile.AddResult(sequencePoint, mutationTestMetaData, mutantKilled);
+            sourceFile.AddResult(sequencePoint, mutantMetaData, mutantKilled);
         }
     }
 }

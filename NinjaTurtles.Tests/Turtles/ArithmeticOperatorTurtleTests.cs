@@ -101,7 +101,7 @@ namespace NinjaTurtles.Tests.Turtles
 		    var module = new Module(tempAssemblyFileName);
 			
 			var mutator = new ArithmeticOperatorTurtle();
-			IEnumerable<MutationTestMetaData> mutations = mutator
+			IEnumerable<MutantMetaData> mutations = mutator
                 .Mutate(addMethod, module, addMethod.Body.Instructions.Select(i => i.Offset).ToArray());
 			
 			int sub = 0;
@@ -142,7 +142,7 @@ namespace NinjaTurtles.Tests.Turtles
             var module = new Module(tempAssemblyFileName);
 
             var mutator = new ArithmeticOperatorTurtle();
-            IEnumerable<MutationTestMetaData> mutations = mutator
+            IEnumerable<MutantMetaData> mutations = mutator
                 .Mutate(subtractMethod, module, subtractMethod.Body.Instructions.Select(i => i.Offset).ToArray());
 			
 			int add = 0;
@@ -183,7 +183,7 @@ namespace NinjaTurtles.Tests.Turtles
             var module = new Module(tempAssemblyFileName);
 
             var mutator = new ArithmeticOperatorTurtle();
-            IEnumerable<MutationTestMetaData> mutations = mutator
+            IEnumerable<MutantMetaData> mutations = mutator
                 .Mutate(divideMethod, module, divideMethod.Body.Instructions.Select(i => i.Offset).ToArray());
 			
 			int add = 0;
@@ -207,7 +207,7 @@ namespace NinjaTurtles.Tests.Turtles
 			Assert.AreEqual(1, rem);
 		}
 		
-		private int MatchReplacement(MutationTestMetaData metaData, OpCode from, OpCode to)
+		private int MatchReplacement(MutantMetaData metaData, OpCode from, OpCode to)
 		{
 			int result = 0;
 			if (metaData.MethodDefinition.Body.Instructions.Any(i => i.OpCode == to))
@@ -236,7 +236,7 @@ namespace NinjaTurtles.Tests.Turtles
             var module = new Module(tempAssemblyFileName);
 
             var mutator = new ArithmeticOperatorTurtle();
-            IEnumerable<MutationTestMetaData> mutations = mutator
+            IEnumerable<MutantMetaData> mutations = mutator
                 .Mutate(multiplicationMethod, module, multiplicationMethod.Body.Instructions.Select(i => i.Offset).ToArray());
 			
 			int add = 0;
@@ -277,7 +277,7 @@ namespace NinjaTurtles.Tests.Turtles
             var module = new Module(tempAssemblyFileName);
 
             var mutator = new ArithmeticOperatorTurtle();
-            IEnumerable<MutationTestMetaData> mutations = mutator
+            IEnumerable<MutantMetaData> mutations = mutator
                 .Mutate(remainderMethod, module, remainderMethod.Body.Instructions.Select(i => i.Offset).ToArray());
 			
 			int add = 0;
@@ -300,14 +300,6 @@ namespace NinjaTurtles.Tests.Turtles
 			Assert.AreEqual(1, mul);
 			Assert.AreEqual(1, div);
 		}
-		
-	    [Test, Category("Mutation")]
-	    public void DoMutate_Mutation_Tests()
-	    {
-	        MutationTestBuilder<ArithmeticOperatorTurtle>.For("DoMutate")
-                .MergeReportTo("SampleReport.xml")
-                .Run();
-	    }
 	}
 }
 

@@ -40,7 +40,7 @@ namespace NinjaTurtles.Turtles
         private Module _module;
         private MethodDefinition _method;
 
-        internal void MutantComplete(MutationTestMetaData metaData)
+        internal void MutantComplete(MutantMetaData metaData)
         {
             metaData.TestDirectory.Dispose();
         }
@@ -63,9 +63,9 @@ namespace NinjaTurtles.Turtles
         /// </param>
         /// <returns>
         /// An <see cref="IEnumerable{T}" /> of
-        /// <see cref="MutationTestMetaData" /> structures.
+        /// <see cref="MutantMetaData" /> structures.
         /// </returns>
-        public IEnumerable<MutationTestMetaData> Mutate(MethodDefinition method, Module module, int[] originalOffsets)
+        public IEnumerable<MutantMetaData> Mutate(MethodDefinition method, Module module, int[] originalOffsets)
         {
             _module = module;
             _method = method;
@@ -96,14 +96,14 @@ namespace NinjaTurtles.Turtles
         /// </param>
         /// <returns>
         /// An <see cref="IEnumerable{T}" /> of
-        /// <see cref="MutationTestMetaData" /> structures.
+        /// <see cref="MutantMetaData" /> structures.
         /// </returns>
-        protected abstract IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, Module module);
+        protected abstract IEnumerable<MutantMetaData> DoMutate(MethodDefinition method, Module module);
 
         /// <summary>
         /// A helper method that copies the test folder, and saves the mutated
         /// assembly under test into it before returning an instance of
-        /// <see cref="MutationTestMetaData" />.
+        /// <see cref="MutantMetaData" />.
         /// </summary>
         /// <param name="method">
         /// A <see cref="MethodDefinition" /> for the method on which mutation
@@ -121,11 +121,11 @@ namespace NinjaTurtles.Turtles
         /// applied.
         /// </param>
         /// <returns></returns>
-        protected MutationTestMetaData DoYield(MethodDefinition method, Module module, string description, int index)
+        protected MutantMetaData DoYield(MethodDefinition method, Module module, string description, int index)
         {
             var testDirectory = new TestDirectory(Path.GetDirectoryName(module.AssemblyLocation));
             testDirectory.SaveAssembly(module);
-            return new MutationTestMetaData
+            return new MutantMetaData
             {
                 Description = description,
                 MethodDefinition = method,

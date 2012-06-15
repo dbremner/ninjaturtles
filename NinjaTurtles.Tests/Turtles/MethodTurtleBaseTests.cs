@@ -160,7 +160,7 @@ namespace NinjaTurtles.Tests.Turtles
             var module = new Module(tempAssemblyFileName);
 
             var mutator = new DummyTurtle();
-            IEnumerable<MutationTestMetaData> mutations = mutator
+            IEnumerable<MutantMetaData> mutations = mutator
                 .Mutate(addMethod, module, addMethod.Body.Instructions.Select(i => i.Offset).ToArray());
 
             var directories = new List<string>();
@@ -205,7 +205,7 @@ namespace NinjaTurtles.Tests.Turtles
 
         private class DummyTurtle : MethodTurtleBase
         {
-            protected override IEnumerable<MutationTestMetaData> DoMutate(MethodDefinition method, Module module)
+            protected override IEnumerable<MutantMetaData> DoMutate(MethodDefinition method, Module module)
             {
                 yield return DoYield(method, module, "Dummy", 0);
             }

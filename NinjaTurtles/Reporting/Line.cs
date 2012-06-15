@@ -24,12 +24,22 @@ using System.Xml.Serialization;
 
 namespace NinjaTurtles.Reporting
 {
+    /// <summary>
+    /// Represents a line of source code.
+    /// </summary>
     [Serializable]
-    internal class Line
+    public class Line
     {
+        /// <summary>
+        /// Gets or sets the text of the line of code.
+        /// </summary>
         [XmlText]
         public string Text { get; set; }
 
+        /// <summary>
+        /// Gets or sets the index within its source code file of the line
+        /// of code.
+        /// </summary>
         [XmlAttribute]
         public int Number { get; set; }
     }
