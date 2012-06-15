@@ -132,7 +132,7 @@ namespace NinjaTurtles
             if (_runner == null) _runner = new NUnitTestRunner();
 		    var process = _runner.GetRunnerProcess(mutation, _testAssemblyLocation, _testsToRun);
 
-			process.Start();
+            process.Start();
 			bool exitedInTime = process.WaitForExit(30000);
 			int exitCode = -1;
 
