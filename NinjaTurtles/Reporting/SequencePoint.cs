@@ -25,20 +25,38 @@ using System.Linq;
 using System.Threading;
 using System.Xml.Serialization;
 
+using Mono.Cecil.Cil;
+
+using Cil = Mono.Cecil.Cil;
+
 namespace NinjaTurtles.Reporting
 {
+    /// <summary>
+    /// Represents an IL sequence point.
+    /// </summary>
     [Serializable]
-    internal class SequencePoint
+    public class SequencePoint
     {
         private readonly ReaderWriterLockSlim _readerWriterLock = new ReaderWriterLockSlim();
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="SequencePoint" />.
+        /// </summary>
         public SequencePoint()
         {
             AppliedMutants = new List<AppliedMutant>();
             _readerWriterLock = new ReaderWriterLockSlim();
         }
 
-        public SequencePoint(Mono.Cecil.Cil.SequencePoint sequencePoint)
+        /// <summary>
+        /// Initializes a new instance of <see cref="SequencePoint" />, copying
+        /// data from the provided <see cref="Cil.SequencePoint" />.
+        /// </summary>
+        /// <param name="sequencePoint">
+        /// An instance of <see cref="Cil.SequencePoint" /> from which to copy
+        /// property values.
+        /// </param>
+        public SequencePoint(Cil.SequencePoint sequencePoint)
             : this()
         {
             StartLine = sequencePoint.StartLine;
@@ -47,47 +65,65 @@ namespace NinjaTurtles.Reporting
             EndColumn = sequencePoint.EndColumn;
         }
 
+        /// <summary>
+        /// Gets or sets the number of the first line of code covered by this
+        /// sequence point.
+        /// </summary>
         [XmlAttribute]
         public int StartLine { get; set; }
 
+        /// <summary>
+        /// Gets or sets the start column within the first line.
+        /// </summary>
         [XmlAttribute]
         public int StartColumn { get; set; }
 
+        /// <summary>
+        /// Gets or sets the number of the last line of code covered by this
+        /// sequence point.
+        /// </summary>
         [XmlAttribute]
         public int EndLine { get; set; }
 
+        /// <summary>
+        /// Gets or sets the end column within the final line.
+        /// </summary>
         [XmlAttribute]
         public int EndColumn { get; set; }
 
-        public string GetIdentifier()
+        internal string GetIdentifier()
         {
             return GetIdentifier(StartLine, StartColumn, EndLine, EndColumn);
         }
-        
-        static public string GetIdentifier(Mono.Cecil.Cil.SequencePoint sequencePoint)
+
+        static internal string GetIdentifier(Cil.SequencePoint sequencePoint)
         {
             return GetIdentifier(sequencePoint.StartLine, sequencePoint.StartColumn, sequencePoint.EndLine,
                                  sequencePoint.EndColumn);
         }
 
-        static public string GetIdentifier(int startLine, int startColumn, int endLine, int endColumn)
+        static internal string GetIdentifier(int startLine, int startColumn, int endLine, int endColumn)
         {
             return string.Format("{0}_{1}_{2}_{3}", startLine, startColumn, endLine, endColumn);
         }
 
+        /// <summary>
+        /// Gets or sets a list of <see cref="AppliedMutant" />s, representing
+        /// the mutants applied.
+        /// </summary>
         public List<AppliedMutant> AppliedMutants { get; set; }
 
-        public void AddResult(MutationTestMetaData mutationTestMetaData, bool mutantKilled)
+        internal void AddResult(MutantMetaData mutantMetaData, bool mutantKilled)
         {
             _readerWriterLock.EnterUpgradeableReadLock();
             try
             {
-                if (!AppliedMutants.Any(s => s.Description == mutationTestMetaData.Description))
+                if (!AppliedMutants.Any(s => s.Description == mutantMetaData.Description))
                 {
                     _readerWriterLock.EnterWriteLock();
                     AppliedMutants.Add(new AppliedMutant
                                              {
-                                                 Description = mutationTestMetaData.Description,
+                                                 Description = mutantMetaData.Description,
                                                  Killed = mutantKilled
                                              });
                     _readerWriterLock.ExitWriteLock();
@@ -99,7 +135,7 @@ namespace NinjaTurtles.Reporting
             }
         }
 
-        public void MergeFrom(SequencePoint sequencePoint)
+        internal void MergeFrom(SequencePoint sequencePoint)
         {
             foreach (var appliedMutant in sequencePoint.AppliedMutants)
             {

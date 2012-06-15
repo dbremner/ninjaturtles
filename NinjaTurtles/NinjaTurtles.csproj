@@ -53,6 +53,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
     <Reference Include="System.Xml" />
+    <Reference Include="xunit">
+      <HintPath>..\packages\xunit.1.9.0.1566\lib\xunit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="InstructionExtensions.cs" />
@@ -71,8 +74,12 @@
     <Compile Include="Reporting\SequencePoint.cs" />
     <Compile Include="Reporting\SourceFile.cs" />
     <Compile Include="Reporting\Line.cs" />
+    <Compile Include="TestRunners\xUnitTestRunner.cs" />
+    <Compile Include="TestRunners\GallioTestRunner.cs" />
+    <Compile Include="TestRunners\ITestRunner.cs" />
+    <Compile Include="TestRunners\NUnitTestRunner.cs" />
     <Compile Include="Turtles\ArithmeticOperatorTurtle.cs" />
-    <Compile Include="MutationTestMetaData.cs" />
+    <Compile Include="MutantMetaData.cs" />
     <Compile Include="Turtles\BranchConditionTurtle.cs" />
     <Compile Include="Turtles\BitwiseOperatorTurtle.cs" />
     <Compile Include="Turtles\IMethodTurtle.cs" />

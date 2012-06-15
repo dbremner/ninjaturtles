@@ -109,7 +109,7 @@ namespace NinjaTurtles.Tests.Turtles
             var module = new Module(tempAssemblyFileName);
 
             var mutator = new BranchConditionTurtle();
-            IEnumerable<MutationTestMetaData> mutations = mutator
+            IEnumerable<MutantMetaData> mutations = mutator
                 .Mutate(addMethod, module, addMethod.Body.Instructions.Select(i => i.Offset).ToArray());
 
             int brTrue = 0;

@@ -26,7 +26,7 @@ namespace NinjaTurtles
     /// <summary>
     /// A class containing metadata for a mutation test.
     /// </summary>
-    public class MutationTestMetaData
+    public class MutantMetaData
 	{
         /// <summary>
         /// Gets or sets the description of the mutation test being run.
