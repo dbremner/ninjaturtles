@@ -124,6 +124,20 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
+        [MethodTested(typeof(ConsoleProcessFactory), "FindExecutable")]
+        public void CreateProcess_Uses_Provided_Search_Path()
+        {
+            string tempFile = Path.GetTempFileName();
+            string exeName = Path.GetFileName(tempFile);
+            using (var process = ConsoleProcessFactory.CreateProcess(exeName, "", Path.GetTempPath()))
+            {
+                Assert.AreNotEqual(exeName, process.StartInfo.FileName);
+                Assert.IsTrue(File.Exists(process.StartInfo.FileName));
+            }
+            File.Delete(tempFile);
+        }
+
+        [Test]
         [MethodTested(typeof(ConsoleProcessFactory), "CreateProcess")]
         [MethodTested(typeof(ConsoleProcessFactory), "FindExecutable")]
         public void CreateProcess_Uses_Correct_Switch_Format_For_Windows()
