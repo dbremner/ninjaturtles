@@ -1,4 +1,4 @@
-#region Copyright & licence
+﻿#region Copyright & licence
 
 // This file is part of NinjaTurtles.
 // 
@@ -19,29 +19,28 @@
 
 #endregion
 
-namespace NinjaTurtles.Tests.Turtles.BitwiseOperatorTurtleTestSuite
+namespace NinjaTurtles.Tests.xUnit
 {
-    public class XorClassUnderTest
+    public class ClassUnderTest
     {
         public int Dummy()
         {
             return 0;
         }
 
-        public int Xor(int left, int right)
+        public int Add(int left, int right)
         {
-            return left ^ right;
+            return left + right;
         }
 
-        public int WorkingXor(int left, int right)
+        public int WorkingAdd(int left, int right)
         {
-            return left ^ right;
+            return left + right;
         }
 
-        public int UncoveredXor(int left, int right)
+        public int UncoveredAdd(int left, int right)
         {
-            return left ^ right;
+            return left + right;
         }
     }
 }
-

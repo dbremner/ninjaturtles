@@ -22,7 +22,6 @@
 using NUnit.Framework;
 
 using NinjaTurtles.Tests.TestUtilities;
-using NinjaTurtles.Tests.Turtles.ArithmeticOperatorTurtleTestSuite;
 using NinjaTurtles.Turtles;
 
 namespace NinjaTurtles.Tests.Turtles.BitwiseOperatorTurtleTestSuite.Tests

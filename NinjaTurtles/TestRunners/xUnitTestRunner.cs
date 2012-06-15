@@ -90,7 +90,7 @@ namespace NinjaTurtles.TestRunners
             string arguments = string.Format("\"{0}\" {{0}}noshadow {{0}}trait \"NinjaTurtles=run\"",
                                  testAssemblyLocation);
 
-            return ConsoleProcessFactory.CreateProcess("Gallio.Echo.exe", arguments);
+            return ConsoleProcessFactory.CreateProcess("xunit.console.clr4.exe", arguments);
         }
     }
 }
