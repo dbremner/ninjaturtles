@@ -50,12 +50,10 @@ namespace NinjaTurtles
                 if (ex.Message == "Sequence contains no matching element")
                 {
                     _log.Error("Method \"{0}\" is unrecognised.", methodName);
+                    throw new ArgumentException(string.Format("Method \"{0}\" is unrecognised.", methodName), "methodName");
                 }
-                else
-                {
-                    _log.Error("Method \"{0}\" is overloaded.", methodName);
-                }
-                return null;
+                _log.Error("Method \"{0}\" is overloaded.", methodName);
+                throw new ArgumentException(string.Format("Method \"{0}\" is overloaded.", methodName), "methodName");
             }
         }
 
@@ -80,7 +78,7 @@ namespace NinjaTurtles
             catch (InvalidOperationException)
             {
                 _log.Error("Method \"{0}\" with specified parameter types is unrecognised.", methodName);
-                return null;
+                throw new ArgumentException(string.Format("Method \"{0}\" with specified parameter types is unrecognised.", methodName), "methodName");
             }
         }
     }

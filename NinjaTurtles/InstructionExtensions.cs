@@ -19,6 +19,10 @@
 
 #endregion
 
+using System;
+using System.Linq;
+
+using Mono.Cecil;
 using Mono.Cecil.Cil;
 
 namespace NinjaTurtles
@@ -30,5 +34,57 @@ namespace NinjaTurtles
             if (instruction.OpCode != OpCodes.Br) return false;
             return ((Instruction)instruction.Operand).Offset == instruction.Next.Offset;
         }
+
+        internal static bool FollowsSequence(this Instruction instruction, params OpCode[] sequence)
+        {
+            if (instruction.OpCode != sequence[0]) return false;
+            if (sequence.Length == 1) return true;
+            var newSequence = new OpCode[sequence.Length - 1];
+            Array.Copy(sequence, 1, newSequence, 0, newSequence.Length);
+            return instruction.Next.FollowsSequence(newSequence);
+        }
+
+        internal static bool IsPartOfSequence(this Instruction instruction, params OpCode[] sequence)
+        {
+            if (!sequence.Distinct().Contains(instruction.OpCode)) return false;
+            var startInstruction = instruction;
+            for (int i = 0; i < sequence.Length; i++)
+            {
+                if (startInstruction == null) break;
+                if (startInstruction.FollowsSequence(sequence)) return true;
+                startInstruction = startInstruction.Previous;
+            }
+            return false;
+        }
+
+        internal static bool IsPartOfCompilerGeneratedDispose(this Instruction instruction)
+        {
+            if (instruction.IsPartOfSequence(OpCodes.Leave,
+                OpCodes.Ldloc, OpCodes.Ldnull, OpCodes.Ceq,
+                OpCodes.Stloc, OpCodes.Ldloc, OpCodes.Brtrue,
+                OpCodes.Ldloc, OpCodes.Callvirt))
+            {
+                while (instruction.OpCode != OpCodes.Callvirt)
+                {
+                    instruction = instruction.Next;
+                }
+                var method = ((MethodReference)instruction.Operand);
+                return method.Name == "Dispose";
+            }
+            if (instruction.IsPartOfSequence(OpCodes.Leave,
+                OpCodes.Ldloc, OpCodes.Ldnull, OpCodes.Ceq,
+                OpCodes.Brtrue,
+                OpCodes.Ldloc, OpCodes.Callvirt))
+            {
+                while (instruction.OpCode != OpCodes.Callvirt)
+                {
+                    instruction = instruction.Next;
+                }
+                var method = ((MethodReference)instruction.Operand);
+                return method.Name == "Dispose";
+            }
+            return false;
+        }
+
     }
 }
