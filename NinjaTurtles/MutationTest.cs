@@ -145,10 +145,9 @@ namespace NinjaTurtles
 				exitCode = process.ExitCode;
 			}
 			catch {}
-			
-			turtle.MutantComplete(mutation);
-			
-		    bool testSuitePassed = exitCode == 0 && exitedInTime;
+
+            bool testSuitePassed = exitCode == 0 && exitedInTime;
+            
             string result = string.Format("Mutant: {0}. {1}",
 			                  mutation.Description,
 			                  testSuitePassed
@@ -158,14 +157,17 @@ namespace NinjaTurtles
 
             if (testSuitePassed)
             {
-                result = string.Format("{0}\nOriginal source code around surviving mutant (in {1}):\n{2}",
+                mutation.TestDirectory.DoNotDelete = true;
+                result = string.Format("{0}\nOriginal source code around surviving mutant (in {1}):\n{2}\nFiles left for inspection in: {3}",
                     result,
                     turtle.GetOriginalSourceFileName(mutation.ILIndex),
-                    turtle.GetOriginalSourceCode(mutation.ILIndex));
+                    turtle.GetOriginalSourceCode(mutation.ILIndex),
+                    mutation.TestDirectoryName);
             }
 
             Console.WriteLine(result);
 
+            turtle.MutantComplete(mutation);
             return !testSuitePassed;
 		}
 
@@ -253,13 +255,7 @@ namespace NinjaTurtles
             _module = new Module(TargetType.Assembly.Location);
             var type = _module.Definition.Types
 		        .Single(t => t.FullName == TargetType.FullName);
-		    var method = MethodDefinitionResolver.ResolveMethod(type, TargetMethod, _parameterTypes);
-		    if (method == null)
-		    {
-		        throw new MutationTestFailureException(
-		            string.Format("Method '{0}' was not recognised.", TargetMethod));
-		    }
-		    return method;
+		    return MethodDefinitionResolver.ResolveMethod(type, TargetMethod, _parameterTypes);
 		}
 
 	    public IMutationTest With<T>() where T : IMethodTurtle

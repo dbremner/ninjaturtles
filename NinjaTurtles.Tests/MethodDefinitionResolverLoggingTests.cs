@@ -41,7 +41,11 @@ namespace NinjaTurtles.Tests
         {
             var assembly = AssemblyDefinition.ReadAssembly(typeof(TypeResolver).Assembly.Location);
             var type = assembly.MainModule.Types.Single(t => t.Name == "TypeResolver");
-            MethodDefinitionResolver.ResolveMethod(type, "ResolveTypeFromReferences");
+            try
+            {
+                MethodDefinitionResolver.ResolveMethod(type, "ResolveTypeFromReferences");
+            }
+            catch (ArgumentException) { }
             AssertLogContains("ERROR|Method \"ResolveTypeFromReferences\" is overloaded.|");
             AssertLogDoesNotContain("ERROR|Method \"ResolveTypeFromReferences\" with specified parameter types is unrecognised.|");
             AssertLogDoesNotContain("ERROR|Method \"ResolveTypeFromReferences\" is unrecognised.|");
@@ -93,7 +97,11 @@ namespace NinjaTurtles.Tests
             var assembly = AssemblyDefinition.ReadAssembly(typeof(TypeResolver).Assembly.Location);
             var type = assembly.MainModule.Types.Single(t => t.Name == "TypeResolver");
             var parameterTypes = new[] { typeof(Assembly), typeof(string), typeof(ICollection<int>) };
-            MethodDefinitionResolver.ResolveMethod(type, "ResolveTypeFromReferences", parameterTypes);
+            try
+            {
+                MethodDefinitionResolver.ResolveMethod(type, "ResolveTypeFromReferences", parameterTypes);
+            }
+            catch (ArgumentException) {}
             AssertLogContains("ERROR|Method \"ResolveTypeFromReferences\" with specified parameter types is unrecognised.|");
             AssertLogDoesNotContain("ERROR|Method \"Leonardo\" is overloaded.|");
             AssertLogDoesNotContain("ERROR|Method \"ResolveTypeFromReferences\" is unrecognised.|");
@@ -105,7 +113,11 @@ namespace NinjaTurtles.Tests
         {
             var assembly = AssemblyDefinition.ReadAssembly(typeof(TypeResolver).Assembly.Location);
             var type = assembly.MainModule.Types.Single(t => t.Name == "TypeResolver");
-            MethodDefinitionResolver.ResolveMethod(type, "Leonardo");
+            try
+            {
+                MethodDefinitionResolver.ResolveMethod(type, "Leonardo");
+            }
+            catch (ArgumentException) {}
             AssertLogContains("ERROR|Method \"Leonardo\" is unrecognised.|");
             AssertLogDoesNotContain("ERROR|Method \"ResolveTypeFromReferences\" with specified parameter types is unrecognised.|");
             AssertLogDoesNotContain("ERROR|Method \"Leonardo\" is overloaded.|");

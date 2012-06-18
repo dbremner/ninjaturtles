@@ -35,12 +35,13 @@ namespace NinjaTurtles.Tests
     {
         [Test]
         [MethodTested(typeof(MethodDefinitionResolver), "ResolveMethod", ParameterTypes = new[] { typeof(Type), typeof(string) })]
-        public void ResolveMethod_Returns_Null_If_Ambiguous()
+        [ExpectedException(typeof(ArgumentException), ExpectedMessage = @"Method ""ResolveTypeFromReferences"" is overloaded.
+Parameter name: methodName")]
+        public void ResolveMethod_Throws_If_Ambiguous()
         {
             var assembly = AssemblyDefinition.ReadAssembly(typeof(TypeResolver).Assembly.Location);
             var type = assembly.MainModule.Types.Single(t => t.Name == "TypeResolver");
-            var method = MethodDefinitionResolver.ResolveMethod(type, "ResolveTypeFromReferences");
-            Assert.IsNull(method);
+            MethodDefinitionResolver.ResolveMethod(type, "ResolveTypeFromReferences");
         }
 
         [Test]
@@ -77,23 +78,25 @@ namespace NinjaTurtles.Tests
 
         [Test]
         [MethodTested(typeof(MethodDefinitionResolver), "ResolveMethod", ParameterTypes = new[] { typeof(Type), typeof(string), typeof(Type[]) })]
-        public void ResolveMethod_Returns_Null_If_No_Matching_Parameters()
+        [ExpectedException(typeof(ArgumentException), ExpectedMessage = @"Method ""ResolveTypeFromReferences"" with specified parameter types is unrecognised.
+Parameter name: methodName")]
+        public void ResolveMethod_Throws_If_No_Matching_Parameters()
         {
             var assembly = AssemblyDefinition.ReadAssembly(typeof(TypeResolver).Assembly.Location);
             var type = assembly.MainModule.Types.Single(t => t.Name == "TypeResolver");
             var parameterTypes = new[] { typeof(Assembly), typeof(string), typeof(ICollection<int>) };
-            var method = MethodDefinitionResolver.ResolveMethod(type, "ResolveTypeFromReferences", parameterTypes);
-            Assert.IsNull(method);
+            MethodDefinitionResolver.ResolveMethod(type, "ResolveTypeFromReferences", parameterTypes);
         }
 
         [Test]
         [MethodTested(typeof(MethodDefinitionResolver), "ResolveMethod", ParameterTypes = new[] { typeof(Type), typeof(string), typeof(Type[]) })]
-        public void ResolveMethod_Returns_Null_If_No_Matching_Method_Without_Parameters()
+        [ExpectedException(typeof(ArgumentException), ExpectedMessage = @"Method ""Leonardo"" is unrecognised.
+Parameter name: methodName")]
+        public void ResolveMethod_Throws_If_No_Matching_Method_Without_Parameters()
         {
             var assembly = AssemblyDefinition.ReadAssembly(typeof(TypeResolver).Assembly.Location);
             var type = assembly.MainModule.Types.Single(t => t.Name == "TypeResolver");
             var method = MethodDefinitionResolver.ResolveMethod(type, "Leonardo");
-            Assert.IsNull(method);
         }
 
         [Test, Category("Mutation")]

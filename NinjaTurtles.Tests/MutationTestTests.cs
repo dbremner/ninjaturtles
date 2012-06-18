@@ -19,6 +19,7 @@
 
 #endregion
 
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -40,43 +41,28 @@ namespace NinjaTurtles.Tests
 		[MethodTested("NinjaTurtles.MutationTest", "Run")]
         [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
         [MethodTested("NinjaTurtles.MutationTest", "CheckTestProcessFails")]
+        [ExpectedException(typeof(MutationTestFailureException), ExpectedMessage = "No matching tests were found to run.")]
         public void UncoveredAdd_Mutation_Tests_Fail()
 		{
-			try
-			{
-				MutationTestBuilder<AdditionClassUnderTest>
-					.For("UncoveredAdd")
-					.With<ArithmeticOperatorTurtle>()
-					.Run();
-			}
-			catch (MutationTestFailureException ex)
-			{
-				Assert.AreEqual("No matching tests were found to run.", ex.Message);
-				return;
-			}
-			Assert.Fail("MutationTestFailureException was not thrown.");
+			MutationTestBuilder<AdditionClassUnderTest>
+				.For("UncoveredAdd")
+				.With<ArithmeticOperatorTurtle>()
+				.Run();
 		}
 		
 		[Test]
 		[MethodTested("NinjaTurtles.MutationTest", "Run")]
 		[MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
         [MethodTested("NinjaTurtles.MutationTest", "CheckTestProcessFails")]
+        [ExpectedException(typeof(ArgumentException), ExpectedMessage = @"Method ""UnknownMethod"" is unrecognised.
+Parameter name: methodName")]
         public void Unknown_Method_Mutation_Tests_Fail()
 		{
-			try
-			{
-				MutationTestBuilder<AdditionClassUnderTest>
-					.For("UnknownMethod")
-					.With<ArithmeticOperatorTurtle>()
-					.Run();
-			}
-			catch (MutationTestFailureException ex)
-			{
-				Assert.AreEqual("Method 'UnknownMethod' was not recognised.", ex.Message);
-				return;
-			}
-			Assert.Fail("MutationTestFailureException was not thrown.");
-		}
+			MutationTestBuilder<AdditionClassUnderTest>
+				.For("UnknownMethod")
+				.With<ArithmeticOperatorTurtle>()
+				.Run();
+        }
 		
 		[Test]
 		[MethodTested("NinjaTurtles.MutationTest", "Run")]

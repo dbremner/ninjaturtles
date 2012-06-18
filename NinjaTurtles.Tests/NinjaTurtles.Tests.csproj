@@ -82,6 +82,8 @@
     <Compile Include="Turtles\SequencePointDeletionTurtleTests.cs" />
     <Compile Include="Turtles\SequencePointDeletionTurtleTestSuite\SequencePointDeletionClassUnderTest.cs" />
     <Compile Include="Turtles\SequencePointDeletionTurtleTestSuite\Tests\SequencePointDeletionClassUnderTestTests.cs" />
+    <Compile Include="Turtles\VariableWriteTurtleTestSuite\Tests\VariableWriteClassUnderTestTests.cs" />
+    <Compile Include="Turtles\VariableWriteTurtleTestSuite\VariableWriteClassUnderTest.cs" />
     <Compile Include="TypeResolverLoggingTests.cs" />
     <Compile Include="TypeResolverTests.cs" />
   </ItemGroup>

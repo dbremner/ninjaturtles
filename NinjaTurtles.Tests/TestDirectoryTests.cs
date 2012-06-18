@@ -100,26 +100,48 @@ namespace NinjaTurtles.Tests
 			Assert.IsFalse(Directory.Exists(path));
         }
 
-		[Test]
+        [Test]
         [MethodTested(typeof(TestDirectory), "Dispose")]
         public void Dispose_Removes_Non_Empty_Directory()
-		{
-			string tempFolder = Path.GetTempPath();
-			string sourceFolder = Path.Combine(tempFolder, Guid.NewGuid().ToString("N"));
-			string fileName = string.Format("{0:N}.txt", Guid.NewGuid());
-			string intermediateDirectory = Guid.NewGuid().ToString("N");
-			Directory.CreateDirectory(sourceFolder);
-			Directory.CreateDirectory(Path.Combine(sourceFolder, intermediateDirectory));
-			File.WriteAllText(Path.Combine(sourceFolder, intermediateDirectory, fileName), "Ninja");
-			
-			string path;
-			using (var testDirectory = new TestDirectory(sourceFolder))
-			{
-				path = testDirectory.FullName;
-			}
-			
-			Assert.IsFalse(Directory.Exists(path));
-		}
+        {
+            string tempFolder = Path.GetTempPath();
+            string sourceFolder = Path.Combine(tempFolder, Guid.NewGuid().ToString("N"));
+            string fileName = string.Format("{0:N}.txt", Guid.NewGuid());
+            string intermediateDirectory = Guid.NewGuid().ToString("N");
+            Directory.CreateDirectory(sourceFolder);
+            Directory.CreateDirectory(Path.Combine(sourceFolder, intermediateDirectory));
+            File.WriteAllText(Path.Combine(sourceFolder, intermediateDirectory, fileName), "Ninja");
+
+            string path;
+            using (var testDirectory = new TestDirectory(sourceFolder))
+            {
+                path = testDirectory.FullName;
+            }
+
+            Assert.IsFalse(Directory.Exists(path));
+        }
+
+        [Test]
+        [MethodTested(typeof(TestDirectory), "Dispose")]
+        public void Dispose_Does_Not_Remove_Directory_If_Set()
+        {
+            string tempFolder = Path.GetTempPath();
+            string sourceFolder = Path.Combine(tempFolder, Guid.NewGuid().ToString("N"));
+            string fileName = string.Format("{0:N}.txt", Guid.NewGuid());
+            string intermediateDirectory = Guid.NewGuid().ToString("N");
+            Directory.CreateDirectory(sourceFolder);
+            Directory.CreateDirectory(Path.Combine(sourceFolder, intermediateDirectory));
+            File.WriteAllText(Path.Combine(sourceFolder, intermediateDirectory, fileName), "Ninja");
+
+            string path;
+            using (var testDirectory = new TestDirectory(sourceFolder))
+            {
+                path = testDirectory.FullName;
+                testDirectory.DoNotDelete = true;
+            }
+
+            Assert.IsTrue(Directory.Exists(path));
+        }
 
         [Test]
         [MethodTested(typeof(TestDirectory), "Dispose")]

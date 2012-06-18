@@ -85,6 +85,10 @@ namespace NinjaTurtles
 
 		public void Dispose()
 		{
+            if (DoNotDelete)
+            {
+                return;
+            }
             try
             {
                 _log.Debug("Deleting folder \"{0}\".", _folder);
@@ -96,6 +100,8 @@ namespace NinjaTurtles
                 _log.ErrorException(message, ex);
             }
 		}
-	}
+
+	    public bool DoNotDelete { get; set; }
+    }
 }
 
