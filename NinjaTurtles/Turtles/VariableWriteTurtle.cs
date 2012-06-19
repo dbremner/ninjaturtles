@@ -29,7 +29,11 @@ using Mono.Cecil.Cil;
 namespace NinjaTurtles.Turtles
 {
     /// <summary>
-    /// 
+    /// An implementation of <see cref="IMethodTurtle" /> that identifies local
+    /// variables of the same type, and permutes any assignments to them. For
+    /// example, if two <see cref="Int32" /> variables <c>a</c> and <c>b</c>
+    /// exist, then an assignment to <c>a</c> will be replaced by one to
+    /// <c>b</c>, and vice versa.
     /// </summary>
     public class VariableWriteTurtle : MethodTurtleBase
     {
