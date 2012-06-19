@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Created with Liquid XML Studio 2012 Developer Edition (Trial) 10.0.5.3999 (http://www.liquid-technologies.com) -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.w3.org/1999/xhtml">
-    <xsl:output method="html" omit-xml-declaration="yes" encoding="utf8" />
-    <xsl:preserve-space elements="br" />
+    <xsl:output method="html" omit-xml-declaration="yes" encoding="utf-8" indent="no" />
+    <xsl:preserve-space elements="*" />
     <xsl:template match="/">
         <html>
             <head>
