@@ -26,8 +26,6 @@ using System.Linq;
 
 using Mono.Cecil;
 
-using Xunit;
-
 namespace NinjaTurtles.TestRunners
 {
     /// <summary>
@@ -63,9 +61,13 @@ namespace NinjaTurtles.TestRunners
             // HACKTAGE: In the absence of a simple way to limit the tests
             // xUnit runs, we inject TraitAttributes to specify this.
             var testModule = new Module(testAssemblyLocation);
+            var xUnitModule =
+                AssemblyDefinition.ReadAssembly(Path.Combine(Path.GetDirectoryName(testAssemblyLocation), "xunit.dll"));
             var traitConstructor =
                 testModule.Definition.Import(
-                    typeof(TraitAttribute).GetConstructor(new[] { typeof(string), typeof(string) }));
+                    xUnitModule.MainModule
+                        .Types.Single(t => t.Name == "TraitAttribute")
+                        .Methods.Single(m => m.Name == Methods.CONSTRUCTOR));
             var customAttribute = new CustomAttribute(traitConstructor);
             customAttribute.ConstructorArguments.Add(
                 new CustomAttributeArgument(
