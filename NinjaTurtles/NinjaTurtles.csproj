@@ -88,6 +88,7 @@
     <Compile Include="Turtles\NamespaceDoc.cs" />
     <Compile Include="Turtles\OpCodeRotationTurtle.cs" />
     <Compile Include="Turtles\SequencePointDeletionTurtle.cs" />
+    <Compile Include="Turtles\VariableAndParameterReadTurtle.cs" />
     <Compile Include="Turtles\VariableWriteTurtle.cs" />
     <Compile Include="TypeResolver.cs" />
   </ItemGroup>

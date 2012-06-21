@@ -64,15 +64,16 @@ namespace NinjaTurtles
 		{
 			foreach (var file in Directory.GetFiles(directory))
 			{
-				string target = Path.Combine(targetDirectory, Path.GetFileName(file));
-                _log.Trace("Copying file \"{0}\".", Path.GetFileName(file));
-				File.Copy(file, target);
+			    string fileName = Path.GetFileName(file);
+                _log.Trace("Copying file \"{0}\".", fileName);
+                string target = Path.Combine(targetDirectory, fileName);
+                File.Copy(file, target);
 			}
 			foreach (var subDirectory in Directory.GetDirectories(directory))
 			{
 			    string subDirectoryName = Path.GetFileName(subDirectory);
-			    string target = Path.Combine(targetDirectory, subDirectoryName);
                 _log.Trace("Creating subdirectory \"{0}\".", subDirectoryName);
+                string target = Path.Combine(targetDirectory, subDirectoryName);
                 Directory.CreateDirectory(target);
 				CopyDirectoryContents(subDirectory, target);
 			}
