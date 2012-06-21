@@ -22,7 +22,6 @@
 using System.Collections.Generic;
 
 using Mono.Cecil;
-using Mono.Cecil.Cil;
 
 namespace NinjaTurtles.Turtles
 {
