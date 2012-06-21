@@ -30,6 +30,19 @@ namespace NinjaTurtles.TestRunners
     /// <summary>
     /// An implementation of <see cref="ITestRunner" /> to run a unit test
     /// suite using the Gallio console runner.
+    /// <example>
+    /// <para>
+    /// This code creates and runs the default set of mutation tests for the
+    /// <b>ClassUnderTest</b> class's <b>MethodUnderTest</b> method using 
+    /// the <see cref="GallioTestRunner" />:
+    /// </para>
+    /// <code lang="cs">
+    /// MutationTestBuilder&lt;ClassUnderTest&gt;
+    ///     .For("MethodUnderTest")
+    ///     .UsingRunner&lt;GallioTestRunner&gt;()
+    ///     .Run();
+    /// </code>
+    /// </example>
     /// </summary>
     public class GallioTestRunner : ITestRunner
     {
@@ -37,6 +50,12 @@ namespace NinjaTurtles.TestRunners
         /// Runs the tests specified from the test assembly, found within the
         /// test directory identified in the provided
         /// <see cref="MutantMetaData" /> instance.
+        /// <remarks>
+        /// This method won't be called
+        /// from a user's testing code, it is called internally by
+        /// NinjaTurtles, and is only exposed publicly to allow for a new
+        /// implementation to be provided as an extension to NinjaTurtles.
+        /// </remarks>
         /// </summary>
         /// <param name="mutation">
         /// An instance of <see cref="MutantMetaData" /> describing the
