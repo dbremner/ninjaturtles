@@ -76,12 +76,10 @@ namespace NinjaTurtles
             processStartInfo.CreateNoWindow = true;
             processStartInfo.RedirectStandardOutput = true;
 
-            var process = new Process
+            return new Process
             {
                 StartInfo = processStartInfo
             };
-
-            return process;
         }
 
         private static string FindExecutable(string exeName, string[] additionalSearchLocations)

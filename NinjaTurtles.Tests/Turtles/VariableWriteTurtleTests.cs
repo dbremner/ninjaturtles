@@ -30,43 +30,37 @@ using NinjaTurtles.Turtles;
 namespace NinjaTurtles.Tests.Turtles
 {
     [TestFixture]
-    public class SequencePointDeletionTurtleTests
+    public class VariableWriteTurtleTests
     {
         [Test]
         [MethodTested(typeof(MethodTurtleBase), "Mutate")]
         [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(SequencePointDeletionTurtle), "DoMutate")]
-        [MethodTested(typeof(SequencePointDeletionTurtle), "ShouldDeleteSequence")]
+        [MethodTested(typeof(VariableWriteTurtle), "DoMutate")]
         public void DoMutate_Returns_Correct_Seqeuences()
         {
             var module = new Module(Assembly.GetExecutingAssembly().Location);
             module.LoadDebugInformation();
             var method = module.Definition
-                .Types.Single(t => t.Name == "SequencePointDeletionClassUnderTest")
-                .Methods.Single(t => t.Name == "SimpleMethod");
+                .Types.Single(t => t.Name == "VariableWriteClassUnderTest")
+                .Methods.Single(t => t.Name == "AddWithPointlessNonsense");
 
-            var mutator = new SequencePointDeletionTurtle();
+            var mutator = new VariableWriteTurtle();
             IList<MutantMetaData> mutations = mutator
                 .Mutate(method, module, method.Body.Instructions.Select(i => i.Offset).ToArray()).ToList();
 
-            Assert.AreEqual(3, mutations.Count);
-            StringAssert.EndsWith("deleting Ldarg, Stloc", mutations[0].Description);
-            StringAssert.EndsWith("deleting Ldloc, Ldarg, Ldarg, Mul, Add, Stloc", mutations[1].Description);
-            StringAssert.EndsWith("deleting Ldloc, Ldarg, Ldarg, Mul, Ldarg, Mul, Add, Stloc", mutations[2].Description);
+            Assert.AreEqual(6, mutations.Count);
+            StringAssert.EndsWith("write substitution Int32.V0 => Int32.V1", mutations[0].Description);
+            StringAssert.EndsWith("write substitution Int32.V0 => Int32.V2", mutations[1].Description);
+            StringAssert.EndsWith("write substitution Int32.V1 => Int32.V0", mutations[2].Description);
+            StringAssert.EndsWith("write substitution Int32.V1 => Int32.V2", mutations[3].Description);
+            StringAssert.EndsWith("write substitution Int32.V2 => Int32.V0", mutations[4].Description);
+            StringAssert.EndsWith("write substitution Int32.V2 => Int32.V1", mutations[5].Description);
         }
 
         [Test, Category("Mutation")]
         public void DoMutate_Mutation_Tests()
         {
-            MutationTestBuilder<SequencePointDeletionTurtle>.For("DoMutate")
-                .MergeReportTo("SampleReport.xml")
-                .Run();
-        }
-
-        [Test, Category("Mutation")]
-        public void ShouldDeleteSequence_Mutation_Tests()
-        {
-            MutationTestBuilder<SequencePointDeletionTurtle>.For("ShouldDeleteSequence")
+            MutationTestBuilder<VariableWriteTurtle>.For("DoMutate")
                 .MergeReportTo("SampleReport.xml")
                 .Run();
         }

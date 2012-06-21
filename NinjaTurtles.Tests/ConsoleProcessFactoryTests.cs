@@ -77,7 +77,7 @@ namespace NinjaTurtles.Tests
             {
                 ConsoleProcessFactory.IsMono = isMono;
                 Assert.AreEqual("mono", process.StartInfo.FileName);
-                StringAssert.StartsWith("--runtime=v4.0", process.StartInfo.Arguments);
+                StringAssert.StartsWith("--runtime=v4.0 \"cmd.exe \"", process.StartInfo.Arguments);
                 StringAssert.Contains("cmd.exe\"", process.StartInfo.Arguments);
             }
         }

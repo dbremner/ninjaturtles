@@ -102,11 +102,11 @@ namespace NinjaTurtles.Turtles
 
                         var description =
                             string.Format(
-                                "Variable write substitution {0}.V{1} => {0}.V{2} at {3:x4}",
+                                "{0:x4}: write substitution {1}.V{2} => {1}.V{3}",
+                                GetOriginalOffset(index),
                                 keyValuePair.Key.Name,
                                 oldIndex,
-                                sequence,
-                                GetOriginalOffset(index));
+                                sequence);
 
                         MutantMetaData mutation = DoYield(method, module, description, index);
                         yield return mutation;

@@ -96,7 +96,7 @@ Parameter name: methodName")]
         {
             var assembly = AssemblyDefinition.ReadAssembly(typeof(TypeResolver).Assembly.Location);
             var type = assembly.MainModule.Types.Single(t => t.Name == "TypeResolver");
-            var method = MethodDefinitionResolver.ResolveMethod(type, "Leonardo");
+            MethodDefinitionResolver.ResolveMethod(type, "Leonardo");
         }
 
         [Test, Category("Mutation")]
