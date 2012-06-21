@@ -21,12 +21,12 @@
 
 using System.Runtime.CompilerServices;
 
-namespace NinjaTurtles
+namespace NinjaTurtles.TestRunners
 {
     /// <summary>
-    /// Contains core classes that are used to define and run mutation tests.
-    /// The best starting point to see how this is done is the
-    /// <see cref="MutationTestBuilder{T}" /> class.
+    /// Contains the <see cref="ITestRunner" /> interface and some
+    /// implementations of it, used to run test suites against generated
+    /// mutants using different unit testing frameworks.
     /// </summary>
     [CompilerGenerated]
     class NamespaceDoc
