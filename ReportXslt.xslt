@@ -163,7 +163,7 @@
                 <xsl:value-of select="concat($killedMutants, '/', $totalMutants)" />
             </xsl:if>
         </xsl:variable>
-        <xsl:value-of select="substring(concat('    ', $lineNumber), string-length($lineNumber) + 1)" />: <xsl:value-of select="substring(concat('       ', $mutantFraction), string-length($mutantFraction) + 1)" />: <span class="{$class}"><xsl:value-of select="concat(text(), '&amp;#x200b;')" disable-output-escaping="yes" /></span><xsl:text disable-output-escaping="yes">
+        <xsl:value-of select="substring(concat('    ', $lineNumber), string-length($lineNumber) + 1)" />: <xsl:value-of select="substring(concat('       ', $mutantFraction), string-length($mutantFraction) + 1)" />: <span class="{$class}"><xsl:value-of select="text()" /><xsl:text value="&amp;#x200b;" disable-output-escaping="yes" /></span><xsl:text disable-output-escaping="yes">
 </xsl:text>
     </xsl:template>
     

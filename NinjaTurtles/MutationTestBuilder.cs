@@ -22,6 +22,8 @@
 using System;
 using System.Reflection;
 
+using NinjaTurtles.TestRunners;
+
 namespace NinjaTurtles
 {
     /// <summary>
@@ -81,13 +83,13 @@ namespace NinjaTurtles
     /// including this line in the test fixture's setup method:
     /// </para>
     /// <code lang="cs">
-    /// MutationTestBuilder&lt;ClassUnderTest&gt;.UseRunner&lt;GallioTestRunner&gt;();
+    /// MutationTestBuilder.UseRunner&lt;GallioTestRunner&gt;();
     /// </code>
     /// <code lang="vbnet">
-    /// Call MutationTestBuilder(Of ClassUnderTest).UseRunner(Of GallioTestRunner)
+    /// Call MutationTestBuilder.UseRunner(Of GallioTestRunner)
     /// </code>
     /// <code lang="cpp">
-    /// MutationTestBuilder&lt;ClassUnderTest^&gt;::UseRunner&lt;GallioTestRunner^&gt;();
+    /// MutationTestBuilder::UseRunner&lt;GallioTestRunner^&gt;();
     /// </code>
     /// </example>
     public sealed class MutationTestBuilder<T>
@@ -123,7 +125,14 @@ namespace NinjaTurtles
     /// is to be prefered. See that class for full documentation.
     /// </remarks>
     public sealed class MutationTestBuilder
-	{
+    {
+        internal static Type TestRunner { get; set; }
+
+        static MutationTestBuilder()
+        {
+            TestRunner = typeof(NUnitTestRunner);
+        }
+
         /// <summary>
         /// Returns an <see cref="IMutationTest" /> instance allowing a fluent
         /// definition of a set of mutation tests for a particular method.
@@ -155,6 +164,21 @@ namespace NinjaTurtles
 		{
 			return new MutationTest(callingAssemblyLocation, targetType, targetMethod, parameterTypes);
 		}
+
+        /// <summary>
+        /// Specifies the implementation of <see cref="ITestRunner" /> to be
+        /// used to run the test suite for each mutant. By default, this will
+        /// be the <see cref="NUnitTestRunner" />. This can still be overridden
+        /// on a per-test basis using the
+        /// <see mref="IMutationTest.UsingRunner" /> method.
+        /// </summary>
+        /// <typeparam name="T">
+        /// A type that implements <see cref="ITestRunner" />.
+        /// </typeparam>
+        public static void UseRunner<T>() where T : ITestRunner
+        {
+            TestRunner = typeof(T);
+        }
 	}
 }
 

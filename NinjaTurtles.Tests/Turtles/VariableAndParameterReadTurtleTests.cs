@@ -48,6 +48,7 @@ namespace NinjaTurtles.Tests.Turtles
             IList<MutantMetaData> mutations = mutator
                 .Mutate(method, module, method.Body.Instructions.Select(i => i.Offset).ToArray()).ToList();
 
+            // V2 is only read for the return statement; this case is excluded in the code.
             Assert.AreEqual(9, mutations.Count);
             StringAssert.EndsWith("read substitution Int32.P1 => Int32.P2", mutations[0].Description);
             StringAssert.EndsWith("read substitution Int32.P1 => Int32.V0", mutations[1].Description);
