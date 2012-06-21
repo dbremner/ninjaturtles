@@ -28,6 +28,9 @@
             <AppliedMutant Killed="true">
               <Description>0055: Brtrue =&gt; Br</Description>
             </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0047: read substitution Type.V0 =&gt; Type.V4</Description>
+            </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="59" StartColumn="39" EndLine="59" EndColumn="73">
@@ -41,12 +44,18 @@
             <AppliedMutant Killed="true">
               <Description>008a: Br =&gt; Nop</Description>
             </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>007f: read substitution Assembly.P0 =&gt; Assembly.V2</Description>
+            </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="52" StartColumn="13" EndLine="52" EndColumn="102">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>000e: deleting Ldsfld, Ldstr, Ldloc, Ldfld, Ldarg, Callvirt, Callvirt, Callvirt, Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>001e: read substitution Assembly.P0 =&gt; Assembly.V2</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -83,6 +92,19 @@
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
+        <SequencePoint StartLine="64" StartColumn="17" EndLine="64" EndColumn="103">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>00be: deleting Ldloc, Ldloc, Ldfld, Ldarg, Call, Stloc</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00cb: write substitution Type.V0 =&gt; Type.V4</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00be: read substitution Assembly.V2 =&gt; Assembly.P0</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
         <SequencePoint StartLine="65" StartColumn="17" EndLine="65" EndColumn="34">
           <AppliedMutants>
             <AppliedMutant Killed="true">
@@ -99,6 +121,9 @@
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>00da: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00cc: read substitution Type.V0 =&gt; Type.V4</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -121,23 +146,16 @@
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="64" StartColumn="17" EndLine="64" EndColumn="103">
-          <AppliedMutants>
-            <AppliedMutant Killed="true">
-              <Description>00be: deleting Ldloc, Ldloc, Ldfld, Ldarg, Call, Stloc</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>Variable write substitution Type.V0 =&gt; Type.V4 at 00cb</Description>
-            </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
         <SequencePoint StartLine="53" StartColumn="13" EndLine="53" EndColumn="90">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>002f: deleting Ldarg, Callvirt, Ldloc, Ldftn, Newobj, Call, Stloc</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Type.V0 =&gt; Type.V4 at 0046</Description>
+              <Description>0046: write substitution Type.V0 =&gt; Type.V4</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>002f: read substitution Assembly.P0 =&gt; Assembly.V2</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -145,6 +163,9 @@
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>0058: deleting Ldsfld, Ldstr, Ldloc, Ldfld, Ldarg, Callvirt, Callvirt, Callvirt, Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0068: read substitution Assembly.P0 =&gt; Assembly.V2</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -154,10 +175,13 @@
               <Description>0079: deleting Ldloc, Stloc, Br</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Type.V4 =&gt; Type.V0 at 007a</Description>
+              <Description>007a: write substitution Type.V4 =&gt; Type.V0</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>007c: Br =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0079: read substitution Type.V0 =&gt; Type.V4</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -184,7 +208,10 @@
               <Description>00dd: deleting Ldloc, Stloc, Leave</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Type.V4 =&gt; Type.V0 at 00de</Description>
+              <Description>00de: write substitution Type.V4 =&gt; Type.V0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00dd: read substitution Type.V0 =&gt; Type.V4</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -213,7 +240,7 @@
               <Description>00f7: deleting Ldnull, Stloc, Br</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Type.V4 =&gt; Type.V0 at 00f8</Description>
+              <Description>00f8: write substitution Type.V4 =&gt; Type.V0</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -241,7 +268,7 @@
               <Description>001d: deleting Ldarg, Ldarg, Newobj, Call, Stloc</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Type.V0 =&gt; Type.V1 at 0029</Description>
+              <Description>0029: write substitution Type.V0 =&gt; Type.V1</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -269,6 +296,9 @@
             <AppliedMutant Killed="true">
               <Description>0036: Brtrue =&gt; Br</Description>
             </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>002a: read substitution Type.V0 =&gt; Type.V1</Description>
+            </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="45" StartColumn="17" EndLine="45" EndColumn="71">
@@ -281,7 +311,10 @@
         <SequencePoint StartLine="47" StartColumn="13" EndLine="47" EndColumn="25">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Type.V1 =&gt; Type.V0 at 004c</Description>
+              <Description>004c: write substitution Type.V1 =&gt; Type.V0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>004b: read substitution Type.V0 =&gt; Type.V1</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -387,7 +420,7 @@
               <Description>002f: deleting Ldloc, Brtrue</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V1 =&gt; Boolean.V0 at 002e</Description>
+              <Description>002e: write substitution Boolean.V1 =&gt; Boolean.V0</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>000c: Brtrue =&gt; Nop</Description>
@@ -406,6 +439,9 @@
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>0030: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>002f: read substitution Boolean.V1 =&gt; Boolean.V0</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -428,25 +464,28 @@
               <Description>0067: deleting Ldloc, Brtrue</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V1 =&gt; Boolean.V0 at 0066</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0044: Brtrue =&gt; Brfalse</Description>
+              <Description>0066: write substitution Boolean.V1 =&gt; Boolean.V0</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>0044: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0068: Brtrue =&gt; Nop</Description>
+              <Description>0044: Brtrue =&gt; Br</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0044: Brtrue =&gt; Br</Description>
+              <Description>0044: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0068: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>0068: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>0068: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0067: read substitution Boolean.V1 =&gt; Boolean.V0</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -469,7 +508,7 @@
               <Description>009f: deleting Ldloc, Brtrue</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V1 =&gt; Boolean.V0 at 009e</Description>
+              <Description>009e: write substitution Boolean.V1 =&gt; Boolean.V0</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>007c: Brtrue =&gt; Nop</Description>
@@ -488,6 +527,9 @@
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>00a0: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>009f: read substitution Boolean.V1 =&gt; Boolean.V0</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -510,7 +552,7 @@
               <Description>00d7: deleting Ldloc, Brtrue</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V1 =&gt; Boolean.V0 at 00d6</Description>
+              <Description>00d6: write substitution Boolean.V1 =&gt; Boolean.V0</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>00b4: Brtrue =&gt; Nop</Description>
@@ -530,27 +572,8 @@
             <AppliedMutant Killed="true">
               <Description>00d8: Brtrue =&gt; Br</Description>
             </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
-        <SequencePoint StartLine="101" StartColumn="13" EndLine="101" EndColumn="55">
-          <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>00e1: deleting Ldarg, Callvirt, Call, Stloc, Ldloca, Call, Ldc_I4, Ceq, Ldc_I4, Ceq, Stloc</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>00fc: deleting Ldloc, Brtrue</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V1 =&gt; Boolean.V0 at 00fb</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>00fd: Brtrue =&gt; Nop</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>00fd: Brtrue =&gt; Brfalse</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>00fd: Brtrue =&gt; Br</Description>
+              <Description>00d7: read substitution Boolean.V1 =&gt; Boolean.V0</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -564,6 +587,31 @@
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
+        <SequencePoint StartLine="101" StartColumn="13" EndLine="101" EndColumn="55">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>00e1: deleting Ldarg, Callvirt, Call, Stloc, Ldloca, Call, Ldc_I4, Ceq, Ldc_I4, Ceq, Stloc</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00fc: deleting Ldloc, Brtrue</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00fb: write substitution Boolean.V1 =&gt; Boolean.V0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00fd: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00fd: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00fd: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00fc: read substitution Boolean.V1 =&gt; Boolean.V0</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
         <SequencePoint StartLine="103" StartColumn="17" EndLine="104" EndColumn="76">
           <AppliedMutants>
             <AppliedMutant Killed="true">
@@ -573,13 +621,13 @@
               <Description>014b: deleting Ldloc, Brtrue</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V1 =&gt; Boolean.V0 at 014a</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>014c: Brtrue =&gt; Brfalse</Description>
+              <Description>014a: write substitution Boolean.V1 =&gt; Boolean.V0</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>014c: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>014c: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>014c: Brtrue =&gt; Br</Description>
@@ -596,24 +644,27 @@
             <AppliedMutant Killed="true">
               <Description>013a: Add =&gt; Rem</Description>
             </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>014b: read substitution Boolean.V1 =&gt; Boolean.V0</Description>
+            </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="106" StartColumn="21" EndLine="106" EndColumn="92">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>014f: deleting Ldarg, Callvirt, Ldarg, Callvirt, Call, Ldc_I4, Add, Callvirt, Callvirt, Ldsfld, Call, Ldc_I4, Ceq, Stloc</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
               <Description>017a: deleting Ldloc, Brtrue</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V1 =&gt; Boolean.V0 at 0179</Description>
+              <Description>014f: deleting Ldarg, Callvirt, Ldarg, Callvirt, Call, Ldc_I4, Add, Callvirt, Callvirt, Ldsfld, Call, Ldc_I4, Ceq, Stloc</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>017b: Brtrue =&gt; Brfalse</Description>
+              <Description>0179: write substitution Boolean.V1 =&gt; Boolean.V0</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>017b: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>017b: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>017b: Brtrue =&gt; Br</Description>
@@ -629,6 +680,9 @@
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>0161: Add =&gt; Rem</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>017a: read substitution Boolean.V1 =&gt; Boolean.V0</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -651,25 +705,28 @@
               <Description>01b0: deleting Ldloc, Brtrue</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V1 =&gt; Boolean.V0 at 01af</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>018d: Brtrue =&gt; Brfalse</Description>
+              <Description>01af: write substitution Boolean.V1 =&gt; Boolean.V0</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>018d: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>018d: Brtrue =&gt; Br</Description>
+              <Description>018d: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>01b1: Brtrue =&gt; Nop</Description>
+              <Description>018d: Brtrue =&gt; Br</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>01b1: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
+              <Description>01b1: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
               <Description>01b1: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>01b0: read substitution Boolean.V1 =&gt; Boolean.V0</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -682,16 +739,16 @@
               <Description>0209: deleting Ldloc, Brtrue</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V1 =&gt; Boolean.V0 at 0208</Description>
+              <Description>0208: write substitution Boolean.V1 =&gt; Boolean.V0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>01c0: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>01c0: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>01c0: Brtrue =&gt; Br</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>01c0: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>020a: Brtrue =&gt; Nop</Description>
@@ -701,6 +758,9 @@
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>020a: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0209: read substitution Boolean.V1 =&gt; Boolean.V0</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -717,7 +777,7 @@
         <SequencePoint StartLine="122" StartColumn="13" EndLine="122" EndColumn="25">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V0 =&gt; Boolean.V1 at 0213</Description>
+              <Description>0213: write substitution Boolean.V0 =&gt; Boolean.V1</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -916,10 +976,25 @@
         <SequencePoint StartLine="128" StartColumn="13" EndLine="134" EndColumn="15">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution MutantMetaData.V1 =&gt; MutantMetaData.V2 at 001f</Description>
+              <Description>001f: write substitution MutantMetaData.V1 =&gt; MutantMetaData.V2</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution MutantMetaData.V2 =&gt; MutantMetaData.V1 at 0042</Description>
+              <Description>0042: write substitution MutantMetaData.V2 =&gt; MutantMetaData.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0020: read substitution MutantMetaData.V1 =&gt; MutantMetaData.V2</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0028: read substitution MutantMetaData.V1 =&gt; MutantMetaData.V2</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0030: read substitution MutantMetaData.V1 =&gt; MutantMetaData.V2</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0038: read substitution MutantMetaData.V1 =&gt; MutantMetaData.V2</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0041: read substitution MutantMetaData.V1 =&gt; MutantMetaData.V2</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -1119,7 +1194,7 @@
               <Description>0001: deleting Ldarg, Callvirt, Call, Stloc</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V0 =&gt; String.V1 at 000c</Description>
+              <Description>000c: write substitution String.V0 =&gt; String.V1</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -1129,7 +1204,20 @@
               <Description>000d: deleting Ldarg, Ldfld, Ldloc, Call, Stloc</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V1 =&gt; String.V0 at 0019</Description>
+              <Description>0019: write substitution String.V1 =&gt; String.V0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0013: read substitution String.V0 =&gt; String.V1</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="58" StartColumn="13" EndLine="58" EndColumn="83">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>001a: deleting Ldsfld, Ldstr, Ldloc, Ldarg, Ldfld, Callvirt, Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0024: read substitution String.V0 =&gt; String.V1</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -1138,12 +1226,8 @@
             <AppliedMutant Killed="true">
               <Description>0031: deleting Ldarg, Callvirt, Ldloc, Callvirt, Nop</Description>
             </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
-        <SequencePoint StartLine="58" StartColumn="13" EndLine="58" EndColumn="83">
-          <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>001a: deleting Ldsfld, Ldstr, Ldloc, Ldarg, Ldfld, Callvirt, Nop</Description>
+              <Description>0037: read substitution String.V1 =&gt; String.V0</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -1176,7 +1260,7 @@
         <SequencePoint StartLine="52" StartColumn="3" EndLine="52" EndColumn="4">
           <AppliedMutants />
         </SequencePoint>
-        <SequencePoint StartLine="88" StartColumn="13" EndLine="88" EndColumn="29">
+        <SequencePoint StartLine="89" StartColumn="13" EndLine="89" EndColumn="29">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>0001: deleting Ldarg, Call, Ldc_I4, Ceq, Stloc</Description>
@@ -1195,7 +1279,7 @@
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="90" StartColumn="17" EndLine="90" EndColumn="24">
+        <SequencePoint StartLine="91" StartColumn="17" EndLine="91" EndColumn="24">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>000f: deleting Br</Description>
@@ -1205,63 +1289,63 @@
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="94" StartColumn="17" EndLine="94" EndColumn="65">
+        <SequencePoint StartLine="95" StartColumn="17" EndLine="95" EndColumn="65">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>0012: deleting Ldsfld, Ldstr, Ldarg, Ldfld, Callvirt, Nop</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="95" StartColumn="17" EndLine="95" EndColumn="49">
+        <SequencePoint StartLine="96" StartColumn="17" EndLine="96" EndColumn="49">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>0028: deleting Ldarg, Ldfld, Ldc_I4, Call, Nop</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="97" StartColumn="13" EndLine="97" EndColumn="33">
+        <SequencePoint StartLine="98" StartColumn="13" EndLine="98" EndColumn="33">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>0038: deleting Stloc</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="99" StartColumn="17" EndLine="99" EndColumn="93">
+        <SequencePoint StartLine="100" StartColumn="17" EndLine="100" EndColumn="93">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>003a: deleting Ldstr, Ldarg, Ldfld, Call, Stloc</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="100" StartColumn="17" EndLine="100" EndColumn="50">
+        <SequencePoint StartLine="101" StartColumn="17" EndLine="101" EndColumn="50">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>004b: deleting Ldsfld, Ldloc, Ldloc, Callvirt, Nop</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="87" StartColumn="3" EndLine="87" EndColumn="4">
+        <SequencePoint StartLine="88" StartColumn="3" EndLine="88" EndColumn="4">
           <AppliedMutants />
         </SequencePoint>
         <SequencePoint StartLine="16707566" StartColumn="0" EndLine="16707566" EndColumn="0">
           <AppliedMutants />
         </SequencePoint>
-        <SequencePoint StartLine="89" StartColumn="13" EndLine="89" EndColumn="14">
+        <SequencePoint StartLine="90" StartColumn="13" EndLine="90" EndColumn="14">
           <AppliedMutants />
         </SequencePoint>
-        <SequencePoint StartLine="93" StartColumn="13" EndLine="93" EndColumn="14">
+        <SequencePoint StartLine="94" StartColumn="13" EndLine="94" EndColumn="14">
           <AppliedMutants />
         </SequencePoint>
-        <SequencePoint StartLine="96" StartColumn="13" EndLine="96" EndColumn="14">
+        <SequencePoint StartLine="97" StartColumn="13" EndLine="97" EndColumn="14">
           <AppliedMutants />
         </SequencePoint>
-        <SequencePoint StartLine="98" StartColumn="13" EndLine="98" EndColumn="14">
+        <SequencePoint StartLine="99" StartColumn="13" EndLine="99" EndColumn="14">
           <AppliedMutants />
         </SequencePoint>
-        <SequencePoint StartLine="101" StartColumn="13" EndLine="101" EndColumn="14">
+        <SequencePoint StartLine="102" StartColumn="13" EndLine="102" EndColumn="14">
           <AppliedMutants />
         </SequencePoint>
-        <SequencePoint StartLine="102" StartColumn="3" EndLine="102" EndColumn="4">
+        <SequencePoint StartLine="103" StartColumn="3" EndLine="103" EndColumn="4">
           <AppliedMutants />
         </SequencePoint>
         <SequencePoint StartLine="41" StartColumn="13" EndLine="43" EndColumn="66">
@@ -1305,6 +1389,24 @@
             <AppliedMutant Killed="true">
               <Description>000d: Br =&gt; Nop</Description>
             </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0002: read substitution String.P0 =&gt; String.P1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0002: read substitution String.P0 =&gt; String.V0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0002: read substitution String.P0 =&gt; String.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0002: read substitution String.P0 =&gt; String.V2</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0002: read substitution String.P0 =&gt; String.V3</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0002: read substitution String.P0 =&gt; String.V4</Description>
+            </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="65" StartColumn="13" EndLine="65" EndColumn="21">
@@ -1313,167 +1415,453 @@
               <Description>000f: deleting Ldloc, Ldloc, Ldelem_Ref, Stloc</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V0 =&gt; String.V1 at 0014</Description>
+              <Description>0014: write substitution String.V0 =&gt; String.V1</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V0 =&gt; String.V2 at 0014</Description>
+              <Description>0014: write substitution String.V0 =&gt; String.V2</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V0 =&gt; String.V3 at 0014</Description>
-            </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
-        <SequencePoint StartLine="67" StartColumn="5" EndLine="67" EndColumn="75">
-          <AppliedMutants>
-            <AppliedMutant Killed="true">
-              <Description>0016: deleting Ldarg, Ldloc, Call, Call, Stloc</Description>
+              <Description>0014: write substitution String.V0 =&gt; String.V3</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V1 =&gt; String.V0 at 0022</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V1 =&gt; String.V2 at 0022</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V1 =&gt; String.V3 at 0022</Description>
+              <Description>0014: write substitution String.V0 =&gt; String.V4</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="68" StartColumn="17" EndLine="68" EndColumn="77">
+        <SequencePoint StartLine="67" StartColumn="8" EndLine="67" EndColumn="49">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>0023: deleting Ldsfld, Ldstr, Ldloc, Call, Callvirt, Nop</Description>
+              <Description>0016: deleting Ldloc, Call, Stloc</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>001c: write substitution String.V1 =&gt; String.V0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>001c: write substitution String.V1 =&gt; String.V2</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>001c: write substitution String.V1 =&gt; String.V3</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>001c: write substitution String.V1 =&gt; String.V4</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0016: read substitution String.V0 =&gt; String.P0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0016: read substitution String.V0 =&gt; String.P1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0016: read substitution String.V0 =&gt; String.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0016: read substitution String.V0 =&gt; String.V2</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0016: read substitution String.V0 =&gt; String.V4</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0016: read substitution String.V0 =&gt; String.V3</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="69" StartColumn="5" EndLine="69" EndColumn="29">
+        <SequencePoint StartLine="68" StartColumn="17" EndLine="68" EndColumn="63">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>0039: deleting Ldloc, Ldloc, Call, Nop</Description>
+              <Description>001d: deleting Ldsfld, Ldstr, Ldloc, Callvirt, Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0027: read substitution String.V1 =&gt; String.P0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0027: read substitution String.V1 =&gt; String.P1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0027: read substitution String.V1 =&gt; String.V0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0027: read substitution String.V1 =&gt; String.V2</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0027: read substitution String.V1 =&gt; String.V4</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0027: read substitution String.V1 =&gt; String.V3</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="70" StartColumn="4" EndLine="70" EndColumn="5">
+        <SequencePoint StartLine="69" StartColumn="17" EndLine="69" EndColumn="73">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>0042: deleting Ldloc, Ldc_I4, Add, Stloc</Description>
+              <Description>002e: deleting Ldarg, Ldloc, Call, Stloc</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0045: Add =&gt; Sub</Description>
+              <Description>0035: write substitution String.V2 =&gt; String.V0</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0045: Add =&gt; Mul</Description>
+              <Description>0035: write substitution String.V2 =&gt; String.V1</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0045: Add =&gt; Div</Description>
+              <Description>0035: write substitution String.V2 =&gt; String.V3</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0045: Add =&gt; Rem</Description>
+              <Description>0035: write substitution String.V2 =&gt; String.V4</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>002e: read substitution String.P1 =&gt; String.P0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>002e: read substitution String.P1 =&gt; String.V0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>002e: read substitution String.P1 =&gt; String.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>002e: read substitution String.P1 =&gt; String.V2</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>002e: read substitution String.P1 =&gt; String.V3</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>002e: read substitution String.P1 =&gt; String.V4</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>002f: read substitution String.V1 =&gt; String.P0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>002f: read substitution String.V1 =&gt; String.P1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>002f: read substitution String.V1 =&gt; String.V0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>002f: read substitution String.V1 =&gt; String.V3</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>002f: read substitution String.V1 =&gt; String.V2</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>002f: read substitution String.V1 =&gt; String.V4</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="70" StartColumn="17" EndLine="70" EndColumn="41">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>0036: deleting Ldloc, Ldloc, Call, Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0036: read substitution String.V0 =&gt; String.P0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0036: read substitution String.V0 =&gt; String.P1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0036: read substitution String.V0 =&gt; String.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0036: read substitution String.V0 =&gt; String.V2</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0036: read substitution String.V0 =&gt; String.V4</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0036: read substitution String.V0 =&gt; String.V3</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0037: read substitution String.V2 =&gt; String.P0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0037: read substitution String.V2 =&gt; String.P1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0037: read substitution String.V2 =&gt; String.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0037: read substitution String.V2 =&gt; String.V0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0037: read substitution String.V2 =&gt; String.V3</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0037: read substitution String.V2 =&gt; String.V4</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="71" StartColumn="4" EndLine="71" EndColumn="5">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>003f: deleting Ldloc, Ldc_I4, Add, Stloc</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0042: Add =&gt; Sub</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0042: Add =&gt; Mul</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0042: Add =&gt; Div</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0042: Add =&gt; Rem</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="65" StartColumn="22" EndLine="65" EndColumn="24">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>0048: deleting Ldloc, Ldloc, Ldlen, Conv_I4, Clt, Stloc</Description>
+              <Description>0045: deleting Ldloc, Ldloc, Ldlen, Conv_I4, Clt, Stloc</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0052: deleting Ldloc, Brtrue</Description>
+              <Description>004f: deleting Ldloc, Brtrue</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0054: Brtrue =&gt; Nop</Description>
+              <Description>0051: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0054: Brtrue =&gt; Brfalse</Description>
+              <Description>0051: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0054: Brtrue =&gt; Br</Description>
-            </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
-        <SequencePoint StartLine="71" StartColumn="33" EndLine="71" EndColumn="68">
-          <AppliedMutants>
-            <AppliedMutant Killed="true">
-              <Description>0057: deleting Ldarg, Call, Stloc</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>005f: deleting Ldc_I4, Stloc, Br</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0062: Br =&gt; Nop</Description>
+              <Description>0051: Brtrue =&gt; Br</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="71" StartColumn="13" EndLine="71" EndColumn="29">
+        <SequencePoint StartLine="72" StartColumn="33" EndLine="72" EndColumn="68">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>0064: deleting Ldloc, Ldloc, Ldelem_Ref, Stloc</Description>
+              <Description>0054: deleting Ldarg, Call, Stloc</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V2 =&gt; String.V0 at 0069</Description>
+              <Description>005c: deleting Ldc_I4, Stloc, Br</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V2 =&gt; String.V1 at 0069</Description>
+              <Description>005f: Br =&gt; Nop</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V2 =&gt; String.V3 at 0069</Description>
+              <Description>0054: read substitution String.P0 =&gt; String.P1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0054: read substitution String.P0 =&gt; String.V0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0054: read substitution String.P0 =&gt; String.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0054: read substitution String.P0 =&gt; String.V2</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0054: read substitution String.P0 =&gt; String.V3</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0054: read substitution String.P0 =&gt; String.V4</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="73" StartColumn="8" EndLine="73" EndColumn="65">
+        <SequencePoint StartLine="74" StartColumn="8" EndLine="74" EndColumn="65">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>006b: deleting Ldloc, Call, Stloc</Description>
+              <Description>0068: deleting Ldloc, Call, Stloc</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V3 =&gt; String.V0 at 0071</Description>
+              <Description>006e: write substitution String.V4 =&gt; String.V0</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V3 =&gt; String.V1 at 0071</Description>
+              <Description>006e: write substitution String.V4 =&gt; String.V1</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V3 =&gt; String.V2 at 0071</Description>
+              <Description>006e: write substitution String.V4 =&gt; String.V2</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>006e: write substitution String.V4 =&gt; String.V3</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0068: read substitution String.V3 =&gt; String.P0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0068: read substitution String.V3 =&gt; String.P1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0068: read substitution String.V3 =&gt; String.V0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0068: read substitution String.V3 =&gt; String.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0068: read substitution String.V3 =&gt; String.V2</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0068: read substitution String.V3 =&gt; String.V4</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="74" StartColumn="8" EndLine="74" EndColumn="72">
+        <SequencePoint StartLine="72" StartColumn="13" EndLine="72" EndColumn="29">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>0072: deleting Ldarg, Ldloc, Call, Stloc</Description>
+              <Description>0061: deleting Ldloc, Ldloc, Ldelem_Ref, Stloc</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V1 =&gt; String.V0 at 0079</Description>
+              <Description>0066: write substitution String.V3 =&gt; String.V0</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V1 =&gt; String.V2 at 0079</Description>
+              <Description>0066: write substitution String.V3 =&gt; String.V1</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V1 =&gt; String.V3 at 0079</Description>
+              <Description>0066: write substitution String.V3 =&gt; String.V2</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0066: write substitution String.V3 =&gt; String.V4</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="75" StartColumn="17" EndLine="75" EndColumn="80">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>007a: deleting Ldsfld, Ldstr, Ldloc, Callvirt, Nop</Description>
+              <Description>0070: deleting Ldsfld, Ldstr, Ldloc, Callvirt, Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>007a: read substitution String.V4 =&gt; String.P0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>007a: read substitution String.V4 =&gt; String.P1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>007a: read substitution String.V4 =&gt; String.V0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>007a: read substitution String.V4 =&gt; String.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>007a: read substitution String.V4 =&gt; String.V2</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>007a: read substitution String.V4 =&gt; String.V3</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="76" StartColumn="17" EndLine="76" EndColumn="51">
+        <SequencePoint StartLine="76" StartColumn="17" EndLine="76" EndColumn="81">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>0082: deleting Ldarg, Ldloc, Call, Stloc</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>008a: write substitution String.V2 =&gt; String.V0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>008a: write substitution String.V2 =&gt; String.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>008a: write substitution String.V2 =&gt; String.V4</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>008a: write substitution String.V2 =&gt; String.V3</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0082: read substitution String.P1 =&gt; String.P0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0082: read substitution String.P1 =&gt; String.V0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0082: read substitution String.P1 =&gt; String.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0082: read substitution String.P1 =&gt; String.V2</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0082: read substitution String.P1 =&gt; String.V4</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0083: read substitution String.V4 =&gt; String.P0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0083: read substitution String.V4 =&gt; String.P1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0083: read substitution String.V4 =&gt; String.V0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0083: read substitution String.V4 =&gt; String.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0083: read substitution String.V4 =&gt; String.V2</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0083: read substitution String.V4 =&gt; String.V3</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0082: read substitution String.P1 =&gt; String.V3</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="77" StartColumn="17" EndLine="77" EndColumn="51">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>008b: deleting Ldloc, Call, Pop</Description>
             </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>008b: read substitution String.V2 =&gt; String.P0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>008b: read substitution String.V2 =&gt; String.P1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>008b: read substitution String.V2 =&gt; String.V0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>008b: read substitution String.V2 =&gt; String.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>008b: read substitution String.V2 =&gt; String.V3</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>008b: read substitution String.V2 =&gt; String.V4</Description>
+            </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="77" StartColumn="5" EndLine="77" EndColumn="49">
+        <SequencePoint StartLine="78" StartColumn="5" EndLine="78" EndColumn="49">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>0092: deleting Ldloc, Ldloc, Call, Nop</Description>
             </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0092: read substitution String.V3 =&gt; String.V0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0092: read substitution String.V3 =&gt; String.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0092: read substitution String.V3 =&gt; String.V2</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0092: read substitution String.V3 =&gt; String.V4</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0093: read substitution String.V2 =&gt; String.P0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0093: read substitution String.V2 =&gt; String.P1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0093: read substitution String.V2 =&gt; String.V0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0093: read substitution String.V2 =&gt; String.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0093: read substitution String.V2 =&gt; String.V3</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0093: read substitution String.V2 =&gt; String.V4</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0092: read substitution String.V3 =&gt; String.P0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0092: read substitution String.V3 =&gt; String.P1</Description>
+            </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="78" StartColumn="4" EndLine="78" EndColumn="5">
+        <SequencePoint StartLine="79" StartColumn="4" EndLine="79" EndColumn="5">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>009b: deleting Ldloc, Ldc_I4, Add, Stloc</Description>
@@ -1492,7 +1880,7 @@
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="71" StartColumn="30" EndLine="71" EndColumn="32">
+        <SequencePoint StartLine="72" StartColumn="30" EndLine="72" EndColumn="32">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>00a1: deleting Ldloc, Ldloc, Ldlen, Conv_I4, Clt, Stloc</Description>
@@ -1520,13 +1908,13 @@
         <SequencePoint StartLine="66" StartColumn="4" EndLine="66" EndColumn="5">
           <AppliedMutants />
         </SequencePoint>
-        <SequencePoint StartLine="71" StartColumn="4" EndLine="71" EndColumn="11">
+        <SequencePoint StartLine="72" StartColumn="4" EndLine="72" EndColumn="11">
           <AppliedMutants />
         </SequencePoint>
-        <SequencePoint StartLine="72" StartColumn="4" EndLine="72" EndColumn="5">
+        <SequencePoint StartLine="73" StartColumn="4" EndLine="73" EndColumn="5">
           <AppliedMutants />
         </SequencePoint>
-        <SequencePoint StartLine="79" StartColumn="3" EndLine="79" EndColumn="4">
+        <SequencePoint StartLine="80" StartColumn="3" EndLine="80" EndColumn="4">
           <AppliedMutants />
         </SequencePoint>
       </SequencePoints>
@@ -1597,47 +1985,48 @@
         <Line Number="64">        {</Line>
         <Line Number="65">            foreach (var file in Directory.GetFiles(directory))</Line>
         <Line Number="66">            {</Line>
-        <Line Number="67">                string target = Path.Combine(targetDirectory, Path.GetFileName(file));</Line>
-        <Line Number="68">                _log.Trace("Copying file \"{0}\".", Path.GetFileName(file));</Line>
-        <Line Number="69">                File.Copy(file, target);</Line>
-        <Line Number="70">            }</Line>
-        <Line Number="71">            foreach (var subDirectory in Directory.GetDirectories(directory))</Line>
-        <Line Number="72">            {</Line>
-        <Line Number="73">                string subDirectoryName = Path.GetFileName(subDirectory);</Line>
-        <Line Number="74">                string target = Path.Combine(targetDirectory, subDirectoryName);</Line>
+        <Line Number="67">                string fileName = Path.GetFileName(file);</Line>
+        <Line Number="68">                _log.Trace("Copying file \"{0}\".", fileName);</Line>
+        <Line Number="69">                string target = Path.Combine(targetDirectory, fileName);</Line>
+        <Line Number="70">                File.Copy(file, target);</Line>
+        <Line Number="71">            }</Line>
+        <Line Number="72">            foreach (var subDirectory in Directory.GetDirectories(directory))</Line>
+        <Line Number="73">            {</Line>
+        <Line Number="74">                string subDirectoryName = Path.GetFileName(subDirectory);</Line>
         <Line Number="75">                _log.Trace("Creating subdirectory \"{0}\".", subDirectoryName);</Line>
-        <Line Number="76">                Directory.CreateDirectory(target);</Line>
-        <Line Number="77">                CopyDirectoryContents(subDirectory, target);</Line>
-        <Line Number="78">            }</Line>
-        <Line Number="79">        }</Line>
-        <Line Number="80" />
-        <Line Number="81">        public string FullName</Line>
-        <Line Number="82">        {</Line>
-        <Line Number="83">            get { return _folder; }</Line>
-        <Line Number="84">        }</Line>
-        <Line Number="85" />
-        <Line Number="86">        public void Dispose()</Line>
-        <Line Number="87">        {</Line>
-        <Line Number="88">            if (DoNotDelete)</Line>
-        <Line Number="89">            {</Line>
-        <Line Number="90">                return;</Line>
-        <Line Number="91">            }</Line>
-        <Line Number="92">            try</Line>
-        <Line Number="93">            {</Line>
-        <Line Number="94">                _log.Debug("Deleting folder \"{0}\".", _folder);</Line>
-        <Line Number="95">                Directory.Delete(_folder, true);</Line>
-        <Line Number="96">            }</Line>
-        <Line Number="97">            catch (Exception ex)</Line>
-        <Line Number="98">            {</Line>
-        <Line Number="99">                string message = string.Format("Failed to delete folder \"{0}\".", _folder);</Line>
-        <Line Number="100">                _log.ErrorException(message, ex);</Line>
-        <Line Number="101">            }</Line>
-        <Line Number="102">        }</Line>
-        <Line Number="103" />
-        <Line Number="104">        public bool DoNotDelete { get; set; }</Line>
-        <Line Number="105">    }</Line>
-        <Line Number="106">}</Line>
-        <Line Number="107" />
+        <Line Number="76">                string target = Path.Combine(targetDirectory, subDirectoryName);</Line>
+        <Line Number="77">                Directory.CreateDirectory(target);</Line>
+        <Line Number="78">                CopyDirectoryContents(subDirectory, target);</Line>
+        <Line Number="79">            }</Line>
+        <Line Number="80">        }</Line>
+        <Line Number="81" />
+        <Line Number="82">        public string FullName</Line>
+        <Line Number="83">        {</Line>
+        <Line Number="84">            get { return _folder; }</Line>
+        <Line Number="85">        }</Line>
+        <Line Number="86" />
+        <Line Number="87">        public void Dispose()</Line>
+        <Line Number="88">        {</Line>
+        <Line Number="89">            if (DoNotDelete)</Line>
+        <Line Number="90">            {</Line>
+        <Line Number="91">                return;</Line>
+        <Line Number="92">            }</Line>
+        <Line Number="93">            try</Line>
+        <Line Number="94">            {</Line>
+        <Line Number="95">                _log.Debug("Deleting folder \"{0}\".", _folder);</Line>
+        <Line Number="96">                Directory.Delete(_folder, true);</Line>
+        <Line Number="97">            }</Line>
+        <Line Number="98">            catch (Exception ex)</Line>
+        <Line Number="99">            {</Line>
+        <Line Number="100">                string message = string.Format("Failed to delete folder \"{0}\".", _folder);</Line>
+        <Line Number="101">                _log.ErrorException(message, ex);</Line>
+        <Line Number="102">            }</Line>
+        <Line Number="103">        }</Line>
+        <Line Number="104" />
+        <Line Number="105">        public bool DoNotDelete { get; set; }</Line>
+        <Line Number="106">    }</Line>
+        <Line Number="107">}</Line>
+        <Line Number="108" />
       </Lines>
     </SourceFile>
     <SourceFile>
@@ -1649,7 +2038,7 @@
               <Description>0001: deleting Ldarg, Ldarg, Ldarg, Call, Stloc</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V0 =&gt; Boolean.V1 at 0009</Description>
+              <Description>0009: write substitution Boolean.V0 =&gt; Boolean.V1</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -1662,16 +2051,22 @@
               <Description>000c: deleting Ldloc, Brtrue</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V1 =&gt; Boolean.V0 at 000b</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>000d: Brtrue =&gt; Brfalse</Description>
+              <Description>000b: write substitution Boolean.V1 =&gt; Boolean.V0</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>000d: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
+              <Description>000d: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
               <Description>000d: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>000a: read substitution Boolean.V0 =&gt; Boolean.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>000c: read substitution Boolean.V1 =&gt; Boolean.V0</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -1731,17 +2126,10 @@
               <Description>006b: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>006b: Brtrue =&gt; Br</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
               <Description>006b: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
-        <SequencePoint StartLine="76" StartColumn="13" EndLine="76" EndColumn="81">
-          <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>0021: deleting Ldloc, Ldstr, Ldnull, Callvirt, Stloc</Description>
+              <Description>006b: Brtrue =&gt; Br</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -1752,17 +2140,10 @@
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="77" StartColumn="13" EndLine="77" EndColumn="77">
+        <SequencePoint StartLine="76" StartColumn="13" EndLine="76" EndColumn="81">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>002e: deleting Ldloc, Ldstr, Ldc_I4, Box, Ldc_I4, Callvirt, Nop</Description>
-            </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
-        <SequencePoint StartLine="81" StartColumn="13" EndLine="81" EndColumn="44">
-          <AppliedMutants>
-            <AppliedMutant Killed="true">
-              <Description>004f: deleting Ldarg, Ldfld, Callvirt, Nop</Description>
+              <Description>0021: deleting Ldloc, Ldstr, Ldnull, Callvirt, Stloc</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -1773,16 +2154,10 @@
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="88" StartColumn="31" EndLine="88" EndColumn="48">
+        <SequencePoint StartLine="77" StartColumn="13" EndLine="77" EndColumn="77">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>00e4: deleting Br</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>00d7: deleting Ldarg, Ldfld, Callvirt, Stloc</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>00e4: Br =&gt; Nop</Description>
+              <Description>002e: deleting Ldloc, Ldstr, Ldc_I4, Box, Ldc_I4, Callvirt, Nop</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -1793,48 +2168,20 @@
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
+        <SequencePoint StartLine="81" StartColumn="13" EndLine="81" EndColumn="44">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>004f: deleting Ldarg, Ldfld, Callvirt, Nop</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
         <SequencePoint StartLine="88" StartColumn="13" EndLine="88" EndColumn="27">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>00e6: deleting Ldloc, Callvirt, Stloc</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
               <Description>00ef: deleting Newobj, Stloc, Ldloc, Ldloc, Stfld</Description>
             </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
-        <SequencePoint StartLine="88" StartColumn="28" EndLine="88" EndColumn="30">
-          <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>013b: deleting Ldloc, Callvirt, Stloc</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0144: deleting Ldloc, Brtrue, Leave, Ldloc, Ldnull, Ceq, Stloc, Ldloc, Brtrue, Ldloc, Callvirt, Nop, Endfinally</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0146: Brtrue =&gt; Nop</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0146: Brtrue =&gt; Brfalse</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0153: Brtrue =&gt; Nop</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0153: Brtrue =&gt; Brfalse</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0146: Brtrue =&gt; Br</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0153: Brtrue =&gt; Br</Description>
-            </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
-        <SequencePoint StartLine="91" StartColumn="17" EndLine="92" EndColumn="83">
-          <AppliedMutants>
-            <AppliedMutant Killed="true">
-              <Description>0113: deleting Ldloc, Ldfld, Ldloc, Ldarg, Ldfld, Ldloc, Callvirt, Ldloc, Ldftn, Newobj, Call, Pop</Description>
+              <Description>00e6: deleting Ldloc, Callvirt, Stloc</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -1845,10 +2192,23 @@
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="87" StartColumn="38" EndLine="87" EndColumn="63">
+        <SequencePoint StartLine="91" StartColumn="17" EndLine="92" EndColumn="83">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>00cf: deleting Ldarg, Call, Nop</Description>
+              <Description>0113: deleting Ldloc, Ldfld, Ldloc, Ldarg, Ldfld, Ldloc, Callvirt, Ldloc, Ldftn, Newobj, Call, Pop</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="88" StartColumn="31" EndLine="88" EndColumn="48">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>00d7: deleting Ldarg, Ldfld, Callvirt, Stloc</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00e4: deleting Br</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00e4: Br =&gt; Nop</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -1866,10 +2226,78 @@
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
+        <SequencePoint StartLine="87" StartColumn="38" EndLine="87" EndColumn="63">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>00cf: deleting Ldarg, Call, Nop</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="88" StartColumn="28" EndLine="88" EndColumn="30">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>0144: deleting Ldloc, Brtrue, Leave, Ldloc, Ldnull, Ceq, Stloc, Ldloc, Brtrue, Ldloc, Callvirt, Nop, Endfinally</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>013b: deleting Ldloc, Callvirt, Stloc</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0146: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0146: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0146: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0153: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0153: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0153: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="98" StartColumn="13" EndLine="98" EndColumn="118">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>0184: deleting Ldsfld, Ldstr, Ldc_I4, Callvirt, Stloc</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="96" StartColumn="13" EndLine="96" EndColumn="70">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>016c: deleting Ldarg, Ldfld, Ldarg, Ldfld, Ldarg, Ldfld, Callvirt, Nop</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
         <SequencePoint StartLine="101" StartColumn="17" EndLine="101" EndColumn="56">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>01a3: deleting Ldloc, Ldstr, Callvirt, Nop</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="99" StartColumn="13" EndLine="99" EndColumn="45">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>0195: deleting Ldloc, Ldnull, Ceq, Ldc_I4, Ceq, Stloc</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>019e: deleting Ldloc, Brtrue</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>01a0: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>01a0: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>01a0: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -1883,10 +2311,10 @@
         <SequencePoint StartLine="87" StartColumn="4" EndLine="87" EndColumn="37">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>00cb: deleting Ldloc, Brtrue</Description>
+              <Description>00b8: deleting Ldarg, Ldfld, Callvirt, Ldc_I4, Ceq, Ldc_I4, Ceq, Stloc</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>00b8: deleting Ldarg, Ldfld, Callvirt, Ldc_I4, Ceq, Ldc_I4, Ceq, Stloc</Description>
+              <Description>00cb: deleting Ldloc, Brtrue</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>00cd: Brtrue =&gt; Nop</Description>
@@ -1909,29 +2337,13 @@
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="99" StartColumn="13" EndLine="99" EndColumn="45">
+        <SequencePoint StartLine="112" StartColumn="5" EndLine="112" EndColumn="12">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>0195: deleting Ldloc, Ldnull, Ceq, Ldc_I4, Ceq, Stloc</Description>
+              <Description>01e8: deleting Br</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>019e: deleting Ldloc, Brtrue</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>01a0: Brtrue =&gt; Brfalse</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>01a0: Brtrue =&gt; Nop</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>01a0: Brtrue =&gt; Br</Description>
-            </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
-        <SequencePoint StartLine="107" StartColumn="13" EndLine="107" EndColumn="25">
-          <AppliedMutants>
-            <AppliedMutant Killed="true">
-              <Description>01c2: deleting Ldloc, Callvirt, Nop</Description>
+              <Description>01e8: Br =&gt; Nop</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -1939,20 +2351,6 @@
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>01b3: deleting Ldloc, Ldstr, Ldloc, Ldc_I4, Callvirt, Nop</Description>
-            </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
-        <SequencePoint StartLine="96" StartColumn="13" EndLine="96" EndColumn="70">
-          <AppliedMutants>
-            <AppliedMutant Killed="true">
-              <Description>016c: deleting Ldarg, Ldfld, Ldarg, Ldfld, Ldarg, Ldfld, Callvirt, Nop</Description>
-            </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
-        <SequencePoint StartLine="98" StartColumn="13" EndLine="98" EndColumn="118">
-          <AppliedMutants>
-            <AppliedMutant Killed="true">
-              <Description>0184: deleting Ldsfld, Ldstr, Ldc_I4, Callvirt, Stloc</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -1965,42 +2363,39 @@
               <Description>01d8: deleting Ldloc, Brtrue</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>01da: Brtrue =&gt; Nop</Description>
+              <Description>01da: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>01da: Brtrue =&gt; Brfalse</Description>
+              <Description>01da: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>01da: Brtrue =&gt; Br</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="112" StartColumn="5" EndLine="112" EndColumn="12">
-          <AppliedMutants>
-            <AppliedMutant Killed="true">
-              <Description>01e8: deleting Br</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>01e8: Br =&gt; Nop</Description>
-            </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
         <SequencePoint StartLine="114" StartColumn="4" EndLine="114" EndColumn="21">
           <AppliedMutants>
-            <AppliedMutant Killed="true">
-              <Description>01ea: deleting Ldloc, Ldfld, Ldc_I4, Cgt, Ldc_I4, Ceq, Stloc</Description>
-            </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>01f9: deleting Ldloc, Brtrue</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>01fb: Brtrue =&gt; Nop</Description>
+              <Description>01ea: deleting Ldloc, Ldfld, Ldc_I4, Cgt, Ldc_I4, Ceq, Stloc</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>01fb: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>01fb: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>01fb: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="116" StartColumn="5" EndLine="116" EndColumn="46">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>01fe: deleting Newobj, Throw</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -2011,10 +2406,10 @@
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="116" StartColumn="5" EndLine="116" EndColumn="46">
+        <SequencePoint StartLine="107" StartColumn="13" EndLine="107" EndColumn="25">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>01fe: deleting Newobj, Throw</Description>
+              <Description>01c2: deleting Ldloc, Callvirt, Nop</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -2051,19 +2446,19 @@
         <SequencePoint StartLine="132" StartColumn="13" EndLine="132" EndColumn="33">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>0001: deleting Ldarg, Ldfld, Ldnull, Ceq, Ldc_I4, Ceq, Stloc</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
               <Description>000f: deleting Ldloc, Brtrue</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V6 =&gt; Boolean.V1 at 000d</Description>
+              <Description>0001: deleting Ldarg, Ldfld, Ldnull, Ceq, Ldc_I4, Ceq, Stloc</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V6 =&gt; Boolean.V3 at 000d</Description>
+              <Description>000d: write substitution Boolean.V6 =&gt; Boolean.V1</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V6 =&gt; Boolean.V5 at 000d</Description>
+              <Description>000d: write substitution Boolean.V6 =&gt; Boolean.V3</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>000d: write substitution Boolean.V6 =&gt; Boolean.V5</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>0011: Brtrue =&gt; Nop</Description>
@@ -2074,214 +2469,295 @@
             <AppliedMutant Killed="true">
               <Description>0011: Brtrue =&gt; Br</Description>
             </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>000f: read substitution Boolean.V6 =&gt; Boolean.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>000f: read substitution Boolean.V6 =&gt; Boolean.V3</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>000f: read substitution Boolean.V6 =&gt; Boolean.V5</Description>
+            </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="132" StartColumn="34" EndLine="132" EndColumn="66">
+        <SequencePoint StartLine="132" StartColumn="34" EndLine="132" EndColumn="114">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>0013: deleting Ldarg, Newobj, Stfld</Description>
+              <Description>0013: deleting Ldarg, Call, Call, Castclass, Stfld</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="133" StartColumn="7" EndLine="133" EndColumn="92">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>001e: deleting Ldarg, Ldfld, Ldarg, Ldarg, Ldfld, Ldarg, Ldfld, Callvirt, Stloc</Description>
+              <Description>0028: deleting Ldarg, Ldfld, Ldarg, Ldarg, Ldfld, Ldarg, Ldfld, Callvirt, Stloc</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="135" StartColumn="13" EndLine="135" EndColumn="29">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>0037: deleting Ldloc, Callvirt, Pop</Description>
+              <Description>0041: deleting Ldloc, Callvirt, Pop</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="136" StartColumn="4" EndLine="136" EndColumn="51">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>003e: deleting Ldloc, Ldc_I4, Callvirt, Stloc</Description>
+              <Description>0048: deleting Ldloc, Ldc_I4, Callvirt, Stloc</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V1 =&gt; Boolean.V3 at 0049</Description>
+              <Description>0053: write substitution Boolean.V1 =&gt; Boolean.V3</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V1 =&gt; Boolean.V5 at 0049</Description>
+              <Description>0053: write substitution Boolean.V1 =&gt; Boolean.V5</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V1 =&gt; Boolean.V6 at 0049</Description>
+              <Description>0053: write substitution Boolean.V1 =&gt; Boolean.V6</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="137" StartColumn="4" EndLine="137" EndColumn="22">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>004a: deleting Ldc_I4, Stloc</Description>
+              <Description>0054: deleting Ldc_I4, Stloc</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="141" StartColumn="5" EndLine="141" EndColumn="23">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>004d: deleting Ldloc, Stloc</Description>
+              <Description>0057: deleting Ldloc, Stloc</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0050: deleting Ldloc, Brtrue</Description>
+              <Description>005a: deleting Ldloc, Brtrue</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V6 =&gt; Boolean.V1 at 004e</Description>
+              <Description>0058: write substitution Boolean.V6 =&gt; Boolean.V1</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V6 =&gt; Boolean.V3 at 004e</Description>
+              <Description>0058: write substitution Boolean.V6 =&gt; Boolean.V3</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V6 =&gt; Boolean.V5 at 004e</Description>
+              <Description>0058: write substitution Boolean.V6 =&gt; Boolean.V5</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0052: Brtrue =&gt; Nop</Description>
+              <Description>005c: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0052: Brtrue =&gt; Brfalse</Description>
+              <Description>005c: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0052: Brtrue =&gt; Br</Description>
+              <Description>005c: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0057: read substitution Boolean.V1 =&gt; Boolean.V3</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0057: read substitution Boolean.V1 =&gt; Boolean.V5</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0057: read substitution Boolean.V1 =&gt; Boolean.V6</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>005a: read substitution Boolean.V6 =&gt; Boolean.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>005a: read substitution Boolean.V6 =&gt; Boolean.V3</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>005a: read substitution Boolean.V6 =&gt; Boolean.V5</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="143" StartColumn="6" EndLine="143" EndColumn="41">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>0055: deleting Ldarg, Ldloc, Callvirt, Call, Nop</Description>
+              <Description>005f: deleting Ldarg, Ldloc, Callvirt, Call, Nop</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="145" StartColumn="5" EndLine="145" EndColumn="33">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>0063: deleting Ldloc, Callvirt, Stloc</Description>
+              <Description>006d: deleting Ldloc, Callvirt, Stloc</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="149" StartColumn="13" EndLine="149" EndColumn="66">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>0073: deleting Ldloc, Brtrue, Ldloc, Br, Ldc_I4, Stloc</Description>
+              <Description>007d: deleting Ldloc, Brtrue, Ldloc, Br, Ldc_I4, Stloc</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V3 =&gt; Boolean.V1 at 007a</Description>
+              <Description>0084: write substitution Boolean.V3 =&gt; Boolean.V1</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V3 =&gt; Boolean.V5 at 007a</Description>
+              <Description>0084: write substitution Boolean.V3 =&gt; Boolean.V5</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V3 =&gt; Boolean.V6 at 007a</Description>
+              <Description>0084: write substitution Boolean.V3 =&gt; Boolean.V6</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0074: Brtrue =&gt; Nop</Description>
+              <Description>007e: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0074: Brtrue =&gt; Brfalse</Description>
+              <Description>007e: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0074: Brtrue =&gt; Br</Description>
+              <Description>007e: Brtrue =&gt; Br</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0077: Br =&gt; Nop</Description>
+              <Description>0081: Br =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0080: read substitution Boolean.V1 =&gt; Boolean.V3</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0080: read substitution Boolean.V1 =&gt; Boolean.V5</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0080: read substitution Boolean.V1 =&gt; Boolean.V6</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="151" StartColumn="13" EndLine="155" EndColumn="37">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>007b: deleting Ldstr, Ldarg, Callvirt, Ldloc, Brtrue, Ldstr, Br, Ldstr, Call, Stloc</Description>
+              <Description>0085: deleting Ldstr, Ldarg, Callvirt, Ldloc, Brtrue, Ldstr, Br, Ldstr, Call, Stloc</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0087: Brtrue =&gt; Nop</Description>
+              <Description>0091: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0087: Brtrue =&gt; Brfalse</Description>
+              <Description>0091: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0087: Brtrue =&gt; Br</Description>
+              <Description>0091: Brtrue =&gt; Br</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>008e: Br =&gt; Nop</Description>
+              <Description>0098: Br =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0090: read substitution Boolean.V3 =&gt; Boolean.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0090: read substitution Boolean.V3 =&gt; Boolean.V5</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0090: read substitution Boolean.V3 =&gt; Boolean.V6</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="156" StartColumn="13" EndLine="156" EndColumn="109">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>009c: deleting Ldarg, Ldfld, Ldarg, Ldarg, Callvirt, Callvirt, Ldarg, Ldloc, Ldc_I4, Ceq, Callvirt, Nop</Description>
+              <Description>00a6: deleting Ldarg, Ldfld, Ldarg, Ldarg, Callvirt, Callvirt, Ldarg, Ldloc, Ldc_I4, Ceq, Callvirt, Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00b9: read substitution Boolean.V3 =&gt; Boolean.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00b9: read substitution Boolean.V3 =&gt; Boolean.V5</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00b9: read substitution Boolean.V3 =&gt; Boolean.V6</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="158" StartColumn="13" EndLine="158" EndColumn="33">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>00b9: deleting Ldloc, Ldc_I4, Ceq, Stloc</Description>
+              <Description>00c3: deleting Ldloc, Ldc_I4, Ceq, Stloc</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>00bf: deleting Ldloc, Brtrue</Description>
+              <Description>00c9: deleting Ldloc, Brtrue</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V6 =&gt; Boolean.V1 at 00bd</Description>
+              <Description>00c7: write substitution Boolean.V6 =&gt; Boolean.V1</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V6 =&gt; Boolean.V3 at 00bd</Description>
+              <Description>00c7: write substitution Boolean.V6 =&gt; Boolean.V3</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V6 =&gt; Boolean.V5 at 00bd</Description>
+              <Description>00c7: write substitution Boolean.V6 =&gt; Boolean.V5</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>00c1: Brtrue =&gt; Nop</Description>
+              <Description>00cb: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>00c1: Brtrue =&gt; Brfalse</Description>
+              <Description>00cb: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>00c1: Brtrue =&gt; Br</Description>
+              <Description>00cb: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00c3: read substitution Boolean.V3 =&gt; Boolean.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00c3: read substitution Boolean.V3 =&gt; Boolean.V5</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00c3: read substitution Boolean.V3 =&gt; Boolean.V6</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00c9: read substitution Boolean.V6 =&gt; Boolean.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00c9: read substitution Boolean.V6 =&gt; Boolean.V3</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00c9: read substitution Boolean.V6 =&gt; Boolean.V5</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="160" StartColumn="17" EndLine="160" EndColumn="59">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>00c4: deleting Ldarg, Callvirt, Ldc_I4, Callvirt, Nop</Description>
+              <Description>00ce: deleting Ldarg, Callvirt, Ldc_I4, Callvirt, Nop</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="161" StartColumn="17" EndLine="165" EndColumn="49">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>00d1: deleting Ldstr, Ldc_I4, Newarr, Stloc, Ldloc, Ldc_I4, Ldloc, Stelem_Ref, Ldloc, Ldc_I4, Ldarg, Ldarg, Callvirt, Callvirt, Stelem_Ref, Ldloc, Ldc_I4, Ldarg, Ldarg, Callvirt, Callvirt, Stelem_Ref, Ldloc, Ldc_I4, Ldarg, Callvirt, Stelem_Ref, Ldloc, Call, Stloc</Description>
+              <Description>00db: deleting Ldstr, Ldc_I4, Newarr, Stloc, Ldloc, Ldc_I4, Ldloc, Stelem_Ref, Ldloc, Ldc_I4, Ldarg, Ldarg, Callvirt, Callvirt, Stelem_Ref, Ldloc, Ldc_I4, Ldarg, Ldarg, Callvirt, Callvirt, Stelem_Ref, Ldloc, Ldc_I4, Ldarg, Callvirt, Stelem_Ref, Ldloc, Call, Stloc</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="168" StartColumn="13" EndLine="168" EndColumn="39">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>0118: deleting Ldloc, Call, Nop</Description>
+              <Description>0122: deleting Ldloc, Call, Nop</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="170" StartColumn="13" EndLine="170" EndColumn="45">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>0120: deleting Ldarg, Ldarg, Callvirt, Nop</Description>
+              <Description>012a: deleting Ldarg, Ldarg, Callvirt, Nop</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="171" StartColumn="13" EndLine="171" EndColumn="37">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V5 =&gt; Boolean.V1 at 012c</Description>
+              <Description>0136: write substitution Boolean.V5 =&gt; Boolean.V1</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V5 =&gt; Boolean.V3 at 012c</Description>
+              <Description>0136: write substitution Boolean.V5 =&gt; Boolean.V3</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V5 =&gt; Boolean.V6 at 012c</Description>
+              <Description>0136: write substitution Boolean.V5 =&gt; Boolean.V6</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0132: read substitution Boolean.V3 =&gt; Boolean.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0132: read substitution Boolean.V3 =&gt; Boolean.V5</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0132: read substitution Boolean.V3 =&gt; Boolean.V6</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -2451,7 +2927,7 @@
         <Line Number="129" />
         <Line Number="130">        private bool CheckTestProcessFails(MethodTurtleBase turtle, MutantMetaData mutation)</Line>
         <Line Number="131">        {</Line>
-        <Line Number="132">            if (_runner == null) _runner = new NUnitTestRunner();</Line>
+        <Line Number="132">            if (_runner == null) _runner = (ITestRunner)Activator.CreateInstance(MutationTestBuilder.TestRunner);</Line>
         <Line Number="133">            var process = _runner.GetRunnerProcess(mutation, _testAssemblyLocation, _testsToRun);</Line>
         <Line Number="134" />
         <Line Number="135">            process.Start();</Line>
@@ -2658,27 +3134,34 @@
     <SourceFile>
       <Url>C:\Working\hg\ninjaturtles\NinjaTurtles\MutationTestBuilder.cs</Url>
       <SequencePoints>
-        <SequencePoint StartLine="148" StartColumn="13" EndLine="148" EndColumn="65">
+        <SequencePoint StartLine="157" StartColumn="13" EndLine="157" EndColumn="65">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>0001: deleting Call, Stloc</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="149" StartColumn="13" EndLine="149" EndColumn="102">
+        <SequencePoint StartLine="158" StartColumn="13" EndLine="158" EndColumn="102">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>0007: deleting Ldloc, Ldarg, Call, Stloc</Description>
             </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0008: read substitution String.P0 =&gt; String.P1</Description>
+            </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="147" StartColumn="9" EndLine="147" EndColumn="10">
+        <SequencePoint StartLine="160" StartColumn="13" EndLine="160" EndColumn="94">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>0016: read substitution String.P1 =&gt; String.P0</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="156" StartColumn="9" EndLine="156" EndColumn="10">
           <AppliedMutants />
         </SequencePoint>
-        <SequencePoint StartLine="151" StartColumn="13" EndLine="151" EndColumn="94">
-          <AppliedMutants />
-        </SequencePoint>
-        <SequencePoint StartLine="152" StartColumn="9" EndLine="152" EndColumn="10">
+        <SequencePoint StartLine="161" StartColumn="9" EndLine="161" EndColumn="10">
           <AppliedMutants />
         </SequencePoint>
       </SequencePoints>
@@ -2707,142 +3190,166 @@
         <Line Number="22">using System;</Line>
         <Line Number="23">using System.Reflection;</Line>
         <Line Number="24" />
-        <Line Number="25">namespace NinjaTurtles</Line>
-        <Line Number="26">{</Line>
-        <Line Number="27">    /// &lt;summary&gt;</Line>
-        <Line Number="28">    /// A static class used as the starting point for a fluent definition of</Line>
-        <Line Number="29">    /// a set of mutation tests.</Line>
-        <Line Number="30">    /// &lt;/summary&gt;</Line>
-        <Line Number="31">    /// &lt;typeparam name="T"&gt;</Line>
-        <Line Number="32">    /// The type to be tested.</Line>
-        <Line Number="33">    /// &lt;/typeparam&gt;</Line>
-        <Line Number="34">    /// &lt;example&gt;</Line>
-        <Line Number="35">    /// &lt;para&gt;</Line>
-        <Line Number="36">    /// This code creates and runs the default set of mutation tests for the</Line>
-        <Line Number="37">    /// &lt;b&gt;ClassUnderTest&lt;/b&gt; class's &lt;b&gt;MethodUnderTest&lt;/b&gt; method:</Line>
-        <Line Number="38">    /// &lt;/para&gt;</Line>
-        <Line Number="39">    /// &lt;code lang="cs"&gt;</Line>
-        <Line Number="40">    /// MutationTestBuilder&amp;lt;ClassUnderTest&amp;gt;</Line>
-        <Line Number="41">    ///     .For("MethodUnderTest")</Line>
-        <Line Number="42">    ///     .Run();</Line>
-        <Line Number="43">    /// &lt;/code&gt;</Line>
-        <Line Number="44">    /// &lt;code lang="vbnet"&gt;</Line>
-        <Line Number="45">    /// Call MutationTestBuilder(Of ClassUnderTest) _</Line>
-        <Line Number="46">    ///     .For("MethodUnderTest") _</Line>
-        <Line Number="47">    ///     .Run</Line>
-        <Line Number="48">    /// &lt;/code&gt;</Line>
-        <Line Number="49">    /// &lt;code lang="cpp"&gt;</Line>
-        <Line Number="50">    /// MutationTestBuilder&amp;lt;ClassUnderTest^&amp;gt;</Line>
-        <Line Number="51">    ///     ::For("MethodUnderTest")</Line>
-        <Line Number="52">    ///     -&gt;Run();</Line>
-        <Line Number="53">    /// &lt;/code&gt;</Line>
-        <Line Number="54">    /// &lt;para&gt;</Line>
-        <Line Number="55">    /// When this code is included in a test, it causes the matching tests to</Line>
-        <Line Number="56">    /// be run for each mutation that is found of the code under test. By</Line>
-        <Line Number="57">    /// default, NinjaTurtles assumes it is running under NUnit, and thus uses</Line>
-        <Line Number="58">    /// an NUnit runner to run the suite against the mutated code. This can be</Line>
-        <Line Number="59">    /// changed using the fluent interface:</Line>
-        <Line Number="60">    /// &lt;/para&gt;</Line>
-        <Line Number="61">    /// &lt;code lang="cs"&gt;</Line>
-        <Line Number="62">    /// MutationTestBuilder&amp;lt;ClassUnderTest&amp;gt;</Line>
-        <Line Number="63">    ///     .For("MethodUnderTest")</Line>
-        <Line Number="64">    ///     .UsingRunner&amp;lt;GallioTestRunner&amp;gt;()</Line>
-        <Line Number="65">    ///     .Run();</Line>
-        <Line Number="66">    /// &lt;/code&gt;</Line>
-        <Line Number="67">    /// &lt;code lang="vbnet"&gt;</Line>
-        <Line Number="68">    /// Call MutationTestBuilder(Of ClassUnderTest) _</Line>
-        <Line Number="69">    ///     .For("MethodUnderTest") _</Line>
-        <Line Number="70">    ///     .UsingRunner(Of GallioTestRunner)() _</Line>
-        <Line Number="71">    ///     .Run</Line>
-        <Line Number="72">    /// &lt;/code&gt;</Line>
-        <Line Number="73">    /// &lt;code lang="cpp"&gt;</Line>
-        <Line Number="74">    /// MutationTestBuilder&amp;lt;ClassUnderTest^&amp;gt;</Line>
-        <Line Number="75">    ///     ::For("MethodUnderTest")</Line>
-        <Line Number="76">    ///     -&gt;UsingRunner&amp;lt;GallioTestRunner^&amp;gt;()</Line>
-        <Line Number="77">    ///     -&gt;Run();</Line>
-        <Line Number="78">    /// &lt;/code&gt;</Line>
-        <Line Number="79">    /// &lt;para&gt;</Line>
-        <Line Number="80">    /// Alternatively, this option can be set across all tests in a fixture by</Line>
-        <Line Number="81">    /// including this line in the test fixture's setup method:</Line>
-        <Line Number="82">    /// &lt;/para&gt;</Line>
-        <Line Number="83">    /// &lt;code lang="cs"&gt;</Line>
-        <Line Number="84">    /// MutationTestBuilder&amp;lt;ClassUnderTest&amp;gt;.UseRunner&amp;lt;GallioTestRunner&amp;gt;();</Line>
-        <Line Number="85">    /// &lt;/code&gt;</Line>
-        <Line Number="86">    /// &lt;code lang="vbnet"&gt;</Line>
-        <Line Number="87">    /// Call MutationTestBuilder(Of ClassUnderTest).UseRunner(Of GallioTestRunner)</Line>
-        <Line Number="88">    /// &lt;/code&gt;</Line>
-        <Line Number="89">    /// &lt;code lang="cpp"&gt;</Line>
-        <Line Number="90">    /// MutationTestBuilder&amp;lt;ClassUnderTest^&amp;gt;::UseRunner&amp;lt;GallioTestRunner^&amp;gt;();</Line>
-        <Line Number="91">    /// &lt;/code&gt;</Line>
-        <Line Number="92">    /// &lt;/example&gt;</Line>
-        <Line Number="93">    public sealed class MutationTestBuilder&lt;T&gt;</Line>
-        <Line Number="94">    {</Line>
-        <Line Number="95">        /// &lt;summary&gt;</Line>
-        <Line Number="96">        /// Returns an &lt;see cref="IMutationTest" /&gt; instance allowing a fluent</Line>
-        <Line Number="97">        /// definition of a set of mutation tests for a particular method.</Line>
-        <Line Number="98">        /// &lt;/summary&gt;</Line>
-        <Line Number="99">        /// &lt;param name="targetMethod"&gt;</Line>
-        <Line Number="100">        /// The name of the method to mutate.</Line>
-        <Line Number="101">        /// &lt;/param&gt;</Line>
-        <Line Number="102">        /// &lt;param name="parameterTypes"&gt;</Line>
-        <Line Number="103">        /// Optional parameter specifying an array of parameter types used to</Line>
-        <Line Number="104">        /// identify a particular method overload.</Line>
-        <Line Number="105">        /// &lt;/param&gt;</Line>
-        <Line Number="106">        /// &lt;returns&gt;</Line>
-        <Line Number="107">        /// An &lt;see cref="IMutationTest" /&gt; instance to allow fluent</Line>
-        <Line Number="108">        /// method chaining.</Line>
-        <Line Number="109">        /// &lt;/returns&gt;</Line>
-        <Line Number="110">        public static IMutationTest For(string targetMethod, Type[] parameterTypes = null)</Line>
-        <Line Number="111">        {</Line>
-        <Line Number="112">            var callingAssembly = Assembly.GetCallingAssembly();</Line>
-        <Line Number="113">            return MutationTestBuilder.For(callingAssembly.Location, typeof(T), targetMethod, parameterTypes);</Line>
-        <Line Number="114">        }</Line>
-        <Line Number="115">    }</Line>
-        <Line Number="116" />
-        <Line Number="117">    /// &lt;summary&gt;</Line>
-        <Line Number="118">    /// A static class used as the starting point for a fluent definition of</Line>
-        <Line Number="119">    /// a set of mutation tests.</Line>
-        <Line Number="120">    /// &lt;/summary&gt;</Line>
-        <Line Number="121">    /// &lt;remarks&gt;</Line>
-        <Line Number="122">    /// For public classes, the generic &lt;see cref="MutationTestBuilder{T}" /&gt;</Line>
-        <Line Number="123">    /// is to be prefered. See that class for full documentation.</Line>
-        <Line Number="124">    /// &lt;/remarks&gt;</Line>
-        <Line Number="125">    public sealed class MutationTestBuilder</Line>
-        <Line Number="126">    {</Line>
-        <Line Number="127">        /// &lt;summary&gt;</Line>
-        <Line Number="128">        /// Returns an &lt;see cref="IMutationTest" /&gt; instance allowing a fluent</Line>
-        <Line Number="129">        /// definition of a set of mutation tests for a particular method.</Line>
-        <Line Number="130">        /// &lt;/summary&gt;</Line>
-        <Line Number="131">        /// &lt;param name="targetClass"&gt;</Line>
-        <Line Number="132">        /// The namespace-qualified name of the type for which mutation tests</Line>
-        <Line Number="133">        /// are being defined.</Line>
-        <Line Number="134">        /// &lt;/param&gt;</Line>
-        <Line Number="135">        /// &lt;param name="targetMethod"&gt;</Line>
-        <Line Number="136">        /// The name of the method to mutate.</Line>
-        <Line Number="137">        /// &lt;/param&gt;</Line>
-        <Line Number="138">        /// &lt;param name="parameterTypes"&gt;</Line>
-        <Line Number="139">        /// Optional parameter specifying an array of parameter types used to</Line>
-        <Line Number="140">        /// identify a particular method overload.</Line>
-        <Line Number="141">        /// &lt;/param&gt;</Line>
-        <Line Number="142">        /// &lt;returns&gt;</Line>
-        <Line Number="143">        /// An &lt;see cref="IMutationTest" /&gt; instance to allow fluent</Line>
-        <Line Number="144">        /// method chaining.</Line>
-        <Line Number="145">        /// &lt;/returns&gt;</Line>
-        <Line Number="146">        public static IMutationTest For(string targetClass, string targetMethod, Type[] parameterTypes = null)</Line>
-        <Line Number="147">        {</Line>
-        <Line Number="148">            var callingAssembly = Assembly.GetCallingAssembly();</Line>
-        <Line Number="149">            Type resolvedType = TypeResolver.ResolveTypeFromReferences(callingAssembly, targetClass);</Line>
-        <Line Number="150" />
-        <Line Number="151">            return For(callingAssembly.Location, resolvedType, targetMethod, parameterTypes);</Line>
-        <Line Number="152">        }</Line>
-        <Line Number="153" />
-        <Line Number="154">        internal static IMutationTest For(string callingAssemblyLocation, Type targetType, string targetMethod, Type[] parameterTypes)</Line>
-        <Line Number="155">        {</Line>
-        <Line Number="156">            return new MutationTest(callingAssemblyLocation, targetType, targetMethod, parameterTypes);</Line>
-        <Line Number="157">        }</Line>
-        <Line Number="158">    }</Line>
-        <Line Number="159">}</Line>
-        <Line Number="160" />
+        <Line Number="25">using NinjaTurtles.TestRunners;</Line>
+        <Line Number="26" />
+        <Line Number="27">namespace NinjaTurtles</Line>
+        <Line Number="28">{</Line>
+        <Line Number="29">    /// &lt;summary&gt;</Line>
+        <Line Number="30">    /// A static class used as the starting point for a fluent definition of</Line>
+        <Line Number="31">    /// a set of mutation tests.</Line>
+        <Line Number="32">    /// &lt;/summary&gt;</Line>
+        <Line Number="33">    /// &lt;typeparam name="T"&gt;</Line>
+        <Line Number="34">    /// The type to be tested.</Line>
+        <Line Number="35">    /// &lt;/typeparam&gt;</Line>
+        <Line Number="36">    /// &lt;example&gt;</Line>
+        <Line Number="37">    /// &lt;para&gt;</Line>
+        <Line Number="38">    /// This code creates and runs the default set of mutation tests for the</Line>
+        <Line Number="39">    /// &lt;b&gt;ClassUnderTest&lt;/b&gt; class's &lt;b&gt;MethodUnderTest&lt;/b&gt; method:</Line>
+        <Line Number="40">    /// &lt;/para&gt;</Line>
+        <Line Number="41">    /// &lt;code lang="cs"&gt;</Line>
+        <Line Number="42">    /// MutationTestBuilder&amp;lt;ClassUnderTest&amp;gt;</Line>
+        <Line Number="43">    ///     .For("MethodUnderTest")</Line>
+        <Line Number="44">    ///     .Run();</Line>
+        <Line Number="45">    /// &lt;/code&gt;</Line>
+        <Line Number="46">    /// &lt;code lang="vbnet"&gt;</Line>
+        <Line Number="47">    /// Call MutationTestBuilder(Of ClassUnderTest) _</Line>
+        <Line Number="48">    ///     .For("MethodUnderTest") _</Line>
+        <Line Number="49">    ///     .Run</Line>
+        <Line Number="50">    /// &lt;/code&gt;</Line>
+        <Line Number="51">    /// &lt;code lang="cpp"&gt;</Line>
+        <Line Number="52">    /// MutationTestBuilder&amp;lt;ClassUnderTest^&amp;gt;</Line>
+        <Line Number="53">    ///     ::For("MethodUnderTest")</Line>
+        <Line Number="54">    ///     -&gt;Run();</Line>
+        <Line Number="55">    /// &lt;/code&gt;</Line>
+        <Line Number="56">    /// &lt;para&gt;</Line>
+        <Line Number="57">    /// When this code is included in a test, it causes the matching tests to</Line>
+        <Line Number="58">    /// be run for each mutation that is found of the code under test. By</Line>
+        <Line Number="59">    /// default, NinjaTurtles assumes it is running under NUnit, and thus uses</Line>
+        <Line Number="60">    /// an NUnit runner to run the suite against the mutated code. This can be</Line>
+        <Line Number="61">    /// changed using the fluent interface:</Line>
+        <Line Number="62">    /// &lt;/para&gt;</Line>
+        <Line Number="63">    /// &lt;code lang="cs"&gt;</Line>
+        <Line Number="64">    /// MutationTestBuilder&amp;lt;ClassUnderTest&amp;gt;</Line>
+        <Line Number="65">    ///     .For("MethodUnderTest")</Line>
+        <Line Number="66">    ///     .UsingRunner&amp;lt;GallioTestRunner&amp;gt;()</Line>
+        <Line Number="67">    ///     .Run();</Line>
+        <Line Number="68">    /// &lt;/code&gt;</Line>
+        <Line Number="69">    /// &lt;code lang="vbnet"&gt;</Line>
+        <Line Number="70">    /// Call MutationTestBuilder(Of ClassUnderTest) _</Line>
+        <Line Number="71">    ///     .For("MethodUnderTest") _</Line>
+        <Line Number="72">    ///     .UsingRunner(Of GallioTestRunner)() _</Line>
+        <Line Number="73">    ///     .Run</Line>
+        <Line Number="74">    /// &lt;/code&gt;</Line>
+        <Line Number="75">    /// &lt;code lang="cpp"&gt;</Line>
+        <Line Number="76">    /// MutationTestBuilder&amp;lt;ClassUnderTest^&amp;gt;</Line>
+        <Line Number="77">    ///     ::For("MethodUnderTest")</Line>
+        <Line Number="78">    ///     -&gt;UsingRunner&amp;lt;GallioTestRunner^&amp;gt;()</Line>
+        <Line Number="79">    ///     -&gt;Run();</Line>
+        <Line Number="80">    /// &lt;/code&gt;</Line>
+        <Line Number="81">    /// &lt;para&gt;</Line>
+        <Line Number="82">    /// Alternatively, this option can be set across all tests in a fixture by</Line>
+        <Line Number="83">    /// including this line in the test fixture's setup method:</Line>
+        <Line Number="84">    /// &lt;/para&gt;</Line>
+        <Line Number="85">    /// &lt;code lang="cs"&gt;</Line>
+        <Line Number="86">    /// MutationTestBuilder.UseRunner&amp;lt;GallioTestRunner&amp;gt;();</Line>
+        <Line Number="87">    /// &lt;/code&gt;</Line>
+        <Line Number="88">    /// &lt;code lang="vbnet"&gt;</Line>
+        <Line Number="89">    /// Call MutationTestBuilder.UseRunner(Of GallioTestRunner)</Line>
+        <Line Number="90">    /// &lt;/code&gt;</Line>
+        <Line Number="91">    /// &lt;code lang="cpp"&gt;</Line>
+        <Line Number="92">    /// MutationTestBuilder::UseRunner&amp;lt;GallioTestRunner^&amp;gt;();</Line>
+        <Line Number="93">    /// &lt;/code&gt;</Line>
+        <Line Number="94">    /// &lt;/example&gt;</Line>
+        <Line Number="95">    public sealed class MutationTestBuilder&lt;T&gt;</Line>
+        <Line Number="96">    {</Line>
+        <Line Number="97">        /// &lt;summary&gt;</Line>
+        <Line Number="98">        /// Returns an &lt;see cref="IMutationTest" /&gt; instance allowing a fluent</Line>
+        <Line Number="99">        /// definition of a set of mutation tests for a particular method.</Line>
+        <Line Number="100">        /// &lt;/summary&gt;</Line>
+        <Line Number="101">        /// &lt;param name="targetMethod"&gt;</Line>
+        <Line Number="102">        /// The name of the method to mutate.</Line>
+        <Line Number="103">        /// &lt;/param&gt;</Line>
+        <Line Number="104">        /// &lt;param name="parameterTypes"&gt;</Line>
+        <Line Number="105">        /// Optional parameter specifying an array of parameter types used to</Line>
+        <Line Number="106">        /// identify a particular method overload.</Line>
+        <Line Number="107">        /// &lt;/param&gt;</Line>
+        <Line Number="108">        /// &lt;returns&gt;</Line>
+        <Line Number="109">        /// An &lt;see cref="IMutationTest" /&gt; instance to allow fluent</Line>
+        <Line Number="110">        /// method chaining.</Line>
+        <Line Number="111">        /// &lt;/returns&gt;</Line>
+        <Line Number="112">        public static IMutationTest For(string targetMethod, Type[] parameterTypes = null)</Line>
+        <Line Number="113">        {</Line>
+        <Line Number="114">            var callingAssembly = Assembly.GetCallingAssembly();</Line>
+        <Line Number="115">            return MutationTestBuilder.For(callingAssembly.Location, typeof(T), targetMethod, parameterTypes);</Line>
+        <Line Number="116">        }</Line>
+        <Line Number="117">    }</Line>
+        <Line Number="118" />
+        <Line Number="119">    /// &lt;summary&gt;</Line>
+        <Line Number="120">    /// A static class used as the starting point for a fluent definition of</Line>
+        <Line Number="121">    /// a set of mutation tests.</Line>
+        <Line Number="122">    /// &lt;/summary&gt;</Line>
+        <Line Number="123">    /// &lt;remarks&gt;</Line>
+        <Line Number="124">    /// For public classes, the generic &lt;see cref="MutationTestBuilder{T}" /&gt;</Line>
+        <Line Number="125">    /// is to be prefered. See that class for full documentation.</Line>
+        <Line Number="126">    /// &lt;/remarks&gt;</Line>
+        <Line Number="127">    public sealed class MutationTestBuilder</Line>
+        <Line Number="128">    {</Line>
+        <Line Number="129">        internal static Type TestRunner { get; set; }</Line>
+        <Line Number="130" />
+        <Line Number="131">        static MutationTestBuilder()</Line>
+        <Line Number="132">        {</Line>
+        <Line Number="133">            TestRunner = typeof(NUnitTestRunner);</Line>
+        <Line Number="134">        }</Line>
+        <Line Number="135" />
+        <Line Number="136">        /// &lt;summary&gt;</Line>
+        <Line Number="137">        /// Returns an &lt;see cref="IMutationTest" /&gt; instance allowing a fluent</Line>
+        <Line Number="138">        /// definition of a set of mutation tests for a particular method.</Line>
+        <Line Number="139">        /// &lt;/summary&gt;</Line>
+        <Line Number="140">        /// &lt;param name="targetClass"&gt;</Line>
+        <Line Number="141">        /// The namespace-qualified name of the type for which mutation tests</Line>
+        <Line Number="142">        /// are being defined.</Line>
+        <Line Number="143">        /// &lt;/param&gt;</Line>
+        <Line Number="144">        /// &lt;param name="targetMethod"&gt;</Line>
+        <Line Number="145">        /// The name of the method to mutate.</Line>
+        <Line Number="146">        /// &lt;/param&gt;</Line>
+        <Line Number="147">        /// &lt;param name="parameterTypes"&gt;</Line>
+        <Line Number="148">        /// Optional parameter specifying an array of parameter types used to</Line>
+        <Line Number="149">        /// identify a particular method overload.</Line>
+        <Line Number="150">        /// &lt;/param&gt;</Line>
+        <Line Number="151">        /// &lt;returns&gt;</Line>
+        <Line Number="152">        /// An &lt;see cref="IMutationTest" /&gt; instance to allow fluent</Line>
+        <Line Number="153">        /// method chaining.</Line>
+        <Line Number="154">        /// &lt;/returns&gt;</Line>
+        <Line Number="155">        public static IMutationTest For(string targetClass, string targetMethod, Type[] parameterTypes = null)</Line>
+        <Line Number="156">        {</Line>
+        <Line Number="157">            var callingAssembly = Assembly.GetCallingAssembly();</Line>
+        <Line Number="158">            Type resolvedType = TypeResolver.ResolveTypeFromReferences(callingAssembly, targetClass);</Line>
+        <Line Number="159" />
+        <Line Number="160">            return For(callingAssembly.Location, resolvedType, targetMethod, parameterTypes);</Line>
+        <Line Number="161">        }</Line>
+        <Line Number="162" />
+        <Line Number="163">        internal static IMutationTest For(string callingAssemblyLocation, Type targetType, string targetMethod, Type[] parameterTypes)</Line>
+        <Line Number="164">        {</Line>
+        <Line Number="165">            return new MutationTest(callingAssemblyLocation, targetType, targetMethod, parameterTypes);</Line>
+        <Line Number="166">        }</Line>
+        <Line Number="167" />
+        <Line Number="168">        /// &lt;summary&gt;</Line>
+        <Line Number="169">        /// Specifies the implementation of &lt;see cref="ITestRunner" /&gt; to be</Line>
+        <Line Number="170">        /// used to run the test suite for each mutant. By default, this will</Line>
+        <Line Number="171">        /// be the &lt;see cref="NUnitTestRunner" /&gt;. This can still be overridden</Line>
+        <Line Number="172">        /// on a per-test basis using the</Line>
+        <Line Number="173">        /// &lt;see mref="IMutationTest.UsingRunner" /&gt; method.</Line>
+        <Line Number="174">        /// &lt;/summary&gt;</Line>
+        <Line Number="175">        /// &lt;typeparam name="T"&gt;</Line>
+        <Line Number="176">        /// A type that implements &lt;see cref="ITestRunner" /&gt;.</Line>
+        <Line Number="177">        /// &lt;/typeparam&gt;</Line>
+        <Line Number="178">        public static void UseRunner&lt;T&gt;() where T : ITestRunner</Line>
+        <Line Number="179">        {</Line>
+        <Line Number="180">            TestRunner = typeof(T);</Line>
+        <Line Number="181">        }</Line>
+        <Line Number="182">    }</Line>
+        <Line Number="183">}</Line>
+        <Line Number="184" />
       </Lines>
     </SourceFile>
     <SourceFile>
@@ -2958,16 +3465,16 @@
               <Description>00cf: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>00cf: Brtrue =&gt; Br</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
               <Description>00f3: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>00f3: Brtrue =&gt; Br</Description>
+              <Description>00cf: Brtrue =&gt; Br</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>00f3: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>00f3: Brtrue =&gt; Br</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -3003,10 +3510,10 @@
               <Description>0138: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0138: Brtrue =&gt; Brfalse</Description>
+              <Description>0138: Brtrue =&gt; Br</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0138: Brtrue =&gt; Br</Description>
+              <Description>0138: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>0143: Br =&gt; Nop</Description>
@@ -3066,13 +3573,13 @@
               <Description>0190: deleting Ldloc, Brtrue, Leave, Ldloc, Ldnull, Ceq, Stloc, Ldloc, Brtrue, Ldloc, Callvirt, Nop, Endfinally</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
+              <Description>0192: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
               <Description>0192: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>0192: Brtrue =&gt; Br</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0192: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>01a2: Brtrue =&gt; Nop</Description>
@@ -3276,6 +3783,9 @@
             <AppliedMutant Killed="true">
               <Description>0008: deleting Call, Ldarg, Call, Stloc</Description>
             </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>000d: read substitution String.P1 =&gt; String.P2</Description>
+            </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="66" StartColumn="4" EndLine="66" EndColumn="30">
@@ -3289,6 +3799,9 @@
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>001c: deleting Ldarg, Ldarg, Call, Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>001d: read substitution String.P2 =&gt; String.P1</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -3431,7 +3944,7 @@
               <Description>003a: deleting Ldarg, Ldloc, Ldfld, Call, Stloc, Br</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution MethodDefinition.V3 =&gt; MethodDefinition.V0 at 0046</Description>
+              <Description>0046: write substitution MethodDefinition.V3 =&gt; MethodDefinition.V0</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>0047: Br =&gt; Nop</Description>
@@ -3444,7 +3957,7 @@
               <Description>004a: deleting Ldarg, Callvirt, Ldloc, Brtrue, Ldloc, Ldftn, Newobj, Stloc, Br, Ldloc, Call, Stloc</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution MethodDefinition.V0 =&gt; MethodDefinition.V3 at 0068</Description>
+              <Description>0068: write substitution MethodDefinition.V0 =&gt; MethodDefinition.V3</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>0051: Brtrue =&gt; Nop</Description>
@@ -3470,7 +3983,10 @@
               <Description>0085: deleting Ldloc, Stloc, Leave</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution MethodDefinition.V3 =&gt; MethodDefinition.V0 at 0086</Description>
+              <Description>0086: write substitution MethodDefinition.V3 =&gt; MethodDefinition.V0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0085: read substitution MethodDefinition.V0 =&gt; MethodDefinition.V3</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -3519,7 +4035,7 @@
               <Description>002d: deleting Ldarg, Callvirt, Ldloc, Brtrue, Ldloc, Ldftn, Newobj, Stloc, Br, Ldloc, Call, Stloc</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution MethodDefinition.V0 =&gt; MethodDefinition.V4 at 004b</Description>
+              <Description>004b: write substitution MethodDefinition.V0 =&gt; MethodDefinition.V4</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>0034: Brtrue =&gt; Nop</Description>
@@ -3545,7 +4061,10 @@
               <Description>0068: deleting Ldloc, Stloc, Leave</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution MethodDefinition.V4 =&gt; MethodDefinition.V0 at 0069</Description>
+              <Description>0069: write substitution MethodDefinition.V4 =&gt; MethodDefinition.V0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0068: read substitution MethodDefinition.V0 =&gt; MethodDefinition.V4</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -3575,17 +4094,17 @@
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="52" StartColumn="21" EndLine="52" EndColumn="79">
-          <AppliedMutants>
-            <AppliedMutant Killed="true">
-              <Description>0089: deleting Ldsfld, Ldstr, Ldloc, Ldfld, Callvirt, Nop</Description>
-            </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
         <SequencePoint StartLine="53" StartColumn="21" EndLine="53" EndColumn="125">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>009f: deleting Ldstr, Ldloc, Ldfld, Call, Ldstr, Newobj, Throw</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="52" StartColumn="21" EndLine="52" EndColumn="79">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>0089: deleting Ldsfld, Ldstr, Ldloc, Ldfld, Callvirt, Nop</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -3719,7 +4238,7 @@
               <Description>0015: deleting Ldloc, Brtrue</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V1 =&gt; Boolean.V0 at 0014</Description>
+              <Description>0014: write substitution Boolean.V1 =&gt; Boolean.V0</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>0016: Brtrue =&gt; Nop</Description>
@@ -3729,6 +4248,9 @@
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>0016: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0015: read substitution Boolean.V1 =&gt; Boolean.V0</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -3745,7 +4267,7 @@
         <SequencePoint StartLine="35" StartColumn="13" EndLine="35" EndColumn="89">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Boolean.V0 =&gt; Boolean.V1 at 0039</Description>
+              <Description>0039: write substitution Boolean.V0 =&gt; Boolean.V1</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -3855,33 +4377,33 @@
     <SourceFile>
       <Url>C:\Working\hg\ninjaturtles\NinjaTurtles\ConsoleProcessFactory.cs</Url>
       <SequencePoints>
-        <SequencePoint StartLine="89" StartColumn="13" EndLine="89" EndColumn="49">
+        <SequencePoint StartLine="87" StartColumn="13" EndLine="87" EndColumn="49">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>0001: deleting Newobj, Stloc</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="90" StartColumn="13" EndLine="90" EndColumn="60">
+        <SequencePoint StartLine="88" StartColumn="13" EndLine="88" EndColumn="60">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>0007: deleting Ldloc, Ldarg, Callvirt, Nop</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="91" StartColumn="13" EndLine="91" EndColumn="103">
+        <SequencePoint StartLine="89" StartColumn="13" EndLine="89" EndColumn="103">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>000f: deleting Ldstr, Call, Dup, Brtrue, Pop, Ldsfld, Stloc</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V1 =&gt; String.V2 at 0022</Description>
+              <Description>0022: write substitution String.V1 =&gt; String.V2</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V1 =&gt; String.V3 at 0022</Description>
+              <Description>0022: write substitution String.V1 =&gt; String.V3</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V1 =&gt; String.V4 at 0022</Description>
+              <Description>0022: write substitution String.V1 =&gt; String.V4</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
               <Description>001a: Brtrue =&gt; Nop</Description>
@@ -3894,7 +4416,7 @@
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="92" StartColumn="13" EndLine="92" EndColumn="85">
+        <SequencePoint StartLine="90" StartColumn="13" EndLine="90" EndColumn="85">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>0023: deleting Ldloc, Ldloc, Ldc_I4, Newarr, Stloc, Ldloc, Ldc_I4, Call, Brtrue, Ldc_I4, Br, Ldc_I4, Stelem_I2, Ldloc, Callvirt, Callvirt, Nop</Description>
@@ -3911,9 +4433,21 @@
             <AppliedMutant Killed="true">
               <Description>0039: Br =&gt; Nop</Description>
             </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0024: read substitution String.V1 =&gt; String.V2</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0024: read substitution String.V1 =&gt; String.P0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0024: read substitution String.V1 =&gt; String.V3</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0024: read substitution String.V1 =&gt; String.V4</Description>
+            </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="94" StartColumn="39" EndLine="94" EndColumn="49">
+        <SequencePoint StartLine="92" StartColumn="39" EndLine="92" EndColumn="49">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>004c: deleting Ldloc, Callvirt, Stloc</Description>
@@ -3926,39 +4460,63 @@
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="94" StartColumn="22" EndLine="94" EndColumn="35">
+        <SequencePoint StartLine="92" StartColumn="22" EndLine="92" EndColumn="35">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>0056: deleting Ldloca, Call, Stloc</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V2 =&gt; String.V1 at 005d</Description>
+              <Description>005d: write substitution String.V2 =&gt; String.V1</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V2 =&gt; String.V3 at 005d</Description>
+              <Description>005d: write substitution String.V2 =&gt; String.V3</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V2 =&gt; String.V4 at 005d</Description>
+              <Description>005d: write substitution String.V2 =&gt; String.V4</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="96" StartColumn="17" EndLine="96" EndColumn="68">
+        <SequencePoint StartLine="94" StartColumn="17" EndLine="94" EndColumn="68">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>005f: deleting Ldloc, Ldarg, Call, Stloc</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V3 =&gt; String.V1 at 0066</Description>
+              <Description>0066: write substitution String.V3 =&gt; String.V1</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V3 =&gt; String.V2 at 0066</Description>
+              <Description>0066: write substitution String.V3 =&gt; String.V2</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V3 =&gt; String.V4 at 0066</Description>
+              <Description>0066: write substitution String.V3 =&gt; String.V4</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>005f: read substitution String.V2 =&gt; String.P0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>005f: read substitution String.V2 =&gt; String.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>005f: read substitution String.V2 =&gt; String.V3</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>005f: read substitution String.V2 =&gt; String.V4</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0060: read substitution String.P0 =&gt; String.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0060: read substitution String.P0 =&gt; String.V2</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0060: read substitution String.P0 =&gt; String.V3</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0060: read substitution String.P0 =&gt; String.V4</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="97" StartColumn="17" EndLine="97" EndColumn="46">
+        <SequencePoint StartLine="95" StartColumn="17" EndLine="95" EndColumn="46">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>0067: deleting Ldloc, Call, Ldc_I4, Ceq, Stloc</Description>
@@ -3975,25 +4533,49 @@
             <AppliedMutant Killed="true">
               <Description>0074: Brtrue =&gt; Br</Description>
             </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0067: read substitution String.V3 =&gt; String.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0067: read substitution String.V3 =&gt; String.P0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0067: read substitution String.V3 =&gt; String.V4</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0067: read substitution String.V3 =&gt; String.V2</Description>
+            </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="99" StartColumn="21" EndLine="99" EndColumn="40">
+        <SequencePoint StartLine="97" StartColumn="21" EndLine="97" EndColumn="40">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>0077: deleting Ldloc, Stloc, Leave</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V4 =&gt; String.V1 at 0078</Description>
+              <Description>0078: write substitution String.V4 =&gt; String.V1</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V4 =&gt; String.V2 at 0078</Description>
+              <Description>0078: write substitution String.V4 =&gt; String.V3</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V4 =&gt; String.V3 at 0078</Description>
+              <Description>0078: write substitution String.V4 =&gt; String.V2</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0077: read substitution String.V3 =&gt; String.P0</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0077: read substitution String.V3 =&gt; String.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0077: read substitution String.V3 =&gt; String.V2</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0077: read substitution String.V3 =&gt; String.V4</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="94" StartColumn="36" EndLine="94" EndColumn="38">
+        <SequencePoint StartLine="92" StartColumn="36" EndLine="92" EndColumn="38">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>007d: deleting Ldloca, Call, Stloc</Description>
@@ -4012,47 +4594,62 @@
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="102" StartColumn="13" EndLine="102" EndColumn="28">
+        <SequencePoint StartLine="100" StartColumn="13" EndLine="100" EndColumn="28">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>009c: deleting Ldarg, Stloc, Br</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V4 =&gt; String.V1 at 009d</Description>
+              <Description>009d: write substitution String.V4 =&gt; String.V1</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V4 =&gt; String.V2 at 009d</Description>
+              <Description>009d: write substitution String.V4 =&gt; String.V2</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution String.V4 =&gt; String.V3 at 009d</Description>
+              <Description>009d: write substitution String.V4 =&gt; String.V3</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>009c: read substitution String.P0 =&gt; String.V1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>009c: read substitution String.P0 =&gt; String.V2</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>009c: read substitution String.P0 =&gt; String.V3</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>009c: read substitution String.P0 =&gt; String.V4</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
-        <SequencePoint StartLine="88" StartColumn="9" EndLine="88" EndColumn="10">
+        <SequencePoint StartLine="86" StartColumn="9" EndLine="86" EndColumn="10">
           <AppliedMutants />
         </SequencePoint>
-        <SequencePoint StartLine="94" StartColumn="13" EndLine="94" EndColumn="20">
+        <SequencePoint StartLine="92" StartColumn="13" EndLine="92" EndColumn="20">
           <AppliedMutants />
         </SequencePoint>
         <SequencePoint StartLine="16707566" StartColumn="0" EndLine="16707566" EndColumn="0">
           <AppliedMutants />
         </SequencePoint>
-        <SequencePoint StartLine="95" StartColumn="13" EndLine="95" EndColumn="14">
+        <SequencePoint StartLine="93" StartColumn="13" EndLine="93" EndColumn="14">
           <AppliedMutants />
         </SequencePoint>
-        <SequencePoint StartLine="98" StartColumn="17" EndLine="98" EndColumn="18">
+        <SequencePoint StartLine="96" StartColumn="17" EndLine="96" EndColumn="18">
           <AppliedMutants />
         </SequencePoint>
-        <SequencePoint StartLine="101" StartColumn="13" EndLine="101" EndColumn="14">
+        <SequencePoint StartLine="99" StartColumn="13" EndLine="99" EndColumn="14">
           <AppliedMutants />
         </SequencePoint>
-        <SequencePoint StartLine="103" StartColumn="9" EndLine="103" EndColumn="10">
+        <SequencePoint StartLine="101" StartColumn="9" EndLine="101" EndColumn="10">
           <AppliedMutants />
         </SequencePoint>
         <SequencePoint StartLine="64" StartColumn="13" EndLine="64" EndColumn="74">
           <AppliedMutants>
             <AppliedMutant Killed="true">
               <Description>0001: deleting Ldarg, Ldarg, Call, Starg</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0001: read substitution String.P0 =&gt; String.P1</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -4062,106 +4659,108 @@
               <Description>000a: deleting Call, Ldc_I4, Ceq, Stloc</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0014: deleting Ldloc, Brtrue</Description>
+              <Description>0013: deleting Ldloc, Brtrue</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0016: Brtrue =&gt; Nop</Description>
+              <Description>0014: Brtrue =&gt; Nop</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0016: Brtrue =&gt; Brfalse</Description>
+              <Description>0014: Brtrue =&gt; Brfalse</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>0016: Brtrue =&gt; Br</Description>
-            </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
-        <SequencePoint StartLine="72" StartColumn="13" EndLine="72" EndColumn="73">
-          <AppliedMutants>
-            <AppliedMutant Killed="true">
-              <Description>002f: deleting Ldarg, Call, Brtrue, Ldstr, Br, Ldstr, Call, Starg</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0035: Brtrue =&gt; Nop</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0035: Brtrue =&gt; Brfalse</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>0035: Brtrue =&gt; Br</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>003c: Br =&gt; Nop</Description>
-            </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
-        <SequencePoint StartLine="74" StartColumn="13" EndLine="74" EndColumn="77">
-          <AppliedMutants>
-            <AppliedMutant Killed="true">
-              <Description>004a: deleting Ldarg, Ldarg, Newobj, Stloc</Description>
+              <Description>0014: Brtrue =&gt; Br</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="68" StartColumn="17" EndLine="68" EndColumn="93">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>0019: deleting Ldstr, Ldarg, Ldarg, Call, Starg</Description>
+              <Description>0017: deleting Ldstr, Ldarg, Ldarg, Call, Starg</Description>
             </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
-        <SequencePoint StartLine="77" StartColumn="13" EndLine="77" EndColumn="60">
-          <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>0062: deleting Ldloc, Ldc_I4, Callvirt, Nop</Description>
+              <Description>001c: read substitution String.P0 =&gt; String.P1</Description>
             </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
-        <SequencePoint StartLine="75" StartColumn="13" EndLine="75" EndColumn="54">
-          <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>0052: deleting Ldloc, Ldc_I4, Callvirt, Nop</Description>
+              <Description>001d: read substitution String.P1 =&gt; String.P0</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="69" StartColumn="17" EndLine="69" EndColumn="34">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>0027: deleting Ldstr, Starg</Description>
+              <Description>0025: deleting Ldstr, Starg</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="72" StartColumn="13" EndLine="72" EndColumn="73">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>002d: deleting Ldarg, Call, Brtrue, Ldstr, Br, Ldstr, Call, Starg</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0033: Brtrue =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0033: Brtrue =&gt; Brfalse</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0033: Brtrue =&gt; Br</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>003a: Br =&gt; Nop</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>002d: read substitution String.P1 =&gt; String.P0</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="74" StartColumn="13" EndLine="74" EndColumn="77">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>0048: deleting Ldarg, Ldarg, Newobj, Stloc</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0048: read substitution String.P0 =&gt; String.P1</Description>
+            </AppliedMutant>
+            <AppliedMutant Killed="true">
+              <Description>0049: read substitution String.P1 =&gt; String.P0</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="75" StartColumn="13" EndLine="75" EndColumn="54">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>0050: deleting Ldloc, Ldc_I4, Callvirt, Nop</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="76" StartColumn="13" EndLine="76" EndColumn="52">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>005a: deleting Ldloc, Ldc_I4, Callvirt, Nop</Description>
+              <Description>0058: deleting Ldloc, Ldc_I4, Callvirt, Nop</Description>
+            </AppliedMutant>
+          </AppliedMutants>
+        </SequencePoint>
+        <SequencePoint StartLine="77" StartColumn="13" EndLine="77" EndColumn="60">
+          <AppliedMutants>
+            <AppliedMutant Killed="true">
+              <Description>0060: deleting Ldloc, Ldc_I4, Callvirt, Nop</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
         <SequencePoint StartLine="79" StartColumn="13" EndLine="82" EndColumn="15">
           <AppliedMutants>
             <AppliedMutant Killed="true">
-              <Description>006a: deleting Newobj, Stloc, Ldloc, Ldloc, Callvirt, Nop, Ldloc, Stloc</Description>
+              <Description>006d: write substitution Process.V1 =&gt; Process.V2</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Process.V2 =&gt; Process.V1 at 006f</Description>
+              <Description>0077: write substitution Process.V2 =&gt; Process.V1</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Process.V2 =&gt; Process.V3 at 006f</Description>
+              <Description>006e: read substitution Process.V1 =&gt; Process.V2</Description>
             </AppliedMutant>
             <AppliedMutant Killed="true">
-              <Description>Variable write substitution Process.V1 =&gt; Process.V2 at 0079</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>Variable write substitution Process.V1 =&gt; Process.V3 at 0079</Description>
-            </AppliedMutant>
-          </AppliedMutants>
-        </SequencePoint>
-        <SequencePoint StartLine="84" StartColumn="13" EndLine="84" EndColumn="28">
-          <AppliedMutants>
-            <AppliedMutant Killed="true">
-              <Description>Variable write substitution Process.V3 =&gt; Process.V1 at 007b</Description>
-            </AppliedMutant>
-            <AppliedMutant Killed="true">
-              <Description>Variable write substitution Process.V3 =&gt; Process.V2 at 007b</Description>
+              <Description>0076: read substitution Process.V1 =&gt; Process.V2</Description>
             </AppliedMutant>
           </AppliedMutants>
         </SequencePoint>
@@ -4174,7 +4773,7 @@
         <SequencePoint StartLine="70" StartColumn="13" EndLine="70" EndColumn="14">
           <AppliedMutants />
         </SequencePoint>
-        <SequencePoint StartLine="85" StartColumn="9" EndLine="85" EndColumn="10">
+        <SequencePoint StartLine="83" StartColumn="9" EndLine="83" EndColumn="10">
           <AppliedMutants />
         </SequencePoint>
       </SequencePoints>
@@ -4257,33 +4856,31 @@
         <Line Number="76">            processStartInfo.CreateNoWindow = true;</Line>
         <Line Number="77">            processStartInfo.RedirectStandardOutput = true;</Line>
         <Line Number="78" />
-        <Line Number="79">            var process = new Process</Line>
+        <Line Number="79">            return new Process</Line>
         <Line Number="80">            {</Line>
         <Line Number="81">                StartInfo = processStartInfo</Line>
         <Line Number="82">            };</Line>
-        <Line Number="83" />
-        <Line Number="84">            return process;</Line>
-        <Line Number="85">        }</Line>
-        <Line Number="86" />
-        <Line Number="87">        private static string FindExecutable(string exeName, string[] additionalSearchLocations)</Line>
-        <Line Number="88">        {</Line>
-        <Line Number="89">            var searchPath = new List&lt;string&gt;();</Line>
-        <Line Number="90">            searchPath.AddRange(additionalSearchLocations);</Line>
-        <Line Number="91">            string environmentSearchPath = Environment.GetEnvironmentVariable("PATH") ?? string.Empty;</Line>
-        <Line Number="92">            searchPath.AddRange(environmentSearchPath.Split(IsWindows ? ';' : ':'));</Line>
-        <Line Number="93" />
-        <Line Number="94">            foreach (string folder in searchPath)</Line>
-        <Line Number="95">            {</Line>
-        <Line Number="96">                string fullExePath = Path.Combine(folder, exeName);</Line>
-        <Line Number="97">                if (File.Exists(fullExePath))</Line>
-        <Line Number="98">                {</Line>
-        <Line Number="99">                    return fullExePath;</Line>
-        <Line Number="100">                }</Line>
-        <Line Number="101">            }</Line>
-        <Line Number="102">            return exeName;</Line>
-        <Line Number="103">        }</Line>
-        <Line Number="104">    }</Line>
-        <Line Number="105">}</Line>
+        <Line Number="83">        }</Line>
+        <Line Number="84" />
+        <Line Number="85">        private static string FindExecutable(string exeName, string[] additionalSearchLocations)</Line>
+        <Line Number="86">        {</Line>
+        <Line Number="87">            var searchPath = new List&lt;string&gt;();</Line>
+        <Line Number="88">            searchPath.AddRange(additionalSearchLocations);</Line>
+        <Line Number="89">            string environmentSearchPath = Environment.GetEnvironmentVariable("PATH") ?? string.Empty;</Line>
+        <Line Number="90">            searchPath.AddRange(environmentSearchPath.Split(IsWindows ? ';' : ':'));</Line>
+        <Line Number="91" />
+        <Line Number="92">            foreach (string folder in searchPath)</Line>
+        <Line Number="93">            {</Line>
+        <Line Number="94">                string fullExePath = Path.Combine(folder, exeName);</Line>
+        <Line Number="95">                if (File.Exists(fullExePath))</Line>
+        <Line Number="96">                {</Line>
+        <Line Number="97">                    return fullExePath;</Line>
+        <Line Number="98">                }</Line>
+        <Line Number="99">            }</Line>
+        <Line Number="100">            return exeName;</Line>
+        <Line Number="101">        }</Line>
+        <Line Number="102">    }</Line>
+        <Line Number="103">}</Line>
       </Lines>
     </SourceFile>
   </SourceFiles>

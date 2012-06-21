@@ -19,7 +19,6 @@
 
 #endregion
 
-using System;
 using System.IO;
 
 using NUnit.Framework;
@@ -73,12 +72,11 @@ namespace NinjaTurtles.Tests
         {
             bool isMono = ConsoleProcessFactory.IsMono;
             ConsoleProcessFactory.IsMono = true;
-            using (var process = ConsoleProcessFactory.CreateProcess("cmd.exe", ""))
+            using (var process = ConsoleProcessFactory.CreateProcess("notfound.exe", "args"))
             {
                 ConsoleProcessFactory.IsMono = isMono;
                 Assert.AreEqual("mono", process.StartInfo.FileName);
-                StringAssert.StartsWith("--runtime=v4.0 \"cmd.exe \"", process.StartInfo.Arguments);
-                StringAssert.Contains("cmd.exe\"", process.StartInfo.Arguments);
+                StringAssert.StartsWith("--runtime=v4.0 \"notfound.exe\" args", process.StartInfo.Arguments);
             }
         }
 
@@ -103,7 +101,7 @@ namespace NinjaTurtles.Tests
         [MethodTested(typeof(ConsoleProcessFactory), "FindExecutable")]
         public void CreateProcess_Returns_Exe_Name_Verbatim_If_Not_Found()
         {
-            string exeName = "icantfindyout.exe";
+            string exeName = "icantfindyou.exe";
             using (var process = ConsoleProcessFactory.CreateProcess(exeName, ""))
             {
                 Assert.AreEqual(exeName, process.StartInfo.FileName);

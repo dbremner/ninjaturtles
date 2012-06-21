@@ -129,7 +129,7 @@ namespace NinjaTurtles
 		
 		private bool CheckTestProcessFails(MethodTurtleBase turtle, MutantMetaData mutation)
 		{
-            if (_runner == null) _runner = new NUnitTestRunner();
+            if (_runner == null) _runner = (ITestRunner)Activator.CreateInstance(MutationTestBuilder.TestRunner);
 		    var process = _runner.GetRunnerProcess(mutation, _testAssemblyLocation, _testsToRun);
 
             process.Start();
