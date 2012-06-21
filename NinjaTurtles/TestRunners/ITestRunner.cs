@@ -34,6 +34,12 @@ namespace NinjaTurtles.TestRunners
         /// Runs the tests specified from the test assembly, found within the
         /// test directory identified in the provided
         /// <see cref="MutantMetaData" /> instance.
+        /// <remarks>
+        /// This method won't be called
+        /// from a user's testing code, it is called internally by
+        /// NinjaTurtles, and is only exposed publicly to allow for a new
+        /// implementation to be provided as an extension to NinjaTurtles.
+        /// </remarks>
         /// </summary>
         /// <param name="mutation">
         /// An instance of <see cref="MutantMetaData" /> describing the
