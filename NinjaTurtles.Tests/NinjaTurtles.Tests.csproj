@@ -79,8 +79,8 @@
     <Compile Include="Turtles\BitwiseOperatorTurtleTests.cs" />
     <Compile Include="Turtles\VariableAndParameterReadTurtleTests.cs" />
     <Compile Include="Turtles\VariableWriteTurtleTests.cs" />
-    <Compile Include="Turtles\VariableAndParameterReadTurtleTestSuite\Tests\VariableReadClassUnderTestTests.cs" />
-    <Compile Include="Turtles\VariableAndParameterReadTurtleTestSuite\VariableReadClassUnderTest.cs" />
+    <Compile Include="Turtles\VariableReadTurtleTestSuite\Tests\VariableReadClassUnderTestTests.cs" />
+    <Compile Include="Turtles\VariableReadTurtleTestSuite\VariableReadClassUnderTest.cs" />
     <Compile Include="Turtles\MethodTurtleBaseTests.cs" />
     <Compile Include="Turtles\OpCodeRotationTurtleTests.cs" />
     <Compile Include="Turtles\SequencePointDeletionTurtleTests.cs" />
