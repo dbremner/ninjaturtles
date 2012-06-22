@@ -36,7 +36,7 @@ namespace NinjaTurtles.Turtles
     /// the same type, then a read from <c>a</c> will be replaced by one from
     /// <c>b</c> and <c>c</c> in turn, and so on.
     /// </summary>
-    public class VariableAndParameterReadTurtle : MethodTurtleBase
+    public class VariableReadTurtle : MethodTurtleBase
     {
         /// <summary>
         /// Performs the actual code mutations, returning each with

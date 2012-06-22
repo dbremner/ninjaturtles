@@ -26,42 +26,42 @@ using NinjaTurtles.Turtles;
 namespace NinjaTurtles.Tests.Turtles.VariableAndParameterReadTurtleTestSuite.Tests
 {
     [TestFixture]
-    public class VariableAndParameterReadClassUnderTestTests
+    public class VariableReadClassUnderTestTests
     {
         [Test]
-        [MethodTested(typeof(VariableAndParameterReadClassUnderTest), "AddAndDouble")]
+        [MethodTested(typeof(VariableReadClassUnderTest), "AddAndDouble")]
         public void AddAndDouble_Works()
         {
-            Assert.AreEqual(0, new VariableAndParameterReadClassUnderTest().AddAndDouble(0, 0));
-            Assert.AreEqual(0, new VariableAndParameterReadClassUnderTest().AddAndDouble(1, -1));
+            Assert.AreEqual(0, new VariableReadClassUnderTest().AddAndDouble(0, 0));
+            Assert.AreEqual(0, new VariableReadClassUnderTest().AddAndDouble(1, -1));
         }
 
         [Test]
-        [MethodTested(typeof(VariableAndParameterReadClassUnderTest), "AddAndDoubleViaField")]
+        [MethodTested(typeof(VariableReadClassUnderTest), "AddAndDoubleViaField")]
         public void AddAndDoubleViaField_Works()
         {
-            Assert.AreEqual(0, new VariableAndParameterReadClassUnderTest().AddAndDoubleViaField(0, 0));
-            Assert.AreEqual(0, new VariableAndParameterReadClassUnderTest().AddAndDoubleViaField(1, -1));
+            Assert.AreEqual(0, new VariableReadClassUnderTest().AddAndDoubleViaField(0, 0));
+            Assert.AreEqual(0, new VariableReadClassUnderTest().AddAndDoubleViaField(1, -1));
         }
 
         [Test]
-        [MethodTested(typeof(VariableAndParameterReadClassUnderTest), "WorkingAddAndDouble")]
+        [MethodTested(typeof(VariableReadClassUnderTest), "WorkingAddAndDouble")]
         public void WorkingAddAndDouble_Works()
         {
-            Assert.AreEqual(0, new VariableAndParameterReadClassUnderTest().WorkingAddAndDouble(0, 0));
-            Assert.AreEqual(2, new VariableAndParameterReadClassUnderTest().WorkingAddAndDouble(0, 1));
-            Assert.AreEqual(4, new VariableAndParameterReadClassUnderTest().WorkingAddAndDouble(1, 1));
-            Assert.AreEqual(6, new VariableAndParameterReadClassUnderTest().WorkingAddAndDouble(2, 1));
+            Assert.AreEqual(0, new VariableReadClassUnderTest().WorkingAddAndDouble(0, 0));
+            Assert.AreEqual(2, new VariableReadClassUnderTest().WorkingAddAndDouble(0, 1));
+            Assert.AreEqual(4, new VariableReadClassUnderTest().WorkingAddAndDouble(1, 1));
+            Assert.AreEqual(6, new VariableReadClassUnderTest().WorkingAddAndDouble(2, 1));
         }
 
         [Test]
-        [MethodTested(typeof(VariableAndParameterReadClassUnderTest), "WorkingAddAndDoubleViaField")]
+        [MethodTested(typeof(VariableReadClassUnderTest), "WorkingAddAndDoubleViaField")]
         public void WorkingAddAndDoubleViaField_Works()
         {
-            Assert.AreEqual(0, new VariableAndParameterReadClassUnderTest().WorkingAddAndDoubleViaField(0, 0));
-            Assert.AreEqual(2, new VariableAndParameterReadClassUnderTest().WorkingAddAndDoubleViaField(0, 1));
-            Assert.AreEqual(4, new VariableAndParameterReadClassUnderTest().WorkingAddAndDoubleViaField(1, 1));
-            Assert.AreEqual(6, new VariableAndParameterReadClassUnderTest().WorkingAddAndDoubleViaField(2, 1));
+            Assert.AreEqual(0, new VariableReadClassUnderTest().WorkingAddAndDoubleViaField(0, 0));
+            Assert.AreEqual(2, new VariableReadClassUnderTest().WorkingAddAndDoubleViaField(0, 1));
+            Assert.AreEqual(4, new VariableReadClassUnderTest().WorkingAddAndDoubleViaField(1, 1));
+            Assert.AreEqual(6, new VariableReadClassUnderTest().WorkingAddAndDoubleViaField(2, 1));
         }
 
         [Test]
@@ -74,9 +74,9 @@ namespace NinjaTurtles.Tests.Turtles.VariableAndParameterReadTurtleTestSuite.Tes
         {
             try
             {
-                MutationTestBuilder<VariableAndParameterReadClassUnderTest>
+                MutationTestBuilder<VariableReadClassUnderTest>
                     .For("AddAndDouble")
-                    .With<VariableAndParameterReadTurtle>()
+                    .With<VariableReadTurtle>()
                     .Run();
             }
             catch (MutationTestFailureException)
@@ -96,9 +96,9 @@ namespace NinjaTurtles.Tests.Turtles.VariableAndParameterReadTurtleTestSuite.Tes
         {
             try
             {
-                MutationTestBuilder<VariableAndParameterReadClassUnderTest>
+                MutationTestBuilder<VariableReadClassUnderTest>
                     .For("AddAndDoubleViaField")
-                    .With<VariableAndParameterReadTurtle>()
+                    .With<VariableReadTurtle>()
                     .Run();
             }
             catch (MutationTestFailureException)
@@ -116,9 +116,9 @@ namespace NinjaTurtles.Tests.Turtles.VariableAndParameterReadTurtleTestSuite.Tes
         [MethodTested(typeof(VariableWriteTurtle), "DoMutate")]
         public void WorkingAddAndDouble_Passes_Mutation_Testing()
         {
-            MutationTestBuilder<VariableAndParameterReadClassUnderTest>
+            MutationTestBuilder<VariableReadClassUnderTest>
                 .For("WorkingAddAndDouble")
-                .With<VariableAndParameterReadTurtle>()
+                .With<VariableReadTurtle>()
                 .Run();
         }
 
@@ -130,9 +130,9 @@ namespace NinjaTurtles.Tests.Turtles.VariableAndParameterReadTurtleTestSuite.Tes
         [MethodTested(typeof(VariableWriteTurtle), "DoMutate")]
         public void WorkingAddAndDoubleViaField_Passes_Mutation_Testing()
         {
-            MutationTestBuilder<VariableAndParameterReadClassUnderTest>
+            MutationTestBuilder<VariableReadClassUnderTest>
                 .For("WorkingAddAndDoubleViaField")
-                .With<VariableAndParameterReadTurtle>()
+                .With<VariableReadTurtle>()
                 .Run();
         }
     }
