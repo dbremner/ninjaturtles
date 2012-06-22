@@ -50,15 +50,44 @@ namespace NinjaTurtles.Tests.Turtles
 
             // V2 is only read for the return statement; this case is excluded in the code.
             Assert.AreEqual(9, mutations.Count);
-            StringAssert.EndsWith("read substitution Int32.P1 => Int32.P2", mutations[0].Description);
-            StringAssert.EndsWith("read substitution Int32.P1 => Int32.V0", mutations[1].Description);
-            StringAssert.EndsWith("read substitution Int32.P1 => Int32.V1", mutations[2].Description);
-            StringAssert.EndsWith("read substitution Int32.P2 => Int32.P1", mutations[3].Description);
-            StringAssert.EndsWith("read substitution Int32.P2 => Int32.V0", mutations[4].Description);
-            StringAssert.EndsWith("read substitution Int32.P2 => Int32.V1", mutations[5].Description);
-            StringAssert.EndsWith("read substitution Int32.V0 => Int32.P1", mutations[6].Description);
-            StringAssert.EndsWith("read substitution Int32.V0 => Int32.P2", mutations[7].Description);
-            StringAssert.EndsWith("read substitution Int32.V0 => Int32.V1", mutations[8].Description);
+            StringAssert.EndsWith("read substitution Int32.a => Int32.b", mutations[0].Description);
+            StringAssert.EndsWith("read substitution Int32.a => Int32.total", mutations[1].Description);
+            StringAssert.EndsWith("read substitution Int32.a => Int32.CS$1$0000", mutations[2].Description);
+            StringAssert.EndsWith("read substitution Int32.b => Int32.a", mutations[3].Description);
+            StringAssert.EndsWith("read substitution Int32.b => Int32.total", mutations[4].Description);
+            StringAssert.EndsWith("read substitution Int32.b => Int32.CS$1$0000", mutations[5].Description);
+            StringAssert.EndsWith("read substitution Int32.total => Int32.a", mutations[6].Description);
+            StringAssert.EndsWith("read substitution Int32.total => Int32.b", mutations[7].Description);
+            StringAssert.EndsWith("read substitution Int32.total => Int32.CS$1$0000", mutations[8].Description);
+        }
+
+        [Test]
+        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
+        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
+        [MethodTested(typeof(VariableAndParameterReadTurtle), "DoMutate")]
+        public void DoMutate_Returns_Correct_Seqeuences_Including_Field()
+        {
+            var module = new Module(Assembly.GetExecutingAssembly().Location);
+            module.LoadDebugInformation();
+            var method = module.Definition
+                .Types.Single(t => t.Name == "VariableAndParameterReadClassUnderTest")
+                .Methods.Single(t => t.Name == "AddAndDoubleViaField");
+
+            var mutator = new VariableAndParameterReadTurtle();
+            IList<MutantMetaData> mutations = mutator
+                .Mutate(method, module, method.Body.Instructions.Select(i => i.Offset).ToArray()).ToList();
+
+            // V2 is only read for the return statement; this case is excluded in the code.
+            Assert.AreEqual(9, mutations.Count);
+            StringAssert.EndsWith("read substitution Int32.a => Int32.b", mutations[0].Description);
+            StringAssert.EndsWith("read substitution Int32.a => Int32.CS$1$0000", mutations[1].Description);
+            StringAssert.EndsWith("read substitution Int32.a => Int32._total", mutations[2].Description);
+            StringAssert.EndsWith("read substitution Int32.b => Int32.a", mutations[3].Description);
+            StringAssert.EndsWith("read substitution Int32.b => Int32.CS$1$0000", mutations[4].Description);
+            StringAssert.EndsWith("read substitution Int32.b => Int32._total", mutations[5].Description);
+            StringAssert.EndsWith("read substitution Int32._total => Int32.a", mutations[6].Description);
+            StringAssert.EndsWith("read substitution Int32._total => Int32.b", mutations[7].Description);
+            StringAssert.EndsWith("read substitution Int32._total => Int32.CS$1$0000", mutations[8].Description);
         }
 
         [Test, Category("Mutation")]

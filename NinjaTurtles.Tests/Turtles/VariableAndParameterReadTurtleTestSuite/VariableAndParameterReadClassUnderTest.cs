@@ -23,16 +23,30 @@ namespace NinjaTurtles.Tests.Turtles.VariableAndParameterReadTurtleTestSuite
 {
     public class VariableAndParameterReadClassUnderTest
     {
+        private int _total;
+
         public int AddAndDouble(int a, int b)
         {
             int total = a + b;
             return 2 * total;
         }
 
+        public int AddAndDoubleViaField(int a, int b)
+        {
+            _total = a + b;
+            return 2 * _total;
+        }
+
         public int WorkingAddAndDouble(int a, int b)
         {
             int total = a + b;
             return 2 * total;
+        }
+
+        public int WorkingAddAndDoubleViaField(int a, int b)
+        {
+            _total = a + b;
+            return 2 * _total;
         }
     }
 }
