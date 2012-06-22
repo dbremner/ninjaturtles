@@ -48,15 +48,32 @@ namespace NinjaTurtles.Tests.Turtles
             IList<MutantMetaData> mutations = mutator
                 .Mutate(method, module, method.Body.Instructions.Select(i => i.Offset).ToArray()).ToList();
 
-            Assert.AreEqual(6, mutations.Count);
-            StringAssert.EndsWith("write substitution Int32.V0 => Int32.V1", mutations[0].Description);
-            StringAssert.EndsWith("write substitution Int32.V0 => Int32.V2", mutations[1].Description);
-            StringAssert.EndsWith("write substitution Int32.V1 => Int32.V0", mutations[2].Description);
-            StringAssert.EndsWith("write substitution Int32.V1 => Int32.V2", mutations[3].Description);
-            StringAssert.EndsWith("write substitution Int32.V2 => Int32.V0", mutations[4].Description);
-            StringAssert.EndsWith("write substitution Int32.V2 => Int32.V1", mutations[5].Description);
+            Assert.AreEqual(2, mutations.Count);
+            StringAssert.EndsWith("write substitution Int32.pointlessA => Int32.CS$1$0000", mutations[0].Description);
+            StringAssert.EndsWith("write substitution Int32.pointlessB => Int32.CS$1$0000", mutations[1].Description);
         }
 
+        [Test]
+        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
+        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
+        [MethodTested(typeof(VariableWriteTurtle), "DoMutate")]
+        public void DoMutate_Returns_Correct_Seqeuences_With_Fields()
+        {
+            var module = new Module(Assembly.GetExecutingAssembly().Location);
+            module.LoadDebugInformation();
+            var method = module.Definition
+                .Types.Single(t => t.Name == "VariableWriteClassUnderTest")
+                .Methods.Single(t => t.Name == "AddWithPointlessNonsenseViaFields");
+
+            var mutator = new VariableWriteTurtle();
+            IList<MutantMetaData> mutations = mutator
+                .Mutate(method, module, method.Body.Instructions.Select(i => i.Offset).ToArray()).ToList();
+
+            Assert.AreEqual(2, mutations.Count);
+            StringAssert.EndsWith("write substitution Int32._pointlessA => Int32.CS$1$0000", mutations[0].Description);
+            StringAssert.EndsWith("write substitution Int32._pointlessB => Int32.CS$1$0000", mutations[1].Description);
+        }
+        
         [Test, Category("Mutation")]
         public void DoMutate_Mutation_Tests()
         {
