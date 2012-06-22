@@ -33,6 +33,15 @@ namespace NinjaTurtles.Tests.Turtles.VariableAndParameterReadTurtleTestSuite.Tes
         public void AddAndDouble_Works()
         {
             Assert.AreEqual(0, new VariableAndParameterReadClassUnderTest().AddAndDouble(0, 0));
+            Assert.AreEqual(0, new VariableAndParameterReadClassUnderTest().AddAndDouble(1, -1));
+        }
+
+        [Test]
+        [MethodTested(typeof(VariableAndParameterReadClassUnderTest), "AddAndDoubleViaField")]
+        public void AddAndDoubleViaField_Works()
+        {
+            Assert.AreEqual(0, new VariableAndParameterReadClassUnderTest().AddAndDoubleViaField(0, 0));
+            Assert.AreEqual(0, new VariableAndParameterReadClassUnderTest().AddAndDoubleViaField(1, -1));
         }
 
         [Test]
@@ -45,14 +54,24 @@ namespace NinjaTurtles.Tests.Turtles.VariableAndParameterReadTurtleTestSuite.Tes
             Assert.AreEqual(6, new VariableAndParameterReadClassUnderTest().WorkingAddAndDouble(2, 1));
         }
 
-		[Test]
-		[MethodTested("NinjaTurtles.MutationTest", "Run")]
-		[MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
+        [Test]
+        [MethodTested(typeof(VariableAndParameterReadClassUnderTest), "WorkingAddAndDoubleViaField")]
+        public void WorkingAddAndDoubleViaField_Works()
+        {
+            Assert.AreEqual(0, new VariableAndParameterReadClassUnderTest().WorkingAddAndDoubleViaField(0, 0));
+            Assert.AreEqual(2, new VariableAndParameterReadClassUnderTest().WorkingAddAndDoubleViaField(0, 1));
+            Assert.AreEqual(4, new VariableAndParameterReadClassUnderTest().WorkingAddAndDoubleViaField(1, 1));
+            Assert.AreEqual(6, new VariableAndParameterReadClassUnderTest().WorkingAddAndDoubleViaField(2, 1));
+        }
+
+        [Test]
+        [MethodTested("NinjaTurtles.MutationTest", "Run")]
+        [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
         [MethodTested(typeof(MethodTurtleBase), "Mutate")]
         [MethodTested(typeof(MethodTurtleBase), "DoYield")]
         [MethodTested(typeof(VariableWriteTurtle), "DoMutate")]
         public void AddAndDouble_Fails_Mutation_Testing()
-		{
+        {
             try
             {
                 MutationTestBuilder<VariableAndParameterReadClassUnderTest>
@@ -73,10 +92,46 @@ namespace NinjaTurtles.Tests.Turtles.VariableAndParameterReadTurtleTestSuite.Tes
         [MethodTested(typeof(MethodTurtleBase), "Mutate")]
         [MethodTested(typeof(MethodTurtleBase), "DoYield")]
         [MethodTested(typeof(VariableWriteTurtle), "DoMutate")]
+        public void AddAndDoubleViaField_Fails_Mutation_Testing()
+        {
+            try
+            {
+                MutationTestBuilder<VariableAndParameterReadClassUnderTest>
+                    .For("AddAndDoubleViaField")
+                    .With<VariableAndParameterReadTurtle>()
+                    .Run();
+            }
+            catch (MutationTestFailureException)
+            {
+                return;
+            }
+            Assert.Fail("MutationTestFailureException was not thrown.");
+        }
+
+        [Test]
+        [MethodTested("NinjaTurtles.MutationTest", "Run")]
+        [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
+        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
+        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
+        [MethodTested(typeof(VariableWriteTurtle), "DoMutate")]
         public void WorkingAddAndDouble_Passes_Mutation_Testing()
         {
             MutationTestBuilder<VariableAndParameterReadClassUnderTest>
                 .For("WorkingAddAndDouble")
+                .With<VariableAndParameterReadTurtle>()
+                .Run();
+        }
+
+        [Test]
+        [MethodTested("NinjaTurtles.MutationTest", "Run")]
+        [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
+        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
+        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
+        [MethodTested(typeof(VariableWriteTurtle), "DoMutate")]
+        public void WorkingAddAndDoubleViaField_Passes_Mutation_Testing()
+        {
+            MutationTestBuilder<VariableAndParameterReadClassUnderTest>
+                .For("WorkingAddAndDoubleViaField")
                 .With<VariableAndParameterReadTurtle>()
                 .Run();
         }

@@ -60,53 +60,57 @@ namespace NinjaTurtles.Turtles
         /// </returns>
         protected override IEnumerable<MutantMetaData> DoMutate(MethodDefinition method, Module module)
         {
-            var parametersAndVariablesByType = GroupMethodParametersAndVariablesByType(method);
+            var variablesByType = GroupVariablesByType(method);
+            PopulateOperandsInVariables(method, variablesByType);
 
-            if (!parametersAndVariablesByType.Any(kv => parametersAndVariablesByType[kv.Key].Count > 1))
+            if (!variablesByType.Any(kv => variablesByType[kv.Key].Count > 1))
             {
                 yield break;
             }
 
-            foreach (var keyValuePair in parametersAndVariablesByType.Where(kv => kv.Value.Count > 1))
+            foreach (var keyValuePair in variablesByType.Where(kv => kv.Value.Count > 1))
             {
-                var indices = keyValuePair.Value.ToArray();
-                var ldargOperands = GetOperandsForParametersAndVariables(method);
+                var variables = keyValuePair.Value.ToList();
                 for (int index = 0; index < method.Body.Instructions.Count; index++)
                 {
                     var instruction = method.Body.Instructions[index];
-                    int? oldIndex = null;
+                    if (instruction.OpCode == OpCodes.Ldloc && instruction.Next.OpCode == OpCodes.Ret) continue;
+
+                    int oldIndex = -1;
                     if (instruction.OpCode == OpCodes.Ldarg)
                     {
-                        int ldargIndex = ((ParameterDefinition)instruction.Operand).Sequence;
-                        if (method.IsStatic || ldargIndex > 0)
-                        {
-                            oldIndex = -1 - ldargIndex;
-                        }
+                        int parameterIndex = ((ParameterDefinition)instruction.Operand).Sequence;
+                        oldIndex = variables.FindIndex(v => v.Type == VariableType.Parameter && v.Index == parameterIndex);
                     }
-                    if (instruction.OpCode == OpCodes.Ldloc && instruction.Next.OpCode != OpCodes.Ret)
+                    if (instruction.OpCode == OpCodes.Ldloc)
                     {
-                        int ldlocIndex = ((VariableDefinition)instruction.Operand).Index;
-                        oldIndex = ldlocIndex;
+                        int variableIndex = ((VariableDefinition)instruction.Operand).Index;
+                        oldIndex = variables.FindIndex(v => v.Type == VariableType.Local && v.Index == variableIndex);
+                    }
+                    if (instruction.OpCode == OpCodes.Ldfld)
+                    {
+                        string fieldName = ((FieldDefinition)instruction.Operand).Name;
+                        oldIndex = variables.FindIndex(v => v.Type == VariableType.Field && v.Name == fieldName);
                     }
 
-                    if (!oldIndex.HasValue) continue;
-
-                    int parameterPosition = Array.IndexOf(indices, oldIndex.Value);
-                    if (parameterPosition == -1) continue;
+                    if (oldIndex < 0) continue;
 
                     OpCode originalOpCode = instruction.OpCode;
                     object originalOperand = instruction.Operand;
-                    foreach (var sequence in indices)
-                    {
-                        if (sequence == oldIndex.Value) continue;
+                    var originalVariable = variables[oldIndex];
 
-                        if (instruction.OpCode == OpCodes.Ldloc
+                    for (int newIndex = 0; newIndex < variables.Count; newIndex++)
+                    {
+                        if (newIndex == oldIndex) continue;
+                        var variable = variables[newIndex];
+                        if (variable.Operand == null) continue;
+
+                        if (variable.Type == VariableType.Parameter
+                            && instruction.OpCode == OpCodes.Ldloc
                             && instruction.Previous.OpCode == OpCodes.Stloc
-                            &&
-                            ((VariableDefinition)instruction.Operand).Index ==
-                            ((VariableDefinition)instruction.Previous.Operand).Index
+                            && ((VariableDefinition)instruction.Operand).Index == ((VariableDefinition)instruction.Previous.Operand).Index
                             && instruction.Previous.Previous.OpCode == OpCodes.Ldarg
-                            && ((ParameterDefinition)instruction.Previous.Previous.Operand).Index == -1 - sequence)
+                            && ((ParameterDefinition)instruction.Previous.Previous.Operand).Index == variable.Index)
                         {
                             // The .NET compiler sometimes adds a pointless
                             // cache of a parameter into a local variable
@@ -120,16 +124,16 @@ namespace NinjaTurtles.Turtles
                             continue;
                         }
 
-                        instruction.OpCode = sequence >= 0 ? OpCodes.Ldloc : OpCodes.Ldarg;
-                        instruction.Operand = ldargOperands[sequence];
+                        instruction.OpCode = variable.GetOpCode();
+                        instruction.Operand = variable.Operand;
 
                         var description =
                             string.Format(
                                 "{0:x4}: read substitution {1}.{2} => {1}.{3}",
                                 GetOriginalOffset(index),
                                 keyValuePair.Key.Name,
-                                GetIndexAsString(oldIndex.Value),
-                                GetIndexAsString(sequence));
+                                originalVariable.Name,
+                                variable.Name);
 
                         var mutantMetaData = DoYield(method, module, description, index);
                         yield return mutantMetaData;
@@ -140,48 +144,90 @@ namespace NinjaTurtles.Turtles
             }
         }
 
-        private string GetIndexAsString(int index)
+        private enum VariableType
         {
-            return index < 0 ? "P" + (-1 - index) : "V" + index;
+            Local,
+            Parameter,
+            Field
         }
 
-        private static IDictionary<TypeReference, IList<int>> GroupMethodParametersAndVariablesByType(MethodDefinition method)
+        private class Variable
         {
-            IDictionary<TypeReference, IList<int>> parametersAndVariables = new Dictionary<TypeReference, IList<int>>();
+            public Variable(VariableType type, int index, string name)
+            {
+                Type = type;
+                Index = index;
+                Name = name;
+            }
+
+            public VariableType Type { get; set; }
+            public int Index { get; set; }
+            public string Name { get; set; }
+            public object Operand { get; set; }
+
+            public OpCode GetOpCode()
+            {
+                switch (Type)
+                {
+                    case VariableType.Local:
+                        return OpCodes.Ldloc;
+                    case VariableType.Parameter:
+                        return OpCodes.Ldarg;
+                    default:
+                        return OpCodes.Ldfld;
+                }
+            }
+        }
+
+        private static IDictionary<TypeReference, IList<Variable>> GroupVariablesByType(MethodDefinition method)
+        {
+            IDictionary<TypeReference, IList<Variable>> variables = new Dictionary<TypeReference, IList<Variable>>();
             int offset = method.IsStatic ? 0 : 1;
             foreach (var parameter in method.Parameters)
             {
                 var type = parameter.ParameterType;
-                if (!parametersAndVariables.ContainsKey(type))
+                if (!variables.ContainsKey(type))
                 {
-                    parametersAndVariables.Add(type, new List<int>());
+                    variables.Add(type, new List<Variable>());
                 }
-                parametersAndVariables[type].Add(-1 - parameter.Index - offset);
+                variables[type].Add(new Variable(VariableType.Parameter, parameter.Index + offset, parameter.Name));
             }
             foreach (var variable in method.Body.Variables)
             {
                 var type = variable.VariableType;
-                if (!parametersAndVariables.ContainsKey(type))
+                if (!variables.ContainsKey(type))
                 {
-                    parametersAndVariables.Add(type, new List<int>());
+                    variables.Add(type, new List<Variable>());
                 }
-                parametersAndVariables[type].Add(variable.Index);
+                variables[type].Add(new Variable(VariableType.Local, variable.Index, variable.Name));
             }
-            return parametersAndVariables;
+            foreach (var field in method.DeclaringType.Fields)
+            {
+                var type = field.FieldType;
+                if (!variables.ContainsKey(type))
+                {
+                    variables.Add(type, new List<Variable>());
+                }
+                variables[type].Add(new Variable(VariableType.Field, -1, field.Name));
+            }
+            return variables;
         }
 
-        private static IDictionary<int, object> GetOperandsForParametersAndVariables(MethodDefinition method)
+        private static void PopulateOperandsInVariables(MethodDefinition method, IDictionary<TypeReference, IList<Variable>> variables)
         {
-            IDictionary<int, object> operands = new Dictionary<int, object>();
             foreach (var instruction in method.Body.Instructions)
             {
                 if (instruction.OpCode == OpCodes.Ldarg)
                 {
                     var parameterDefinition = (ParameterDefinition)instruction.Operand;
                     int sequence = parameterDefinition.Sequence;
-                    if (!operands.ContainsKey(-1 - sequence))
+                    if (!variables.ContainsKey(parameterDefinition.ParameterType)) continue;
+                    var variable =
+                        variables[parameterDefinition.ParameterType]
+                            .SingleOrDefault(v => v.Type == VariableType.Parameter && v.Index == sequence);
+                    if (variable != null)
                     {
-                        operands.Add(-1 - sequence, parameterDefinition);
+                        variable.Operand = instruction.Operand;
                     }
                 }
             }
@@ -191,13 +237,32 @@ namespace NinjaTurtles.Turtles
                 {
                     var variableDefinition = (VariableDefinition)instruction.Operand;
                     int index = variableDefinition.Index;
-                    if (!operands.ContainsKey(index))
+                    if (!variables.ContainsKey(variableDefinition.VariableType)) continue;
+                    var variable =
+                        variables[variableDefinition.VariableType]
+                            .SingleOrDefault(v => v.Type == VariableType.Local && v.Index == index);
+                    if (variable != null)
                     {
-                        operands.Add(index, variableDefinition);
+                        variable.Operand = instruction.Operand;
                     }
                 }
             }
-            return operands;
+            foreach (var instruction in method.Body.Instructions)
+            {
+                if (instruction.OpCode == OpCodes.Ldfld)
+                {
+                    var fieldDefinition = (FieldDefinition)instruction.Operand;
+                    string name = fieldDefinition.Name;
+                    if (!variables.ContainsKey(fieldDefinition.FieldType)) continue;
+                    var variable =
+                        variables[fieldDefinition.FieldType]
+                            .SingleOrDefault(v => v.Type == VariableType.Field && v.Name == name);
+                    if (variable != null)
+                    {
+                        variable.Operand = instruction.Operand;
+                    }
+                }
+            }
         }
     }
 }
