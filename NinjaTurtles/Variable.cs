@@ -37,7 +37,7 @@ namespace NinjaTurtles
         public string Name { get; set; }
         public object Operand { get; set; }
 
-        public OpCode GetOpCode()
+        public OpCode GetReadOpCode()
         {
             switch (Type)
             {
@@ -47,6 +47,19 @@ namespace NinjaTurtles
                     return OpCodes.Ldarg;
                 default:
                     return OpCodes.Ldfld;
+            }
+        }
+
+        public OpCode GetWriteOpCode()
+        {
+            switch (Type)
+            {
+                case VariableType.Local:
+                    return OpCodes.Stloc;
+                case VariableType.Parameter:
+                    return OpCodes.Starg;
+                default:
+                    return OpCodes.Stfld;
             }
         }
     }

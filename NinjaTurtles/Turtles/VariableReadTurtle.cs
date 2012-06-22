@@ -124,7 +124,7 @@ namespace NinjaTurtles.Turtles
                             continue;
                         }
 
-                        instruction.OpCode = variable.GetOpCode();
+                        instruction.OpCode = variable.GetReadOpCode();
                         instruction.Operand = variable.Operand;
 
                         var description =
@@ -195,9 +195,6 @@ namespace NinjaTurtles.Turtles
                         variable.Operand = instruction.Operand;
                     }
                 }
-            }
-            foreach (var instruction in method.Body.Instructions)
-            {
                 if (instruction.OpCode == OpCodes.Ldloc)
                 {
                     var variableDefinition = (VariableDefinition)instruction.Operand;
@@ -211,9 +208,6 @@ namespace NinjaTurtles.Turtles
                         variable.Operand = instruction.Operand;
                     }
                 }
-            }
-            foreach (var instruction in method.Body.Instructions)
-            {
                 if (instruction.OpCode == OpCodes.Ldfld)
                 {
                     var fieldDefinition = (FieldDefinition)instruction.Operand;

@@ -59,7 +59,8 @@ namespace NinjaTurtles.Turtles
         /// </returns>
         protected override IEnumerable<MutantMetaData> DoMutate(MethodDefinition method, Module module)
         {
-            var variablesByType = GroupMethodVariablesByType(method);
+            var variablesByType = GroupVariablesByType(method);
+            PopulateOperandsInVariables(method, variablesByType);
 
             if (!variablesByType.Any(kv => variablesByType[kv.Key].Count > 1))
             {
@@ -68,120 +69,118 @@ namespace NinjaTurtles.Turtles
 
             foreach (var keyValuePair in variablesByType.Where(kv => kv.Value.Count > 1))
             {
-                var indices = keyValuePair.Value.ToArray();
-                var stlocOperands = GetOperandsForVariables(method);
-                var returnVariableIndex = GetIndexOfReturnVariableInDebugCode(method);
+                var variables = keyValuePair.Value.ToList();
                 for (int index = 0; index < method.Body.Instructions.Count; index++)
                 {
                     var instruction = method.Body.Instructions[index];
-                    if (instruction.OpCode != OpCodes.Stloc) continue;
-                    if (returnVariableIndex.HasValue
-                        && ((VariableDefinition)instruction.Operand).Index == returnVariableIndex.Value
-                        && instruction.Previous.OpCode == OpCodes.Ldc_I4
-                        && (int)instruction.Previous.Operand == 0)
+                    if (instruction.OpCode == OpCodes.Ldloc && instruction.Next.OpCode == OpCodes.Ret) continue;
+
+                    int oldIndex = -1;
+                    if (instruction.OpCode == OpCodes.Stloc)
                     {
-                        continue;
+                        int variableIndex = ((VariableDefinition)instruction.Operand).Index;
+                        oldIndex = variables.FindIndex(v => v.Type == VariableType.Local && v.Index == variableIndex);
+                    }
+                    if (instruction.OpCode == OpCodes.Stfld)
+                    {
+                        string fieldName = ((FieldDefinition)instruction.Operand).Name;
+                        oldIndex = variables.FindIndex(v => v.Type == VariableType.Field && v.Name == fieldName);
                     }
 
-                    int ldlocIndex = ((VariableDefinition)instruction.Operand).Index;
-                    int oldIndex = ldlocIndex;
-                    int parameterPosition = Array.IndexOf(indices, oldIndex);
-                    if (parameterPosition == -1) continue;
+                    if (oldIndex < 0) continue;
 
+                    OpCode originalOpCode = instruction.OpCode;
                     object originalOperand = instruction.Operand;
-                    foreach (var sequence in indices)
+                    var originalVariable = variables[oldIndex];
+
+                    for (int newIndex = 0; newIndex < variables.Count; newIndex++)
                     {
-                        if (sequence == oldIndex) continue;
+                        if (newIndex == oldIndex) continue;
+                        var variable = variables[newIndex];
+                        if (variable.Operand == null) continue;
 
                         if (instruction.IsPartOfCompilerGeneratedDispose())
                         {
                             continue;
                         }
 
-                        instruction.Operand = stlocOperands[sequence];
+                        instruction.OpCode = variable.GetWriteOpCode();
+                        instruction.Operand = variable.Operand;
 
                         var description =
                             string.Format(
-                                "{0:x4}: write substitution {1}.V{2} => {1}.V{3}",
+                                "{0:x4}: write substitution {1}.{2} => {1}.{3}",
                                 GetOriginalOffset(index),
                                 keyValuePair.Key.Name,
-                                oldIndex,
-                                sequence);
+                                originalVariable.Name,
+                                variable.Name);
 
                         MutantMetaData mutation = DoYield(method, module, description, index);
                         yield return mutation;
 
                     }
+                    instruction.OpCode = originalOpCode;
                     instruction.Operand = originalOperand;
                 }
             }
         }
 
-        private static int? GetIndexOfReturnVariableInDebugCode(MethodDefinition method)
+        private static IDictionary<TypeReference, IList<Variable>> GroupVariablesByType(MethodDefinition method)
         {
-            int? returnVariableIndex = null;
-            var loadReturnVariableInstruction = method.Body.Instructions.Last().Previous;
-            if (loadReturnVariableInstruction.OpCode == OpCodes.Ldloc)
-            {
-                returnVariableIndex = ((VariableDefinition)loadReturnVariableInstruction.Operand).Index;
-            }
-            if (returnVariableIndex.HasValue)
-            {
-                // A variable that is only ever read to be returned is either
-                // injected in debug mode by the compiler, or is explicitly
-                // declared and used when compiled in release mode. We treat
-                // both cases the same.
-                bool isVariableEverReadBeforeReturn = false;
-                foreach (var instruction in method.Body.Instructions)
-                {
-                    if (instruction.OpCode != OpCodes.Ldloc) continue;
-                    if (instruction == method.Body.Instructions.Last().Previous) continue;
-
-                    if (((VariableDefinition)instruction.Operand).Index == returnVariableIndex.Value)
-                    {
-                        isVariableEverReadBeforeReturn = true;
-                        break;
-                    }
-                }
-                if (isVariableEverReadBeforeReturn)
-                {
-                    returnVariableIndex = null;
-                }
-            }
-            return returnVariableIndex;
-        }
-
-        private static IDictionary<TypeReference, IList<int>> GroupMethodVariablesByType(MethodDefinition method)
-        {
-            IDictionary<TypeReference, IList<int>> variables = new Dictionary<TypeReference, IList<int>>();
+            IDictionary<TypeReference, IList<Variable>> variables = new Dictionary<TypeReference, IList<Variable>>();
+            int offset = method.IsStatic ? 0 : 1;
             foreach (var variable in method.Body.Variables)
             {
                 var type = variable.VariableType;
                 if (!variables.ContainsKey(type))
                 {
-                    variables.Add(type, new List<int>());
+                    variables.Add(type, new List<Variable>());
                 }
-                variables[type].Add(variable.Index);
+                variables[type].Add(new Variable(VariableType.Local, variable.Index, variable.Name));
+            }
+            foreach (var field in method.DeclaringType.Fields)
+            {
+                var type = field.FieldType;
+                if (!variables.ContainsKey(type))
+                {
+                    variables.Add(type, new List<Variable>());
+                }
+                variables[type].Add(new Variable(VariableType.Field, -1, field.Name));
             }
             return variables;
         }
 
-        private static IDictionary<int, object> GetOperandsForVariables(MethodDefinition method)
+        private static void PopulateOperandsInVariables(MethodDefinition method, IDictionary<TypeReference, IList<Variable>> variables)
         {
-            IDictionary<int, object> operands = new Dictionary<int, object>();
             foreach (var instruction in method.Body.Instructions)
             {
-                if (instruction.OpCode != OpCodes.Stloc) continue;
-
-                var variableDefinition = (VariableDefinition)instruction.Operand;
-                int index = variableDefinition.Index;
-
-                if (!operands.ContainsKey(index))
+                if (instruction.OpCode == OpCodes.Ldloc)
                 {
-                    operands.Add(index, variableDefinition);
+                    var variableDefinition = (VariableDefinition)instruction.Operand;
+                    int index = variableDefinition.Index;
+                    if (!variables.ContainsKey(variableDefinition.VariableType)) continue;
+                    var variable =
+                        variables[variableDefinition.VariableType]
+                            .SingleOrDefault(v => v.Type == VariableType.Local && v.Index == index);
+                    if (variable != null)
+                    {
+                        variable.Operand = instruction.Operand;
+                    }
+                }
+                if (instruction.OpCode == OpCodes.Ldfld)
+                {
+                    var fieldDefinition = (FieldDefinition)instruction.Operand;
+                    string name = fieldDefinition.Name;
+                    if (!variables.ContainsKey(fieldDefinition.FieldType)) continue;
+                    var variable =
+                        variables[fieldDefinition.FieldType]
+                            .SingleOrDefault(v => v.Type == VariableType.Field && v.Name == name);
+                    if (variable != null)
+                    {
+                        variable.Operand = instruction.Operand;
+                    }
                 }
             }
-            return operands;
         }
     }
 }

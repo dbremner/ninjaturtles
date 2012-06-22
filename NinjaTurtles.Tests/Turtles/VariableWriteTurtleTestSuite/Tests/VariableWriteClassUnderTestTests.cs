@@ -37,6 +37,14 @@ namespace NinjaTurtles.Tests.Turtles.VariableWriteTurtleTestSuite.Tests
         }
 
         [Test]
+        [MethodTested(typeof(VariableWriteClassUnderTest), "AddWithPointlessNonsenseViaFields")]
+        public void AddWithPointlessNonsenseViaFields_Works()
+        {
+            Assert.AreEqual(4, new VariableWriteClassUnderTest().AddWithPointlessNonsenseViaFields(1, 3));
+            Assert.AreEqual(85, new VariableWriteClassUnderTest().AddWithPointlessNonsenseViaFields(-7, 92));
+        }
+
+        [Test]
         [MethodTested(typeof(VariableWriteClassUnderTest), "AddWithoutPointlessNonsense")]
         public void AddWithoutPointlessNonsense_Works()
         {
@@ -66,6 +74,28 @@ namespace NinjaTurtles.Tests.Turtles.VariableWriteTurtleTestSuite.Tests
             Assert.Fail("MutationTestFailureException was not thrown.");
         }
 
+        [Test]
+        [MethodTested("NinjaTurtles.MutationTest", "Run")]
+        [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
+        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
+        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
+        [MethodTested(typeof(VariableWriteTurtle), "DoMutate")]
+        public void AddWithPointlessNonsenseViaFields_Fails_Mutation_Testing()
+        {
+            try
+            {
+                MutationTestBuilder<VariableWriteClassUnderTest>
+                    .For("AddWithPointlessNonsenseViaFields")
+                    .With<VariableWriteTurtle>()
+                    .Run();
+            }
+            catch (MutationTestFailureException)
+            {
+                return;
+            }
+            Assert.Fail("MutationTestFailureException was not thrown.");
+        }
+        
         [Test]
         [MethodTested("NinjaTurtles.MutationTest", "Run")]
         [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]

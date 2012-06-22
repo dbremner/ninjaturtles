@@ -23,10 +23,20 @@ namespace NinjaTurtles.Tests.Turtles.VariableWriteTurtleTestSuite
 {
     public class VariableWriteClassUnderTest
     {
+        private int _pointlessA;
+        private int _pointlessB;
+
         public int AddWithPointlessNonsense(int a, int b)
         {
             int pointlessA = a;
             int pointlessB = b;
+            return a + b;
+        }
+
+        public int AddWithPointlessNonsenseViaFields(int a, int b)
+        {
+            _pointlessA = a;
+            _pointlessB = b;
             return a + b;
         }
 
