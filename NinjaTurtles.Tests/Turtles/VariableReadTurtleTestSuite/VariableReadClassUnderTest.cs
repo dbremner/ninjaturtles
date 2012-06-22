@@ -19,7 +19,7 @@
 
 #endregion
 
-namespace NinjaTurtles.Tests.Turtles.VariableAndParameterReadTurtleTestSuite
+namespace NinjaTurtles.Tests.Turtles.VariableReadTurtleTestSuite
 {
     public class VariableReadClassUnderTest
     {

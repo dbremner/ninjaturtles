@@ -30,7 +30,7 @@ using NinjaTurtles.Turtles;
 namespace NinjaTurtles.Tests.Turtles
 {
     [TestFixture]
-    public class VariableAndParameterReadTurtleTests
+    public class VariableReadTurtleTests
     {
         [Test]
         [MethodTested(typeof(MethodTurtleBase), "Mutate")]

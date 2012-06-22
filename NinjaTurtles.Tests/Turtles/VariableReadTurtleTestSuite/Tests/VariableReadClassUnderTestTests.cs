@@ -23,7 +23,7 @@ using NUnit.Framework;
 
 using NinjaTurtles.Turtles;
 
-namespace NinjaTurtles.Tests.Turtles.VariableAndParameterReadTurtleTestSuite.Tests
+namespace NinjaTurtles.Tests.Turtles.VariableReadTurtleTestSuite.Tests
 {
     [TestFixture]
     public class VariableReadClassUnderTestTests
