@@ -35,16 +35,16 @@ namespace NinjaTurtles.Tests.Turtles
         [Test]
         [MethodTested(typeof(MethodTurtleBase), "Mutate")]
         [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(VariableAndParameterReadTurtle), "DoMutate")]
+        [MethodTested(typeof(VariableReadTurtle), "DoMutate")]
         public void DoMutate_Returns_Correct_Seqeuences()
         {
             var module = new Module(Assembly.GetExecutingAssembly().Location);
             module.LoadDebugInformation();
             var method = module.Definition
-                .Types.Single(t => t.Name == "VariableAndParameterReadClassUnderTest")
+                .Types.Single(t => t.Name == "VariableReadClassUnderTest")
                 .Methods.Single(t => t.Name == "AddAndDouble");
 
-            var mutator = new VariableAndParameterReadTurtle();
+            var mutator = new VariableReadTurtle();
             IList<MutantMetaData> mutations = mutator
                 .Mutate(method, module, method.Body.Instructions.Select(i => i.Offset).ToArray()).ToList();
 
@@ -64,16 +64,16 @@ namespace NinjaTurtles.Tests.Turtles
         [Test]
         [MethodTested(typeof(MethodTurtleBase), "Mutate")]
         [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(VariableAndParameterReadTurtle), "DoMutate")]
+        [MethodTested(typeof(VariableReadTurtle), "DoMutate")]
         public void DoMutate_Returns_Correct_Seqeuences_Including_Field()
         {
             var module = new Module(Assembly.GetExecutingAssembly().Location);
             module.LoadDebugInformation();
             var method = module.Definition
-                .Types.Single(t => t.Name == "VariableAndParameterReadClassUnderTest")
+                .Types.Single(t => t.Name == "VariableReadClassUnderTest")
                 .Methods.Single(t => t.Name == "AddAndDoubleViaField");
 
-            var mutator = new VariableAndParameterReadTurtle();
+            var mutator = new VariableReadTurtle();
             IList<MutantMetaData> mutations = mutator
                 .Mutate(method, module, method.Body.Instructions.Select(i => i.Offset).ToArray()).ToList();
 
@@ -93,7 +93,7 @@ namespace NinjaTurtles.Tests.Turtles
         [Test, Category("Mutation")]
         public void DoMutate_Mutation_Tests()
         {
-            MutationTestBuilder<VariableAndParameterReadTurtle>.For("DoMutate")
+            MutationTestBuilder<VariableReadTurtle>.For("DoMutate")
                 .MergeReportTo("SampleReport.xml")
                 .Run();
         }

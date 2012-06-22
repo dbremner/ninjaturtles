@@ -21,7 +21,7 @@
 
 namespace NinjaTurtles.Tests.Turtles.VariableAndParameterReadTurtleTestSuite
 {
-    public class VariableAndParameterReadClassUnderTest
+    public class VariableReadClassUnderTest
     {
         private int _total;
 
