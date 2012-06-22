@@ -30,11 +30,11 @@ namespace NinjaTurtles.Turtles
 {
     /// <summary>
     /// An implementation of <see cref="IMethodTurtle" /> that identifies local
-    /// variables and method parameters of the same type, and permutes any
-    /// reads from them. For example, if two <see cref="Int32" /> parameters
-    /// <c>a</c> and <c>b</c> exist, along with a local variable <c>c</c> of
-    /// the same type, then a read from <c>a</c> will be replaced by one from
-    /// <c>b</c> and <c>c</c> in turn, and so on.
+    /// variables, method parameters and fields of the same type, and permutes
+    /// any reads from them. For example, if two <see cref="Int32" />
+    /// parameters <c>a</c> and <c>b</c> exist, along with a local variable
+    /// <c>c</c> of the same type, then a read from <c>a</c> will be replaced
+    /// by one from <c>b</c> and <c>c</c> in turn, and so on.
     /// </summary>
     public class VariableReadTurtle : MethodTurtleBase
     {
@@ -140,41 +140,6 @@ namespace NinjaTurtles.Turtles
                     }
                     instruction.OpCode = originalOpCode;
                     instruction.Operand = originalOperand;
-                }
-            }
-        }
-
-        private enum VariableType
-        {
-            Local,
-            Parameter,
-            Field
-        }
-
-        private class Variable
-        {
-            public Variable(VariableType type, int index, string name)
-            {
-                Type = type;
-                Index = index;
-                Name = name;
-            }
-
-            public VariableType Type { get; set; }
-            public int Index { get; set; }
-            public string Name { get; set; }
-            public object Operand { get; set; }
-
-            public OpCode GetOpCode()
-            {
-                switch (Type)
-                {
-                    case VariableType.Local:
-                        return OpCodes.Ldloc;
-                    case VariableType.Parameter:
-                        return OpCodes.Ldarg;
-                    default:
-                        return OpCodes.Ldfld;
                 }
             }
         }

@@ -92,6 +92,8 @@
     <Compile Include="Turtles\VariableReadTurtle.cs" />
     <Compile Include="Turtles\VariableWriteTurtle.cs" />
     <Compile Include="TypeResolver.cs" />
+    <Compile Include="Variable.cs" />
+    <Compile Include="VariableType.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
