@@ -87,7 +87,8 @@ namespace NinjaTurtles.Tests.Turtles
 		[Test]
         [MethodTested(typeof(MethodTurtleBase), "Mutate")]
         [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(ArithmeticOperatorTurtle), "DoMutate")]
+        [MethodTested(typeof(OpCodeRotationTurtle), "DoMutate")]
+        [MethodTested(typeof(ArithmeticOperatorTurtle), ".ctor")]
         public void DoMutate_Returns_Correct_Replacements_For_Addition()
 		{
 			var assembly = CreateTestAssembly(OpCodes.Add);
@@ -128,7 +129,8 @@ namespace NinjaTurtles.Tests.Turtles
 		[Test]
         [MethodTested(typeof(MethodTurtleBase), "Mutate")]
         [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(ArithmeticOperatorTurtle), "DoMutate")]
+        [MethodTested(typeof(OpCodeRotationTurtle), "DoMutate")]
+        [MethodTested(typeof(ArithmeticOperatorTurtle), ".ctor")]
         public void DoMutate_Returns_Correct_Replacements_For_Subtraction()
 		{
 			var assembly = CreateTestAssembly(OpCodes.Sub);
@@ -169,7 +171,8 @@ namespace NinjaTurtles.Tests.Turtles
 		[Test]
         [MethodTested(typeof(MethodTurtleBase), "Mutate")]
         [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(ArithmeticOperatorTurtle), "DoMutate")]
+        [MethodTested(typeof(OpCodeRotationTurtle), "DoMutate")]
+        [MethodTested(typeof(ArithmeticOperatorTurtle), ".ctor")]
         public void DoMutate_Returns_Correct_Replacements_For_Division_And_Describes_Appropriately()
 		{
 			var assembly = CreateTestAssembly(OpCodes.Div);
@@ -222,7 +225,8 @@ namespace NinjaTurtles.Tests.Turtles
 		[Test]
         [MethodTested(typeof(MethodTurtleBase), "Mutate")]
         [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(ArithmeticOperatorTurtle), "DoMutate")]
+        [MethodTested(typeof(OpCodeRotationTurtle), "DoMutate")]
+        [MethodTested(typeof(ArithmeticOperatorTurtle), ".ctor")]
         public void DoMutate_Returns_Correct_Replacements_For_Multiplication()
 		{
 			var assembly = CreateTestAssembly(OpCodes.Mul);
@@ -263,7 +267,8 @@ namespace NinjaTurtles.Tests.Turtles
 		[Test]
         [MethodTested(typeof(MethodTurtleBase), "Mutate")]
         [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(ArithmeticOperatorTurtle), "DoMutate")]
+        [MethodTested(typeof(OpCodeRotationTurtle), "DoMutate")]
+        [MethodTested(typeof(ArithmeticOperatorTurtle), ".ctor")]
         public void DoMutate_Returns_Correct_Replacements_For_Remainder()
 		{
 			var assembly = CreateTestAssembly(OpCodes.Rem);
@@ -300,6 +305,14 @@ namespace NinjaTurtles.Tests.Turtles
 			Assert.AreEqual(1, mul);
 			Assert.AreEqual(1, div);
 		}
+
+        [Test, Category("Mutation")]
+        public void Constructor_Mutation_Tests()
+        {
+            MutationTestBuilder<ArithmeticOperatorTurtle>.For(".ctor")
+                .MergeReportTo("SampleReport.xml")
+                .Run();
+        }
 	}
 }
 
