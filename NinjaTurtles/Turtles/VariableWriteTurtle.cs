@@ -128,7 +128,6 @@ namespace NinjaTurtles.Turtles
         private static IDictionary<TypeReference, IList<Variable>> GroupVariablesByType(MethodDefinition method)
         {
             IDictionary<TypeReference, IList<Variable>> variables = new Dictionary<TypeReference, IList<Variable>>();
-            int offset = method.IsStatic ? 0 : 1;
             foreach (var variable in method.Body.Variables)
             {
                 var type = variable.VariableType;

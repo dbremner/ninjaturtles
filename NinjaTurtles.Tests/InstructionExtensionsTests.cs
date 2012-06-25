@@ -37,20 +37,32 @@ namespace NinjaTurtles.Tests
             var i3 = Instruction.Create(OpCodes.Br, i5);
             var i2 = Instruction.Create(OpCodes.Br, i3);
             var i4 = Instruction.Create(OpCodes.Nop);
+            var i8 = Instruction.Create(OpCodes.Nop);
+            var i6 = Instruction.Create(OpCodes.Br, i8);
+            var i7 = Instruction.Create(OpCodes.Nop);
             i1.Offset = 1;
             i2.Offset = 2;
             i3.Offset = 3;
             i4.Offset = 4;
             i5.Offset = 5;
+            i6.Offset = 6;
+            i7.Offset = 7;
+            i8.Offset = 8;
             i1.Next = i2;
             i2.Next = i3;
             i3.Next = i4;
             i4.Next = i5;
+            i5.Next = i6;
+            i6.Next = i7;
+            i7.Next = i8;
             Assert.IsFalse(i1.IsMeaninglessUnconditionalBranch());
             Assert.IsTrue(i2.IsMeaninglessUnconditionalBranch());
             Assert.IsFalse(i3.IsMeaninglessUnconditionalBranch());
             Assert.IsFalse(i4.IsMeaninglessUnconditionalBranch());
             Assert.IsFalse(i5.IsMeaninglessUnconditionalBranch());
+            Assert.IsFalse(i6.IsMeaninglessUnconditionalBranch());
+            Assert.IsFalse(i7.IsMeaninglessUnconditionalBranch());
+            Assert.IsFalse(i8.IsMeaninglessUnconditionalBranch());
         }
 
         [Test, Category("Mutation")]

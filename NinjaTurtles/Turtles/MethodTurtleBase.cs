@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -74,6 +75,27 @@ namespace NinjaTurtles.Turtles
             foreach (var mutation in DoMutate(method, module))
             {
                 yield return mutation;
+            }
+            if (method.ReturnType.Name == "IEnumerable`1")
+            {
+                var nestedType =
+                    method.DeclaringType.NestedTypes.FirstOrDefault(
+                        t => t.Name.StartsWith(string.Format("<{0}>", method.Name))
+                        && t.Interfaces.Any(i => i.Name == "IEnumerable`1"));
+                if (nestedType != null)
+                {
+                    var nestedMethod = nestedType.Methods.FirstOrDefault(m => m.Name == "MoveNext");
+                    if (nestedMethod != null)
+                    {
+                        _originalOffsets = nestedMethod.Body.Instructions.Select(i => i.Offset).ToArray();
+                        _method = nestedMethod;
+                        nestedMethod.Body.SimplifyMacros();
+                        foreach (var mutation in DoMutate(nestedMethod, module))
+                        {
+                            yield return mutation;
+                        }
+                    }
+                }
             }
             method.Body.OptimizeMacros();
         }
