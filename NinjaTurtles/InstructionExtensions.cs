@@ -31,8 +31,8 @@ namespace NinjaTurtles
     {
         internal static  bool IsMeaninglessUnconditionalBranch(this Instruction instruction)
         {
-            if (instruction.OpCode != OpCodes.Br) return false;
-            return ((Instruction)instruction.Operand).Offset == instruction.Next.Offset;
+            return instruction.OpCode == OpCodes.Br
+                && ((Instruction)instruction.Operand).Offset == instruction.Next.Offset;
         }
 
         internal static bool FollowsSequence(this Instruction instruction, params OpCode[] sequence)
