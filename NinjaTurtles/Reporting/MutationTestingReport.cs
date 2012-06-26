@@ -99,7 +99,7 @@ namespace NinjaTurtles.Reporting
             }
             var sourceFile = SourceFiles.First(s => s.Url == sourceFileUrl);
             var sequencePoints = method.Body.Instructions
-                .Where(i => i.SequencePoint != null)
+                .Where(i => i.SequencePoint != null && i.ShouldReportSequencePoint())
                 .Select(i => i.SequencePoint).Distinct();
             foreach (var point in sequencePoints)
             {

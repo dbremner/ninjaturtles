@@ -20,6 +20,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Mono.Cecil;
@@ -86,5 +87,35 @@ namespace NinjaTurtles
             return false;
         }
 
+        internal static bool ShouldReportSequencePoint(this Instruction instruction)
+        {
+            var instructions = new List<Instruction>();
+            do
+            {
+                if (instruction.OpCode != OpCodes.Nop)
+                {
+                    instructions.Add(instruction);
+                }
+                instruction = instruction.Next;
+            } while (instruction != null && instruction.SequencePoint == null);
+            if (instructions.All(i => i.OpCode == OpCodes.Ret))
+            {
+                return false;
+            }
+            if (instructions.Count == 2)
+            {
+                Instruction first = instructions[0];
+                Instruction second = instructions[1];
+                if (((first.OpCode == OpCodes.Ldarg
+                    && ((ParameterDefinition)first.Operand).Sequence == 0 )
+                    || first.OpCode == OpCodes.Ldarg_0)
+                    && second.OpCode == OpCodes.Call
+                    && ((MethodReference)second.Operand).Name == Methods.CONSTRUCTOR)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }
