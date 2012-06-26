@@ -19,9 +19,15 @@
 
 #endregion
 
+using System.Linq;
+
+using Mono.Cecil;
 using Mono.Cecil.Cil;
+using Mono.Cecil.Rocks;
 
 using NUnit.Framework;
+
+using NinjaTurtles.Turtles;
 
 namespace NinjaTurtles.Tests
 {
@@ -65,10 +71,114 @@ namespace NinjaTurtles.Tests
             Assert.IsFalse(i8.IsMeaninglessUnconditionalBranch());
         }
 
+        [Test]
+        [MethodTested("NinjaTurtles.InstructionExtensions", "ShouldReportSequencePoint")]
+        public void ShouldReportSequencePoint_Kicks_Out_Nop_Only()
+        {
+            var module = new Module(typeof(ArithmeticOperatorTurtle).Assembly.Location);
+            module.LoadDebugInformation();
+
+            var turtle = module.Definition.Types
+                .Single(t => t.Name == typeof(ArithmeticOperatorTurtle).Name);
+
+            var methodDefinition = turtle.Methods.Single(m => m.Name == Methods.CONSTRUCTOR);
+
+            var instruction = methodDefinition
+                .Body.Instructions.Where(i => i.SequencePoint != null)
+                .Skip(1).First();
+
+            Assert.IsFalse(instruction.ShouldReportSequencePoint());
+        }
+
+        [Test]
+        [MethodTested("NinjaTurtles.InstructionExtensions", "ShouldReportSequencePoint")]
+        public void ShouldReportSequencePoint_Kicks_Out_Nop_And_Ret_Only()
+        {
+            var module = new Module(typeof(ArithmeticOperatorTurtle).Assembly.Location);
+            module.LoadDebugInformation();
+
+            var turtle = module.Definition.Types
+                .Single(t => t.Name == typeof(ArithmeticOperatorTurtle).Name);
+
+            var methodDefinition = turtle.Methods.Single(m => m.Name == Methods.CONSTRUCTOR);
+
+            var instruction = methodDefinition
+                .Body.Instructions.Where(i => i.SequencePoint != null)
+                .Skip(3).First();
+
+            Assert.IsFalse(instruction.ShouldReportSequencePoint());
+        }
+
+        [Test]
+        [MethodTested("NinjaTurtles.InstructionExtensions", "ShouldReportSequencePoint")]
+        public void ShouldReportSequencePoint_Kicks_Out_Base_Constructor_Call()
+        {
+            var module = new Module(typeof(ArithmeticOperatorTurtle).Assembly.Location);
+            module.LoadDebugInformation();
+
+            var turtle = module.Definition.Types
+                .Single(t => t.Name == typeof(ArithmeticOperatorTurtle).Name);
+
+            var methodDefinition = turtle.Methods.Single(m => m.Name == Methods.CONSTRUCTOR);
+
+            var instruction = methodDefinition
+                .Body.Instructions
+                .First(i => i.SequencePoint != null);
+
+            Assert.IsFalse(instruction.ShouldReportSequencePoint());
+        }
+
+        [Test]
+        [MethodTested("NinjaTurtles.InstructionExtensions", "ShouldReportSequencePoint")]
+        public void ShouldReportSequencePoint_Kicks_Out_Base_Constructor_Call_When_Simplified()
+        {
+            var module = new Module(typeof(ArithmeticOperatorTurtle).Assembly.Location);
+            module.LoadDebugInformation();
+
+            var turtle = module.Definition.Types
+                .Single(t => t.Name == typeof(ArithmeticOperatorTurtle).Name);
+
+            var methodDefinition = turtle.Methods.Single(m => m.Name == Methods.CONSTRUCTOR);
+            methodDefinition.Body.SimplifyMacros();
+
+            var instruction = methodDefinition
+                .Body.Instructions
+                .First(i => i.SequencePoint != null);
+
+            Assert.IsFalse(instruction.ShouldReportSequencePoint());
+        }
+
+        [Test]
+        [MethodTested("NinjaTurtles.InstructionExtensions", "ShouldReportSequencePoint")]
+        public void ShouldReportSequencePoint_Lets_Through_Meaningful_Sequence_Point()
+        {
+            var module = new Module(typeof(ArithmeticOperatorTurtle).Assembly.Location);
+            module.LoadDebugInformation();
+
+            var turtle = module.Definition.Types
+                .Single(t => t.Name == typeof(ArithmeticOperatorTurtle).Name);
+
+            var methodDefinition = turtle.Methods.Single(m => m.Name == Methods.CONSTRUCTOR);
+
+            var instruction = methodDefinition
+                .Body.Instructions.Where(i => i.SequencePoint != null)
+                .Skip(2).First();
+
+            Assert.IsTrue(instruction.ShouldReportSequencePoint());
+        }
+
         [Test, Category("Mutation")]
         public void IsMeaninglessUnconditionalBranch_Mutation_Tests()
         {
             MutationTestBuilder.For("NinjaTurtles.InstructionExtensions", "IsMeaninglessUnconditionalBranch")
+                .MergeReportTo("SampleReport.xml")
+                .Run();
+        }
+
+        [Test, Category("Mutation")]
+        public void ShouldReportSequencePoint_Mutation_Tests()
+        {
+            MutationTestBuilder.For("NinjaTurtles.InstructionExtensions", "ShouldReportSequencePoint")
                 .MergeReportTo("SampleReport.xml")
                 .Run();
         }

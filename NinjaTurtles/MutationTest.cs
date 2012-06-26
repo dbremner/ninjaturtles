@@ -155,7 +155,7 @@ namespace NinjaTurtles
 			                    : "Killed.");
             _report.AddResult(turtle.GetCurrentSequencePoint(mutation.ILIndex), mutation, !testSuitePassed);
 
-            if (testSuitePassed)
+		    if (testSuitePassed)
             {
                 mutation.TestDirectory.DoNotDelete = true;
                 result = string.Format("{0}\nOriginal source code around surviving mutant (in {1}):\n{2}\nFiles left for inspection in: {3}",
