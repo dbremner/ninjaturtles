@@ -29,7 +29,6 @@ namespace NinjaTurtles.Tests.Turtles.VariableReadTurtleTestSuite.Tests
     public class VariableReadClassUnderTestTests
     {
         [Test]
-        [MethodTested(typeof(VariableReadClassUnderTest), "AddAndDouble")]
         public void AddAndDouble_Works()
         {
             Assert.AreEqual(0, new VariableReadClassUnderTest().AddAndDouble(0, 0));
@@ -37,7 +36,6 @@ namespace NinjaTurtles.Tests.Turtles.VariableReadTurtleTestSuite.Tests
         }
 
         [Test]
-        [MethodTested(typeof(VariableReadClassUnderTest), "AddAndDoubleViaField")]
         public void AddAndDoubleViaField_Works()
         {
             Assert.AreEqual(0, new VariableReadClassUnderTest().AddAndDoubleViaField(0, 0));
@@ -45,7 +43,6 @@ namespace NinjaTurtles.Tests.Turtles.VariableReadTurtleTestSuite.Tests
         }
 
         [Test]
-        [MethodTested(typeof(VariableReadClassUnderTest), "WorkingAddAndDouble")]
         public void WorkingAddAndDouble_Works()
         {
             Assert.AreEqual(0, new VariableReadClassUnderTest().WorkingAddAndDouble(0, 0));
@@ -55,7 +52,6 @@ namespace NinjaTurtles.Tests.Turtles.VariableReadTurtleTestSuite.Tests
         }
 
         [Test]
-        [MethodTested(typeof(VariableReadClassUnderTest), "WorkingAddAndDoubleViaField")]
         public void WorkingAddAndDoubleViaField_Works()
         {
             Assert.AreEqual(0, new VariableReadClassUnderTest().WorkingAddAndDoubleViaField(0, 0));
@@ -65,11 +61,6 @@ namespace NinjaTurtles.Tests.Turtles.VariableReadTurtleTestSuite.Tests
         }
 
         [Test]
-        [MethodTested("NinjaTurtles.MutationTest", "Run")]
-        [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
-        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
-        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(VariableWriteTurtle), "DoMutate")]
         public void AddAndDouble_Fails_Mutation_Testing()
         {
             try
@@ -87,11 +78,6 @@ namespace NinjaTurtles.Tests.Turtles.VariableReadTurtleTestSuite.Tests
         }
 
         [Test]
-        [MethodTested("NinjaTurtles.MutationTest", "Run")]
-        [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
-        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
-        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(VariableWriteTurtle), "DoMutate")]
         public void AddAndDoubleViaField_Fails_Mutation_Testing()
         {
             try
@@ -109,11 +95,6 @@ namespace NinjaTurtles.Tests.Turtles.VariableReadTurtleTestSuite.Tests
         }
 
         [Test]
-        [MethodTested("NinjaTurtles.MutationTest", "Run")]
-        [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
-        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
-        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(VariableWriteTurtle), "DoMutate")]
         public void WorkingAddAndDouble_Passes_Mutation_Testing()
         {
             MutationTestBuilder<VariableReadClassUnderTest>
@@ -123,11 +104,6 @@ namespace NinjaTurtles.Tests.Turtles.VariableReadTurtleTestSuite.Tests
         }
 
         [Test]
-        [MethodTested("NinjaTurtles.MutationTest", "Run")]
-        [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
-        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
-        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(VariableWriteTurtle), "DoMutate")]
         public void WorkingAddAndDoubleViaField_Passes_Mutation_Testing()
         {
             MutationTestBuilder<VariableReadClassUnderTest>

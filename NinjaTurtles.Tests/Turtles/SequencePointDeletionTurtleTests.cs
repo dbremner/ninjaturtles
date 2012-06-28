@@ -33,10 +33,6 @@ namespace NinjaTurtles.Tests.Turtles
     public class SequencePointDeletionTurtleTests
     {
         [Test]
-        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
-        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(SequencePointDeletionTurtle), "DoMutate")]
-        [MethodTested(typeof(SequencePointDeletionTurtle), "ShouldDeleteSequence")]
         public void DoMutate_Returns_Correct_Seqeuences()
         {
             var module = new Module(Assembly.GetExecutingAssembly().Location);
@@ -55,7 +51,7 @@ namespace NinjaTurtles.Tests.Turtles
             StringAssert.EndsWith("deleting Ldloc, Ldarg, Ldarg, Mul, Ldarg, Mul, Add, Stloc", mutations[2].Description);
         }
 
-        [Test, Category("Mutation")]
+        [Test, Category("Mutation"), MutationTest]
         public void DoMutate_Mutation_Tests()
         {
             MutationTestBuilder<SequencePointDeletionTurtle>.For("DoMutate")
@@ -63,7 +59,7 @@ namespace NinjaTurtles.Tests.Turtles
                 .Run();
         }
 
-        [Test, Category("Mutation")]
+        [Test, Category("Mutation"), MutationTest]
         public void ShouldDeleteSequence_Mutation_Tests()
         {
             MutationTestBuilder<SequencePointDeletionTurtle>.For("ShouldDeleteSequence")

@@ -33,9 +33,6 @@ namespace NinjaTurtles.Tests.Turtles
     public class VariableWriteTurtleTests
     {
         [Test]
-        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
-        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(VariableWriteTurtle), "DoMutate")]
         public void DoMutate_Returns_Correct_Seqeuences()
         {
             var module = new Module(Assembly.GetExecutingAssembly().Location);
@@ -54,9 +51,6 @@ namespace NinjaTurtles.Tests.Turtles
         }
 
         [Test]
-        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
-        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(VariableWriteTurtle), "DoMutate")]
         public void DoMutate_Returns_Correct_Seqeuences_With_Fields()
         {
             var module = new Module(Assembly.GetExecutingAssembly().Location);
@@ -74,7 +68,7 @@ namespace NinjaTurtles.Tests.Turtles
             StringAssert.EndsWith("write substitution Int32._pointlessB => Int32.CS$1$0000", mutations[1].Description);
         }
         
-        [Test, Category("Mutation")]
+        [Test, Category("Mutation"), MutationTest]
         public void DoMutate_Mutation_Tests()
         {
             MutationTestBuilder<VariableWriteTurtle>.For("DoMutate")

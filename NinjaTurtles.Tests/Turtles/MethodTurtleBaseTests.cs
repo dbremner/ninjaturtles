@@ -87,7 +87,6 @@ namespace NinjaTurtles.Tests.Turtles
         }
 
         [Test]
-        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
         public void Mutate_Simplifies_Macros_In_IL()
         {
             var assembly = CreateTestAssembly();
@@ -105,7 +104,6 @@ namespace NinjaTurtles.Tests.Turtles
         }
 
         [Test]
-        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
         public void Mutate_Stores_Original_Offsets()
         {
             var assembly = CreateTestAssembly();
@@ -124,7 +122,6 @@ namespace NinjaTurtles.Tests.Turtles
         }
 
         [Test]
-        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
         public void Mutate_Resolves_And_Numbers_Source_Code()
         {
             var module = new Module(typeof(AdditionClassUnderTest).Assembly.Location);
@@ -144,9 +141,6 @@ namespace NinjaTurtles.Tests.Turtles
         }
 
         [Test]
-        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
-        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(MethodTurtleBase), "MutantComplete")]
         public void Mutate_Creates_And_Destroys_Directories()
         {
             var assembly = CreateTestAssembly();
@@ -179,7 +173,7 @@ namespace NinjaTurtles.Tests.Turtles
             }
         }
 
-        [Test, Category("Mutation")]
+        [Test, Category("Mutation"), MutationTest]
         public void Mutate_Mutation_Tests()
         {
             MutationTestBuilder<MethodTurtleBase>.For("Mutate")
@@ -187,7 +181,7 @@ namespace NinjaTurtles.Tests.Turtles
                 .Run();
         }
 
-        [Test, Category("Mutation")]
+        [Test, Category("Mutation"), MutationTest]
         public void MutantComplete_Mutation_Tests()
         {
             MutationTestBuilder<MethodTurtleBase>.For("MutantComplete")
@@ -195,7 +189,7 @@ namespace NinjaTurtles.Tests.Turtles
                 .Run();
         }
 
-        [Test, Category("Mutation")]
+        [Test, Category("Mutation"), MutationTest]
         public void DoYield_Mutation_Tests()
         {
             MutationTestBuilder<MethodTurtleBase>.For("DoYield")

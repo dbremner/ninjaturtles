@@ -29,14 +29,12 @@ namespace NinjaTurtles.Tests.Turtles.BranchConditionTurtleTestSuite.Tests
     public class BranchConditionClassUnderTestTests
     {
         [Test]
-        [MethodTested(typeof(BranchConditionClassUnderTest), "StupidParse")]
         public void StupidParse_Works()
         {
             Assert.AreEqual(7, new BranchConditionClassUnderTest().StupidParse("Seven"));
         }
 
         [Test]
-        [MethodTested(typeof(BranchConditionClassUnderTest), "WorkingStupidParse")]
         public void WorkingStupidParse_Works()
         {
             Assert.AreEqual(7, new BranchConditionClassUnderTest().WorkingStupidParse("Seven"));
@@ -44,11 +42,6 @@ namespace NinjaTurtles.Tests.Turtles.BranchConditionTurtleTestSuite.Tests
         }
 
         [Test]
-        [MethodTested("NinjaTurtles.MutationTest", "Run")]
-        [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
-        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
-        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(OpCodeRotationTurtle), "DoMutate")]
         public void StupidParse_Mutation_Tests_Fail()
         {
             try
@@ -66,11 +59,6 @@ namespace NinjaTurtles.Tests.Turtles.BranchConditionTurtleTestSuite.Tests
         }
 
         [Test]
-        [MethodTested("NinjaTurtles.MutationTest", "Run")]
-        [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
-        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
-        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(OpCodeRotationTurtle), "DoMutate")]
         public void WorkingStupidParse_Mutation_Tests_Pass()
         {
             MutationTestBuilder<BranchConditionClassUnderTest>

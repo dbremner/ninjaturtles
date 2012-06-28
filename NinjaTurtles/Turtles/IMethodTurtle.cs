@@ -54,4 +54,3 @@ namespace NinjaTurtles.Turtles
         IEnumerable<MutantMetaData> Mutate(MethodDefinition method, Module module, int[] originalOffsets);
 	}
 }
-

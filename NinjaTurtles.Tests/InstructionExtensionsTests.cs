@@ -35,7 +35,6 @@ namespace NinjaTurtles.Tests
     public class InstructionExtensionsTests
     {
         [Test]
-        [MethodTested("NinjaTurtles.InstructionExtensions", "IsMeaninglessUnconditionalBranch")]
         public void IsMeaninglessUnconditionalBranch_Works()
         {
             var i1 = Instruction.Create(OpCodes.Nop);
@@ -72,7 +71,6 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        [MethodTested("NinjaTurtles.InstructionExtensions", "ShouldReportSequencePoint")]
         public void ShouldReportSequencePoint_Kicks_Out_Nop_Only()
         {
             var module = new Module(typeof(ArithmeticOperatorTurtle).Assembly.Location);
@@ -91,7 +89,6 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        [MethodTested("NinjaTurtles.InstructionExtensions", "ShouldReportSequencePoint")]
         public void ShouldReportSequencePoint_Kicks_Out_Nop_And_Ret_Only()
         {
             var module = new Module(typeof(ArithmeticOperatorTurtle).Assembly.Location);
@@ -110,7 +107,6 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        [MethodTested("NinjaTurtles.InstructionExtensions", "ShouldReportSequencePoint")]
         public void ShouldReportSequencePoint_Kicks_Out_Base_Constructor_Call()
         {
             var module = new Module(typeof(ArithmeticOperatorTurtle).Assembly.Location);
@@ -129,7 +125,6 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        [MethodTested("NinjaTurtles.InstructionExtensions", "ShouldReportSequencePoint")]
         public void ShouldReportSequencePoint_Kicks_Out_Base_Constructor_Call_When_Simplified()
         {
             var module = new Module(typeof(ArithmeticOperatorTurtle).Assembly.Location);
@@ -149,7 +144,6 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        [MethodTested("NinjaTurtles.InstructionExtensions", "ShouldReportSequencePoint")]
         public void ShouldReportSequencePoint_Lets_Through_Meaningful_Sequence_Point()
         {
             var module = new Module(typeof(ArithmeticOperatorTurtle).Assembly.Location);
@@ -167,7 +161,7 @@ namespace NinjaTurtles.Tests
             Assert.IsTrue(instruction.ShouldReportSequencePoint());
         }
 
-        [Test, Category("Mutation")]
+        [Test, Category("Mutation"), MutationTest]
         public void IsMeaninglessUnconditionalBranch_Mutation_Tests()
         {
             MutationTestBuilder.For("NinjaTurtles.InstructionExtensions", "IsMeaninglessUnconditionalBranch")
@@ -175,7 +169,7 @@ namespace NinjaTurtles.Tests
                 .Run();
         }
 
-        [Test, Category("Mutation")]
+        [Test, Category("Mutation"), MutationTest]
         public void ShouldReportSequencePoint_Mutation_Tests()
         {
             MutationTestBuilder.For("NinjaTurtles.InstructionExtensions", "ShouldReportSequencePoint")

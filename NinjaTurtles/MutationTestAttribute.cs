@@ -19,21 +19,18 @@
 
 #endregion
 
-using NUnit.Framework;
+using System;
 
-using NinjaTurtles.Turtles;
-
-namespace NinjaTurtles.Tests.Turtles
+namespace NinjaTurtles
 {
-    [TestFixture]
-    public class OpCodeRotationTurtleTests
+    /// <summary>
+    /// A marker attribute used to tell NinjaTurtles that the unit test to
+    /// which it is applied is a mutation test. Such a test method should not
+    /// be included in the list of detected tests that forms the suite of
+    /// tests run in testing a particular code mutant.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+    public class MutationTestAttribute : Attribute
     {
-        [Test, Category("Mutation"), MutationTest]
-        public void DoMutate_Mutation_Tests()
-        {
-            MutationTestBuilder<OpCodeRotationTurtle>.For("DoMutate")
-                .MergeReportTo("SampleReport.xml")
-                .Run();
-        }
     }
 }

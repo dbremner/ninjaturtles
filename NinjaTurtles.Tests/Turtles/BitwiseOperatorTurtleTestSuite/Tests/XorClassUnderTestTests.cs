@@ -30,21 +30,18 @@ namespace NinjaTurtles.Tests.Turtles.BitwiseOperatorTurtleTestSuite.Tests
 	public class XorClassUnderTestTests
 	{
 		[Test]
-		[MethodTested(typeof(XorClassUnderTest), "Dummy")]
 		public void Dummy_Dummies()
 		{
 			Assert.AreEqual(0, new XorClassUnderTest().Dummy());
 		}
 		
 		[Test]
-        [MethodTested(typeof(XorClassUnderTest), "Xor")]
         public void Xor_Works()
 		{
 			Assert.AreEqual(11, new XorClassUnderTest().Xor(3, 8));
 		}
 		
 		[Test]
-        [MethodTested(typeof(XorClassUnderTest), "WorkingXor")]
 		public void WorkingXor_Works()
 		{
 			Assert.AreEqual(11, new XorClassUnderTest().WorkingXor(3, 8));
@@ -52,8 +49,6 @@ namespace NinjaTurtles.Tests.Turtles.BitwiseOperatorTurtleTestSuite.Tests
 		}
 		
 		[Test]
-		[MethodTested("NinjaTurtles.MutationTest", "Run")]
-		[MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
 		public void Dummy_Mutation_Tests_Pass()
 		{
 			using (var console = new ConsoleCapturer())
@@ -67,11 +62,6 @@ namespace NinjaTurtles.Tests.Turtles.BitwiseOperatorTurtleTestSuite.Tests
 		}
 		
 		[Test]
-		[MethodTested("NinjaTurtles.MutationTest", "Run")]
-        [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
-        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
-        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(OpCodeRotationTurtle), "DoMutate")]
         public void Xor_Mutation_Tests_Fail()
 		{
 			try
@@ -89,11 +79,6 @@ namespace NinjaTurtles.Tests.Turtles.BitwiseOperatorTurtleTestSuite.Tests
 		}
 
 		[Test]
-		[MethodTested("NinjaTurtles.MutationTest", "Run")]
-		[MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
-        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
-        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(OpCodeRotationTurtle), "DoMutate")]
         public void WorkingXor_Mutation_Tests_Pass()
 		{
 			MutationTestBuilder<XorClassUnderTest>

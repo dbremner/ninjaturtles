@@ -35,7 +35,7 @@ namespace NinjaTurtles
     /// </typeparam>
     /// <example>
     /// <para>
-    /// This code creates and runs the default set of mutation tests for the
+    /// This code creates and runs mutation tests for the 
     /// <b>ClassUnderTest</b> class's <b>MethodUnderTest</b> method:
     /// </para>
     /// <code lang="cs">
@@ -55,7 +55,8 @@ namespace NinjaTurtles
     /// </code>
     /// <para>
     /// When this code is included in a test, it causes the matching tests to
-    /// be run for each mutation that is found of the code under test. By
+    /// be run for each mutation that is found of the code under test. The
+    /// matching tests are determined automatically by NinjaTurtles. By
     /// default, NinjaTurtles assumes it is running under NUnit, and thus uses
     /// an NUnit runner to run the suite against the mutated code. This can be
     /// changed using the fluent interface:

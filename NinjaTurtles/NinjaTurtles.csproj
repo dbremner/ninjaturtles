@@ -59,6 +59,7 @@
     <Compile Include="MethodDefinitionResolver.cs" />
     <Compile Include="Methods.cs" />
     <Compile Include="Module.cs" />
+    <Compile Include="MutationTestAttribute.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ConsoleProcessFactory.cs" />
@@ -83,7 +84,6 @@
     <Compile Include="Turtles\BitwiseOperatorTurtle.cs" />
     <Compile Include="Turtles\IMethodTurtle.cs" />
     <Compile Include="MutationTestFailureException.cs" />
-    <Compile Include="MethodTestedAttribute.cs" />
     <Compile Include="TestDirectory.cs" />
     <Compile Include="Turtles\MethodTurtleBase.cs" />
     <Compile Include="Turtles\NamespaceDoc.cs" />
