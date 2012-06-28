@@ -38,9 +38,6 @@ namespace NinjaTurtles.Tests
 	public class MutationTestTests
 	{
 		[Test]
-		[MethodTested("NinjaTurtles.MutationTest", "Run")]
-        [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
-        [MethodTested("NinjaTurtles.MutationTest", "CheckTestProcessFails")]
         [ExpectedException(typeof(MutationTestFailureException), ExpectedMessage = "No matching tests were found to run.")]
         public void UncoveredAdd_Mutation_Tests_Fail()
 		{
@@ -51,9 +48,6 @@ namespace NinjaTurtles.Tests
 		}
 		
 		[Test]
-		[MethodTested("NinjaTurtles.MutationTest", "Run")]
-		[MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
-        [MethodTested("NinjaTurtles.MutationTest", "CheckTestProcessFails")]
         [ExpectedException(typeof(ArgumentException), ExpectedMessage = @"Method ""UnknownMethod"" is unrecognised.
 Parameter name: methodName")]
         public void Unknown_Method_Mutation_Tests_Fail()
@@ -65,9 +59,6 @@ Parameter name: methodName")]
         }
 		
 		[Test]
-		[MethodTested("NinjaTurtles.MutationTest", "Run")]
-		[MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
-        [MethodTested("NinjaTurtles.MutationTest", "CheckTestProcessFails")]
         public void Mutation_Tests_Produce_Correct_Output()
 		{
 			using (var capturer = new ConsoleCapturer())
@@ -87,8 +78,6 @@ Parameter name: methodName")]
 		}
 
         [Test]
-        [MethodTested("NinjaTurtles.MutationTest", "Run")]
-        [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
         public void Mutate_Failed_Tests_Report_Source_Code()
         {
             using (var capturer = new ConsoleCapturer())
@@ -140,7 +129,7 @@ Parameter name: methodName")]
             File.Delete(file);
         }
 
-		[Test, Category("Mutation")]
+		[Test, Category("Mutation"), MutationTest]
 		public void Run_Mutation_Tests()
 		{
 			MutationTestBuilder.For("NinjaTurtles.MutationTest", "Run")
@@ -148,7 +137,7 @@ Parameter name: methodName")]
                 .Run();
 		}
 
-        [Test, Category("Mutation")]
+        [Test, Category("Mutation"), MutationTest]
         public void RunMutation_Mutation_Tests()
         {
             MutationTestBuilder.For("NinjaTurtles.MutationTest", "RunMutation")
@@ -156,7 +145,63 @@ Parameter name: methodName")]
                 .Run();
         }
 
-        [Test, Category("Mutation")]
+        [Test, Category("Mutation"), MutationTest]
+        public void AddMethod_Mutation_Tests()
+        {
+            MutationTestBuilder.For("NinjaTurtles.MutationTest", "AddMethod")
+                .MergeReportTo("SampleReport.xml")
+                .Run();
+        }
+
+        [Test, Category("Mutation"), MutationTest]
+        public void AddMethodsForInterfaces_Mutation_Tests()
+        {
+            MutationTestBuilder.For("NinjaTurtles.MutationTest", "AddMethodsForInterfaces")
+                .MergeReportTo("SampleReport.xml")
+                .Run();
+        }
+
+        [Test, Category("Mutation"), MutationTest]
+        public void MethodsMatch_Mutation_Tests()
+        {
+            MutationTestBuilder.For("NinjaTurtles.MutationTest", "MethodsMatch")
+                .MergeReportTo("SampleReport.xml")
+                .Run();
+        }
+
+        [Test, Category("Mutation"), MutationTest]
+        public void GetMatchingTestsFromTree_Mutation_Tests()
+        {
+            MutationTestBuilder.For("NinjaTurtles.MutationTest", "GetMatchingTestsFromTree")
+                .MergeReportTo("SampleReport.xml")
+                .Run();
+        }
+
+        [Test, Category("Mutation"), MutationTest]
+        public void DoesMethodReferenceType_Mutation_Tests()
+        {
+            MutationTestBuilder.For("NinjaTurtles.MutationTest", "DoesMethodReferenceType")
+                .MergeReportTo("SampleReport.xml")
+                .Run();
+        }
+
+        [Test, Category("Mutation"), MutationTest]
+        public void AddCallingMethods_Mutation_Tests()
+        {
+            MutationTestBuilder.For("NinjaTurtles.MutationTest", "AddCallingMethods")
+                .MergeReportTo("SampleReport.xml")
+                .Run();
+        }
+
+        [Test, Category("Mutation"), MutationTest]
+        public void AddCallingMethodsForType_Mutation_Tests()
+        {
+            MutationTestBuilder.For("NinjaTurtles.MutationTest", "AddCallingMethodsForType")
+                .MergeReportTo("SampleReport.xml")
+                .Run();
+        }
+
+        [Test, Category("Mutation"), MutationTest]
         public void CheckTestProcessFails_Mutation_Tests()
         {
             MutationTestBuilder.For("NinjaTurtles.MutationTest", "CheckTestProcessFails")
@@ -165,7 +210,6 @@ Parameter name: methodName")]
         }
 
         [Test]
-        [MethodTested("NinjaTurtles.MutationTest", "CheckTestProcessFails")]
         public void LongRunning_Test_Method()
         {
             new LongRunningWhenMutated().LongRunning();

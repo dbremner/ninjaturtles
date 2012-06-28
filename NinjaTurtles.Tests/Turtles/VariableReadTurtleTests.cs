@@ -33,9 +33,6 @@ namespace NinjaTurtles.Tests.Turtles
     public class VariableReadTurtleTests
     {
         [Test]
-        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
-        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(VariableReadTurtle), "DoMutate")]
         public void DoMutate_Returns_Correct_Seqeuences()
         {
             var module = new Module(Assembly.GetExecutingAssembly().Location);
@@ -62,9 +59,6 @@ namespace NinjaTurtles.Tests.Turtles
         }
 
         [Test]
-        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
-        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(VariableReadTurtle), "DoMutate")]
         public void DoMutate_Returns_Correct_Seqeuences_Including_Field()
         {
             var module = new Module(Assembly.GetExecutingAssembly().Location);
@@ -90,7 +84,7 @@ namespace NinjaTurtles.Tests.Turtles
             StringAssert.EndsWith("read substitution Int32._total => Int32.CS$1$0000", mutations[8].Description);
         }
 
-        [Test, Category("Mutation")]
+        [Test, Category("Mutation"), MutationTest]
         public void DoMutate_Mutation_Tests()
         {
             MutationTestBuilder<VariableReadTurtle>.For("DoMutate")

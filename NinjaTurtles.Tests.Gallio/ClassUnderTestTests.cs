@@ -34,21 +34,18 @@ namespace NinjaTurtles.Tests.Gallio
     public class ClassUnderTestTests
     {
         [Mb.Test]
-        [MethodTested(typeof(ClassUnderTest), "Dummy")]
         public void Dummy_Dummies()
         {
             Mb.Assert.AreEqual(0, new ClassUnderTest().Dummy());
         }
 
         [Mb.Test]
-        [MethodTested(typeof(ClassUnderTest), "Add")]
         public void Add_Works()
         {
             Mb.Assert.AreEqual(3, new ClassUnderTest().Add(3, 0));
         }
 
         [Mb.Test]
-        [MethodTested(typeof(ClassUnderTest), "WorkingAdd")]
         public void WorkingAdd_Works()
         {
             Mb.Assert.AreEqual(3, new ClassUnderTest().WorkingAdd(3, 0));
@@ -56,8 +53,6 @@ namespace NinjaTurtles.Tests.Gallio
         }
 
         [N.Test]
-        [MethodTested("NinjaTurtles.MutationTest", "Run")]
-        [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
         public void Dummy_Mutation_Tests_Pass()
         {
             using (var console = new ConsoleCapturer())
@@ -72,11 +67,6 @@ namespace NinjaTurtles.Tests.Gallio
         }
 
         [N.Test]
-        [MethodTested("NinjaTurtles.MutationTest", "Run")]
-        [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
-        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
-        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(ArithmeticOperatorTurtle), "DoMutate")]
         public void Add_Mutation_Tests_Fail()
         {
             try
@@ -95,11 +85,6 @@ namespace NinjaTurtles.Tests.Gallio
         }
 
         [N.Test]
-        [MethodTested("NinjaTurtles.MutationTest", "Run")]
-        [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
-        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
-        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(ArithmeticOperatorTurtle), "DoMutate")]
         public void WorkingAdd_Mutation_Tests_Pass()
         {
             MutationTestBuilder<ClassUnderTest>

@@ -40,7 +40,6 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        [MethodTested(typeof(Module), "LoadDebugInformation")]
         public void Module_Loads_Source_File_List()
         {
             var module = new Module(typeof(MutationTest).Assembly.Location);
@@ -49,7 +48,6 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        [MethodTested(typeof(Module), "LoadDebugInformation")]
         public void Module_Loads_Debug_Information()
         {
             var module = new Module(typeof(MutationTest).Assembly.Location);
@@ -65,7 +63,6 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        [MethodTested(typeof(Module), "LoadDebugInformation")]
         public void Module_Loads_Debug_Information_For_Mono()
         {
             var module = new Module(typeof(TestClassMono).Assembly.Location);
@@ -81,7 +78,6 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        [MethodTested(typeof(Module), "LoadDebugInformation")]
         public void Module_Does_Not_Error_With_No_Debug_Information()
         {
             var module = new Module(typeof(TestClassNoPdb).Assembly.Location);
@@ -96,7 +92,7 @@ namespace NinjaTurtles.Tests
                 .Body.Instructions.All(i => i.SequencePoint == null));
         }
 
-        [Test, Category("Mutation")]
+        [Test, Category("Mutation"), MutationTest]
         public void LoadDebugInformation_Mutation_Tests()
         {
             MutationTestBuilder<Module>.For("LoadDebugInformation")

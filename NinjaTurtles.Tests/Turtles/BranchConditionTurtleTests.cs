@@ -93,10 +93,6 @@ namespace NinjaTurtles.Tests.Turtles
         }
 
         [Test]
-        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
-        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(OpCodeRotationTurtle), "DoMutate")]
-        [MethodTested(typeof(BranchConditionTurtle), ".ctor")]
         public void DoMutate_Returns_Correct_Replacements_For_Addition()
         {
             var assembly = CreateTestAssembly();
@@ -131,7 +127,7 @@ namespace NinjaTurtles.Tests.Turtles
             Assert.AreEqual(3, br);
         }
 
-        [Test, Category("Mutation")]
+        [Test, Category("Mutation"), MutationTest]
         public void Constructor_Mutation_Tests()
         {
             MutationTestBuilder<BranchConditionTurtle>.For(".ctor")

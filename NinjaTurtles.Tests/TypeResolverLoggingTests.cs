@@ -29,7 +29,6 @@ namespace NinjaTurtles.Tests
     public class TypeResolverLoggingTests : LoggingTestFixture
     {
         [Test]
-        [MethodTested(typeof(TypeResolver), "ResolveTypeFromReferences")]
         public void ResolveTypeFromReferences_Resolve_Within_Same_Assembly_Logs_Entry_And_One_Trace()
         {
             TypeResolver.ResolveTypeFromReferences(GetType().Assembly, "NinjaTurtles.Tests.TestUtilities.ConsoleCapturer");
@@ -42,7 +41,6 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        [MethodTested(typeof(TypeResolver), "ResolveTypeFromReferences")]
         public void ResolveTypeFromReferences_Logs_If_Unrecognised()
         {
             TypeResolver.ResolveTypeFromReferences(GetType().Assembly, "System.NonexistentWidget");
@@ -51,7 +49,6 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        [MethodTested(typeof(TypeResolver), "ResolveTypeFromReferences")]
         public void ResolveTypeFromReferences_Resolves_Within_Referenced_Assembly_Logs_Entry_And_Traces()
         {
             TypeResolver.ResolveTypeFromReferences(GetType().Assembly, "System.Linq.ParallelEnumerable");

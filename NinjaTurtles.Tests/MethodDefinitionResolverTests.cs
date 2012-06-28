@@ -34,7 +34,6 @@ namespace NinjaTurtles.Tests
     public class MethodDefinitionResolverTests
     {
         [Test]
-        [MethodTested(typeof(MethodDefinitionResolver), "ResolveMethod", ParameterTypes = new[] { typeof(Type), typeof(string) })]
         [ExpectedException(typeof(ArgumentException), ExpectedMessage = @"Method ""ResolveTypeFromReferences"" is overloaded.
 Parameter name: methodName")]
         public void ResolveMethod_Throws_If_Ambiguous()
@@ -45,7 +44,6 @@ Parameter name: methodName")]
         }
 
         [Test]
-        [MethodTested(typeof(MethodDefinitionResolver), "ResolveMethod", ParameterTypes = new[] { typeof(Type), typeof(string) })]
         public void ResolveMethod_Returns_Instance_If_Unambiguous()
         {
             var assembly = AssemblyDefinition.ReadAssembly(typeof(MutationTest).Assembly.Location);
@@ -55,8 +53,6 @@ Parameter name: methodName")]
         }
 
         [Test]
-        [MethodTested(typeof(MethodDefinitionResolver), "ResolveMethod", ParameterTypes = new[] { typeof(Type), typeof(string) })]
-        [MethodTested(typeof(MethodDefinitionResolver), "ResolveMethod", ParameterTypes = new[] { typeof(Type), typeof(string), typeof(Type[]) })]
         public void ResolveMethod_Returns_Instance_If_Overload_Called_With_Null_Parameter_Types()
         {
             var assembly = AssemblyDefinition.ReadAssembly(typeof(MutationTest).Assembly.Location);
@@ -66,7 +62,6 @@ Parameter name: methodName")]
         }
 
         [Test]
-        [MethodTested(typeof(MethodDefinitionResolver), "ResolveMethod", ParameterTypes = new[] { typeof(Type), typeof(string), typeof(Type[]) })]
         public void ResolveMethod_Returns_Instance_If_Disambiguated_With_Parameter_Types()
         {
             var assembly = AssemblyDefinition.ReadAssembly(typeof(TypeResolver).Assembly.Location);
@@ -77,7 +72,6 @@ Parameter name: methodName")]
         }
 
         [Test]
-        [MethodTested(typeof(MethodDefinitionResolver), "ResolveMethod", ParameterTypes = new[] { typeof(Type), typeof(string), typeof(Type[]) })]
         [ExpectedException(typeof(ArgumentException), ExpectedMessage = @"Method ""ResolveTypeFromReferences"" with specified parameter types is unrecognised.
 Parameter name: methodName")]
         public void ResolveMethod_Throws_If_No_Matching_Parameters()
@@ -89,7 +83,6 @@ Parameter name: methodName")]
         }
 
         [Test]
-        [MethodTested(typeof(MethodDefinitionResolver), "ResolveMethod", ParameterTypes = new[] { typeof(Type), typeof(string), typeof(Type[]) })]
         [ExpectedException(typeof(ArgumentException), ExpectedMessage = @"Method ""Leonardo"" is unrecognised.
 Parameter name: methodName")]
         public void ResolveMethod_Throws_If_No_Matching_Method_Without_Parameters()
@@ -99,7 +92,7 @@ Parameter name: methodName")]
             MethodDefinitionResolver.ResolveMethod(type, "Leonardo");
         }
 
-        [Test, Category("Mutation")]
+        [Test, Category("Mutation"), MutationTest]
         public void ResolveMethod_2_Parameters_Mutation_Tests()
         {
             MutationTestBuilder<MethodDefinitionResolver>.For("ResolveMethod", new[] { typeof(Type), typeof(string) })
@@ -107,7 +100,7 @@ Parameter name: methodName")]
                 .Run();
         }
 
-        [Test, Category("Mutation")]
+        [Test, Category("Mutation"), MutationTest]
         public void ResolveMethod_3_Parameters_Mutation_Tests()
         {
             MutationTestBuilder<MethodDefinitionResolver>.For("ResolveMethod", new[] { typeof(Type), typeof(string), typeof(Type[]) })

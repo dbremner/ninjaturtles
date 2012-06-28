@@ -33,7 +33,6 @@ namespace NinjaTurtles.Tests
     public class TypeResolverTests
     {
         [Test]
-        [MethodTested(typeof(TypeResolver), "ResolveTypeFromReferences")]
         public void ResolveTypeFromReferences_Resolves_Within_Same_Assembly()
         {
             var type = TypeResolver.ResolveTypeFromReferences(GetType().Assembly, "NinjaTurtles.Tests.TestUtilities.ConsoleCapturer");
@@ -42,7 +41,6 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        [MethodTested(typeof(TypeResolver), "ResolveTypeFromReferences")]
         public void ResolveTypeFromReferences_Resolves_Within_Referenced_Assembly()
         {
             var type = TypeResolver.ResolveTypeFromReferences(GetType().Assembly, "System.Linq.ParallelEnumerable");
@@ -51,7 +49,6 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        [MethodTested(typeof(TypeResolver), "ResolveTypeFromReferences")]
         public void ResolveTypeFromReferences_Resolves_Non_Public_Type()
         {
             var type = TypeResolver.ResolveTypeFromReferences(GetType().Assembly, "NinjaTurtles.TypeResolver");
@@ -59,14 +56,13 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        [MethodTested(typeof(TypeResolver), "ResolveTypeFromReferences")]
         public void ResolveTypeFromReferences_Returns_Null_If_Unrecognised()
         {
             var type = TypeResolver.ResolveTypeFromReferences(GetType().Assembly, "System.NonexistentWidget");
             Assert.IsNull(type);
         }
 
-        [Test, Category("Mutation")]
+        [Test, Category("Mutation"), MutationTest]
         public void ResolveTypeFromReferences_Internal_Mutation_Tests()
         {
             MutationTestBuilder<TypeResolver>.For("ResolveTypeFromReferences",
@@ -75,7 +71,7 @@ namespace NinjaTurtles.Tests
                 .Run();
         }
 
-        [Test, Category("Mutation")]
+        [Test, Category("Mutation"), MutationTest]
         public void ResolveTypeFromReferences_Private_Mutation_Tests()
         {
             MutationTestBuilder<TypeResolver>.For("ResolveTypeFromReferences",

@@ -29,14 +29,12 @@ namespace NinjaTurtles.Tests.Turtles.SequencePointDeletionTurtleTestSuite.Tests
     public class SequencePointDeletionClassUnderTestTests
     {
         [Test]
-        [MethodTested(typeof(SequencePointDeletionClassUnderTest), "SimpleMethod")]
         public void StupidParse_Works()
         {
             Assert.AreEqual(7, new SequencePointDeletionClassUnderTest().SimpleMethod(1, 0, 3, 2));
         }
 
         [Test]
-        [MethodTested(typeof(SequencePointDeletionClassUnderTest), "WorkingSimpleMethod")]
         public void WorkingStupidParse_Works()
         {
             Assert.AreEqual(7, new SequencePointDeletionClassUnderTest().WorkingSimpleMethod(1, 0, 3, 2));
@@ -45,12 +43,6 @@ namespace NinjaTurtles.Tests.Turtles.SequencePointDeletionTurtleTestSuite.Tests
         }
 
         [Test]
-        [MethodTested("NinjaTurtles.MutationTest", "Run")]
-        [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
-        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
-        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(SequencePointDeletionTurtle), "DoMutate")]
-        [MethodTested(typeof(SequencePointDeletionTurtle), "ShouldDeleteSequence")]
         public void StupidParse_Mutation_Tests_Fail()
         {
             try
@@ -68,12 +60,6 @@ namespace NinjaTurtles.Tests.Turtles.SequencePointDeletionTurtleTestSuite.Tests
         }
 
         [Test]
-        [MethodTested("NinjaTurtles.MutationTest", "Run")]
-        [MethodTested("NinjaTurtles.MutationTest", "RunMutation")]
-        [MethodTested(typeof(MethodTurtleBase), "Mutate")]
-        [MethodTested(typeof(MethodTurtleBase), "DoYield")]
-        [MethodTested(typeof(SequencePointDeletionTurtle), "DoMutate")]
-        [MethodTested(typeof(SequencePointDeletionTurtle), "ShouldDeleteSequence")]
         public void WorkingStupidParse_Mutation_Tests_Pass()
         {
             MutationTestBuilder<SequencePointDeletionClassUnderTest>

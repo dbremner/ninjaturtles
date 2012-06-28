@@ -29,8 +29,6 @@ namespace NinjaTurtles.Tests
     public class ConsoleProcessFactoryTests
     {
         [Test]
-        [MethodTested(typeof(ConsoleProcessFactory), "CreateProcess")]
-        [MethodTested(typeof(ConsoleProcessFactory), "FindExecutable")]
         public void CreateProcess_Redirects_Standard_Output()
         {
             using (var process = ConsoleProcessFactory.CreateProcess("cmd.exe", ""))
@@ -41,8 +39,6 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        [MethodTested(typeof(ConsoleProcessFactory), "CreateProcess")]
-        [MethodTested(typeof(ConsoleProcessFactory), "FindExecutable")]
         public void CreateProcess_Hides_Window()
         {
             using (var process = ConsoleProcessFactory.CreateProcess("cmd.exe", ""))
@@ -52,8 +48,6 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        [MethodTested(typeof(ConsoleProcessFactory), "CreateProcess")]
-        [MethodTested(typeof(ConsoleProcessFactory), "FindExecutable")]
         public void CreateProcess_Gives_Correct_Information_For_CLR()
         {
             bool isMono = ConsoleProcessFactory.IsMono;
@@ -66,8 +60,6 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        [MethodTested(typeof(ConsoleProcessFactory), "CreateProcess")]
-        [MethodTested(typeof(ConsoleProcessFactory), "FindExecutable")]
         public void CreateProcess_Gives_Correct_Information_For_Mono()
         {
             bool isMono = ConsoleProcessFactory.IsMono;
@@ -81,8 +73,6 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        [MethodTested(typeof(ConsoleProcessFactory), "CreateProcess")]
-        [MethodTested(typeof(ConsoleProcessFactory), "FindExecutable")]
         public void CreateProcess_Resolves_Full_Exe_Path()
         {
             string exeName = ConsoleProcessFactory.IsWindows ? "cmd.exe" : "mono";
@@ -97,8 +87,6 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        [MethodTested(typeof(ConsoleProcessFactory), "CreateProcess")]
-        [MethodTested(typeof(ConsoleProcessFactory), "FindExecutable")]
         public void CreateProcess_Returns_Exe_Name_Verbatim_If_Not_Found()
         {
             string exeName = "icantfindyou.exe";
@@ -109,8 +97,6 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        [MethodTested(typeof(ConsoleProcessFactory), "CreateProcess")]
-        [MethodTested(typeof(ConsoleProcessFactory), "FindExecutable")]
         public void CreateProcess_Resolves_NUnit_Console_Path()
         {
             string exeName = "nunit-console.exe";
@@ -122,7 +108,6 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        [MethodTested(typeof(ConsoleProcessFactory), "FindExecutable")]
         public void CreateProcess_Uses_Provided_Search_Path()
         {
             string tempFile = Path.GetTempFileName();
@@ -136,8 +121,6 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        [MethodTested(typeof(ConsoleProcessFactory), "CreateProcess")]
-        [MethodTested(typeof(ConsoleProcessFactory), "FindExecutable")]
         public void CreateProcess_Uses_Correct_Switch_Format_For_Windows()
         {
             bool isWindows = ConsoleProcessFactory.IsWindows;
@@ -150,8 +133,6 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        [MethodTested(typeof(ConsoleProcessFactory), "CreateProcess")]
-        [MethodTested(typeof(ConsoleProcessFactory), "FindExecutable")]
         public void CreateProcess_Uses_Correct_Switch_Format_For_Non_Windows()
         {
             bool isWindows = ConsoleProcessFactory.IsWindows;
@@ -164,7 +145,6 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        [MethodTested(typeof(ConsoleProcessFactory), "CreateProcess")]
         public void CreateProcess_Sets_Correct_Properties()
         {
             using (var process = ConsoleProcessFactory.CreateProcess("cmd.exe", ""))
@@ -175,7 +155,7 @@ namespace NinjaTurtles.Tests
             }
         }
 
-        [Test, Category("Mutation")]
+        [Test, Category("Mutation"), MutationTest]
         public void CreateProcess_Mutation_Tests()
         {
             MutationTestBuilder.For("NinjaTurtles.ConsoleProcessFactory", "CreateProcess")
@@ -183,7 +163,7 @@ namespace NinjaTurtles.Tests
                 .Run();
         }
 
-        [Test, Category("Mutation")]
+        [Test, Category("Mutation"), MutationTest]
         public void FindExecutable_Mutation_Tests()
         {
             MutationTestBuilder.For("NinjaTurtles.ConsoleProcessFactory", "FindExecutable")

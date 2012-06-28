@@ -30,7 +30,6 @@ namespace NinjaTurtles.Tests
 	public class TestDirectoryTests
 	{
 	    [Test]
-        [MethodTested(typeof(TestDirectory), Methods.CONSTRUCTOR, ParameterTypes = new Type[0])]
 		public void Constructor_Creates_Directory_And_Returns_In_FullName_Property()
 	    {
 			using (var testDirectory = new TestDirectory())
@@ -40,8 +39,6 @@ namespace NinjaTurtles.Tests
 		}
 
 	    [Test]
-        [MethodTested(typeof(TestDirectory), Methods.CONSTRUCTOR)]
-        [MethodTested(typeof(TestDirectory), "CopyDirectoryContents")]
         public void Constructor_Copies_Non_Empty_Source_Directory()
 		{
 			string tempFolder = Path.GetTempPath();
@@ -59,8 +56,6 @@ namespace NinjaTurtles.Tests
 		}
 
 	    [Test]
-        [MethodTested(typeof(TestDirectory), Methods.CONSTRUCTOR)]
-        [MethodTested(typeof(TestDirectory), "CopyDirectoryContents")]
         public void Constructor_Copies_Source_Directory_Recursively()
 		{
 			string tempFolder = Path.GetTempPath();
@@ -79,7 +74,6 @@ namespace NinjaTurtles.Tests
 		}
 
         [Test]
-        [MethodTested(typeof(TestDirectory), Methods.CONSTRUCTOR, ParameterTypes = new Type[0])]
         public void Directory_Name_Contains_NinjaTurtles()
 		{
 			using (var testDirectory = new TestDirectory())
@@ -89,7 +83,6 @@ namespace NinjaTurtles.Tests
 		}
 		
 		[Test]
-        [MethodTested(typeof(TestDirectory), "Dispose")]
         public void Dispose_Removes_Empty_Directory()
 		{
 			string path;
@@ -101,7 +94,6 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        [MethodTested(typeof(TestDirectory), "Dispose")]
         public void Dispose_Removes_Non_Empty_Directory()
         {
             string tempFolder = Path.GetTempPath();
@@ -122,7 +114,6 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        [MethodTested(typeof(TestDirectory), "Dispose")]
         public void Dispose_Does_Not_Remove_Directory_If_Set()
         {
             string tempFolder = Path.GetTempPath();
@@ -144,7 +135,6 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        [MethodTested(typeof(TestDirectory), "Dispose")]
         public void Dispose_Disposes_Without_Exception_When_Folder_Is_Locked()
         {
             string path;
@@ -163,7 +153,6 @@ namespace NinjaTurtles.Tests
         }
 
 	    [Test]
-        [MethodTested(typeof(TestDirectory), "SaveAssembly")]
         public void SaveAssembly_Saves_Assembly()
 		{
 		    var module = new Module(GetType().Assembly.Location);
@@ -176,7 +165,7 @@ namespace NinjaTurtles.Tests
 			}
 		}
 
-        [Test, Category("Mutation")]
+        [Test, Category("Mutation"), MutationTest]
         public void Default_Constructor_Mutation_Tests()
         {
             MutationTestBuilder<TestDirectory>.For(Methods.CONSTRUCTOR, new Type[0])
@@ -184,7 +173,7 @@ namespace NinjaTurtles.Tests
                 .Run();
         }
 
-        [Test, Category("Mutation")]
+        [Test, Category("Mutation"), MutationTest]
         public void Overloaded_Constructor_Mutation_Tests()
         {
             MutationTestBuilder<TestDirectory>.For(Methods.CONSTRUCTOR, new[] { typeof(string) })
@@ -192,7 +181,7 @@ namespace NinjaTurtles.Tests
                 .Run();
         }
 
-        [Test, Category("Mutation")]
+        [Test, Category("Mutation"), MutationTest]
         public void CopyDirectoryContents_Mutation_Tests()
         {
             MutationTestBuilder<TestDirectory>.For("CopyDirectoryContents")
@@ -200,7 +189,7 @@ namespace NinjaTurtles.Tests
                 .Run();
         }
 
-        [Test, Category("Mutation")]
+        [Test, Category("Mutation"), MutationTest]
         public void Dispose_Mutation_Tests()
         {
             MutationTestBuilder<TestDirectory>.For("Dispose")
@@ -208,7 +197,7 @@ namespace NinjaTurtles.Tests
                 .Run();
         }
 
-        [Test, Category("Mutation")]
+        [Test, Category("Mutation"), MutationTest]
         public void SaveAssembly_Mutation_Tests()
         {
             MutationTestBuilder<TestDirectory>.For("SaveAssembly")

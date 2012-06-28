@@ -29,7 +29,6 @@ namespace NinjaTurtles.Tests
 	public class MutationTestBuilderTests
 	{
 		[Test]
-		[MethodTested(typeof(MutationTestBuilder), "For")]
 		public void For_Returns_Correct_Type()
 		{
 			IMutationTest result = MutationTestBuilder.For("System.DateTime", "TryParse");
@@ -38,7 +37,6 @@ namespace NinjaTurtles.Tests
 		}
 		
 		[Test]
-		[MethodTested(typeof(MutationTestBuilder), "For")]
 		public void For_Resolves_Type_And_Stores_Values_Passed()
 		{
 			const string METHOD_NAME = "methodName";
@@ -53,14 +51,13 @@ namespace NinjaTurtles.Tests
 		}
 		
 		[Test]
-		[MethodTested(typeof(MutationTestBuilder), "For")]
 		public void Generic_For_Stores_Type()
 		{
 			IMutationTest result = MutationTestBuilder<DateTime>.For("Xxx");
 			Assert.AreEqual(typeof(DateTime), result.TargetType);
 		}
 		
-		[Test, Category("Mutation")]
+		[Test, Category("Mutation"), MutationTest]
 		public void For_Mutation_Tests()
 		{
 			MutationTestBuilder<MutationTestBuilder>.For("For", new[] { typeof(string), typeof(string), typeof(Type[]) })

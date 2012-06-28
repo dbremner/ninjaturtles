@@ -32,6 +32,7 @@ using System.Xml.Serialization;
 using Microsoft.Win32;
 
 using Mono.Cecil;
+using Mono.Cecil.Cil;
 
 using NinjaTurtles.Reporting;
 using NinjaTurtles.TestRunners;
@@ -55,6 +56,7 @@ namespace NinjaTurtles
 	    private MutationTestingReport _report;
         private ReportingStrategy _reportingStrategy = new NullReportingStrategy();
 	    private string _reportFileName;
+	    private MethodReferenceComparer _comparer;
 
 	    internal MutationTest(string testAssemblyLocation, Type targetType, string targetMethod, Type[] parameterTypes)
 		{
@@ -79,9 +81,15 @@ namespace NinjaTurtles
 
 			MethodDefinition method = ValidateMethod();
             _module.LoadDebugInformation();
+
+		    _comparer = new MethodReferenceComparer();
+            var matchingMethods = new List<MethodReference>();
+            AddMethod(method, matchingMethods);
+
             int[] originalOffsets = method.Body.Instructions.Select(i => i.Offset).ToArray();
 		    _report = new MutationTestingReport();
-            _testsToRun = GetMatchingTestsOrFail(method);
+            _testsToRun = GetMatchingTestsFromTree(method, matchingMethods);
+
 			int count = 0;
 			int failures = 0;
 			if (_mutationsToApply.Count == 0) PopulateDefaultTurtles();
@@ -116,6 +124,207 @@ namespace NinjaTurtles
 				throw new MutationTestFailureException();
 			}
 		}
+
+        private void AddMethod(MethodDefinition targetMethod, List<MethodReference> matchingMethods)
+        {
+            if (matchingMethods.Contains(targetMethod, _comparer)) return;
+            matchingMethods.Add(targetMethod);
+            AddCallingMethods(targetMethod, matchingMethods);
+            var declaringType = targetMethod.DeclaringType;
+            TypeDefinition type = declaringType;
+            while (type != null && type.BaseType != null)
+            {
+                var thisModule = type.BaseType.Module;
+                if (type.BaseType.Scope.Name != type.BaseType.Module.Assembly.Name.Name
+                    && type.BaseType.Scope is AssemblyNameReference)
+                {
+                    thisModule =
+                        type.BaseType.Module.AssemblyResolver.Resolve((AssemblyNameReference)type.BaseType.Scope).
+                            MainModule;
+                }
+                type = thisModule.Types.SingleOrDefault(t => t.FullName == type.BaseType.FullName);
+                if (type != null)
+                {
+                    var baseMethod = type.Methods
+                        .SingleOrDefault(m => MethodsMatch(m, targetMethod));
+                    if (baseMethod != null)
+                    {
+                        AddMethod(baseMethod, matchingMethods);
+                        break;
+                    }
+                    AddMethodsForInterfaces(targetMethod, matchingMethods, type);
+                }
+            }
+            AddMethodsForInterfaces(targetMethod, matchingMethods, declaringType);
+        }
+
+	    private void AddMethodsForInterfaces(MethodDefinition targetMethod, List<MethodReference> matchingMethods, TypeDefinition type)
+	    {
+	        foreach (var interfaceReference in type.Interfaces)
+	        {
+	            var thisModule = type.Module;
+	            if (interfaceReference.Scope.Name != type.Module.Assembly.Name.Name
+	                && interfaceReference.Scope is AssemblyNameReference)
+	            {
+	                thisModule =
+	                    interfaceReference.Module.AssemblyResolver.Resolve((AssemblyNameReference)interfaceReference.Scope).
+	                        MainModule;
+	            }
+	            var interfaceDefinition =
+	                thisModule.Types.SingleOrDefault(t => t.FullName == interfaceReference.FullName);
+	            if (interfaceDefinition != null)
+	            {
+	                var interfaceMethod = interfaceDefinition.Methods
+	                    .SingleOrDefault(m => MethodsMatch(m, targetMethod));
+	                if (interfaceMethod != null)
+	                {
+	                    AddMethod(interfaceMethod, matchingMethods);
+	                }
+	            }
+	        }
+	    }
+
+	    private bool MethodsMatch(MethodDefinition first, MethodDefinition second)
+        {
+            return first.Name == second.Name
+                   && Enumerable.SequenceEqual(first.Parameters.Select(p => p.ParameterType.Name),
+                                               second.Parameters.Select(p => p.ParameterType.Name))
+                   && first.GenericParameters.Count == second.GenericParameters.Count;
+        }
+
+        private ISet<string> GetMatchingTestsFromTree(MethodDefinition targetmethod, IList<MethodReference> matchingMethods, bool force = false)
+        {
+            ISet<string> result = new HashSet<string>();
+            foreach (var type in _testAssembly.MainModule.Types)
+            foreach (var method in type.Methods.Where(m => m.HasBody))
+            {
+                var targetType = targetmethod.DeclaringType.FullName;
+                if (!force && !DoesMethodReferenceType(method, targetType)) continue;
+                foreach (var instruction in method.Body.Instructions)
+                {
+                    if (instruction.OpCode == OpCodes.Call
+                        || instruction.OpCode == OpCodes.Callvirt
+                        || instruction.OpCode == OpCodes.Newobj
+                        || instruction.OpCode == OpCodes.Ldftn)
+                    {
+                        var reference = (MethodReference)instruction.Operand;
+                        if (matchingMethods.Any(m => _comparer.Equals(m, reference))
+                            && !method.CustomAttributes.Any(a => a.AttributeType.Name == "MutationTestAttribute"))
+                        {
+                            result.Add(string.Format("{0}.{1}", type.FullName, method.Name));
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!force && result.Count == 0)
+            {
+                result = GetMatchingTestsFromTree(targetmethod, matchingMethods, true);
+            }
+            if (result.Count == 0)
+            {
+                throw new MutationTestFailureException(
+                    "No matching tests were found to run.");
+            }
+            return result;
+	    }
+
+	    private static bool DoesMethodReferenceType(MethodDefinition method, string targetType)
+	    {
+	        bool typeUsed = false;
+	        foreach (var instruction in method.Body.Instructions)
+	        {
+	            if (instruction.OpCode == OpCodes.Call
+	                || instruction.OpCode == OpCodes.Callvirt
+	                || instruction.OpCode == OpCodes.Newobj
+	                || instruction.OpCode == OpCodes.Ldftn)
+	            {
+	                var reference = (MethodReference)instruction.Operand;
+	                var declaringType = reference.DeclaringType;
+	                if (declaringType.FullName == targetType)
+	                {
+	                    typeUsed = true;
+	                    break;
+	                }
+	                var genericType = declaringType as GenericInstanceType;
+	                if (genericType != null)
+	                {
+	                    if (genericType.GenericArguments.Any(a => a.FullName == targetType))
+	                    {
+	                        typeUsed = true;
+	                        break;
+	                    }
+	                }
+	                var genericMethod = reference as GenericInstanceMethod;
+	                if (genericMethod != null)
+	                {
+	                    if (genericMethod.GenericArguments.Any(a => a.FullName == targetType))
+	                    {
+	                        typeUsed = true;
+	                        break;
+	                    }
+	                }
+	            }
+	            if (instruction.OpCode == OpCodes.Newobj)
+	            {
+	                var constructor = (MemberReference)instruction.Operand;
+	                var declaringType = constructor.DeclaringType;
+	                if (declaringType.FullName == targetType)
+	                {
+	                    typeUsed = true;
+	                    break;
+	                }
+	            }
+	        }
+	        return typeUsed;
+	    }
+
+	    private void AddCallingMethods(MethodReference targetMethod, List<MethodReference> matchingMethods)
+        {
+            foreach (var type in _module.Definition.Types)
+            AddCallingMethodsForType(targetMethod, matchingMethods, type);
+        }
+
+	    private void AddCallingMethodsForType(MethodReference targetMethod, List<MethodReference> matchingMethods, TypeDefinition type)
+	    {
+	        foreach (var method in type.Methods.Where(m => m.HasBody))
+	        foreach (var instruction in method.Body.Instructions)
+	        {
+	            if (instruction.OpCode == OpCodes.Call
+	                || instruction.OpCode == OpCodes.Callvirt
+                    || instruction.OpCode == OpCodes.Newobj
+                    || instruction.OpCode == OpCodes.Ldftn)
+	            {
+	                var reference = (MethodReference)instruction.Operand;
+	                if (_comparer.Equals(reference, targetMethod)
+	                    && !matchingMethods.Contains(method, _comparer))
+	                {
+                        AddMethod(method, matchingMethods);
+	                }
+	            }
+	        }
+            foreach (var nestedType in type.NestedTypes)
+            {
+                AddCallingMethodsForType(targetMethod, matchingMethods, nestedType);
+            }
+	    }
+
+	    private class MethodReferenceComparer : IEqualityComparer<MethodReference>
+        {
+            public bool Equals(MethodReference x, MethodReference y)
+            {
+                if (x.Name != y.Name) return false;
+                        return x.DeclaringType.FullName == y.DeclaringType.FullName
+                        && Enumerable.SequenceEqual(x.Parameters.Select(p => p.ParameterType.Name),
+                                                 y.Parameters.Select(p => p.ParameterType.Name))
+                        && x.GenericParameters.Count == y.GenericParameters.Count;
+            }
+
+            public int GetHashCode(MethodReference obj)
+            {
+                return obj.Name.GetHashCode();
+            }
+        }
 
         private void RunMutation(MethodTurtleBase turtle, MutantMetaData mutation, ref int failures, ref int count)
 		{
@@ -199,56 +408,6 @@ namespace NinjaTurtles
                 _mutationsToApply.Add(type);
             }
 		}
-
-        private IEnumerable<string> GetMatchingTestsOrFail(MethodDefinition targetMethod)
-		{
-			var tests = new List<string>();
-			foreach (var type in _testAssembly.MainModule.Types)
-			{
-				foreach (var method in type.Methods)
-				{
-					if (method.CustomAttributes
-							.Any(a => HasMatchingMethodTestedAttribute(targetMethod, a)))
-					{
-						tests.Add(string.Format ("{0}.{1}", type.FullName, method.Name));
-					}
-						
-				}
-			}
-			if (!tests.Any())
-			{
-				throw new MutationTestFailureException(
-					"No matching tests were found to run.");
-			}
-			return tests;
-		}
-
-        private bool HasMatchingMethodTestedAttribute(MethodDefinition targetMethod, CustomAttribute attribute)
-        {
-            if (attribute.AttributeType.Name != "MethodTestedAttribute") return false;
-            if ((string)attribute.ConstructorArguments[1].Value != targetMethod.Name) return false;
-            if (attribute.ConstructorArguments[0].Value is string
-                && (string)attribute.ConstructorArguments[0].Value != _targetTypeReference.FullName)
-            {
-                return false;
-            }
-            if (attribute.ConstructorArguments[0].Value is TypeReference
-                && ((TypeReference)attribute.ConstructorArguments[0].Value).FullName != _targetTypeReference.FullName)
-            {
-                return false;
-            }
-            if (_parameterTypes != null
-                && attribute.HasProperties
-                && attribute.Properties.Any(p => p.Name == "ParameterTypes")
-                && !Enumerable.SequenceEqual(
-                    _parameterTypes.Select(t => t.Name),
-                    Array.ConvertAll((CustomAttributeArgument[])attribute.Properties.Single(p => p.Name == "ParameterTypes").Argument.Value, a => (TypeReference)a.Value)
-                        .Select(t => t.Name)))
-            {
-                return false;
-            }
-            return true;
-        }
 
 	    private MethodDefinition ValidateMethod()
 	    {
