@@ -215,6 +215,36 @@ Parameter name: methodName")]
             new LongRunningWhenMutated().LongRunning();
         }
 
+        [Test]
+        public void DoSomethingBanale_Mutation_Tests_Work()
+        {
+            MutationTestBuilder<OnlyTestedByNestedTestClass>.For("DoSomethingBanale")
+                .Run();
+        }
+
+        [TestFixture]
+        public class NestedUnitTests
+	    {
+	        [Test]
+            public void DoSomethingBanale_Works()
+	        {
+	            var nested = new OnlyTestedByNestedTestClass();
+                Assert.AreEqual(0, nested.DoSomethingBanale(0));
+                Assert.AreEqual(-1, nested.DoSomethingBanale(-2));
+                Assert.AreEqual(1, nested.DoSomethingBanale(2));
+                Assert.AreEqual(7, nested.DoSomethingBanale(14));
+            }
+	    }
+
+        public class OnlyTestedByNestedTestClass
+	    {
+            public int DoSomethingBanale(int a)
+            {
+                return 2 * a;
+            }
+	    
+	    }
+
 	    public class LongRunningWhenMutated
 	    {
             public void LongRunning()

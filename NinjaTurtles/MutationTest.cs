@@ -33,6 +33,7 @@ using Microsoft.Win32;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
+using Mono.Collections.Generic;
 
 using NinjaTurtles.Reporting;
 using NinjaTurtles.TestRunners;
@@ -196,27 +197,7 @@ namespace NinjaTurtles
         {
             ISet<string> result = new HashSet<string>();
             foreach (var type in _testAssembly.MainModule.Types)
-            foreach (var method in type.Methods.Where(m => m.HasBody))
-            {
-                var targetType = targetmethod.DeclaringType.FullName;
-                if (!force && !DoesMethodReferenceType(method, targetType)) continue;
-                foreach (var instruction in method.Body.Instructions)
-                {
-                    if (instruction.OpCode == OpCodes.Call
-                        || instruction.OpCode == OpCodes.Callvirt
-                        || instruction.OpCode == OpCodes.Newobj
-                        || instruction.OpCode == OpCodes.Ldftn)
-                    {
-                        var reference = (MethodReference)instruction.Operand;
-                        if (matchingMethods.Any(m => _comparer.Equals(m, reference))
-                            && !method.CustomAttributes.Any(a => a.AttributeType.Name == "MutationTestAttribute"))
-                        {
-                            result.Add(string.Format("{0}.{1}", type.FullName, method.Name));
-                            break;
-                        }
-                    }
-                }
-            }
+            AddTestsForType(targetmethod, matchingMethods, force, type, result);
             if (!force && result.Count == 0)
             {
                 result = GetMatchingTestsFromTree(targetmethod, matchingMethods, true);
@@ -227,6 +208,39 @@ namespace NinjaTurtles
                     "No matching tests were found to run.");
             }
             return result;
+	    }
+
+	    private void AddTestsForType(MethodDefinition targetmethod, IList<MethodReference> matchingMethods, bool force, TypeDefinition type,
+	                                 ISet<string> result)
+	    {
+	        foreach (var method in type.Methods.Where(m => m.HasBody))
+	        {
+	            var targetType = targetmethod.DeclaringType.FullName;
+	            if (!force && !DoesMethodReferenceType(method, targetType)) continue;
+	            foreach (var instruction in method.Body.Instructions)
+	            {
+	                if (instruction.OpCode == OpCodes.Call
+	                    || instruction.OpCode == OpCodes.Callvirt
+	                    || instruction.OpCode == OpCodes.Newobj
+	                    || instruction.OpCode == OpCodes.Ldftn)
+	                {
+	                    var reference = (MethodReference)instruction.Operand;
+	                    if (matchingMethods.Any(m => _comparer.Equals(m, reference))
+	                        && !method.CustomAttributes.Any(a => a.AttributeType.Name == "MutationTestAttribute"))
+	                    {
+	                        result.Add(string.Format("{0}.{1}", type.FullName.Replace("/", "+"), method.Name));
+	                        break;
+	                    }
+	                }
+	            }
+	        }
+            if (type.NestedTypes != null)
+            {
+                foreach (var typeDefinition in type.NestedTypes)
+                {
+                    AddTestsForType(targetmethod, matchingMethods, force, typeDefinition, result);
+                }
+            }
 	    }
 
 	    private static bool DoesMethodReferenceType(MethodDefinition method, string targetType)
@@ -412,10 +426,27 @@ namespace NinjaTurtles
 	    private MethodDefinition ValidateMethod()
 	    {
             _module = new Module(TargetType.Assembly.Location);
-            var type = _module.Definition.Types
-		        .Single(t => t.FullName == TargetType.FullName);
+
+            var type = ResolveFromTypeCollection(_module.Definition.Types);
 		    return MethodDefinitionResolver.ResolveMethod(type, TargetMethod, _parameterTypes);
 		}
+
+	    private TypeDefinition ResolveFromTypeCollection(Collection<TypeDefinition> types)
+	    {
+	        var type = types.SingleOrDefault(t => t.FullName == TargetType.FullName.Replace("+", "/"));
+            if (type == null)
+            {
+                foreach (var typeDefinition in types)
+                {
+                    if (typeDefinition.NestedTypes != null)
+                    {
+                        type = ResolveFromTypeCollection(typeDefinition.NestedTypes);
+                        if (type != null) return type;
+                    }
+                }
+            }
+	        return type;
+	    }
 
 	    public IMutationTest With<T>() where T : IMethodTurtle
 		{
