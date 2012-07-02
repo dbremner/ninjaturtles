@@ -57,20 +57,19 @@ namespace NinjaTurtles.TestRunners
         /// implementation to be provided as an extension to NinjaTurtles.
         /// </remarks>
         /// </summary>
-        /// <param name="mutation">
-        /// An instance of <see cref="MutantMetaData" /> describing the
-        /// mutant under test.
+        /// <param name="testDirectory">
+        /// The <see cref="TestDirectory" /> containing the test image.
         /// </param>
         /// <param name="testAssemblyLocation">
-        /// The file name (with or without path) of the unit test assembly.
+        ///   The file name (with or without path) of the unit test assembly.
         /// </param>
         /// <param name="testsToRun">
-        /// A list of qualified unit test names.
+        ///   A list of qualified unit test names.
         /// </param>
         /// <returns>
         /// A <see cref="Process" /> instance to run the unit test runner.
         /// </returns>
-        public Process GetRunnerProcess(MutantMetaData mutation, string testAssemblyLocation, IEnumerable<string> testsToRun)
+        public Process GetRunnerProcess(TestDirectory testDirectory, string testAssemblyLocation, IEnumerable<string> testsToRun)
         {
             IDictionary<string, IList<string>> testsByFixture = new Dictionary<string, IList<string>>();
             foreach (var test in testsToRun)
@@ -89,7 +88,7 @@ namespace NinjaTurtles.TestRunners
                                     kv.Key,
                                     string.Join(", ", kv.Value))));
 
-            testAssemblyLocation = Path.Combine(mutation.TestDirectoryName, Path.GetFileName(testAssemblyLocation));
+            testAssemblyLocation = Path.Combine(testDirectory.FullName, Path.GetFileName(testAssemblyLocation));
             string arguments = string.Format("\"{0}\" {{0}}f:\"{1}\" {{0}}r:IsolatedProcess",
                                  testAssemblyLocation, filter);
 
