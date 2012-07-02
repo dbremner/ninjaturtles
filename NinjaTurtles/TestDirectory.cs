@@ -26,7 +26,13 @@ using NLog;
 
 namespace NinjaTurtles
 {
-	internal class TestDirectory : IDisposable
+    /// <summary>
+    /// Represents a temporary directory used to contain a mutated assembly
+    /// to be tested. The directory cleans up after itself when its
+    /// <see mref="Dispose" /> method is called, unless its
+    /// <see pref="DoNotDelete" /> property is set to <b>true</b>.
+    /// </summary>
+    public class TestDirectory : IDisposable
     {
         #region Logging
 
@@ -36,7 +42,11 @@ namespace NinjaTurtles
 
         private readonly string _folder;
 
-		public TestDirectory()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TestDirectory" />
+        /// class.
+        /// </summary>
+        public TestDirectory()
 		{
             _folder = Path.Combine(Path.GetTempPath(),
                                    "NinjaTurtles",
@@ -44,13 +54,27 @@ namespace NinjaTurtles
             _log.Debug("Creating folder \"{0}\".", _folder);
             Directory.CreateDirectory(_folder);
         }
-		
-		public TestDirectory(string sourceFolder) : this()
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TestDirectory" />
+        /// class.
+        /// </summary>
+        /// <param name="sourceFolder">
+        /// The name of a folder whose contents should be recursively
+        /// copied to the temporary folder.
+        /// </param>
+        public TestDirectory(string sourceFolder)
+            : this()
 		{
             _log.Debug("Copying contents from folder \"{0}\".", sourceFolder);
             CopyDirectoryContents(sourceFolder, _folder);
 		}
 		
+        /// <summary>
+        /// Saves an image of a mutated assembly into the root of the test
+        /// directory.
+        /// </summary>
+        /// <param name="module"></param>
 		public void SaveAssembly(Module module)
 		{
 		    string fileName = Path.GetFileName(module.AssemblyLocation);
@@ -79,12 +103,19 @@ namespace NinjaTurtles
 			}
 		}
 		
+		/// <summary>
+		/// Gets the full path of the test directory.
+		/// </summary>
 		public string FullName
 		{
 			get { return _folder; }
 		}
 
-		public void Dispose()
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing,
+        /// releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
 		{
             if (DoNotDelete)
             {
@@ -102,6 +133,11 @@ namespace NinjaTurtles
             }
 		}
 
+        /// <summary>
+        /// Gets or sets a flag indicating whether or not the contents of the
+        /// test directory should be allowed to remain on disk when the
+        /// instance is disposed.
+        /// </summary>
 	    public bool DoNotDelete { get; set; }
     }
 }
