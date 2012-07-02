@@ -27,6 +27,7 @@ using Mono.Cecil;
 using Mono.Cecil.Cil;
 using Mono.Cecil.Mdb;
 using Mono.Cecil.Pdb;
+using Mono.Collections.Generic;
 
 namespace NinjaTurtles
 {
@@ -78,6 +79,8 @@ namespace NinjaTurtles
 
             Definition.ReadSymbols(reader);
 
+            LoadSourceCodeForTypes(Definition.Types, reader);
+
             foreach (var method in Definition.Types
                 .SelectMany(t => t.Methods)
                 .Where(m => m.HasBody))
@@ -95,6 +98,34 @@ namespace NinjaTurtles
                     {
                         SourceFiles.Add(sourceFile, File.ReadAllLines(sourceFile));
                     }
+                }
+            }
+        }
+
+        private void LoadSourceCodeForTypes(Collection<TypeDefinition> types, ISymbolReader reader)
+        {
+            foreach (var typeDefinition in types)
+            {
+                foreach (var method in typeDefinition.Methods.Where(m => m.HasBody))
+                {
+                    MethodDefinition capturedMethod = method;
+                    reader.Read(capturedMethod.Body,
+                        o => capturedMethod.Body.Instructions.FirstOrDefault(i => i.Offset >= o));
+
+                    var sourceFiles = method.Body.Instructions.Where(i => i.SequencePoint != null)
+                        .Select(i => i.SequencePoint.Document.Url)
+                        .Distinct();
+                    foreach (var sourceFile in sourceFiles)
+                    {
+                        if (!SourceFiles.ContainsKey(sourceFile) && File.Exists(sourceFile))
+                        {
+                            SourceFiles.Add(sourceFile, File.ReadAllLines(sourceFile));
+                        }
+                    }
+                }
+                if (typeDefinition.NestedTypes != null)
+                {
+                    LoadSourceCodeForTypes(typeDefinition.NestedTypes, reader);
                 }
             }
         }

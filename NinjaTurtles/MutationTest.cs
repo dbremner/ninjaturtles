@@ -58,7 +58,7 @@ namespace NinjaTurtles
         private ReportingStrategy _reportingStrategy = new NullReportingStrategy();
 	    private string _reportFileName;
 	    private MethodReferenceComparer _comparer;
-	    private TimeSpan _benchmark;
+	    //private TimeSpan _benchmark;
 
 	    internal MutationTest(string testAssemblyLocation, Type targetType, string targetMethod, Type[] parameterTypes)
 		{
@@ -92,7 +92,7 @@ namespace NinjaTurtles
 		    _report = new MutationTestingReport();
             _testsToRun = GetMatchingTestsFromTree(method, matchingMethods);
 
-            _benchmark = BenchmarkTestSuite();
+            //_benchmark = BenchmarkTestSuite();
 
 			int count = 0;
 			int failures = 0;
@@ -353,29 +353,29 @@ namespace NinjaTurtles
 			Interlocked.Increment(ref count);
 		}
 
-        private TimeSpan BenchmarkTestSuite()
-        {
-            var testDirectory = new TestDirectory(Path.GetDirectoryName(_testAssemblyLocation));
-
-            var process = GetTestRunnerProcess(testDirectory);
-
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-            process.Start();
-            process.WaitForExit();
-            stopwatch.Stop();
-
-            testDirectory.Dispose();
-
-            if (process.ExitCode != 0)
-            {
-                throw new MutationTestFailureException("Test suite does not pass with unmutated code - mutation testing aborted.");
-            }
-            var timespan = stopwatch.Elapsed;
-            Console.WriteLine("Test suite benchmarked at {0:0.000} seconds.", timespan.TotalSeconds);
-
-            return timespan;
-        }
+//        private TimeSpan BenchmarkTestSuite()
+//        {
+//            var testDirectory = new TestDirectory(Path.GetDirectoryName(_testAssemblyLocation));
+//
+//            var process = GetTestRunnerProcess(testDirectory);
+//
+//            var stopwatch = new Stopwatch();
+//            stopwatch.Start();
+//            process.Start();
+//            process.WaitForExit();
+//            stopwatch.Stop();
+//
+//            testDirectory.Dispose();
+//
+//            if (process.ExitCode != 0)
+//            {
+//                throw new MutationTestFailureException("Test suite does not pass with unmutated code - mutation testing aborted.");
+//            }
+//            var timespan = stopwatch.Elapsed;
+//            Console.WriteLine("Test suite benchmarked at {0:0.000} seconds.", timespan.TotalSeconds);
+//
+//            return timespan;
+//        }
 
 	    private Process GetTestRunnerProcess(TestDirectory testDirectory)
 	    {
@@ -388,7 +388,7 @@ namespace NinjaTurtles
             var process = GetTestRunnerProcess(mutation.TestDirectory);
 
             process.Start();
-			bool exitedInTime = process.WaitForExit((int)(5 * _benchmark.TotalMilliseconds));
+	        bool exitedInTime = process.WaitForExit(30000); //Math.Min(30000, (int)(5 * _benchmark.TotalMilliseconds)));
 			int exitCode = -1;
 
 			try

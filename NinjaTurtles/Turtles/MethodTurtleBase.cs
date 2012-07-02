@@ -184,6 +184,10 @@ namespace NinjaTurtles.Turtles
         {
             var sequencePoint = GetCurrentSequencePoint(index);
             string result = "";
+            if (!_module.SourceFiles.ContainsKey(sequencePoint.Document.Url))
+            {
+                return "";
+            }
             string[] sourceCode = _module.SourceFiles[sequencePoint.Document.Url];
             int upperBound = Math.Min(sequencePoint.EndLine + 2, sourceCode.Length);
             for (int line = Math.Max(sequencePoint.StartLine - 2, 1); line <= upperBound; line++)

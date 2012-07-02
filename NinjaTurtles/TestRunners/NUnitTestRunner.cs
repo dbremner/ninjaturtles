@@ -78,7 +78,7 @@ namespace NinjaTurtles.TestRunners
             File.WriteAllLines(testListFile, testsToRun);
 
             testAssemblyLocation = Path.Combine(testDirectory.FullName, Path.GetFileName(testAssemblyLocation));
-            string arguments = string.Format("\"{0}\" {{0}}runlist=\"{1}\" {{0}}noshadow {{0}}nologo {{0}}nodots {{0}}stoponerror", testAssemblyLocation, testListFile);
+            string arguments = string.Format("\"{0}\" {{0}}runlist=\"{1}\" {{0}}noshadow {{0}}stoponerror", testAssemblyLocation, testListFile);
 
             var searchPath = new List<string>();
             string programFilesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
