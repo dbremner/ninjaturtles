@@ -230,9 +230,9 @@ Parameter name: methodName")]
 	        {
 	            var nested = new OnlyTestedByNestedTestClass();
                 Assert.AreEqual(0, nested.DoSomethingBanale(0));
-                Assert.AreEqual(-1, nested.DoSomethingBanale(-2));
-                Assert.AreEqual(1, nested.DoSomethingBanale(2));
-                Assert.AreEqual(7, nested.DoSomethingBanale(14));
+                Assert.AreEqual(-2, nested.DoSomethingBanale(-1));
+                Assert.AreEqual(2, nested.DoSomethingBanale(1));
+                Assert.AreEqual(14, nested.DoSomethingBanale(7));
             }
 	    }
 
