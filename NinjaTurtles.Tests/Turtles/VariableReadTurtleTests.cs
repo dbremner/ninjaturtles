@@ -33,7 +33,7 @@ namespace NinjaTurtles.Tests.Turtles
     public class VariableReadTurtleTests
     {
         [Test]
-        public void DoMutate_Returns_Correct_Seqeuences()
+        public void DoMutate_Returns_Correct_Sequences()
         {
             var module = new Module(Assembly.GetExecutingAssembly().Location);
             module.LoadDebugInformation();
@@ -59,7 +59,7 @@ namespace NinjaTurtles.Tests.Turtles
         }
 
         [Test]
-        public void DoMutate_Returns_Correct_Seqeuences_Including_Field()
+        public void DoMutate_Returns_Correct_Sequences_Including_Field()
         {
             var module = new Module(Assembly.GetExecutingAssembly().Location);
             module.LoadDebugInformation();

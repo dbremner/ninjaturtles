@@ -84,6 +84,25 @@ namespace NinjaTurtles
                 var method = ((MethodReference)instruction.Operand);
                 return method.Name == "Dispose";
             }
+            if (instruction.IsPartOfSequence(OpCodes.Nop, OpCodes.Ldc_I4, OpCodes.Stloc,
+                OpCodes.Leave, OpCodes.Ldarg, OpCodes.Call,
+                OpCodes.Nop, OpCodes.Endfinally))
+            {
+                if (instruction.OpCode == OpCodes.Endfinally)
+                {
+                    instruction = instruction.Previous;
+                }
+                if (instruction.Next.OpCode == OpCodes.Endfinally)
+                {
+                    instruction = instruction.Previous;
+                }
+                while (instruction.OpCode != OpCodes.Call)
+                {
+                    instruction = instruction.Next;
+                }
+                var method = ((MethodReference)instruction.Operand);
+                return method.Name == "Dispose" || method.Name == "System.IDisposable.Dispose";
+            }
             return false;
         }
 

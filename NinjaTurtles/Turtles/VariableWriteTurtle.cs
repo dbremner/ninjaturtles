@@ -62,18 +62,13 @@ namespace NinjaTurtles.Turtles
             var variablesByType = GroupVariablesByType(method);
             PopulateOperandsInVariables(method, variablesByType);
 
-            if (!variablesByType.Any(kv => variablesByType[kv.Key].Count > 1))
-            {
-                yield break;
-            }
-
             foreach (var keyValuePair in variablesByType.Where(kv => kv.Value.Count > 1))
             {
                 var variables = keyValuePair.Value.ToList();
                 for (int index = 0; index < method.Body.Instructions.Count; index++)
                 {
                     var instruction = method.Body.Instructions[index];
-                    if (instruction.OpCode == OpCodes.Ldloc && instruction.Next.OpCode == OpCodes.Ret) continue;
+                    if (instruction.IsPartOfCompilerGeneratedDispose()) continue;
 
                     int oldIndex = -1;
                     if (instruction.OpCode == OpCodes.Stloc)
@@ -89,6 +84,14 @@ namespace NinjaTurtles.Turtles
 
                     if (oldIndex < 0) continue;
 
+                    // Skip if could be initialising to zero, as in reality
+                    // this has already been done by the CLR.
+                    if (instruction.Previous.OpCode == OpCodes.Ldc_I4
+                        && (int)instruction.Previous.Operand == 0)
+                    {
+                        continue;
+                    }
+
                     OpCode originalOpCode = instruction.OpCode;
                     object originalOperand = instruction.Operand;
                     var originalVariable = variables[oldIndex];
@@ -98,11 +101,6 @@ namespace NinjaTurtles.Turtles
                         if (newIndex == oldIndex) continue;
                         var variable = variables[newIndex];
                         if (variable.Operand == null) continue;
-
-                        if (instruction.IsPartOfCompilerGeneratedDispose())
-                        {
-                            continue;
-                        }
 
                         instruction.OpCode = variable.GetWriteOpCode();
                         instruction.Operand = variable.Operand;
@@ -115,8 +113,7 @@ namespace NinjaTurtles.Turtles
                                 originalVariable.Name,
                                 variable.Name);
 
-                        MutantMetaData mutation = DoYield(method, module, description, index);
-                        yield return mutation;
+                        yield return DoYield(method, module, description, index);
 
                     }
                     instruction.OpCode = originalOpCode;
@@ -139,6 +136,7 @@ namespace NinjaTurtles.Turtles
             }
             foreach (var field in method.DeclaringType.Fields)
             {
+                if (field.Name == "<>1__state") continue;
                 var type = field.FieldType;
                 if (!variables.ContainsKey(type))
                 {

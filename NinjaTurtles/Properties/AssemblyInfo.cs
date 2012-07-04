@@ -34,6 +34,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyCopyright("Copyright © 2012 David Musgrove")]
 
 [assembly: AssemblyVersion("0.3.0.1")]
+[assembly: AssemblyInformationalVersion("ALPHA 0.3.0.1")]
 [assembly: AssemblyFileVersion("0.3.0.1")]
 
 [assembly: InternalsVisibleTo("NinjaTurtles.Tests")]

@@ -32,5 +32,15 @@ namespace NinjaTurtles.Tests.Turtles.ConditionalBoundaryTurtleTestSuite
         {
             return input < 0;
         }
+
+        public bool IsPositive(int input)
+        {
+            return input > 0;
+        }
+
+        public bool WorkingIsPositive(int input)
+        {
+            return input > 0;
+        }
     }
 }

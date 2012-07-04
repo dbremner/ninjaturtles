@@ -33,7 +33,7 @@ namespace NinjaTurtles.Tests.Turtles
     public class SequencePointDeletionTurtleTests
     {
         [Test]
-        public void DoMutate_Returns_Correct_Seqeuences()
+        public void DoMutate_Returns_Correct_Sequences()
         {
             var module = new Module(Assembly.GetExecutingAssembly().Location);
             module.LoadDebugInformation();
@@ -49,6 +49,22 @@ namespace NinjaTurtles.Tests.Turtles
             StringAssert.EndsWith("deleting Ldarg, Stloc", mutations[0].Description);
             StringAssert.EndsWith("deleting Ldloc, Ldarg, Ldarg, Mul, Add, Stloc", mutations[1].Description);
             StringAssert.EndsWith("deleting Ldloc, Ldarg, Ldarg, Mul, Ldarg, Mul, Add, Stloc", mutations[2].Description);
+        }
+
+        [Test]
+        public void DoMutate_Returns_Correct_Sequences_More_Advanced()
+        {
+            var module = new Module(typeof(MethodTurtleBase).Assembly.Location);
+            module.LoadDebugInformation();
+            var method = module.Definition
+                .Types.Single(t => t.Name == "MethodTurtleBase")
+                .Methods.Single(t => t.Name == "Mutate");
+
+            var mutator = new SequencePointDeletionTurtle();
+            IList<MutantMetaData> mutations = mutator
+                .Mutate(method, module, method.Body.Instructions.Select(i => i.Offset).ToArray()).ToList();
+
+            StringAssert.EndsWith("deleting Ldarg, Ldfld, Ldarg, Ldfld, Stfld", mutations[0].Description);
         }
 
         [Test, Category("Mutation"), MutationTest]

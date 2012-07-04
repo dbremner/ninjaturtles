@@ -61,7 +61,8 @@ namespace NinjaTurtles.Turtles
             for (int index = 0; index < method.Body.Instructions.Count; index++)
             {
                 var instruction = method.Body.Instructions[index];
-                if (instruction.SequencePoint != null)
+                if (instruction.SequencePoint != null
+                    && instruction.SequencePoint.StartLine != 0xfeefee)
                 {
                     startIndex = index;
                     sequence.Clear();
@@ -117,6 +118,20 @@ namespace NinjaTurtles.Turtles
                 {
                     return false;
                 }
+            }
+
+            // If compiler-generated dispose, don't delete.
+            if (method.Instructions[opCodes.Keys.First()].IsPartOfCompilerGeneratedDispose())
+            {
+                return false;
+            }
+
+            // If setting default value to a field, don't delete.
+            if (method.Instructions[opCodes.Keys.First()]
+                .FollowsSequence(OpCodes.Ldarg, OpCodes.Ldc_I4, OpCodes.Stfld)
+                && (int)method.Instructions[opCodes.Keys.First() + 1].Operand == 0)
+            {
+                return false;
             }
 
             return true;

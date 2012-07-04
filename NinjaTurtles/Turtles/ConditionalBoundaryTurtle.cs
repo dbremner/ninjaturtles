@@ -63,34 +63,23 @@ namespace NinjaTurtles.Turtles
                 if (instruction.OpCode == OpCodes.Clt
                     || instruction.OpCode == OpCodes.Cgt)
                 {
-                    var originalOpCode = instruction.OpCode;
+                    var originalCode = instruction.OpCode.Code;
 
                     var loadZero = method.Body.GetILProcessor().Create(OpCodes.Ldc_I4_0);
                     var compareEqual = method.Body.GetILProcessor().Create(OpCodes.Ceq);
-                    loadZero.Next = compareEqual;
-                    loadZero.Offset = instruction.Offset + 1;
-                    compareEqual.Next = instruction.Next;
-                    compareEqual.Offset = instruction.Offset + 2;
 
                     method.Body.Instructions.Insert(index + 1, compareEqual);
                     method.Body.Instructions.Insert(index + 1, loadZero);
-                    for (int remaining = index + 1; remaining < method.Body.Instructions.Count; remaining++)
-                    {
-                        method.Body.Instructions[remaining].Offset += 2;
-                    }
 
-                    instruction.OpCode = originalOpCode == OpCodes.Clt ? OpCodes.Cgt : OpCodes.Clt;
-                    instruction.Next = loadZero;
+                    instruction.OpCode = instruction.OpCode == OpCodes.Clt ? OpCodes.Cgt : OpCodes.Clt;
 
-                    var description = string.Format("{0:x4}: {1} => not {2}", GetOriginalOffset(index), originalOpCode.Code, instruction.OpCode.Code);
-                    MutantMetaData mutation = DoYield(method, module, description, index);
-                    yield return mutation;
+                    var description = string.Format("{0:x4}: {1} => not {2}", GetOriginalOffset(index), originalCode, instruction.OpCode.Code);
+                    yield return DoYield(method, module, description, index);
 
-                    instruction.OpCode = originalOpCode;
-                    instruction.Next = compareEqual.Next;
+                    instruction.OpCode = instruction.OpCode == OpCodes.Clt ? OpCodes.Cgt : OpCodes.Clt;
 
-                    method.Body.Instructions.RemoveAt(index + 1);
-                    method.Body.Instructions.RemoveAt(index + 1);
+                    method.Body.Instructions.Remove(compareEqual);
+                    method.Body.Instructions.Remove(loadZero);
                 }
             }
         }
