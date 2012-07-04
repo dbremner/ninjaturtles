@@ -40,6 +40,13 @@ namespace NinjaTurtles.Tests.Turtles.VariableWriteTurtleTestSuite
             return a + b;
         }
 
+        public int AddWithPointlessNonsenseViaMixture(int a, int b)
+        {
+            _pointlessA = a;
+            int pointlessB = b;
+            return _pointlessA + pointlessB;
+        }
+
         public int AddWithoutPointlessNonsense(int a, int b)
         {
             return a + b;

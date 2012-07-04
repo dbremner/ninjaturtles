@@ -25,6 +25,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Management;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -58,6 +59,7 @@ namespace NinjaTurtles
         private ReportingStrategy _reportingStrategy = new NullReportingStrategy();
 	    private string _reportFileName;
 	    private MethodReferenceComparer _comparer;
+	    private static Regex _automaticallyGeneratedNestedClassMatcher = new Regex("^\\<([A-Za-z0-9@_]+)\\>");
 	    //private TimeSpan _benchmark;
 
 	    internal MutationTest(string testAssemblyLocation, Type targetType, string targetMethod, Type[] parameterTypes)
@@ -317,6 +319,14 @@ namespace NinjaTurtles
 	                    && !matchingMethods.Contains(method, _comparer))
 	                {
                         AddMethod(method, matchingMethods);
+                        var match = _automaticallyGeneratedNestedClassMatcher.Match(type.Name);
+                        if (match.Success && type.DeclaringType != null)
+                        {
+                            if (type.DeclaringType.Methods.Any(m => m.Name == match.Groups[1].Value))
+                            {
+                                AddMethod(type.DeclaringType.Methods.First(m => m.Name == match.Groups[1].Value), matchingMethods);
+                            }
+                        }
 	                }
 	            }
 	        }

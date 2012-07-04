@@ -27,8 +27,7 @@ namespace NinjaTurtles.Turtles
 {
     /// <summary>
     /// An implementation of <see cref="IMethodTurtle"/> that replaces the
-    /// branching operator <see cref="OpCodes.Br" /> with a 
-    /// <see cref="OpCodes.Nop" />, and the conditional branch operators
+    /// conditional branch operators
     /// <see cref="OpCodes.Brtrue" /> and <see cref="OpCodes.Brfalse"/> with
     /// their converse and with the operators <see cref="OpCodes.Br"/> (always
     /// branch) and <see cref="OpCodes.Nop" /> (never branch) in turn.
@@ -42,7 +41,6 @@ namespace NinjaTurtles.Turtles
         {
             _opCodes = new Dictionary<OpCode, IEnumerable<OpCode>>
                            {
-                               {OpCodes.Br, new[] {OpCodes.Nop}},
                                {OpCodes.Brtrue, new[] {OpCodes.Nop, OpCodes.Brfalse, OpCodes.Br}},
                                {OpCodes.Brfalse, new[] {OpCodes.Nop, OpCodes.Brtrue, OpCodes.Br}}
                            };

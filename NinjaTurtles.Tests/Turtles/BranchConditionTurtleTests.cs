@@ -121,8 +121,8 @@ namespace NinjaTurtles.Tests.Turtles
                 if (metaData.MethodDefinition.Body.Instructions.Any(i => i.OpCode == OpCodes.Br)) br++;
             }
 
-            Assert.AreEqual(4, total);
-            Assert.AreEqual(1, brTrue);
+            Assert.AreEqual(3, total);
+            Assert.AreEqual(0, brTrue);
             Assert.AreEqual(1, brFalse);
             Assert.AreEqual(3, br);
         }

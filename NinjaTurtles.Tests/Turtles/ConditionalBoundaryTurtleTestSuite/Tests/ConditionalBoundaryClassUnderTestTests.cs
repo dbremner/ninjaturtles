@@ -44,6 +44,21 @@ namespace NinjaTurtles.Tests.Turtles.ConditionalBoundaryTurtleTestSuite.Tests
         }
 
         [Test]
+        public void IsPositive_Works()
+        {
+            Assert.IsFalse(new ConditionalBoundaryClassUnderTest().IsPositive(-1));
+            Assert.IsTrue(new ConditionalBoundaryClassUnderTest().IsPositive(1));
+        }
+
+        [Test]
+        public void WorkingIsPositive_Works()
+        {
+            Assert.IsFalse(new ConditionalBoundaryClassUnderTest().WorkingIsPositive(-1));
+            Assert.IsTrue(new ConditionalBoundaryClassUnderTest().WorkingIsPositive(1));
+            Assert.IsFalse(new ConditionalBoundaryClassUnderTest().WorkingIsPositive(0));
+        }
+
+        [Test]
         public void IsNegative_Mutation_Tests_Fail()
         {
             try
@@ -65,6 +80,32 @@ namespace NinjaTurtles.Tests.Turtles.ConditionalBoundaryTurtleTestSuite.Tests
         {
             MutationTestBuilder<ConditionalBoundaryClassUnderTest>
                 .For("WorkingIsNegative")
+                .With<ConditionalBoundaryTurtle>()
+                .Run();
+        }
+
+        [Test]
+        public void IsPositive_Mutation_Tests_Fail()
+        {
+            try
+            {
+                MutationTestBuilder<ConditionalBoundaryClassUnderTest>
+                    .For("IsPositive")
+                    .With<ConditionalBoundaryTurtle>()
+                    .Run();
+            }
+            catch (MutationTestFailureException)
+            {
+                return;
+            }
+            Assert.Fail("MutationTestFailureException was not thrown.");
+        }
+
+        [Test]
+        public void WorkingIsPositive_Mutation_Tests_Pass()
+        {
+            MutationTestBuilder<ConditionalBoundaryClassUnderTest>
+                .For("WorkingIsPositive")
                 .With<ConditionalBoundaryTurtle>()
                 .Run();
         }

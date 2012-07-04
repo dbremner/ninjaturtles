@@ -43,6 +43,13 @@ namespace NinjaTurtles.Tests.Turtles.VariableWriteTurtleTestSuite.Tests
         }
 
         [Test]
+        public void AddWithPointlessNonsenseViaMixture_Works()
+        {
+            Assert.AreEqual(4, new VariableWriteClassUnderTest().AddWithPointlessNonsenseViaMixture(1, 3));
+            Assert.AreEqual(85, new VariableWriteClassUnderTest().AddWithPointlessNonsenseViaMixture(-7, 92));
+        }
+
+        [Test]
         public void AddWithoutPointlessNonsense_Works()
         {
             Assert.AreEqual(4, new VariableWriteClassUnderTest().AddWithoutPointlessNonsense(1, 3));

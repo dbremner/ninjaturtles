@@ -145,7 +145,7 @@ Parameter name: methodName")]
                 .Run();
         }
 
-        [Test, Category("Mutation"), MutationTest]
+        [Test, Category("SlowMutation"), MutationTest]
         public void AddMethod_Mutation_Tests()
         {
             MutationTestBuilder.For("NinjaTurtles.MutationTest", "AddMethod")
@@ -153,7 +153,7 @@ Parameter name: methodName")]
                 .Run();
         }
 
-        [Test, Category("Mutation"), MutationTest]
+        [Test, Category("SlowMutation"), MutationTest]
         public void AddMethodsForInterfaces_Mutation_Tests()
         {
             MutationTestBuilder.For("NinjaTurtles.MutationTest", "AddMethodsForInterfaces")
@@ -193,7 +193,7 @@ Parameter name: methodName")]
                 .Run();
         }
 
-        [Test, Category("Mutation"), MutationTest]
+        [Test, Category("SlowMutation"), MutationTest]
         public void AddCallingMethodsForType_Mutation_Tests()
         {
             MutationTestBuilder.For("NinjaTurtles.MutationTest", "AddCallingMethodsForType")

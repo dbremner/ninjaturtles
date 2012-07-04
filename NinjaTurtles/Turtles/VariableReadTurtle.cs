@@ -168,6 +168,7 @@ namespace NinjaTurtles.Turtles
             }
             foreach (var field in method.DeclaringType.Fields)
             {
+                if (field.Name == "<>1__state") continue;
                 var type = field.FieldType;
                 if (!variables.ContainsKey(type))
                 {

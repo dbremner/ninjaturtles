@@ -103,14 +103,20 @@ namespace NinjaTurtles.Tests.Turtles
             var module = new Module(tempAssemblyFileName);
 
             var mutator = new ConditionalBoundaryTurtle();
-            IEnumerable<MutantMetaData> mutations = mutator
-                .Mutate(addMethod, module, addMethod.Body.Instructions.Select(i => i.Offset).ToArray());
+            int count = 0;
+            foreach (var mutant in mutator
+                .Mutate(addMethod, module, addMethod.Body.Instructions.Select(i => i.Offset).ToArray()))
+            {
+                ++count;
+                StringAssert.EndsWith("Clt => not Cgt", mutant.Description);
+                Assert.AreEqual(2, mutant.ILIndex);
+                Assert.IsTrue(mutant.MethodDefinition.Body.Instructions[2]
+                    .FollowsSequence(OpCodes.Cgt, OpCodes.Ldc_I4_0, OpCodes.Ceq, OpCodes.Stloc));
+            }
 
-            Assert.AreEqual(1, mutations.Count());
-            var mutation = mutations.First();
-            StringAssert.EndsWith("Clt => not Cgt", mutation.Description);
-            Assert.IsTrue(mutation.MethodDefinition.Body.Instructions[2]
-                .FollowsSequence(OpCodes.Cgt, OpCodes.Ldc_I4_0, OpCodes.Ceq, OpCodes.Stloc));
+            Assert.AreEqual(1, count); 
+            Assert.IsTrue(addMethod.Body.Instructions[2]
+                .FollowsSequence(OpCodes.Clt, OpCodes.Stloc_0));
         }
 
         [Test]
@@ -127,14 +133,20 @@ namespace NinjaTurtles.Tests.Turtles
             var module = new Module(tempAssemblyFileName);
 
             var mutator = new ConditionalBoundaryTurtle();
-            IEnumerable<MutantMetaData> mutations = mutator
-                .Mutate(addMethod, module, addMethod.Body.Instructions.Select(i => i.Offset).ToArray());
+            int count = 0;
+            foreach (var mutant in mutator
+                .Mutate(addMethod, module, addMethod.Body.Instructions.Select(i => i.Offset).ToArray()))
+            {
+                ++count;
+                StringAssert.EndsWith("Cgt => not Clt", mutant.Description);
+                Assert.AreEqual(2, mutant.ILIndex);
+                Assert.IsTrue(mutant.MethodDefinition.Body.Instructions[2]
+                    .FollowsSequence(OpCodes.Clt, OpCodes.Ldc_I4_0, OpCodes.Ceq, OpCodes.Ldc_I4, OpCodes.Ceq, OpCodes.Stloc));
+            }
 
-            Assert.AreEqual(1, mutations.Count());
-            var mutation = mutations.First();
-            StringAssert.EndsWith("Cgt => not Clt", mutation.Description);
-            Assert.IsTrue(mutation.MethodDefinition.Body.Instructions[2]
-                .FollowsSequence(OpCodes.Clt, OpCodes.Ldc_I4_0, OpCodes.Ceq, OpCodes.Ldc_I4, OpCodes.Ceq, OpCodes.Stloc));
+            Assert.AreEqual(1, count);
+            Assert.IsTrue(addMethod.Body.Instructions[2]
+                .FollowsSequence(OpCodes.Cgt, OpCodes.Ldc_I4_0, OpCodes.Ceq, OpCodes.Stloc_0));
         }
 
         [Test]
@@ -151,14 +163,20 @@ namespace NinjaTurtles.Tests.Turtles
             var module = new Module(tempAssemblyFileName);
 
             var mutator = new ConditionalBoundaryTurtle();
-            IEnumerable<MutantMetaData> mutations = mutator
-                .Mutate(addMethod, module, addMethod.Body.Instructions.Select(i => i.Offset).ToArray());
+            int count = 0;
+            foreach (var mutant in mutator
+                .Mutate(addMethod, module, addMethod.Body.Instructions.Select(i => i.Offset).ToArray()))
+            {
+                ++count;
+                StringAssert.EndsWith("Cgt => not Clt", mutant.Description);
+                Assert.AreEqual(2, mutant.ILIndex);
+                Assert.IsTrue(mutant.MethodDefinition.Body.Instructions[2]
+                    .FollowsSequence(OpCodes.Clt, OpCodes.Ldc_I4_0, OpCodes.Ceq, OpCodes.Stloc));
+            }
 
-            Assert.AreEqual(1, mutations.Count());
-            var mutation = mutations.First();
-            StringAssert.EndsWith("Cgt => not Clt", mutation.Description);
-            Assert.IsTrue(mutation.MethodDefinition.Body.Instructions[2]
-                .FollowsSequence(OpCodes.Clt, OpCodes.Ldc_I4_0, OpCodes.Ceq, OpCodes.Stloc));
+            Assert.AreEqual(1, count);
+            Assert.IsTrue(addMethod.Body.Instructions[2]
+                .FollowsSequence(OpCodes.Cgt, OpCodes.Stloc_0));
         }
 
         [Test]
@@ -175,14 +193,20 @@ namespace NinjaTurtles.Tests.Turtles
             var module = new Module(tempAssemblyFileName);
 
             var mutator = new ConditionalBoundaryTurtle();
-            IEnumerable<MutantMetaData> mutations = mutator
-                .Mutate(addMethod, module, addMethod.Body.Instructions.Select(i => i.Offset).ToArray());
+            int count = 0;
+            foreach (var mutant in mutator
+                .Mutate(addMethod, module, addMethod.Body.Instructions.Select(i => i.Offset).ToArray()))
+            {
+                ++count;
+                StringAssert.EndsWith("Clt => not Cgt", mutant.Description);
+                Assert.AreEqual(2, mutant.ILIndex);
+                Assert.IsTrue(mutant.MethodDefinition.Body.Instructions[2]
+                    .FollowsSequence(OpCodes.Cgt, OpCodes.Ldc_I4_0, OpCodes.Ceq, OpCodes.Ldc_I4, OpCodes.Ceq, OpCodes.Stloc));
+            }
 
-            Assert.AreEqual(1, mutations.Count());
-            var mutation = mutations.First();
-            StringAssert.EndsWith("Clt => not Cgt", mutation.Description);
-            Assert.IsTrue(mutation.MethodDefinition.Body.Instructions[2]
-                .FollowsSequence(OpCodes.Cgt, OpCodes.Ldc_I4_0, OpCodes.Ceq, OpCodes.Ldc_I4, OpCodes.Ceq, OpCodes.Stloc));
+            Assert.AreEqual(1, count);
+            Assert.IsTrue(addMethod.Body.Instructions[2]
+                .FollowsSequence(OpCodes.Clt, OpCodes.Ldc_I4_0, OpCodes.Ceq, OpCodes.Stloc_0));
         }
 
         [Test, Category("Mutation"), MutationTest]
