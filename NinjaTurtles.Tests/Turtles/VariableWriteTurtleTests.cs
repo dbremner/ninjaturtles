@@ -42,6 +42,7 @@ namespace NinjaTurtles.Tests.Turtles
     public class VariableWriteTurtleTests
     {
         private string _testFolder;
+        private static Instruction _mutatedInstruction;
 
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
@@ -79,7 +80,8 @@ namespace NinjaTurtles.Tests.Turtles
             method.Body.Instructions.Add(processor.Create(OpCodes.Stloc, variable2));
             method.Body.Instructions.Add(processor.Create(OpCodes.Nop));
             method.Body.Instructions.Add(processor.Create(OpCodes.Ldc_I4, 7));
-            method.Body.Instructions.Add(processor.Create(OpCodes.Stloc, variable1));
+            _mutatedInstruction = processor.Create(OpCodes.Stloc, variable1);
+            method.Body.Instructions.Add(_mutatedInstruction);
             method.Body.Instructions.Add(processor.Create(OpCodes.Nop));
             method.Body.Instructions.Add(processor.Create(OpCodes.Ldc_I4, 8));
             method.Body.Instructions.Add(processor.Create(OpCodes.Stloc, variable2));
@@ -93,7 +95,6 @@ namespace NinjaTurtles.Tests.Turtles
             method.Body.Instructions.Add(processor.Create(OpCodes.Stloc, resultVariable));
             method.Body.Instructions.Add(processor.Create(OpCodes.Ldloc, resultVariable));
             method.Body.Instructions.Add(processor.Create(OpCodes.Ret));
-
 
             type.Methods.Add(method);
             type.Methods.Add(dispose);
@@ -146,7 +147,10 @@ namespace NinjaTurtles.Tests.Turtles
                 .Mutate(method, module, method.Body.Instructions.Select(i => i.Offset).ToArray()).ToList();
 
             Assert.AreEqual(1, mutations.Count);
-            StringAssert.EndsWith("write substitution Int32. => Int32.", mutations[0].Description);
+            string expectedMessage = string.Format(
+                "{0:x4}: write substitution Int32. => Int32.",
+                _mutatedInstruction.Offset);
+            StringAssert.EndsWith(expectedMessage, mutations[0].Description);
         }
 
         [Test]

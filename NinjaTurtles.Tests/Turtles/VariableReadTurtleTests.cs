@@ -23,6 +23,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using Mono.Cecil.Cil;
+
 using NUnit.Framework;
 
 using NinjaTurtles.Turtles;
@@ -41,13 +43,16 @@ namespace NinjaTurtles.Tests.Turtles
                 .Types.Single(t => t.Name == "VariableReadClassUnderTest")
                 .Methods.Single(t => t.Name == "AddAndDouble");
 
+            var mutatedInstruction = method.Body.Instructions.First(i => i.OpCode == OpCodes.Ldarg_1);
+            string hexPrefix = string.Format("{0:x4}: ", mutatedInstruction.Offset);
+
             var mutator = new VariableReadTurtle();
             IList<MutantMetaData> mutations = mutator
                 .Mutate(method, module, method.Body.Instructions.Select(i => i.Offset).ToArray()).ToList();
 
             // V2 is only read for the return statement; this case is excluded in the code.
             Assert.AreEqual(9, mutations.Count);
-            StringAssert.EndsWith("read substitution Int32.a => Int32.b", mutations[0].Description);
+            StringAssert.EndsWith(hexPrefix + "read substitution Int32.a => Int32.b", mutations[0].Description);
             StringAssert.EndsWith("read substitution Int32.a => Int32.total", mutations[1].Description);
             StringAssert.EndsWith("read substitution Int32.a => Int32.CS$1$0000", mutations[2].Description);
             StringAssert.EndsWith("read substitution Int32.b => Int32.a", mutations[3].Description);
