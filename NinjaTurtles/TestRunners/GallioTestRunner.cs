@@ -30,6 +30,7 @@ namespace NinjaTurtles.TestRunners
     /// <summary>
     /// An implementation of <see cref="ITestRunner" /> to run a unit test
     /// suite using the Gallio console runner.
+    /// </summary>
     /// <example>
     /// <para>
     /// This code creates and runs the default set of mutation tests for the
@@ -42,8 +43,19 @@ namespace NinjaTurtles.TestRunners
     ///     .UsingRunner&lt;GallioTestRunner&gt;()
     ///     .Run();
     /// </code>
+    /// <code lang="vbnet">
+    /// Call MutationTestBuilder(Of ClassUnderTest) _
+    ///     .For("MethodUnderTest") _
+    ///     .UsingRunner(Of GallioTestRunner)() _
+    ///     .Run
+    /// </code>
+    /// <code lang="cpp">
+    /// MutationTestBuilder&lt;ClassUnderTest^&gt;
+    ///     ::For("MethodUnderTest")
+    ///     ->UsingRunner&lt;GallioTestRunner^&gt;()
+    ///     ->Run();
+    /// </code>
     /// </example>
-    /// </summary>
     public class GallioTestRunner : ITestRunner
     {
         /// <summary>

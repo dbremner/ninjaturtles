@@ -31,6 +31,7 @@ namespace NinjaTurtles.TestRunners
     /// <summary>
     /// An implementation of <see cref="ITestRunner" /> to run a unit test
     /// suite using the xUnit console runner.
+    /// </summary>
     /// <example>
     /// <para>
     /// This code creates and runs the default set of mutation tests for the
@@ -43,8 +44,19 @@ namespace NinjaTurtles.TestRunners
     ///     .UsingRunner&lt;xUnitTestRunner&gt;()
     ///     .Run();
     /// </code>
+    /// <code lang="vbnet">
+    /// Call MutationTestBuilder(Of ClassUnderTest) _
+    ///     .For("MethodUnderTest") _
+    ///     .UsingRunner(Of xUnitTestRunner)() _
+    ///     .Run
+    /// </code>
+    /// <code lang="cpp">
+    /// MutationTestBuilder&lt;ClassUnderTest^&gt;
+    ///     ::For("MethodUnderTest")
+    ///     ->UsingRunner&lt;xUnitTestRunner^&gt;()
+    ///     ->Run();
+    /// </code>
     /// </example>
-    /// </summary>
 // ReSharper disable InconsistentNaming
     public class xUnitTestRunner : ITestRunner
 // ReSharper restore InconsistentNaming
@@ -76,7 +88,7 @@ namespace NinjaTurtles.TestRunners
         {
             testAssemblyLocation = Path.Combine(testDirectory.FullName, Path.GetFileName(testAssemblyLocation));
 
-            // HACKTAGE: In the absence of a simple way to limit the tests
+            // HACKTAG: In the absence of a simple way to limit the tests
             // xUnit runs, we inject TraitAttributes to specify this.
             var testModule = new Module(testAssemblyLocation);
             var xUnitModule =

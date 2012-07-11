@@ -27,10 +27,10 @@
     <SelfBranded>True</SelfBranded>
     <HelpTitle>NinjaTurtles - .NET mutation testing</HelpTitle>
     <RootNamespaceContainer>True</RootNamespaceContainer>
-    <RootNamespaceTitle>NinjaTurtles</RootNamespaceTitle>
+    <RootNamespaceTitle>NinjaTurtles Class Library</RootNamespaceTitle>
     <ProductTitle>NinjaTurtles</ProductTitle>
     <VendorName>NinjaTurtles</VendorName>
-    <ProjectSummary>NinjaTurtles is an open source .NET mutation testing library. You can find the source code in &amp;lt%3ba href=&amp;quot%3bhttp://ninjaturtles.codeplex.com&amp;quot%3b&amp;gt%3bCodePlex&amp;lt%3b/a&amp;gt%3b, and download the library in binary form from &amp;lt%3ba href=&amp;quot%3bhttp://nuget.org/packages/NinjaTurtles&amp;quot%3b&amp;gt%3bNuGet&amp;lt%3b/a&amp;gt%3b.</ProjectSummary>
+    <ProjectSummary>NinjaTurtles is an open source .NET mutation testing library. You can find the source code in &amp;lt%3ba href=&amp;quot%3bhttp://ninjaturtles.codeplex.com&amp;quot%3b target=&amp;quot%3b_blank&amp;quot%3b&amp;gt%3bCodePlex&amp;lt%3b/a&amp;gt%3b, and download the library in binary form from &amp;lt%3ba href=&amp;quot%3bhttp://nuget.org/packages/NinjaTurtles&amp;quot%3b target=&amp;quot%3b_blank&amp;quot%3b&amp;gt%3bNuGet&amp;lt%3b/a&amp;gt%3b. For more information about NinjaTurtles, please visit our website at &amp;lt%3ba href=&amp;quot%3bhttp://www.mutation-testing.net&amp;quot%3b target=&amp;quot%3b_blank&amp;quot%3b&amp;gt%3bhttp://www.mutation-testing.net&amp;lt%3b/a&amp;gt%3b.</ProjectSummary>
     <CopyrightText>&amp;#169%3b 2012 David Musgrove and others.</CopyrightText>
     <TocParentId>-1</TocParentId>
     <TocParentVersion>100</TocParentVersion>
