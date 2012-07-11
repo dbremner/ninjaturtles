@@ -30,6 +30,7 @@ namespace NinjaTurtles.TestRunners
     /// <summary>
     /// An implementation of <see cref="ITestRunner" /> to run a unit test
     /// suite using the MSTest console runner.
+    /// </summary>
     /// <example>
     /// <para>
     /// This code creates and runs the default set of mutation tests for the
@@ -42,8 +43,19 @@ namespace NinjaTurtles.TestRunners
     ///     .UsingRunner&lt;MSTestTestRunner&gt;()
     ///     .Run();
     /// </code>
+    /// <code lang="vbnet">
+    /// Call MutationTestBuilder(Of ClassUnderTest) _
+    ///     .For("MethodUnderTest") _
+    ///     .UsingRunner(Of MSTestTestRunner)() _
+    ///     .Run
+    /// </code>
+    /// <code lang="cpp">
+    /// MutationTestBuilder&lt;ClassUnderTest^&gt;
+    ///     ::For("MethodUnderTest")
+    ///     ->UsingRunner&lt;MSTestTestRunner^&gt;()
+    ///     ->Run();
+    /// </code>
     /// </example>
-    /// </summary>
 // ReSharper disable InconsistentNaming
     public class MSTestTestRunner : ITestRunner
 // ReSharper restore InconsistentNaming
