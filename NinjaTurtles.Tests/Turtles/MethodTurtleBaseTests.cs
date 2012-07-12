@@ -254,6 +254,11 @@ namespace NinjaTurtles.Tests.Turtles
 
         private class DummyTurtle : MethodTurtleBase
         {
+            public override string Description
+            {
+                get { return "Dummy turtle"; }
+            }
+
             protected override IEnumerable<MutantMetaData> DoMutate(MethodDefinition method, Module module)
             {
                 var processor = method.Body.GetILProcessor();
