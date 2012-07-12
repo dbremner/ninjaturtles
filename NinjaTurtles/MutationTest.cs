@@ -94,6 +94,8 @@ namespace NinjaTurtles
 		    _report = new MutationTestingReport();
             _testsToRun = GetMatchingTestsFromTree(method, matchingMethods);
 
+		    Console.WriteLine("Suite of {0} tests identified", _testsToRun.Count());
+
             //_benchmark = BenchmarkTestSuite();
 
 			int count = 0;
@@ -102,6 +104,7 @@ namespace NinjaTurtles
 			foreach (var turtleType in _mutationsToApply)
 			{
                 var turtle = (MethodTurtleBase)Activator.CreateInstance(turtleType);
+                Console.WriteLine(turtle.Description);
                 Parallel.ForEach(turtle.Mutate(method, _module, originalOffsets),
         		    mutation => RunMutation(turtle, mutation, ref failures, ref count));
 			}
@@ -413,7 +416,7 @@ namespace NinjaTurtles
 
             bool testSuitePassed = exitCode == 0 && exitedInTime;
             
-            string result = string.Format("Mutant: {0}. {1}",
+            string result = string.Format(" Mutant: {0}. {1}",
 			                  mutation.Description,
 			                  testSuitePassed
 			                  	? "Survived."

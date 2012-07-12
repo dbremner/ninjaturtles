@@ -45,5 +45,13 @@ namespace NinjaTurtles.Turtles
                                {OpCodes.Brfalse, new[] {OpCodes.Nop, OpCodes.Brtrue, OpCodes.Br}}
                            };
         }
+
+        /// <summary>
+        /// Gets a description of the current turtle.
+        /// </summary>
+        public override string Description
+        {
+            get { return "Replacing branch op codes Brtrue and Brfalse."; }
+        }
     }
 }

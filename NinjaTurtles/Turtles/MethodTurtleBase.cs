@@ -96,6 +96,11 @@ namespace NinjaTurtles.Turtles
         }
 
         /// <summary>
+        /// Gets a description of the current turtle.
+        /// </summary>
+        public abstract string Description { get; }
+
+        /// <summary>
         /// Performs the actual code mutations, returning each with
         /// <c>yield</c> for the calling code to use.
         /// </summary>

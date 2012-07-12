@@ -45,5 +45,13 @@ namespace NinjaTurtles.Turtles
                                {OpCodes.Xor, new[] {OpCodes.Or, OpCodes.And}}
                            };
         }
+
+        /// <summary>
+        /// Gets a description of the current turtle.
+        /// </summary>
+        public override string Description
+        {
+            get { return "Rotating bitwise operators |, & and ^."; }
+        }
     }
 }

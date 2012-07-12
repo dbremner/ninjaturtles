@@ -35,6 +35,14 @@ namespace NinjaTurtles.Turtles
     public class SequencePointDeletionTurtle : MethodTurtleBase
     {
         /// <summary>
+        /// Gets a description of the current turtle.
+        /// </summary>
+        public override string Description
+        {
+            get { return "Deleting sequence points from IL."; }
+        }
+
+        /// <summary>
         /// Performs the actual code mutations, returning each with
         /// <c>yield</c> for the calling code to use.
         /// </summary>

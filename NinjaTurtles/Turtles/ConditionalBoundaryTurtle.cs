@@ -36,6 +36,14 @@ namespace NinjaTurtles.Turtles
     public class ConditionalBoundaryTurtle : MethodTurtleBase
     {
         /// <summary>
+        /// Gets a description of the current turtle.
+        /// </summary>
+        public override string Description
+        {
+            get { return "Toggling inclusivity of comparison operators <, <=, > and >=."; }
+        }
+
+        /// <summary>
         /// Performs the actual code mutations, returning each with
         /// <c>yield</c> for the calling code to use.
         /// </summary>

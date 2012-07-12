@@ -39,6 +39,14 @@ namespace NinjaTurtles.Turtles
     public class VariableReadTurtle : MethodTurtleBase
     {
         /// <summary>
+        /// Gets a description of the current turtle.
+        /// </summary>
+        public override string Description
+        {
+            get { return "Replacing reads from local variables, fields and parameters."; }
+        }
+
+        /// <summary>
         /// Performs the actual code mutations, returning each with
         /// <c>yield</c> for the calling code to use.
         /// </summary>

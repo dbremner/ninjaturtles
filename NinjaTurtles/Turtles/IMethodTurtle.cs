@@ -52,5 +52,10 @@ namespace NinjaTurtles.Turtles
         /// <see cref="MutantMetaData" /> structures.
         /// </returns>
         IEnumerable<MutantMetaData> Mutate(MethodDefinition method, Module module, int[] originalOffsets);
+
+        /// <summary>
+        /// Gets a description of the current turtle.
+        /// </summary>
+        string Description { get; }
 	}
 }

@@ -49,6 +49,14 @@ namespace NinjaTurtles.Turtles
                                {OpCodes.Rem, new[] {OpCodes.Add, OpCodes.Sub, OpCodes.Mul, OpCodes.Div}}
                            };
         }
+
+        /// <summary>
+        /// Gets a description of the current turtle.
+        /// </summary>
+        public override string Description
+        {
+            get { return "Rotating arithmetic operators +, -, *, / and %."; }
+        }
 	}
 }
 
