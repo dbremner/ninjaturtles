@@ -42,15 +42,15 @@ using NinjaTurtles.Turtles;
 
 namespace NinjaTurtles
 {
-	internal class MutationTest : IMutationTest
+    internal class MutationTest : IMutationTest
 	{
 	    private const string ERROR_REPORTING_KEY = @"SOFTWARE\Microsoft\Windows\Windows Error Reporting";
 	    private const string ERROR_REPORTING_VALUE = "DontShowUI";
 
 	    private readonly IList<Type> _mutationsToApply = new List<Type>();
-		private readonly string _testAssemblyLocation;
+		private  string _testAssemblyLocation;
 	    private readonly Type[] _parameterTypes;
-	    private readonly AssemblyDefinition _testAssembly;
+	    private AssemblyDefinition _testAssembly;
 		private readonly TypeReference _targetTypeReference;
 	    private Module _module;
 	    private IEnumerable<string> _testsToRun;
@@ -66,17 +66,26 @@ namespace NinjaTurtles
 		{
 			TargetType = targetType;
 			TargetMethod = targetMethod;
-			_testAssemblyLocation = testAssemblyLocation;
+			TestAssemblyLocation = testAssemblyLocation;
 		    _parameterTypes = parameterTypes;
-		    _testAssembly = AssemblyDefinition.ReadAssembly(testAssemblyLocation);
 			_targetTypeReference = _testAssembly.MainModule.Import(targetType);
 		}
 		
 		public Type TargetType { get; private set; }
 
 		public string TargetMethod { get; private set; }
-		
-		public void Run()
+
+	    public string TestAssemblyLocation
+	    {
+	        get { return _testAssemblyLocation; }
+	        set
+	        {
+	            _testAssemblyLocation = value;
+	            _testAssembly = AssemblyDefinition.ReadAssembly(_testAssemblyLocation);
+	        }
+	    }
+
+	    public void Run()
 		{
 		    var key = Registry.LocalMachine.OpenSubKey(ERROR_REPORTING_KEY, RegistryKeyPermissionCheck.ReadWriteSubTree);
             var errorReportingValue = key.GetValue(ERROR_REPORTING_VALUE, null);
@@ -94,7 +103,11 @@ namespace NinjaTurtles
 		    _report = new MutationTestingReport();
             _testsToRun = GetMatchingTestsFromTree(method, matchingMethods);
 
-		    Console.WriteLine("Suite of {0} tests identified", _testsToRun.Count());
+		    Console.WriteLine(
+                "Suite of {0} tests identified for {1}.{2}",
+                _testsToRun.Count(),
+                TargetType.FullName,
+                TargetMethod);
 
             //_benchmark = BenchmarkTestSuite();
 
@@ -393,7 +406,7 @@ namespace NinjaTurtles
 	    private Process GetTestRunnerProcess(TestDirectory testDirectory)
 	    {
 	        if (_runner == null) _runner = (ITestRunner)Activator.CreateInstance(MutationTestBuilder.TestRunner);
-	        return _runner.GetRunnerProcess(testDirectory, _testAssemblyLocation, _testsToRun);
+	        return _runner.GetRunnerProcess(testDirectory, TestAssemblyLocation, _testsToRun);
 	    }
 
 	    private bool CheckTestProcessFails(MethodTurtleBase turtle, MutantMetaData mutation)

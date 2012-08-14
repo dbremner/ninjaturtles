@@ -1,4 +1,4 @@
-#region Copyright & licence
+﻿#region Copyright & licence
 
 // This file is part of NinjaTurtles.
 // 
@@ -19,11 +19,9 @@
 
 #endregion
 
-using System.Reflection;
-using System.Runtime.CompilerServices;
-
-[assembly: AssemblyTitle("NinjaTurtles")]
-[assembly: AssemblyDescription("Mutation testing library for .NET")]
-
-[assembly: InternalsVisibleTo("NinjaTurtles.Tests")]
-[assembly: InternalsVisibleTo("NinjaTurtles.Console")]
+namespace NinjaTurtles.Console.Options
+{
+    internal class Quiet : Option
+    {
+    }
+}

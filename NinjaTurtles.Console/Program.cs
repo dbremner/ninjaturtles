@@ -1,4 +1,4 @@
-#region Copyright & licence
+﻿#region Copyright & licence
 
 // This file is part of NinjaTurtles.
 // 
@@ -19,11 +19,26 @@
 
 #endregion
 
-using System.Reflection;
-using System.Runtime.CompilerServices;
+namespace NinjaTurtles.Console
+{
+    class Program
+    {
+        private const int SUCCESS = 0;
+        private const int VALIDATION_FAILURE = 1;
+        private const int EXECUTION_FAILURE = 2;
 
-[assembly: AssemblyTitle("NinjaTurtles")]
-[assembly: AssemblyDescription("Mutation testing library for .NET")]
-
-[assembly: InternalsVisibleTo("NinjaTurtles.Tests")]
-[assembly: InternalsVisibleTo("NinjaTurtles.Console")]
+        static int Main(string[] args)
+        {
+            var options = new CommandWithOptions(args);
+            if (!options.Command.Validate())
+            {
+                return VALIDATION_FAILURE;
+            }
+            if (!options.Command.Execute())
+            {
+                return EXECUTION_FAILURE;
+            }
+            return SUCCESS;
+        }
+    }
+}

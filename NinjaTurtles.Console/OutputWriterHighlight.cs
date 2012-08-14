@@ -1,4 +1,4 @@
-#region Copyright & licence
+﻿#region Copyright & licence
 
 // This file is part of NinjaTurtles.
 // 
@@ -19,11 +19,29 @@
 
 #endregion
 
-using System.Reflection;
-using System.Runtime.CompilerServices;
+using System;
 
-[assembly: AssemblyTitle("NinjaTurtles")]
-[assembly: AssemblyDescription("Mutation testing library for .NET")]
+namespace NinjaTurtles.Console
+{
+    internal class OutputWriterHighlight : IDisposable
+    {
+        private readonly ConsoleColor _oldColor;
 
-[assembly: InternalsVisibleTo("NinjaTurtles.Tests")]
-[assembly: InternalsVisibleTo("NinjaTurtles.Console")]
+        public OutputWriterHighlight(ConsoleColor color)
+        {
+            _oldColor = System.Console.ForegroundColor;
+            System.Console.ForegroundColor = color;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            System.Console.ForegroundColor = _oldColor;
+        }
+    }
+}
