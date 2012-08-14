@@ -22,8 +22,15 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-[assembly: AssemblyTitle("NinjaTurtles")]
-[assembly: AssemblyDescription("Mutation testing library for .NET")]
+#if DEBUG
+[assembly: AssemblyConfiguration("Debug")]
+#else
+[assembly: AssemblyConfiguration("Release")]
+#endif
+[assembly: AssemblyCompany("NinjaTurtles")]
+[assembly: AssemblyProduct("NinjaTurtles")]
+[assembly: AssemblyCopyright("Copyright © 2012 David Musgrove")]
 
-[assembly: InternalsVisibleTo("NinjaTurtles.Tests")]
-[assembly: InternalsVisibleTo("NinjaTurtles.Console")]
+[assembly: AssemblyVersion("0.3.0.2")]
+[assembly: AssemblyInformationalVersion("ALPHA 0.3.0.2")]
+[assembly: AssemblyFileVersion("0.3.0.2")]

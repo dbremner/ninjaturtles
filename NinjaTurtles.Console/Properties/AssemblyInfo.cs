@@ -1,4 +1,4 @@
-#region Copyright & licence
+﻿#region Copyright & licence
 
 // This file is part of NinjaTurtles.
 // 
@@ -20,10 +20,6 @@
 #endregion
 
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
-[assembly: AssemblyTitle("NinjaTurtles")]
-[assembly: AssemblyDescription("Mutation testing library for .NET")]
-
-[assembly: InternalsVisibleTo("NinjaTurtles.Tests")]
-[assembly: InternalsVisibleTo("NinjaTurtles.Console")]
+[assembly: AssemblyTitle("NinjaTurtles.Console")]
+[assembly: AssemblyDescription("Console runner for the NinjaTurtles mutation testing library")]
