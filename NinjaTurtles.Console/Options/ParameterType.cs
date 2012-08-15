@@ -1,4 +1,4 @@
-#region Copyright & licence
+﻿#region Copyright & licence
 
 // This file is part of NinjaTurtles.
 // 
@@ -19,11 +19,18 @@
 
 #endregion
 
-using System.Reflection;
-using System.Runtime.CompilerServices;
+using System;
 
-[assembly: AssemblyTitle("NinjaTurtles")]
-[assembly: AssemblyDescription("Mutation testing library for .NET")]
+namespace NinjaTurtles.Console.Options
+{
+    internal class ParameterType : Option
+    {
+        public Type ResolvedType { get; set; }
 
-[assembly: InternalsVisibleTo("NinjaTurtles.Tests")]
-[assembly: InternalsVisibleTo("NinjaTurtles.Console")]
+        protected override void TakeArguments(System.Collections.Generic.Queue<string> queue)
+        {
+            string typeRepresentation = queue.Dequeue();
+            ResolvedType = Type.GetType(typeRepresentation);
+        }
+    }
+}

@@ -71,7 +71,7 @@ namespace NinjaTurtles
                         m => m.Name == methodName
                             && Enumerable.SequenceEqual(
                                 m.Parameters.Select(p => p.ParameterType.Name.Replace("TypeDefinition", "Type")),
-                                parameterTypes.Select(p => p.Name)));
+                                parameterTypes.Select(p => p.Name.Replace("TypeDefinition", "Type"))));
                 _log.Debug("Method \"{0}\" successfully resolved in \"{1}\".", methodName, typeDefinition.FullName);
                 return methodDefinition;
             }

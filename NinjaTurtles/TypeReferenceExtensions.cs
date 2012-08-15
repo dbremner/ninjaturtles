@@ -1,4 +1,4 @@
-#region Copyright & licence
+﻿#region Copyright & licence
 
 // This file is part of NinjaTurtles.
 // 
@@ -19,11 +19,23 @@
 
 #endregion
 
-using System.Reflection;
-using System.Runtime.CompilerServices;
+using System;
 
-[assembly: AssemblyTitle("NinjaTurtles")]
-[assembly: AssemblyDescription("Mutation testing library for .NET")]
+using Mono.Cecil;
 
-[assembly: InternalsVisibleTo("NinjaTurtles.Tests")]
-[assembly: InternalsVisibleTo("NinjaTurtles.Console")]
+namespace NinjaTurtles
+{
+    static internal class TypeReferenceExtensions
+    {
+        static public Type ToSystemType(this TypeReference typeReference)
+        {
+            Type type = null;
+            try
+            {
+                type = Type.GetType(typeReference.FullName + ", " + typeReference.Scope);
+            }
+            catch (Exception) {}
+            return type;
+        }
+    }
+}

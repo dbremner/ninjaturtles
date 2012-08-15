@@ -24,5 +24,6 @@ namespace NinjaTurtles
     static internal class Methods
     {
         public const string CONSTRUCTOR = ".ctor";
+        public const string STATIC_CONSTRUCTOR = ".cctor";
     }
 }

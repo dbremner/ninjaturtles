@@ -1,4 +1,4 @@
-#region Copyright & licence
+﻿#region Copyright & licence
 
 // This file is part of NinjaTurtles.
 // 
@@ -19,11 +19,19 @@
 
 #endregion
 
+using System;
+using System.IO;
 using System.Reflection;
-using System.Runtime.CompilerServices;
+using System.Xml;
 
-[assembly: AssemblyTitle("NinjaTurtles")]
-[assembly: AssemblyDescription("Mutation testing library for .NET")]
-
-[assembly: InternalsVisibleTo("NinjaTurtles.Tests")]
-[assembly: InternalsVisibleTo("NinjaTurtles.Console")]
+namespace NinjaTurtles.Console
+{
+    public class EmbeddedResourceResolver : XmlUrlResolver
+    {
+        public override object GetEntity(Uri absoluteUri, string role, Type ofObjectToReturn)
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            return assembly.GetManifestResourceStream(GetType(), Path.GetFileName(absoluteUri.AbsolutePath));
+        }
+    }
+}

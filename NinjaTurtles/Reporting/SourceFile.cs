@@ -51,9 +51,15 @@ namespace NinjaTurtles.Reporting
         /// </summary>
         public string Url { get; set; }
 
+        /// <summary>
+        /// Gets or sets the filename part of the URL.
+        /// </summary>
+        public string FileName { get; set; }
+
         internal void SetUrl(string url)
         {
             Url = url;
+            FileName = Path.GetFileName(url);
             if (File.Exists(url))
             {
                 var lines = File.ReadAllLines(url);
