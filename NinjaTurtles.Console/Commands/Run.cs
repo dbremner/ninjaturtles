@@ -224,10 +224,21 @@ Example:
 
         private bool RunTests(string targetClass, string targetMethod, Type[] parameterTypes = null)
         {
-            OutputWriter.WriteLine(
-                @"Running mutation tests for {0}.{1}",
-                targetClass,
-                targetMethod);
+            if (parameterTypes == null || parameterTypes.Length == 0)
+            {
+                OutputWriter.WriteLine(
+                    @"Running mutation tests for {0}.{1}",
+                    targetClass,
+                    targetMethod);
+            }
+            else
+            {
+                OutputWriter.WriteLine(
+                    @"Running mutation tests for {0}.{1}({2})",
+                    targetClass,
+                    targetMethod,
+                    string.Join(", ", parameterTypes.Select(t => t.Name).ToArray()));
+            }
             MutationTest mutationTest =
                 parameterTypes == null
                     ? (MutationTest)MutationTestBuilder.For(targetClass, targetMethod)
