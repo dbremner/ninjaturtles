@@ -14,4 +14,9 @@
     <copyright>Copyright (C) 2012 David Musgrove</copyright>
     <tags></tags>
   </metadata>
+  <files>
+    <file src="..\NinjaTurtles.Console\bin\Debug\*.exe" target="tools\net40" />
+    <file src="..\NinjaTurtles.Console\bin\Debug\*.dll" target="tools\net40" />
+    <file src="..\NinjaTurtles.Console\bin\Debug\*.pdb" target="tools\net40" />
+  </files>
 </package>
