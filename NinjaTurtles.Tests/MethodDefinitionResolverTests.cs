@@ -57,7 +57,7 @@ Parameter name: methodName")]
         {
             var assembly = AssemblyDefinition.ReadAssembly(typeof(MutationTest).Assembly.Location);
             var type = assembly.MainModule.Types.Single(t => t.Name == "MutationTest");
-            var method = MethodDefinitionResolver.ResolveMethod(type, "Run", null);
+            var method = MethodDefinitionResolver.ResolveMethod(type, "Run", (Type[])null);
             Assert.IsNotNull(method);
         }
 

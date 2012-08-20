@@ -22,6 +22,8 @@
 using System;
 using System.Reflection;
 
+using Mono.Cecil;
+
 using NinjaTurtles.TestRunners;
 
 namespace NinjaTurtles
@@ -161,10 +163,23 @@ namespace NinjaTurtles
             return For(callingAssembly.Location, resolvedType, targetMethod, parameterTypes);
         }
 
+        internal static IMutationTest For(string targetClass, string targetMethod, TypeReference[] parameterTypes)
+        {
+            var callingAssembly = Assembly.GetCallingAssembly();
+            Type resolvedType = TypeResolver.ResolveTypeFromReferences(callingAssembly, targetClass);
+
+            return For(callingAssembly.Location, resolvedType, targetMethod, parameterTypes);
+        }
+
 		internal static IMutationTest For(string callingAssemblyLocation, Type targetType, string targetMethod, Type[] parameterTypes)
 		{
 			return new MutationTest(callingAssemblyLocation, targetType, targetMethod, parameterTypes);
 		}
+
+        internal static IMutationTest For(string callingAssemblyLocation, Type targetType, string targetMethod, TypeReference[] parameterTypes)
+        {
+            return new MutationTest(callingAssemblyLocation, targetType, targetMethod, parameterTypes);
+        }
 
         /// <summary>
         /// Specifies the implementation of <see cref="ITestRunner" /> to be

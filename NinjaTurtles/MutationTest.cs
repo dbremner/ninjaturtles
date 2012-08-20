@@ -50,7 +50,8 @@ namespace NinjaTurtles
 	    private readonly IList<Type> _mutationsToApply = new List<Type>();
 		private  string _testAssemblyLocation;
 	    private readonly Type[] _parameterTypes;
-	    private AssemblyDefinition _testAssembly;
+        private TypeReference[] _parameterTypeReferences;
+        private AssemblyDefinition _testAssembly;
 		private readonly TypeReference _targetTypeReference;
 	    private Module _module;
 	    private IEnumerable<string> _testsToRun;
@@ -60,7 +61,7 @@ namespace NinjaTurtles
 	    private string _reportFileName;
 	    private MethodReferenceComparer _comparer;
 	    private static Regex _automaticallyGeneratedNestedClassMatcher = new Regex("^\\<([A-Za-z0-9@_]+)\\>");
-	    //private TimeSpan _benchmark;
+        //private TimeSpan _benchmark;
 
 	    internal MutationTest(string testAssemblyLocation, Type targetType, string targetMethod, Type[] parameterTypes)
 		{
@@ -70,8 +71,17 @@ namespace NinjaTurtles
 		    _parameterTypes = parameterTypes;
 			_targetTypeReference = _testAssembly.MainModule.Import(targetType);
 		}
-		
-		public Type TargetType { get; private set; }
+
+        public MutationTest(string testAssemblyLocation, Type targetType, string targetMethod, TypeReference[] parameterTypes)
+        {
+            TargetType = targetType;
+            TargetMethod = targetMethod;
+            TestAssemblyLocation = testAssemblyLocation;
+            _parameterTypeReferences = parameterTypes;
+            _targetTypeReference = _testAssembly.MainModule.Import(targetType);
+        }
+
+        public Type TargetType { get; private set; }
 
 		public string TargetMethod { get; private set; }
 
@@ -486,8 +496,15 @@ namespace NinjaTurtles
             _module = new Module(TargetType.Assembly.Location);
 
             var type = ResolveFromTypeCollection(_module.Definition.Types);
-		    return MethodDefinitionResolver.ResolveMethod(type, TargetMethod, _parameterTypes);
-		}
+            if (_parameterTypes != null)
+            {
+                return MethodDefinitionResolver.ResolveMethod(type, TargetMethod, _parameterTypes);
+            }
+            else
+            {
+                return MethodDefinitionResolver.ResolveMethod(type, TargetMethod, _parameterTypeReferences);
+            }
+	    }
 
 	    private TypeDefinition ResolveFromTypeCollection(Collection<TypeDefinition> types)
 	    {

@@ -20,6 +20,8 @@
 #endregion
 
 using System;
+using System.Diagnostics;
+using System.Reflection;
 
 using Mono.Cecil;
 
@@ -27,14 +29,34 @@ namespace NinjaTurtles
 {
     static internal class TypeReferenceExtensions
     {
-        static public Type ToSystemType(this TypeReference typeReference)
+        static public string ToAssemblyQualifiedName(this TypeReference typeReference)
         {
+            string assemblyQualifiedName;
+            assemblyQualifiedName = Assembly.CreateQualifiedName(typeReference.Scope.Name, typeReference.FullName);
+            if (typeReference.IsGenericInstance)
+            {
+                foreach (var genericParameter in ((GenericInstanceType)typeReference).GenericArguments)
+                {
+                    assemblyQualifiedName = assemblyQualifiedName.Replace(genericParameter.FullName,
+                                                                          genericParameter.ToAssemblyQualifiedName());
+                }
+            }
+            return assemblyQualifiedName;
+        }
+
+        static public Type ToSystemType(this TypeReference typeReference, Assembly assembly)
+        {
+            string fullNameToResolve = typeReference.ToAssemblyQualifiedName();
             Type type = null;
             try
             {
-                type = Type.GetType(typeReference.FullName + ", " + typeReference.Scope);
+                type = Type.GetType(fullNameToResolve);
             }
             catch (Exception) {}
+            if (type == null)
+            {
+                type = TypeResolver.ResolveTypeFromReferences(assembly, fullNameToResolve);
+            }
             return type;
         }
     }
