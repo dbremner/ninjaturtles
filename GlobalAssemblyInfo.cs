@@ -31,6 +31,6 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyProduct("NinjaTurtles")]
 [assembly: AssemblyCopyright("Copyright © 2012 David Musgrove")]
 
-[assembly: AssemblyVersion("0.8.0.1")]
-[assembly: AssemblyInformationalVersion("BETA 0.8.0.1")]
-[assembly: AssemblyFileVersion("0.8.0.1")]
+[assembly: AssemblyVersion("0.8.0.2")]
+[assembly: AssemblyInformationalVersion("BETA 0.8.0.2")]
+[assembly: AssemblyFileVersion("0.8.0.2")]
