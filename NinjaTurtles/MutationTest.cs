@@ -235,8 +235,8 @@ namespace NinjaTurtles
             }
             if (result.Count == 0)
             {
-                throw new MutationTestFailureException(
-                    "No matching tests were found to run.");
+                Console.WriteLine("No matching tests found so mutation testing cannot be applied.");
+                throw new MutationTestFailureException("No matching tests were found to run.");
             }
             return result;
 	    }
