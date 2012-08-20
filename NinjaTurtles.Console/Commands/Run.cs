@@ -60,7 +60,7 @@ Options:
                         testing output. This file will be deleted if it already
                         exists.
    --type [-t]        : Specifies the type name of a parameter to the method,
-                        used to resolve between overrides of the same method
+                        used to resolve between overloads of the same method
                         name. Can be specified multiple times, and must be in
                         the same order as the method's parameters. Full type
                         names enclosed in double quotes are accepted.
@@ -192,7 +192,7 @@ Example:
                 .Where(m => m.HasBody && m.Name != Methods.STATIC_CONSTRUCTOR))
             {
                 string targetMethod = methodInfo.Name;
-                var parameterTypes = methodInfo.Parameters.Select(p => p.ParameterType.ToSystemType()).ToArray();
+                var parameterTypes = methodInfo.Parameters.Select(p => p.ParameterType).ToArray();
                 result &= RunTests(targetClass, targetMethod, parameterTypes);
             }
             if (string.IsNullOrEmpty(_message))
@@ -222,28 +222,23 @@ Example:
             return result;
         }
 
-        private bool RunTests(string targetClass, string targetMethod, Type[] parameterTypes = null)
+        private bool RunTests(string targetClass, string targetMethod, TypeReference[] parameterTypes)
         {
-            if (parameterTypes == null || parameterTypes.Length == 0)
-            {
-                OutputWriter.WriteLine(
-                    @"Running mutation tests for {0}.{1}",
-                    targetClass,
-                    targetMethod);
-            }
-            else
-            {
-                OutputWriter.WriteLine(
-                    @"Running mutation tests for {0}.{1}({2})",
-                    targetClass,
-                    targetMethod,
-                    string.Join(", ", parameterTypes.Select(t => t.Name).ToArray()));
-            }
+            var parameterList = parameterTypes == null || parameterTypes.Length == 0
+                                    ? null
+                                    : string.Join(", ", parameterTypes.Select(t => t.Name).ToArray());
+            OutputMethod(targetClass, targetMethod, parameterList);
             MutationTest mutationTest =
                 parameterTypes == null
                     ? (MutationTest)MutationTestBuilder.For(targetClass, targetMethod)
                     : (MutationTest)MutationTestBuilder.For(targetClass, targetMethod, parameterTypes);
             mutationTest.TestAssemblyLocation = _testAssemblyLocation;
+            var result = BuildAndRunMutationTest(mutationTest);
+            return result;
+        }
+
+        private bool BuildAndRunMutationTest(MutationTest mutationTest)
+        {
             var outputOption = Options.Options.OfType<Output>().FirstOrDefault();
             if (outputOption != null)
             {
@@ -256,13 +251,49 @@ Example:
                 mutationTest.Run();
                 result = true;
             }
-            catch (MutationTestFailureException) {}
+            catch (MutationTestFailureException)
+            {
+            }
             catch (Exception)
             {
                 _message =
                     @"An exception was thrown setting up the mutation tests. Please check your
 command line parameters and try again.";
             }
+            return result;
+        }
+
+        private static void OutputMethod(string targetClass, string targetMethod, string parameterList)
+        {
+            if (string.IsNullOrEmpty(parameterList))
+            {
+                OutputWriter.WriteLine(
+                    @"Running mutation tests for {0}.{1}",
+                    targetClass,
+                    targetMethod);
+            }
+            else
+            {
+                OutputWriter.WriteLine(
+                    @"Running mutation tests for {0}.{1}({2})",
+                    targetClass,
+                    targetMethod,
+                    parameterList);
+            }
+        }
+
+        private bool RunTests(string targetClass, string targetMethod, Type[] parameterTypes = null)
+        {
+            var parameterList = parameterTypes == null || parameterTypes.Length == 0
+                                    ? null
+                                    : string.Join(", ", parameterTypes.Select(t => t.Name).ToArray());
+            OutputMethod(targetClass, targetMethod, parameterList);
+            MutationTest mutationTest =
+                parameterTypes == null
+                    ? (MutationTest)MutationTestBuilder.For(targetClass, targetMethod)
+                    : (MutationTest)MutationTestBuilder.For(targetClass, targetMethod, parameterTypes);
+            mutationTest.TestAssemblyLocation = _testAssemblyLocation;
+            var result = BuildAndRunMutationTest(mutationTest);
             return result;
         }
 

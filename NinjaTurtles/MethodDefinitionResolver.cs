@@ -57,6 +57,31 @@ namespace NinjaTurtles
             }
         }
 
+        public static MethodDefinition ResolveMethod(TypeDefinition typeDefinition, string methodName, TypeReference[] parameterTypes)
+        {
+            if (parameterTypes == null)
+            {
+                _log.Warn("\"ResolveMethod\" overload with parameter types called unnecessarily.");
+                return ResolveMethod(typeDefinition, methodName);
+            }
+            try
+            {
+                MethodDefinition methodDefinition =
+                    typeDefinition.Methods.Single(
+                        m => m.Name == methodName
+                            && Enumerable.SequenceEqual(
+                                m.Parameters.Select(p => p.ParameterType.FullName),
+                                parameterTypes.Select(p => p.FullName)));
+                _log.Debug("Method \"{0}\" successfully resolved in \"{1}\".", methodName, typeDefinition.FullName);
+                return methodDefinition;
+            }
+            catch (InvalidOperationException)
+            {
+                _log.Error("Method \"{0}\" with specified parameter types is unrecognised.", methodName);
+                throw new ArgumentException(string.Format("Method \"{0}\" with specified parameter types is unrecognised.", methodName), "methodName");
+            }
+        }
+
         public static MethodDefinition ResolveMethod(TypeDefinition typeDefinition, string methodName, Type[] parameterTypes)
         {
             if (parameterTypes == null)

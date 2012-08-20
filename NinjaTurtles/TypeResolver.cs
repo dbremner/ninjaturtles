@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -35,7 +36,7 @@ namespace NinjaTurtles
         private static Logger _log = LogManager.GetCurrentClassLogger();
 
         #endregion
-        
+
         internal static Type ResolveTypeFromReferences(Assembly callingAssembly, string className)
 		{
             _log.Debug("Resolving type \"{0}\" in \"{1}\".", className, callingAssembly.GetName().Name);
@@ -60,12 +61,16 @@ namespace NinjaTurtles
             {
 				if (consideredAssemblies.Contains(reference.Name)) continue;
 				consideredAssemblies.Add(reference.Name);
-                Assembly referencedAssembly = Assembly.Load(reference);
-                type = ResolveTypeFromReferences(referencedAssembly, className, consideredAssemblies);
-                if (type != null)
+                try
                 {
-                    return type;
+                    Assembly referencedAssembly = Assembly.Load(reference);
+                    type = ResolveTypeFromReferences(referencedAssembly, className, consideredAssemblies);
+                    if (type != null)
+                    {
+                        return type;
+                    }
                 }
+                catch (FileNotFoundException) {}
             }
             return null;
         }

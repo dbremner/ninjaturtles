@@ -68,7 +68,7 @@ namespace NinjaTurtles.Tests
         {
             var assembly = AssemblyDefinition.ReadAssembly(typeof(MutationTest).Assembly.Location);
             var type = assembly.MainModule.Types.Single(t => t.Name == "MutationTest");
-            MethodDefinitionResolver.ResolveMethod(type, "Run", null);
+            MethodDefinitionResolver.ResolveMethod(type, "Run", (Type[])null);
             AssertLogContains("WARN|\"ResolveMethod\" overload with parameter types called unnecessarily.|");
         }
 
