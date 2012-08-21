@@ -36,6 +36,7 @@ namespace NinjaTurtles.Console.Commands
     {
         private string _testAssemblyLocation;
         private string _message;
+        private Type _runnerType;
 
         protected override string HelpText
         {
@@ -59,6 +60,9 @@ Options:
    --output [-o]      : Specifies the name of a file to receive the mutation
                         testing output. This file will be deleted if it already
                         exists.
+   --runner [-r]      : Specifies the type name of an implementation of
+                        ITestRunner that is used to run the unit tests for each
+                        code mutant.
    --type [-t]        : Specifies the type name of a parameter to the method,
                         used to resolve between overloads of the same method
                         name. Can be specified multiple times, and must be in
@@ -132,6 +136,20 @@ Example:
                 {
                     System.Console.SetOut(writer);
                 }
+                var runnerOption = (Runner)Options.Options.FirstOrDefault(o => o is Runner);
+                if (runnerOption != null)
+                {
+                    var testAssembly = Assembly.LoadFrom(_testAssemblyLocation);
+                    _runnerType = TypeResolver.ResolveTypeFromReferences(testAssembly, runnerOption.RunnerType);
+                    if (_runnerType == null || _runnerType.GetInterface("ITestRunner") == null)
+                    {
+                        _message = string.Format(
+                            "Invalid runner type '{0}' specified.",
+                            runnerOption.RunnerType);
+                        ReportResult(false);
+                        return false;
+                    }
+                }
                 var runnerMethod = Options.Options.Any(o => o is TargetClass)
                                        ? (Options.Options.Any(o => o is TargetMethod)
                                               ? (Func<bool>)RunMutationTestsForClassAndMethod
@@ -148,14 +166,19 @@ Example:
                     FormatOutput(outputPath);
                 }
                 OutputWriter.WriteLine();
-                var statusColor = result
-                                      ? ConsoleColor.Green
-                                      : ConsoleColor.Red;
-                using (new OutputWriterHighlight(statusColor))
-                {
-                    OutputWriter.WriteLine(_message);
-                }
+                ReportResult(result);
                 return result;
+            }
+        }
+
+        private void ReportResult(bool result)
+        {
+            var statusColor = result
+                                  ? ConsoleColor.Green
+                                  : ConsoleColor.Red;
+            using (new OutputWriterHighlight(statusColor))
+            {
+                OutputWriter.WriteLine(_message);
             }
         }
 
@@ -232,6 +255,10 @@ Example:
                 parameterTypes == null
                     ? (MutationTest)MutationTestBuilder.For(targetClass, targetMethod)
                     : (MutationTest)MutationTestBuilder.For(targetClass, targetMethod, parameterTypes);
+            if (_runnerType != null)
+            {
+                mutationTest.UsingRunner(_runnerType);
+            }
             mutationTest.TestAssemblyLocation = _testAssemblyLocation;
             var result = BuildAndRunMutationTest(mutationTest);
             return result;

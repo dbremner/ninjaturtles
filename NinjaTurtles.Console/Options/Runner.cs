@@ -1,4 +1,4 @@
-#region Copyright & licence
+﻿#region Copyright & licence
 
 // This file is part of NinjaTurtles.
 // 
@@ -19,17 +19,17 @@
 
 #endregion
 
-using System.Reflection;
+using System;
 
-#if DEBUG
-[assembly: AssemblyConfiguration("Debug")]
-#else
-[assembly: AssemblyConfiguration("Release")]
-#endif
-[assembly: AssemblyCompany("NinjaTurtles")]
-[assembly: AssemblyProduct("NinjaTurtles")]
-[assembly: AssemblyCopyright("Copyright © 2012 David Musgrove")]
+namespace NinjaTurtles.Console.Options
+{
+    internal class Runner : Option
+    {
+        public string RunnerType { get; set; }
 
-[assembly: AssemblyVersion("0.8.0.2")]
-[assembly: AssemblyInformationalVersion("BETA 0.8.0.2")]
-[assembly: AssemblyFileVersion("0.8.0.2")]
+        protected override void TakeArguments(System.Collections.Generic.Queue<string> queue)
+        {
+            RunnerType = queue.Dequeue();
+        }
+    }
+}

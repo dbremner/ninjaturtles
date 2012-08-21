@@ -45,6 +45,8 @@ namespace NinjaTurtles.Console.Options
                     {"f", typeof(Format)},
                     {"-type", typeof(ParameterType)},
                     {"t", typeof(ParameterType)},
+                    {"-runner", typeof(Runner)},
+                    {"r", typeof(Runner)},
                 };
 
         static public bool TryParse(Queue<string> queue, out IEnumerable<Option> commandLineOptions)
