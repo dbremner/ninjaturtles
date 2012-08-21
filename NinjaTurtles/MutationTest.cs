@@ -547,6 +547,12 @@ namespace NinjaTurtles
 	        return this;
 	    }
 
+        internal IMutationTest UsingRunner(Type runnerType)
+        {
+            _runner = (ITestRunner)Activator.CreateInstance(runnerType);
+            return this;
+        }
+
 	    public IMutationTest WriteReportTo(string fileName)
 	    {
 	        _reportingStrategy = new OverwriteReportingStrategy();
