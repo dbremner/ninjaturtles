@@ -6,8 +6,8 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
-    <licenseUrl>https://ninjaturtles.codeplex.com/license</licenseUrl>
-    <projectUrl>https://www.mutation-testing.net</projectUrl>
+    <licenseUrl>http://ninjaturtles.codeplex.com/license</licenseUrl>
+    <projectUrl>http://www.mutation-testing.net</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>Beta release of NinjaTurtles.</releaseNotes>
