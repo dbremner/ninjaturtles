@@ -25,6 +25,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Management;
+using System.Security;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -97,12 +98,9 @@ namespace NinjaTurtles
 
 	    public void Run()
 		{
-		    var key = Registry.LocalMachine.OpenSubKey(ERROR_REPORTING_KEY, RegistryKeyPermissionCheck.ReadWriteSubTree);
-            var errorReportingValue = key.GetValue(ERROR_REPORTING_VALUE, null);
-            key.SetValue(ERROR_REPORTING_VALUE, 1, RegistryValueKind.DWord);
-		    key.Close();
+	        var errorReportingValue = TurnOffErrorReporting();
 
-			MethodDefinition method = ValidateMethod();
+	        MethodDefinition method = ValidateMethod();
             _module.LoadDebugInformation();
 
 		    _comparer = new MethodReferenceComparer();
@@ -135,18 +133,9 @@ namespace NinjaTurtles
             _report.RegisterMethod(method);
             _reportingStrategy.WriteReport(_report, _reportFileName);
 
-            key = Registry.LocalMachine.OpenSubKey(ERROR_REPORTING_KEY, RegistryKeyPermissionCheck.ReadWriteSubTree);
-            if (errorReportingValue == null)
-            {
-                key.DeleteValue(ERROR_REPORTING_VALUE);
-            }
-            else
-            {
-                key.SetValue(ERROR_REPORTING_VALUE, errorReportingValue, RegistryValueKind.DWord);
-            }
-            key.Close();
+            RestoreErrorReporting(errorReportingValue);
 
-			if (count == 0)
+	        if (count == 0)
 			{
 				Console.WriteLine("No valid mutations found (this is fine).");
 				return;
@@ -156,6 +145,42 @@ namespace NinjaTurtles
 				throw new MutationTestFailureException();
 			}
 		}
+
+        private static void RestoreErrorReporting(object errorReportingValue)
+        {
+            try
+            {
+                var key = Registry.LocalMachine.OpenSubKey(ERROR_REPORTING_KEY,
+                                                           RegistryKeyPermissionCheck.ReadWriteSubTree);
+                if (errorReportingValue == null)
+                {
+                    key.DeleteValue(ERROR_REPORTING_VALUE);
+                }
+                else
+                {
+                    key.SetValue(ERROR_REPORTING_VALUE, errorReportingValue, RegistryValueKind.DWord);
+                }
+                key.Close();
+            }
+            catch (SecurityException) {}
+        }
+
+        private static object TurnOffErrorReporting()
+        {
+            try
+            {
+                var key = Registry.LocalMachine.OpenSubKey(ERROR_REPORTING_KEY,
+                                                           RegistryKeyPermissionCheck.ReadWriteSubTree);
+                var errorReportingValue = key.GetValue(ERROR_REPORTING_VALUE, null);
+                key.SetValue(ERROR_REPORTING_VALUE, 1, RegistryValueKind.DWord);
+                key.Close();
+                return errorReportingValue;
+            }
+            catch (SecurityException)
+            {
+                return null;
+            }
+        }
 
         private void AddMethod(MethodDefinition targetMethod, List<MethodReference> matchingMethods)
         {
