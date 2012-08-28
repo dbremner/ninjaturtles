@@ -51,9 +51,8 @@ namespace NinjaTurtles
 	    private readonly IList<Type> _mutationsToApply = new List<Type>();
 		private  string _testAssemblyLocation;
 	    private readonly Type[] _parameterTypes;
-        private TypeReference[] _parameterTypeReferences;
+        private readonly TypeReference[] _parameterTypeReferences;
         private AssemblyDefinition _testAssembly;
-		private readonly TypeReference _targetTypeReference;
 	    private Module _module;
 	    private IEnumerable<string> _testsToRun;
 	    private ITestRunner _runner;
@@ -61,8 +60,7 @@ namespace NinjaTurtles
         private ReportingStrategy _reportingStrategy = new NullReportingStrategy();
 	    private string _reportFileName;
 	    private MethodReferenceComparer _comparer;
-	    private static Regex _automaticallyGeneratedNestedClassMatcher = new Regex("^\\<([A-Za-z0-9@_]+)\\>");
-        //private TimeSpan _benchmark;
+	    private static readonly Regex _automaticallyGeneratedNestedClassMatcher = new Regex("^\\<([A-Za-z0-9@_]+)\\>");
 
 	    internal MutationTest(string testAssemblyLocation, Type targetType, string targetMethod, Type[] parameterTypes)
 		{
@@ -70,7 +68,6 @@ namespace NinjaTurtles
 			TargetMethod = targetMethod;
 			TestAssemblyLocation = testAssemblyLocation;
 		    _parameterTypes = parameterTypes;
-			_targetTypeReference = _testAssembly.MainModule.Import(targetType);
 		}
 
         public MutationTest(string testAssemblyLocation, Type targetType, string targetMethod, TypeReference[] parameterTypes)
@@ -79,7 +76,6 @@ namespace NinjaTurtles
             TargetMethod = targetMethod;
             TestAssemblyLocation = testAssemblyLocation;
             _parameterTypeReferences = parameterTypes;
-            _targetTypeReference = _testAssembly.MainModule.Import(targetType);
         }
 
         public Type TargetType { get; private set; }
@@ -117,8 +113,6 @@ namespace NinjaTurtles
                 TargetType.FullName,
                 TargetMethod);
 
-            //_benchmark = BenchmarkTestSuite();
-
 			int count = 0;
 			int failures = 0;
 			if (_mutationsToApply.Count == 0) PopulateDefaultTurtles();
@@ -127,7 +121,9 @@ namespace NinjaTurtles
                 var turtle = (MethodTurtleBase)Activator.CreateInstance(turtleType);
                 Console.WriteLine(turtle.Description);
                 Parallel.ForEach(turtle.Mutate(method, _module, originalOffsets),
+// ReSharper disable AccessToModifiedClosure
         		    mutation => RunMutation(turtle, mutation, ref failures, ref count));
+// ReSharper restore AccessToModifiedClosure
 			}
 
             _report.RegisterMethod(method);
@@ -152,6 +148,7 @@ namespace NinjaTurtles
             {
                 var key = Registry.LocalMachine.OpenSubKey(ERROR_REPORTING_KEY,
                                                            RegistryKeyPermissionCheck.ReadWriteSubTree);
+                if (key == null) return;
                 if (errorReportingValue == null)
                 {
                     key.DeleteValue(ERROR_REPORTING_VALUE);
@@ -171,6 +168,7 @@ namespace NinjaTurtles
             {
                 var key = Registry.LocalMachine.OpenSubKey(ERROR_REPORTING_KEY,
                                                            RegistryKeyPermissionCheck.ReadWriteSubTree);
+                if (key == null) return null;
                 var errorReportingValue = key.GetValue(ERROR_REPORTING_VALUE, null);
                 key.SetValue(ERROR_REPORTING_VALUE, 1, RegistryValueKind.DWord);
                 key.Close();
@@ -242,12 +240,12 @@ namespace NinjaTurtles
 	    }
 
 	    private bool MethodsMatch(MethodDefinition first, MethodDefinition second)
-        {
-            return first.Name == second.Name
-                   && Enumerable.SequenceEqual(first.Parameters.Select(p => p.ParameterType.Name),
-                                               second.Parameters.Select(p => p.ParameterType.Name))
-                   && first.GenericParameters.Count == second.GenericParameters.Count;
-        }
+	    {
+	        return first.Name == second.Name
+	               && first.Parameters.Select(p => p.ParameterType.Name)
+	                      .SequenceEqual(second.Parameters.Select(p => p.ParameterType.Name))
+	               && first.GenericParameters.Count == second.GenericParameters.Count;
+	    }
 
         private ISet<string> GetMatchingTestsFromTree(MethodDefinition targetmethod, IList<MethodReference> matchingMethods, bool force = false)
         {
@@ -282,7 +280,7 @@ namespace NinjaTurtles
 	                {
 	                    var reference = (MethodReference)instruction.Operand;
 	                    if (matchingMethods.Any(m => _comparer.Equals(m, reference))
-	                        && !method.CustomAttributes.Any(a => a.AttributeType.Name == "MutationTestAttribute"))
+	                        && method.CustomAttributes.All(a => a.AttributeType.Name != "MutationTestAttribute"))
 	                    {
 	                        result.Add(string.Format("{0}.{1}", type.FullName.Replace("/", "+"), method.Name));
 	                        break;
@@ -392,10 +390,10 @@ namespace NinjaTurtles
             public bool Equals(MethodReference x, MethodReference y)
             {
                 if (x.Name != y.Name) return false;
-                        return x.DeclaringType.FullName == y.DeclaringType.FullName
-                        && Enumerable.SequenceEqual(x.Parameters.Select(p => p.ParameterType.Name),
-                                                 y.Parameters.Select(p => p.ParameterType.Name))
-                        && x.GenericParameters.Count == y.GenericParameters.Count;
+                return x.DeclaringType.FullName == y.DeclaringType.FullName
+                       && x.Parameters.Select(p => p.ParameterType.Name)
+                              .SequenceEqual(y.Parameters.Select(p => p.ParameterType.Name))
+                       && x.GenericParameters.Count == y.GenericParameters.Count;
             }
 
             public int GetHashCode(MethodReference obj)
@@ -413,30 +411,6 @@ namespace NinjaTurtles
 			}
 			Interlocked.Increment(ref count);
 		}
-
-//        private TimeSpan BenchmarkTestSuite()
-//        {
-//            var testDirectory = new TestDirectory(Path.GetDirectoryName(_testAssemblyLocation));
-//
-//            var process = GetTestRunnerProcess(testDirectory);
-//
-//            var stopwatch = new Stopwatch();
-//            stopwatch.Start();
-//            process.Start();
-//            process.WaitForExit();
-//            stopwatch.Stop();
-//
-//            testDirectory.Dispose();
-//
-//            if (process.ExitCode != 0)
-//            {
-//                throw new MutationTestFailureException("Test suite does not pass with unmutated code - mutation testing aborted.");
-//            }
-//            var timespan = stopwatch.Elapsed;
-//            Console.WriteLine("Test suite benchmarked at {0:0.000} seconds.", timespan.TotalSeconds);
-//
-//            return timespan;
-//        }
 
 	    private Process GetTestRunnerProcess(TestDirectory testDirectory)
 	    {
@@ -460,7 +434,9 @@ namespace NinjaTurtles
 				}
 				exitCode = process.ExitCode;
 			}
+// ReSharper disable EmptyGeneralCatchClause
 			catch {}
+// ReSharper restore EmptyGeneralCatchClause
 
             bool testSuitePassed = exitCode == 0 && exitedInTime;
             
@@ -525,15 +501,14 @@ namespace NinjaTurtles
             {
                 return MethodDefinitionResolver.ResolveMethod(type, TargetMethod, _parameterTypes);
             }
-            else
-            {
-                return MethodDefinitionResolver.ResolveMethod(type, TargetMethod, _parameterTypeReferences);
-            }
+	        return MethodDefinitionResolver.ResolveMethod(type, TargetMethod, _parameterTypeReferences);
 	    }
 
 	    private TypeDefinition ResolveFromTypeCollection(Collection<TypeDefinition> types)
 	    {
+// ReSharper disable PossibleNullReferenceException
 	        var type = types.SingleOrDefault(t => t.FullName == TargetType.FullName.Replace("+", "/"));
+// ReSharper restore PossibleNullReferenceException
             if (type == null)
             {
                 foreach (var typeDefinition in types)
