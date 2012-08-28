@@ -30,6 +30,6 @@ using System.Reflection;
 [assembly: AssemblyProduct("NinjaTurtles")]
 [assembly: AssemblyCopyright("Copyright © 2012 David Musgrove")]
 
-[assembly: AssemblyVersion("0.8.0.2")]
-[assembly: AssemblyInformationalVersion("BETA 0.8.0.2")]
-[assembly: AssemblyFileVersion("0.8.0.2")]
+[assembly: AssemblyVersion("0.8.0.3")]
+[assembly: AssemblyInformationalVersion("BETA 0.8.0.3")]
+[assembly: AssemblyFileVersion("0.8.0.3")]
