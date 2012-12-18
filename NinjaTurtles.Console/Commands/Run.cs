@@ -281,11 +281,19 @@ Example:
             catch (MutationTestFailureException)
             {
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 _message =
-                    @"An exception was thrown setting up the mutation tests. Please check your
-command line parameters and try again.";
+                    @"
+An exception was thrown setting up the mutation tests. The exception details
+are below. If you are unable to resolve the problem from these details, please
+post the details in our issue tracker at:
+
+http://ninjaturtles.codeplex.com/workitem/list/basic
+
+Exception details:
+
+" + ex;
             }
             return result;
         }
