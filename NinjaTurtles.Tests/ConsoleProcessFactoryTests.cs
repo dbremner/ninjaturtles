@@ -102,7 +102,7 @@ namespace NinjaTurtles.Tests
             string exeName = "nunit-console.exe";
             using (var process = ConsoleProcessFactory.CreateProcess(exeName, ""))
             {
-                Assert.AreNotEqual(exeName, process.StartInfo.FileName);
+                Assert.AreNotEqual(exeName, process.StartInfo.FileName, "PLEASE CHECK IF YOUR NUNIT BIN FOLDER HAS BEEN ADDED TO YOUR PATH...");
                 Assert.IsTrue(File.Exists(process.StartInfo.FileName));
             }
         }
