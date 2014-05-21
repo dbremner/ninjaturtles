@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with NinjaTurtles.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove and others.
+// Copyright (C) 2012-14 David Musgrove and others.
 
 #endregion
 
@@ -82,7 +82,7 @@ namespace NinjaTurtles.Turtles
                 for (int index = 0; index < method.Body.Instructions.Count; index++)
                 {
                     var instruction = method.Body.Instructions[index];
-                    if (instruction.OpCode == OpCodes.Ldloc && instruction.Next.OpCode == OpCodes.Ret) continue;
+                    if (instruction.OpCode.Name.StartsWith("ldloc") && instruction.Next.OpCode == OpCodes.Ret) continue;
 
                     int oldIndex = -1;
                     if (instruction.OpCode == OpCodes.Ldarg)
@@ -167,6 +167,12 @@ namespace NinjaTurtles.Turtles
             }
             foreach (var variable in method.Body.Variables)
             {
+                // HACKTAG: These variables seem to be used to store input parameters. Mutating variable
+                // reads in this case may well lead to a surviving mutant.
+                if (variable.Name.StartsWith("CS$6$"))
+                {
+                    continue;
+                }
                 var type = variable.VariableType;
                 if (!variables.ContainsKey(type))
                 {

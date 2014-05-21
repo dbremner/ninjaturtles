@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with NinjaTurtles.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove and others.
+// Copyright (C) 2012-14 David Musgrove and others.
 
 #endregion
 
@@ -33,7 +33,7 @@ namespace NinjaTurtles
 	{
         #region Logging
 
-        private static Logger _log = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
         #endregion
 
@@ -57,20 +57,36 @@ namespace NinjaTurtles
                 _log.Trace("Found type \"{0}\" in \"{1}\".", className, assembly.GetName().Name);
                 return type;
             }
+		    var codeBaseFolder = Path.GetDirectoryName(assembly.Location);
             foreach (var reference in assembly.GetReferencedAssemblies())
             {
 				if (consideredAssemblies.Contains(reference.Name)) continue;
 				consideredAssemblies.Add(reference.Name);
+                Assembly referencedAssembly = null;
                 try
                 {
-                    Assembly referencedAssembly = Assembly.Load(reference);
+                    referencedAssembly = Assembly.Load(reference);
+                }
+                catch (FileNotFoundException) {}
+                if (referencedAssembly == null)
+                {
+                    try
+                    {
+// ReSharper disable once AssignNullToNotNullAttribute
+                        referencedAssembly = Assembly.LoadFile(Path.Combine(codeBaseFolder, reference.Name) + ".dll");
+                    }
+// ReSharper disable once EmptyGeneralCatchClause
+                    catch
+                    {}
+                }
+                if (referencedAssembly != null)
+                {
                     type = ResolveTypeFromReferences(referencedAssembly, className, consideredAssemblies);
                     if (type != null)
                     {
                         return type;
                     }
                 }
-                catch (FileNotFoundException) {}
             }
             return null;
         }

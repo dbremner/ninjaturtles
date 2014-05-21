@@ -15,11 +15,10 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with NinjaTurtles.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove and others.
+// Copyright (C) 2012-14 David Musgrove and others.
 
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -30,19 +29,26 @@ namespace NinjaTurtles
 {
     internal static class InstructionExtensions
     {
-        internal static  bool IsMeaninglessUnconditionalBranch(this Instruction instruction)
+        internal static bool IsMeaninglessUnconditionalBranch(this Instruction instruction)
         {
+            // Determines if an instruction is a branch with no effect, i.e. one that simply
+            // branches to the next instruction. In this case, switching the OpCode out for
+            // nop will not have any effect.
             return instruction.OpCode == OpCodes.Br
                 && ((Instruction)instruction.Operand).Offset == instruction.Next.Offset;
         }
 
         internal static bool FollowsSequence(this Instruction instruction, params OpCode[] sequence)
         {
-            if (instruction.OpCode != sequence[0]) return false;
-            if (sequence.Length == 1) return true;
-            var newSequence = new OpCode[sequence.Length - 1];
-            Array.Copy(sequence, 1, newSequence, 0, newSequence.Length);
-            return instruction.Next.FollowsSequence(newSequence);
+            Instruction pointer = instruction;
+            int index = 0;
+            do
+            {
+                if (pointer.OpCode != sequence[index++]) return false;
+                pointer = pointer.Next;
+            }
+            while (index < sequence.Length);
+            return true;
         }
 
         internal static bool IsPartOfSequence(this Instruction instruction, params OpCode[] sequence)
@@ -108,6 +114,11 @@ namespace NinjaTurtles
 
         internal static bool ShouldReportSequencePoint(this Instruction instruction)
         {
+            if (instruction.SequencePoint.EndColumn == instruction.SequencePoint.StartColumn &&
+                instruction.SequencePoint.EndLine == instruction.SequencePoint.StartLine)
+            {
+                return false;
+            }
             var instructions = new List<Instruction>();
             do
             {
@@ -130,6 +141,10 @@ namespace NinjaTurtles
                     || first.OpCode == OpCodes.Ldarg_0)
                     && second.OpCode == OpCodes.Call
                     && ((MethodReference)second.Operand).Name == Methods.CONSTRUCTOR)
+                {
+                    return false;
+                }
+                if (first.OpCode.Name.StartsWith("ldloc") && second.OpCode == OpCodes.Ret)
                 {
                     return false;
                 }

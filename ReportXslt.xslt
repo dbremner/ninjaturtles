@@ -110,14 +110,20 @@
     		</td>
     		<td>
     			<div class="bar-wrap">
-    			<xsl:if test=".//AppliedMutant">
-    				<div class="bar-value" style="background: #dfd; width: {100 * count(.//AppliedMutant[@Killed='true']) div count(.//AppliedMutant)}%">
-    				<div class="bar-text" >
-    			<xsl:value-of select="count(.//AppliedMutant[@Killed='true'])" /> /
-    			<xsl:value-of select="count(.//AppliedMutant)" />
+					<xsl:variable name="width">
+						<xsl:choose>
+    						<xsl:when test=".//AppliedMutant">
+								<xsl:value-of select="100 * count(.//AppliedMutant[@Killed='true']) div count(.//AppliedMutant)" />
+							</xsl:when>
+							<xsl:otherwise>100</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
+  					<div class="bar-value" style="background: #dfd; width: {$width}%">
+    					<div class="bar-text" >
+    						<xsl:value-of select="count(.//AppliedMutant[@Killed='true'])" /> /
+    						<xsl:value-of select="count(.//AppliedMutant)" />
+    					</div>
     				</div>
-    				</div>
-    			</xsl:if>
     			</div>
     		</td>
     		<td>

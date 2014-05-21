@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with NinjaTurtles.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove and others.
+// Copyright (C) 2012-14 David Musgrove and others.
 
 #endregion
 
@@ -95,7 +95,7 @@ namespace NinjaTurtles
     /// MutationTestBuilder::UseRunner&lt;GallioTestRunner^&gt;();
     /// </code>
     /// </example>
-    public sealed class MutationTestBuilder<T>
+    public static class MutationTestBuilder<T>
 	{
         /// <summary>
         /// Returns an <see cref="IMutationTest" /> instance allowing a fluent
@@ -127,7 +127,7 @@ namespace NinjaTurtles
     /// For public classes, the generic <see cref="MutationTestBuilder{T}" />
     /// is to be prefered. See that class for full documentation.
     /// </remarks>
-    public sealed class MutationTestBuilder
+    public static class MutationTestBuilder
     {
         internal static Type TestRunner { get; set; }
 
@@ -171,10 +171,26 @@ namespace NinjaTurtles
             return For(callingAssembly.Location, resolvedType, targetMethod, parameterTypes);
         }
 
-		internal static IMutationTest For(string callingAssemblyLocation, Type targetType, string targetMethod, Type[] parameterTypes)
-		{
-			return new MutationTest(callingAssemblyLocation, targetType, targetMethod, parameterTypes);
-		}
+        internal static IMutationTest For(string callingAssemblyLocation, string targetClass, string targetMethod, Type[] parameterTypes = null)
+        {
+            var callingAssembly = Assembly.LoadFrom(callingAssemblyLocation);
+            Type resolvedType = TypeResolver.ResolveTypeFromReferences(callingAssembly, targetClass);
+
+            return new MutationTest(callingAssemblyLocation, resolvedType, targetMethod, parameterTypes);
+        }
+
+        internal static IMutationTest For(string callingAssemblyLocation, string targetClass, string targetMethod, TypeReference[] parameterTypes)
+        {
+            var callingAssembly = Assembly.LoadFrom(callingAssemblyLocation);
+            Type resolvedType = TypeResolver.ResolveTypeFromReferences(callingAssembly, targetClass);
+
+            return new MutationTest(callingAssemblyLocation, resolvedType, targetMethod, parameterTypes);
+        }
+
+        internal static IMutationTest For(string callingAssemblyLocation, Type targetType, string targetMethod, Type[] parameterTypes)
+        {
+            return new MutationTest(callingAssemblyLocation, targetType, targetMethod, parameterTypes);
+        }
 
         internal static IMutationTest For(string callingAssemblyLocation, Type targetType, string targetMethod, TypeReference[] parameterTypes)
         {

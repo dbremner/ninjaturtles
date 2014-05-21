@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with NinjaTurtles.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove and others.
+// Copyright (C) 2012-14 David Musgrove and others.
 
 #endregion
 
@@ -59,7 +59,7 @@ namespace NinjaTurtles
         /// <returns>
         /// An instance of <see cref="Process" />.
         /// </returns>
-        public static Process CreateProcess(string exeName, string arguments, params string[] additionalSearchLocations)
+        public static Process CreateProcess(string exeName, string arguments, IEnumerable<string> additionalSearchLocations = null)
         {
             exeName = FindExecutable(exeName, additionalSearchLocations);
 
@@ -71,10 +71,12 @@ namespace NinjaTurtles
 
             arguments = string.Format(arguments, IsWindows ? "/" : "-");
 
-            var processStartInfo = new ProcessStartInfo(exeName, arguments);
-            processStartInfo.UseShellExecute = false;
-            processStartInfo.CreateNoWindow = true;
-            processStartInfo.RedirectStandardOutput = true;
+            var processStartInfo = new ProcessStartInfo(exeName, arguments)
+            {
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardOutput = true
+            };
 
             return new Process
             {
@@ -82,10 +84,10 @@ namespace NinjaTurtles
             };
         }
 
-        private static string FindExecutable(string exeName, string[] additionalSearchLocations)
+        private static string FindExecutable(string exeName, IEnumerable<string> additionalSearchLocations)
         {
             var searchPath = new List<string>();
-            searchPath.AddRange(additionalSearchLocations);
+            if (additionalSearchLocations != null) searchPath.AddRange(additionalSearchLocations);
             string environmentSearchPath = Environment.GetEnvironmentVariable("PATH") ?? string.Empty;
             searchPath.AddRange(environmentSearchPath.Split(IsWindows ? ';' : ':'));
 

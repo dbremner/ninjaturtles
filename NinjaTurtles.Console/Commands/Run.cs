@@ -15,11 +15,12 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with NinjaTurtles.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove and others.
+// Copyright (C) 2012-14 David Musgrove and others.
 
 #endregion
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -216,7 +217,7 @@ Example:
             {
                 string targetMethod = methodInfo.Name;
                 var parameterTypes = methodInfo.Parameters.Select(p => p.ParameterType).ToArray();
-                result &= RunTests(targetClass, targetMethod, parameterTypes);
+                result &= RunTests(matchedType.Assembly.Location, targetClass, targetMethod, parameterTypes);
             }
             if (string.IsNullOrEmpty(_message))
             {
@@ -230,12 +231,19 @@ Example:
         private bool RunMutationTestsForClassAndMethod()
         {
             string targetClass = Options.Options.OfType<TargetClass>().Single().ClassName;
+            var testAssembly = Assembly.LoadFrom(_testAssemblyLocation);
+            var matchedType = TypeResolver.ResolveTypeFromReferences(testAssembly, targetClass);
+            if (matchedType == null)
+            {
+                _message = string.Format(@"Unknown type '{0}'", targetClass);
+                return false;
+            }
             string targetMethod = Options.Options.OfType<TargetMethod>().Single().MethodName;
             var typeOptions = Options.Options.OfType<ParameterType>().Select(p => p.ResolvedType).ToArray();
             var result = 
                 typeOptions.Any()
-                ? RunTests(targetClass, targetMethod, typeOptions)
-                : RunTests(targetClass, targetMethod);
+                ? RunTests(matchedType.Assembly.Location, targetClass, targetMethod, typeOptions)
+                : RunTests(matchedType.Assembly.Location, targetClass, targetMethod);
             if (string.IsNullOrEmpty(_message))
             {
                 _message = string.Format(
@@ -245,7 +253,7 @@ Example:
             return result;
         }
 
-        private bool RunTests(string targetClass, string targetMethod, TypeReference[] parameterTypes)
+        private bool RunTests(string targetAssemblyLocation, string targetClass, string targetMethod, TypeReference[] parameterTypes)
         {
             var parameterList = parameterTypes == null || parameterTypes.Length == 0
                                     ? null
@@ -253,8 +261,8 @@ Example:
             OutputMethod(targetClass, targetMethod, parameterList);
             MutationTest mutationTest =
                 parameterTypes == null
-                    ? (MutationTest)MutationTestBuilder.For(targetClass, targetMethod)
-                    : (MutationTest)MutationTestBuilder.For(targetClass, targetMethod, parameterTypes);
+                    ? (MutationTest)MutationTestBuilder.For(targetAssemblyLocation, targetClass, targetMethod)
+                    : (MutationTest)MutationTestBuilder.For(targetAssemblyLocation, targetClass, targetMethod, parameterTypes);
             if (_runnerType != null)
             {
                 mutationTest.UsingRunner(_runnerType);
@@ -283,6 +291,7 @@ Example:
             }
             catch (Exception ex)
             {
+                Debugger.Launch();
                 _message =
                     @"
 An exception was thrown setting up the mutation tests. The exception details
@@ -317,7 +326,7 @@ Exception details:
             }
         }
 
-        private bool RunTests(string targetClass, string targetMethod, Type[] parameterTypes = null)
+        private bool RunTests(string targetAssemblyLocation, string targetClass, string targetMethod, Type[] parameterTypes = null)
         {
             var parameterList = parameterTypes == null || parameterTypes.Length == 0
                                     ? null
@@ -325,8 +334,8 @@ Exception details:
             OutputMethod(targetClass, targetMethod, parameterList);
             MutationTest mutationTest =
                 parameterTypes == null
-                    ? (MutationTest)MutationTestBuilder.For(targetClass, targetMethod)
-                    : (MutationTest)MutationTestBuilder.For(targetClass, targetMethod, parameterTypes);
+                    ? (MutationTest)MutationTestBuilder.For(targetAssemblyLocation, targetClass, targetMethod)
+                    : (MutationTest)MutationTestBuilder.For(targetAssemblyLocation, targetClass, targetMethod, parameterTypes);
             mutationTest.TestAssemblyLocation = _testAssemblyLocation;
             var result = BuildAndRunMutationTest(mutationTest);
             return result;

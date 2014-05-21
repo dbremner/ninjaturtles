@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with NinjaTurtles.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove and others.
+// Copyright (C) 2012-14 David Musgrove and others.
 
 #endregion
 
@@ -36,7 +36,7 @@ namespace NinjaTurtles
     {
         #region Logging
 
-        private static Logger _log = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
         #endregion
 
@@ -90,6 +90,7 @@ namespace NinjaTurtles
 			{
 			    string fileName = Path.GetFileName(file);
                 _log.Trace("Copying file \"{0}\".", fileName);
+// ReSharper disable once AssignNullToNotNullAttribute
                 string target = Path.Combine(targetDirectory, fileName);
                 File.Copy(file, target);
 			}
@@ -97,6 +98,7 @@ namespace NinjaTurtles
 			{
 			    string subDirectoryName = Path.GetFileName(subDirectory);
                 _log.Trace("Creating subdirectory \"{0}\".", subDirectoryName);
+// ReSharper disable once AssignNullToNotNullAttribute
                 string target = Path.Combine(targetDirectory, subDirectoryName);
                 Directory.CreateDirectory(target);
 				CopyDirectoryContents(subDirectory, target);

@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with NinjaTurtles.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove and others.
+// Copyright (C) 2012-14 David Musgrove and others.
 
 #endregion
 
@@ -32,7 +32,7 @@ namespace NinjaTurtles
     {
         #region Logging
 
-        private static Logger _log = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
         #endregion
 
@@ -69,9 +69,8 @@ namespace NinjaTurtles
                 MethodDefinition methodDefinition =
                     typeDefinition.Methods.Single(
                         m => m.Name == methodName
-                            && Enumerable.SequenceEqual(
-                                m.Parameters.Select(p => p.ParameterType.FullName),
-                                parameterTypes.Select(p => p.FullName)));
+                             && m.Parameters.Select(p => p.ParameterType.FullName)
+                                 .SequenceEqual(parameterTypes.Select(p => p.FullName)));
                 _log.Debug("Method \"{0}\" successfully resolved in \"{1}\".", methodName, typeDefinition.FullName);
                 return methodDefinition;
             }
@@ -94,9 +93,8 @@ namespace NinjaTurtles
                 MethodDefinition methodDefinition =
                     typeDefinition.Methods.Single(
                         m => m.Name == methodName
-                            && Enumerable.SequenceEqual(
-                                m.Parameters.Select(p => p.ParameterType.Name.Replace("TypeDefinition", "Type")),
-                                parameterTypes.Select(p => p.Name.Replace("TypeDefinition", "Type"))));
+                             && m.Parameters.Select(p => p.ParameterType.Name.Replace("TypeDefinition", "Type"))
+                                 .SequenceEqual(parameterTypes.Select(p => p.Name.Replace("TypeDefinition", "Type"))));
                 _log.Debug("Method \"{0}\" successfully resolved in \"{1}\".", methodName, typeDefinition.FullName);
                 return methodDefinition;
             }
