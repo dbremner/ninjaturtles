@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with NinjaTurtles.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove and others.
+// Copyright (C) 2012-14 David Musgrove and others.
 
 #endregion
 
@@ -65,7 +65,7 @@ namespace NinjaTurtles.Reporting
 
             foreach (var sourceFile in otherReport.SourceFiles)
             {
-                if (!SourceFiles.Any(s => s.Url == sourceFile.Url))
+                if (SourceFiles.All(s => s.Url != sourceFile.Url))
                 {
                     SourceFiles.Add(sourceFile);
                 }
@@ -84,7 +84,7 @@ namespace NinjaTurtles.Reporting
             _readerWriterLock.EnterUpgradeableReadLock();
             try
             {
-                if (!SourceFiles.Any(s => s.Url == sourceFileUrl))
+                if (SourceFiles.All(s => s.Url != sourceFileUrl))
                 {
                     _readerWriterLock.EnterWriteLock();
                     var newSourceFile = new SourceFile();
@@ -114,7 +114,7 @@ namespace NinjaTurtles.Reporting
             _readerWriterLock.EnterUpgradeableReadLock();
             try
             {
-                if (!SourceFiles.Any(s => s.Url == sourceFileUrl))
+                if (SourceFiles.All(s => s.Url != sourceFileUrl))
                 {
                     _readerWriterLock.EnterWriteLock();
                     var newSourceFile = new SourceFile();

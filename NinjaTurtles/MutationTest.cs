@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with NinjaTurtles.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove and others.
+// Copyright (C) 2012-14 David Musgrove and others.
 
 #endregion
 
@@ -282,7 +282,13 @@ namespace NinjaTurtles
 	                    if (matchingMethods.Any(m => _comparer.Equals(m, reference))
 	                        && method.CustomAttributes.All(a => a.AttributeType.Name != "MutationTestAttribute"))
 	                    {
-	                        result.Add(string.Format("{0}.{1}", type.FullName.Replace("/", "+"), method.Name));
+	                        string methodName = method.Name;
+	                        if (methodName.StartsWith("<"))
+	                        {
+	                            var parts = methodName.Split('<', '>');
+	                            methodName = parts[1];
+	                        }
+	                        result.Add(string.Format("{0}.{1}", type.FullName.Replace("/", "+"), methodName));
 	                        break;
 	                    }
 	                }
@@ -468,7 +474,7 @@ namespace NinjaTurtles
             using (var searcher = new ManagementObjectSearcher("Select * From Win32_Process Where ParentProcessID=" + pid))
             using (ManagementObjectCollection moc = searcher.Get())
             {
-                foreach (ManagementObject mo in moc)
+                foreach (var mo in moc)
                 {
                     KillProcessAndChildren(Convert.ToInt32(mo["ProcessID"]));
                 }

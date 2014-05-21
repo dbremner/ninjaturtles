@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with NinjaTurtles.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove and others.
+// Copyright (C) 2012-14 David Musgrove and others.
 
 #endregion
 
@@ -27,7 +27,6 @@ using Mono.Cecil;
 using Mono.Cecil.Cil;
 using Mono.Cecil.Mdb;
 using Mono.Cecil.Pdb;
-using Mono.Collections.Generic;
 
 namespace NinjaTurtles
 {
@@ -102,7 +101,7 @@ namespace NinjaTurtles
             }
         }
 
-        private void LoadSourceCodeForTypes(Collection<TypeDefinition> types, ISymbolReader reader)
+        private void LoadSourceCodeForTypes(IEnumerable<TypeDefinition> types, ISymbolReader reader)
         {
             foreach (var typeDefinition in types)
             {

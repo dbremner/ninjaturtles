@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with NinjaTurtles.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove and others.
+// Copyright (C) 2012-14 David Musgrove and others.
 
 #endregion
 
@@ -92,21 +92,23 @@ namespace NinjaTurtles.TestRunners
 
             var searchPath = new List<string>();
             string programFilesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-            searchPath.AddRange(new[]
-                                    {
-                                        Path.Combine(programFilesFolder, "Microsoft Visual Studio 11.0\\Common7\\IDE"),
-                                        Path.Combine(programFilesFolder, "Microsoft Visual Studio 10.0\\Common7\\IDE")
-                                    });
             string programFilesX86Folder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+
+            AddSearchPathsForVisualStudioVersions(searchPath, programFilesFolder);
             if (!string.IsNullOrEmpty(programFilesX86Folder))
             {
-                searchPath.AddRange(new[]
-                        {
-                                        Path.Combine(programFilesX86Folder, "Microsoft Visual Studio 11.0\\Common7\\IDE"),
-                                        Path.Combine(programFilesX86Folder, "Microsoft Visual Studio 10.0\\Common7\\IDE")
-                        });
+                AddSearchPathsForVisualStudioVersions(searchPath, programFilesX86Folder);
             }
-            return ConsoleProcessFactory.CreateProcess("MSTest.exe", arguments, searchPath.ToArray());
+            return ConsoleProcessFactory.CreateProcess("MSTest.exe", arguments, searchPath);
+        }
+
+        private void AddSearchPathsForVisualStudioVersions(ICollection<string> searchPath, string baseFolder)
+        {
+            for (int visualStudioVersion = 10; visualStudioVersion <= 13; visualStudioVersion++)
+            {
+                searchPath.Add(Path.Combine(baseFolder,
+                    string.Format("Microsoft Visual Studio {0}.0\\Common7\\IDE", visualStudioVersion)));
+            }
         }
     }
 }

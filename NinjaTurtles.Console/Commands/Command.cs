@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with NinjaTurtles.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove and others.
+// Copyright (C) 2012-14 David Musgrove and others.
 
 #endregion
 
@@ -32,6 +32,7 @@ namespace NinjaTurtles.Console.Commands
         static public readonly IDictionary<string, Type> KnownCommands =
             new Dictionary<string, Type>
                 {
+                    {"clean", typeof(Clean)},
                     {"help", typeof(Help)},
                     {"run", typeof(Run)},
                 };
@@ -109,7 +110,7 @@ namespace NinjaTurtles.Console.Commands
                     @"NinjaTurtles - mutation testing for .NET (version {0})",
                     typeof(Command).Assembly.GetName().Version);
                 OutputWriter.WriteLine(
-                    @"Copyright (C) 2012 David Musgrove.
+                    @"Copyright (C) 2012-14 David Musgrove.
 For the latest version, visit http://www.mutation-testing.net.");
             }
             OutputWriter.WriteLine();

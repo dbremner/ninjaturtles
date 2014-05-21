@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with NinjaTurtles.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove and others.
+// Copyright (C) 2012-14 David Musgrove and others.
 
 #endregion
 
@@ -97,22 +97,11 @@ namespace NinjaTurtles.Tests
         }
 
         [Test]
-        public void CreateProcess_Resolves_NUnit_Console_Path()
-        {
-            string exeName = "nunit-console.exe";
-            using (var process = ConsoleProcessFactory.CreateProcess(exeName, ""))
-            {
-                Assert.AreNotEqual(exeName, process.StartInfo.FileName, "PLEASE CHECK IF YOUR NUNIT BIN FOLDER HAS BEEN ADDED TO YOUR PATH...");
-                Assert.IsTrue(File.Exists(process.StartInfo.FileName));
-            }
-        }
-
-        [Test]
         public void CreateProcess_Uses_Provided_Search_Path()
         {
             string tempFile = Path.GetTempFileName();
             string exeName = Path.GetFileName(tempFile);
-            using (var process = ConsoleProcessFactory.CreateProcess(exeName, "", Path.GetTempPath()))
+            using (var process = ConsoleProcessFactory.CreateProcess(exeName, "", new[] {Path.GetTempPath()}))
             {
                 Assert.AreNotEqual(exeName, process.StartInfo.FileName);
                 Assert.IsTrue(File.Exists(process.StartInfo.FileName));

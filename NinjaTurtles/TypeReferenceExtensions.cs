@@ -15,12 +15,11 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with NinjaTurtles.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove and others.
+// Copyright (C) 2012-14 David Musgrove and others.
 
 #endregion
 
 using System;
-using System.Diagnostics;
 using System.Reflection;
 
 using Mono.Cecil;
@@ -31,8 +30,7 @@ namespace NinjaTurtles
     {
         static public string ToAssemblyQualifiedName(this TypeReference typeReference)
         {
-            string assemblyQualifiedName;
-            assemblyQualifiedName = Assembly.CreateQualifiedName(typeReference.Scope.Name, typeReference.FullName);
+            string assemblyQualifiedName = Assembly.CreateQualifiedName(typeReference.Scope.Name, typeReference.FullName);
             if (typeReference.IsGenericInstance)
             {
                 foreach (var genericParameter in ((GenericInstanceType)typeReference).GenericArguments)
@@ -52,12 +50,10 @@ namespace NinjaTurtles
             {
                 type = Type.GetType(fullNameToResolve);
             }
-            catch (Exception) {}
-            if (type == null)
-            {
-                type = TypeResolver.ResolveTypeFromReferences(assembly, fullNameToResolve);
-            }
-            return type;
+// ReSharper disable once EmptyGeneralCatchClause
+            catch (Exception)
+            {}
+            return type ?? TypeResolver.ResolveTypeFromReferences(assembly, fullNameToResolve);
         }
     }
 }

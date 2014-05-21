@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with NinjaTurtles.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove and others.
+// Copyright (C) 2012-14 David Musgrove and others.
 
 #endregion
 
@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace NinjaTurtles.TestRunners
 {
@@ -86,6 +87,7 @@ namespace NinjaTurtles.TestRunners
         /// </returns>
         public Process GetRunnerProcess(TestDirectory testDirectory, string testAssemblyLocation, IEnumerable<string> testsToRun)
         {
+            string originalTestAssemblyLocation = testAssemblyLocation;
             testAssemblyLocation = Path.Combine(testDirectory.FullName, Path.GetFileName(testAssemblyLocation));
             string testListFile = Path.Combine(testDirectory.FullName, "ninjaturtlestestlist.txt");
 
@@ -93,23 +95,64 @@ namespace NinjaTurtles.TestRunners
             string arguments = string.Format("\"{0}\" {{0}}runlist=\"{1}\" {{0}}noshadow {{0}}nologo {{0}}nodots {{0}}stoponerror", testAssemblyLocation, testListFile);
 
             var searchPath = new List<string>();
+
+            AddSearchPathTermsForNUnitVersion(testAssemblyLocation, originalTestAssemblyLocation, searchPath);
+
+            return ConsoleProcessFactory.CreateProcess("nunit-console.exe", arguments, searchPath);
+        }
+
+        private static void AddSearchPathTermsForNUnitVersion(string testAssemblyLocation, string originalTestAssemblyLocation, ICollection<string> searchPath)
+        {
+            var nUnitReference =
+                new Module(testAssemblyLocation).AssemblyDefinition.MainModule.AssemblyReferences.FirstOrDefault(
+                    r => r.Name == "nunit.framework");
+
+            if (nUnitReference == null) return;
+
             string programFilesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-            searchPath.AddRange(new[]
-                                    {
-                                        Path.Combine(programFilesFolder, "NUnit 2.6\\bin"),
-                                        Path.Combine(programFilesFolder, "NUnit 2.5\\bin")
-                                    });
             string programFilesX86Folder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+            string bestGuessSolutionFolderWithNuGet = GetBestGuessSolutionFolderWithNuGet(originalTestAssemblyLocation);
+
+            Version version = nUnitReference.Version;
+
+            if (bestGuessSolutionFolderWithNuGet != null)
+            {
+                AddSearchPathsForVersionVariants(searchPath, version,
+                    bestGuessSolutionFolderWithNuGet, "packages\\NUnit.Runners.{0}\\tools");
+            }
+            AddSearchPathsForVersionVariants(searchPath, version,
+                programFilesFolder, "NUnit {0}\\bin");
             if (!string.IsNullOrEmpty(programFilesX86Folder))
             {
-                searchPath.AddRange(new[]
-                        {
-                            Path.Combine(programFilesX86Folder, "NUnit 2.6\\bin"),
-                            Path.Combine(programFilesX86Folder, "NUnit 2.5\\bin")
-                        });
+                AddSearchPathsForVersionVariants(searchPath, version,
+                    programFilesX86Folder, "NUnit {0}\\bin");
             }
+        }
 
-            return ConsoleProcessFactory.CreateProcess("nunit-console.exe", arguments, searchPath.ToArray());
+        private static void AddSearchPathsForVersionVariants(ICollection<string> searchPath, Version version,
+            string baseFolder, string pathFormat)
+        {
+            var threePart = string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Build);
+            var twoPart = string.Format("{0}.{1}", version.Major, version.Minor);
+
+            searchPath.Add(Path.Combine(baseFolder, string.Format(pathFormat, threePart)));
+            searchPath.Add(Path.Combine(baseFolder, string.Format(pathFormat, twoPart)));
+        }
+
+        private static string GetBestGuessSolutionFolderWithNuGet(string originalTestAssemblyDirectory)
+        {
+            string bestGuessSolutionFolderWithNuGet = null;
+            var directory = new DirectoryInfo(originalTestAssemblyDirectory);
+            while ((directory = directory.Parent) != null)
+            {
+                if (directory.GetDirectories("packages").Any()
+                    && directory.GetFiles("*.sln").Any())
+                {
+                    bestGuessSolutionFolderWithNuGet = directory.FullName;
+                    break;
+                }
+            }
+            return bestGuessSolutionFolderWithNuGet;
         }
     }
 }

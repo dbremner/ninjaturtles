@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with NinjaTurtles.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove and others.
+// Copyright (C) 2012-14 David Musgrove and others.
 
 #endregion
 
@@ -87,7 +87,7 @@ namespace NinjaTurtles.Reporting
             _readerWriterLock.EnterUpgradeableReadLock();
             try
             {
-                if (!SequencePoints.Any(s => s.GetIdentifier() == identifier))
+                if (SequencePoints.All(s => s.GetIdentifier() != identifier))
                 {
                     _readerWriterLock.EnterWriteLock();
                     SequencePoints.Add(new SequencePoint(sequencePoint));
@@ -106,7 +106,7 @@ namespace NinjaTurtles.Reporting
         {
             foreach (var sequencePoint in sourceFile.SequencePoints)
             {
-                if (!SequencePoints.Any(s => s.GetIdentifier() == sequencePoint.GetIdentifier()))
+                if (SequencePoints.All(s => s.GetIdentifier() != sequencePoint.GetIdentifier()))
                 {
                     SequencePoints.Add(sequencePoint);
                 }
@@ -120,7 +120,7 @@ namespace NinjaTurtles.Reporting
 
         internal void AddSequencePoint(Mono.Cecil.Cil.SequencePoint point)
         {
-            if (!SequencePoints.Any(s => s.GetIdentifier() == SequencePoint.GetIdentifier(point)))
+            if (SequencePoints.All(s => s.GetIdentifier() != SequencePoint.GetIdentifier(point)))
             {
                 SequencePoints.Add(new SequencePoint(point));
             }

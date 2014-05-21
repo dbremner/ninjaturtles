@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with NinjaTurtles.  If not, see <http://www.gnu.org/licenses/>.
 // 
-// Copyright (C) 2012 David Musgrove and others.
+// Copyright (C) 2012-14 David Musgrove and others.
 
 #endregion
 
@@ -24,8 +24,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Xml.Serialization;
-
-using Mono.Cecil.Cil;
 
 using Cil = Mono.Cecil.Cil;
 
@@ -118,7 +116,7 @@ namespace NinjaTurtles.Reporting
             _readerWriterLock.EnterUpgradeableReadLock();
             try
             {
-                if (!AppliedMutants.Any(s => s.Description == mutantMetaData.Description))
+                if (AppliedMutants.All(s => s.Description != mutantMetaData.Description))
                 {
                     _readerWriterLock.EnterWriteLock();
                     AppliedMutants.Add(new AppliedMutant
@@ -139,7 +137,7 @@ namespace NinjaTurtles.Reporting
         {
             foreach (var appliedMutant in sequencePoint.AppliedMutants)
             {
-                if (!AppliedMutants.Any(a => a.Description == appliedMutant.Description))
+                if (AppliedMutants.All(a => a.Description != appliedMutant.Description))
                 {
                     AppliedMutants.Add(appliedMutant);
                 }
