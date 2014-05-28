@@ -78,10 +78,12 @@ namespace NinjaTurtles
                 RedirectStandardOutput = true
             };
 
-            return new Process
+            var process = new Process
             {
                 StartInfo = processStartInfo
             };
+
+            return process;
         }
 
         private static string FindExecutable(string exeName, IEnumerable<string> additionalSearchLocations)

@@ -60,7 +60,7 @@ namespace NinjaTurtles.TestRunners
     /// used by NinjaTurtles.
     /// </para>
     /// </example>
-    public class NUnitTestRunner : ITestRunner
+    public class NUnitTestRunner : TestRunnerBase
     {
         /// <summary>
         /// Runs the tests specified from the test assembly, found within the
@@ -85,7 +85,7 @@ namespace NinjaTurtles.TestRunners
         /// <returns>
         /// A <see cref="Process" /> instance to run the unit test runner.
         /// </returns>
-        public Process GetRunnerProcess(TestDirectory testDirectory, string testAssemblyLocation, IEnumerable<string> testsToRun)
+        public override Process GetRunnerProcess(TestDirectory testDirectory, string testAssemblyLocation, IEnumerable<string> testsToRun)
         {
             string originalTestAssemblyLocation = testAssemblyLocation;
             testAssemblyLocation = Path.Combine(testDirectory.FullName, Path.GetFileName(testAssemblyLocation));
@@ -111,7 +111,7 @@ namespace NinjaTurtles.TestRunners
 
             string programFilesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
             string programFilesX86Folder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
-            string bestGuessSolutionFolderWithNuGet = GetBestGuessSolutionFolderWithNuGet(originalTestAssemblyLocation);
+            string bestGuessSolutionFolderWithNuGet = GetBestGuessSolutionFolder(originalTestAssemblyLocation);
 
             Version version = nUnitReference.Version;
 
@@ -127,32 +127,6 @@ namespace NinjaTurtles.TestRunners
                 AddSearchPathsForVersionVariants(searchPath, version,
                     programFilesX86Folder, "NUnit {0}\\bin");
             }
-        }
-
-        private static void AddSearchPathsForVersionVariants(ICollection<string> searchPath, Version version,
-            string baseFolder, string pathFormat)
-        {
-            var threePart = string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Build);
-            var twoPart = string.Format("{0}.{1}", version.Major, version.Minor);
-
-            searchPath.Add(Path.Combine(baseFolder, string.Format(pathFormat, threePart)));
-            searchPath.Add(Path.Combine(baseFolder, string.Format(pathFormat, twoPart)));
-        }
-
-        private static string GetBestGuessSolutionFolderWithNuGet(string originalTestAssemblyDirectory)
-        {
-            string bestGuessSolutionFolderWithNuGet = null;
-            var directory = new DirectoryInfo(originalTestAssemblyDirectory);
-            while ((directory = directory.Parent) != null)
-            {
-                if (directory.GetDirectories("packages").Any()
-                    && directory.GetFiles("*.sln").Any())
-                {
-                    bestGuessSolutionFolderWithNuGet = directory.FullName;
-                    break;
-                }
-            }
-            return bestGuessSolutionFolderWithNuGet;
         }
     }
 }

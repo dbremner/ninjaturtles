@@ -32,26 +32,26 @@ namespace NinjaTurtles.Tests.MSTest
     [Ms.TestClass]
     public class ClassUnderTestTests
     {
-        [Ms.TestMethod, Ms.TestCategory("MSTest")]
+        [Ms.TestMethod]
         public void Dummy_Dummies()
         {
             Ms.Assert.AreEqual(0, new ClassUnderTest().Dummy());
         }
 
-        [Ms.TestMethod, Ms.TestCategory("MSTest")]
+        [Ms.TestMethod]
         public void Add_Works()
         {
             Ms.Assert.AreEqual(3, new ClassUnderTest().Add(3, 0));
         }
 
-        [Ms.TestMethod, Ms.TestCategory("MSTest")]
+        [Ms.TestMethod]
         public void WorkingAdd_Works()
         {
             Ms.Assert.AreEqual(3, new ClassUnderTest().WorkingAdd(3, 0));
             Ms.Assert.AreEqual(7, new ClassUnderTest().WorkingAdd(3, 4));
         }
 
-        [N.Test, N.Category("MSTest")]
+        [N.Test]
         public void Dummy_Mutation_Tests_Pass()
         {
             using (var console = new ConsoleCapturer())
@@ -65,7 +65,7 @@ namespace NinjaTurtles.Tests.MSTest
             }
         }
 
-        [N.Test, N.Category("MSTest")]
+        [N.Test]
         public void Add_Mutation_Tests_Fail()
         {
             try
@@ -83,7 +83,7 @@ namespace NinjaTurtles.Tests.MSTest
             N.Assert.Fail("MutationTestFailureException was not thrown.");
         }
 
-        [N.Test, N.Category("MSTest")]
+        [N.Test]
         public void WorkingAdd_Mutation_Tests_Pass()
         {
             MutationTestBuilder<ClassUnderTest>
