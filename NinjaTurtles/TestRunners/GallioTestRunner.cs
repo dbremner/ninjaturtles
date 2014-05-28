@@ -56,7 +56,7 @@ namespace NinjaTurtles.TestRunners
     ///     ->Run();
     /// </code>
     /// </example>
-    public class GallioTestRunner : ITestRunner
+    public class GallioTestRunner : TestRunnerBase
     {
         /// <summary>
         /// Runs the tests specified from the test assembly, found within the
@@ -81,7 +81,7 @@ namespace NinjaTurtles.TestRunners
         /// <returns>
         /// A <see cref="Process" /> instance to run the unit test runner.
         /// </returns>
-        public Process GetRunnerProcess(TestDirectory testDirectory, string testAssemblyLocation, IEnumerable<string> testsToRun)
+        public override Process GetRunnerProcess(TestDirectory testDirectory, string testAssemblyLocation, IEnumerable<string> testsToRun)
         {
             IDictionary<string, IList<string>> testsByFixture = new Dictionary<string, IList<string>>();
             foreach (var test in testsToRun)
@@ -100,23 +100,31 @@ namespace NinjaTurtles.TestRunners
                                     kv.Key,
                                     string.Join(", ", kv.Value))));
 
+            string originalTestAssemblyLocation = testAssemblyLocation;
             testAssemblyLocation = Path.Combine(testDirectory.FullName, Path.GetFileName(testAssemblyLocation));
-            string arguments = string.Format("\"{0}\" {{0}}f:\"{1}\" {{0}}r:IsolatedProcess",
+            string arguments = string.Format("\"{0}\" {{0}}f:\"{1}\" {{0}}r:IsolatedProcess {{0}}sr",
                                  testAssemblyLocation, filter);
 
             var searchPath = new List<string>();
+
+            string solutionFolder = GetBestGuessSolutionFolder(originalTestAssemblyLocation);
+            if (!string.IsNullOrEmpty(solutionFolder))
+            {
+                DirectoryInfo gallioFolder = new DirectoryInfo(solutionFolder)
+                    .GetDirectories("packages").Single()
+                    .GetDirectories( "GallioBundle*").FirstOrDefault();
+                if (gallioFolder != null)
+                {
+                    searchPath.Add(Path.Combine(gallioFolder.FullName, "bin"));
+                }
+            }
+
             string programFilesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-            searchPath.AddRange(new[]
-                                    {
-                                        Path.Combine(programFilesFolder, "Gallio\\bin")
-                                    });
+            searchPath.Add(Path.Combine(programFilesFolder, "Gallio\\bin"));
             string programFilesX86Folder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
             if (!string.IsNullOrEmpty(programFilesX86Folder))
             {
-                searchPath.AddRange(new[]
-                        {
-                                        Path.Combine(programFilesFolder, "Gallio\\bin")
-                        });
+                searchPath.Add(Path.Combine(programFilesX86Folder, "Gallio\\bin"));
             }
             return ConsoleProcessFactory.CreateProcess("Gallio.Echo.exe", arguments, searchPath);
         }

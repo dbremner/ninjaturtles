@@ -86,6 +86,7 @@
     <Compile Include="Reporting\Line.cs" />
     <Compile Include="TestRunners\MSTestTestRunner.cs" />
     <Compile Include="TestRunners\NamespaceDoc.cs" />
+    <Compile Include="TestRunners\TestRunnerBase.cs" />
     <Compile Include="TestRunners\xUnitTestRunner.cs" />
     <Compile Include="TestRunners\GallioTestRunner.cs" />
     <Compile Include="TestRunners\ITestRunner.cs" />

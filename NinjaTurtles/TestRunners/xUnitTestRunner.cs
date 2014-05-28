@@ -19,6 +19,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -58,7 +59,7 @@ namespace NinjaTurtles.TestRunners
     /// </code>
     /// </example>
 // ReSharper disable InconsistentNaming
-    public class xUnitTestRunner : ITestRunner
+    public class xUnitTestRunner : TestRunnerBase
 // ReSharper restore InconsistentNaming
     {
         /// <summary>
@@ -84,8 +85,9 @@ namespace NinjaTurtles.TestRunners
         /// <returns>
         /// A <see cref="Process" /> instance to run the unit test runner.
         /// </returns>
-        public Process GetRunnerProcess(TestDirectory testDirectory, string testAssemblyLocation, IEnumerable<string> testsToRun)
+        public override Process GetRunnerProcess(TestDirectory testDirectory, string testAssemblyLocation, IEnumerable<string> testsToRun)
         {
+            string originalTestAssemblyLocation = testAssemblyLocation;
             testAssemblyLocation = Path.Combine(testDirectory.FullName, Path.GetFileName(testAssemblyLocation));
 
             // HACKTAG: In the absence of a simple way to limit the tests
@@ -120,9 +122,32 @@ namespace NinjaTurtles.TestRunners
             testDirectory.SaveAssembly(testModule);
 
             string arguments = string.Format("\"{0}\" {{0}}noshadow {{0}}trait \"NinjaTurtles=run\"",
-                                 testAssemblyLocation);
+                     testAssemblyLocation);
 
-            return ConsoleProcessFactory.CreateProcess("xunit.console.clr4.exe", arguments);
+            var searchPath = new List<string>();
+
+            AddSearchPathTermsForxUnitVersion(testAssemblyLocation, originalTestAssemblyLocation, searchPath);
+
+            return ConsoleProcessFactory.CreateProcess("xunit.console.clr4.exe", arguments, searchPath);
+        }
+
+        private static void AddSearchPathTermsForxUnitVersion(string testAssemblyLocation, string originalTestAssemblyLocation, ICollection<string> searchPath)
+        {
+            var xUnitReference =
+                new Module(testAssemblyLocation).AssemblyDefinition.MainModule.AssemblyReferences.FirstOrDefault(
+                    r => r.Name == "xunit");
+
+            if (xUnitReference == null) return;
+
+            string bestGuessSolutionFolderWithNuGet = GetBestGuessSolutionFolder(originalTestAssemblyLocation);
+
+            Version version = xUnitReference.Version;
+
+            if (bestGuessSolutionFolderWithNuGet != null)
+            {
+                AddSearchPathsForVersionVariants(searchPath, version,
+                    bestGuessSolutionFolderWithNuGet, "packages\\xunit.runners.{0}\\tools");
+            }
         }
     }
 }

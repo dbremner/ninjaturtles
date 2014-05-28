@@ -19,7 +19,6 @@
 
 #endregion
 
-using NinjaTurtles;
 using NinjaTurtles.TestRunners;
 using NinjaTurtles.Tests.TestUtilities;
 using NinjaTurtles.Turtles;

@@ -57,7 +57,7 @@ namespace NinjaTurtles.TestRunners
     /// </code>
     /// </example>
 // ReSharper disable InconsistentNaming
-    public class MSTestTestRunner : ITestRunner
+    public class MSTestTestRunner : TestRunnerBase
 // ReSharper restore InconsistentNaming
     {
         /// <summary>
@@ -83,7 +83,7 @@ namespace NinjaTurtles.TestRunners
         /// <returns>
         /// A <see cref="Process" /> instance to run the unit test runner.
         /// </returns>
-        public Process GetRunnerProcess(TestDirectory testDirectory, string testAssemblyLocation, IEnumerable<string> testsToRun)
+        public override Process GetRunnerProcess(TestDirectory testDirectory, string testAssemblyLocation, IEnumerable<string> testsToRun)
         {
             testAssemblyLocation = Path.Combine(testDirectory.FullName, Path.GetFileName(testAssemblyLocation));
             string testArguments = string.Join(" ", testsToRun.Select(t => string.Format("/test:\"{0}\"", t)));
