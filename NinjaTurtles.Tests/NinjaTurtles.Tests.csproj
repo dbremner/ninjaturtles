@@ -94,6 +94,7 @@
     <Compile Include="Turtles\ConditionalBoundaryTurtleTests.cs" />
     <Compile Include="Turtles\ConditionalBoundaryTurtleTestSuite\ConditionalBoundaryClassUnderTest.cs" />
     <Compile Include="Turtles\ConditionalBoundaryTurtleTestSuite\Tests\ConditionalBoundaryClassUnderTestTests.cs" />
+    <Compile Include="Turtles\Tests\ClosureClassUnderTest.cs" />
     <Compile Include="Turtles\VariableReadTurtleTests.cs" />
     <Compile Include="Turtles\VariableWriteTurtleTests.cs" />
     <Compile Include="Turtles\VariableReadTurtleTestSuite\Tests\VariableReadClassUnderTestTests.cs" />

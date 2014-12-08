@@ -69,6 +69,70 @@ namespace NinjaTurtles.Turtles
         public IEnumerable<MutantMetaData> Mutate(MethodDefinition method, Module module, int[] originalOffsets)
         {
             _module = module;
+            var ret = MutateMethod(method, module, originalOffsets);
+
+            ret = ret.Concat(MutateEnumerableGenerators(method, module));
+            
+            ret = ret.Concat(MutateClosures(method, module));
+
+            ret = ret.Concat(MutateAnonymousDelegates(method, module));
+
+                //yield-return generator so the appropriate private fields are set as we enumerate this method
+            foreach (var m in ret)
+                yield return m;
+        }
+
+        private IEnumerable<MutantMetaData> MutateEnumerableGenerators(MethodDefinition method, Module module)
+        {
+            var nestedType =
+                method.DeclaringType.NestedTypes.FirstOrDefault(
+                    t => t.Name.StartsWith(string.Format("<{0}>", method.Name))
+                    && t.Interfaces.Any(i => i.Name == "IEnumerable`1"));
+            if (nestedType == null)
+                return Enumerable.Empty<MutantMetaData>();
+            
+            var nestedMethod = nestedType.Methods.First(m => m.Name == "MoveNext");
+            var originalOffsets = nestedMethod.Body.Instructions.Select(i => i.Offset).ToArray();
+            return MutateMethod(nestedMethod, module, originalOffsets);
+        }
+
+        private IEnumerable<MutantMetaData> MutateClosures(MethodDefinition method, Module module)
+        {
+            var ret = Enumerable.Empty<MutantMetaData>();
+
+            var nestedType =
+                method.DeclaringType.NestedTypes.FirstOrDefault(
+                    t => t.Name.StartsWith("<>c__DisplayClass")
+                        && t.Methods.Any(m => m.Name.StartsWith(string.Format("<{0}>", method.Name)))
+                    );
+            if (nestedType == null)
+                return ret;
+
+            var closureMethods = nestedType.Methods.Where(m => m.Name.StartsWith(string.Format("<{0}>", method.Name)));
+            foreach (var closureMethod in closureMethods) { 
+                var originalOffsets = closureMethod.Body.Instructions.Select(i => i.Offset).ToArray();
+                ret = ret.Concat(MutateMethod(closureMethod, module, originalOffsets));
+            }
+
+            return ret;
+        }
+
+        private IEnumerable<MutantMetaData> MutateAnonymousDelegates(MethodDefinition method, Module module)
+        {
+            var delegateMethods = method.DeclaringType.Methods.Where(m => m.Name.StartsWith(string.Format("<{0}>", method.Name)));
+
+            var ret = Enumerable.Empty<MutantMetaData>();
+            foreach (var delegateMethod in delegateMethods)
+            {
+                var originalOffsets = delegateMethod.Body.Instructions.Select(i => i.Offset).ToArray();
+                ret = ret.Concat(MutateMethod(delegateMethod, module, originalOffsets));
+            }
+
+            return ret;
+        }
+
+        private IEnumerable<MutantMetaData> MutateMethod(MethodDefinition method, Module module, int[] originalOffsets)
+        {
             _method = method;
             _originalOffsets = originalOffsets;
             method.Body.SimplifyMacros();
@@ -77,22 +141,6 @@ namespace NinjaTurtles.Turtles
                 yield return mutation;
             }
             method.Body.OptimizeMacros();
-            var nestedType =
-                method.DeclaringType.NestedTypes.FirstOrDefault(
-                    t => t.Name.StartsWith(string.Format("<{0}>", method.Name))
-                    && t.Interfaces.Any(i => i.Name == "IEnumerable`1"));
-            if (nestedType != null)
-            {
-                var nestedMethod = nestedType.Methods.First(m => m.Name == "MoveNext");
-                _originalOffsets = nestedMethod.Body.Instructions.Select(i => i.Offset).ToArray();
-                _method = nestedMethod;
-                nestedMethod.Body.SimplifyMacros();
-                foreach (var mutation in DoMutate(nestedMethod, module))
-                {
-                    yield return mutation;
-                }
-                nestedMethod.Body.OptimizeMacros();
-            }
         }
 
         /// <summary>

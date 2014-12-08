@@ -27,7 +27,7 @@ using System.Threading;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
-
+using NinjaTurtles.Tests.Turtles.Tests;
 using NUnit.Framework;
 
 using NinjaTurtles.Tests.Turtles.ArithmeticOperatorTurtleTestSuite;
@@ -193,6 +193,132 @@ namespace NinjaTurtles.Tests.Turtles
   33:             return left + right;
   34:         }
   35: ".Replace("\r\n", "\n").Replace("\n", Environment.NewLine), turtle.GetOriginalSourceCode(3));
+        }
+
+        [Test]
+        public void Mutate_Closure_Identifies_Closure_Method()
+        {
+            var module = new Module(typeof(ClosureClassUnderTest).Assembly.Location);
+            module.LoadDebugInformation();
+
+            var turtle = new DummyTurtle();
+            var method = module.Definition.Types
+                .Single(t => t.Name == "ClosureClassUnderTest")
+                .Methods.Single(m => m.Name == "AddClosure");
+
+            //act
+            var mutations = turtle.Mutate(method, module, method.Body.Instructions.Select(i => i.Offset).ToArray()).ToList();
+
+            //assert
+            Assert.AreEqual(2, mutations.Count, "mutations.Count");
+            var closureMethod = mutations[1].MethodDefinition;
+            Assert.IsTrue(closureMethod.Name.StartsWith("<AddClosure>"));
+        }
+
+        [Test]
+        public void Mutate_Multiple_Closures_Identifies_All_Closure_Methods()
+        {
+            var module = new Module(typeof(ClosureClassUnderTest).Assembly.Location);
+            module.LoadDebugInformation();
+
+            var turtle = new DummyTurtle();
+            var method = module.Definition.Types
+                .Single(t => t.Name == "ClosureClassUnderTest")
+                .Methods.Single(m => m.Name == "AddMultipleClosures");
+
+            //act
+            var mutations = turtle.Mutate(method, module, method.Body.Instructions.Select(i => i.Offset).ToArray()).ToList();
+
+            //assert
+            Assert.AreEqual(3, mutations.Count, "mutations.Count");
+            var closureMethod = mutations[2].MethodDefinition;
+            Assert.IsTrue(closureMethod.Name.StartsWith("<AddMultipleClosures>"));
+            Assert.AreEqual(1, closureMethod.Parameters.Count, "third mutated method should be second closure");
+        }
+
+        [Test]
+        public void Mutate_Closure_Resolves_And_Numbers_Source_Code()
+        {
+            var module = new Module(typeof(ClosureClassUnderTest).Assembly.Location);
+            module.LoadDebugInformation();
+
+            var turtle = new DummyTurtle();
+            var method = module.Definition.Types
+                .Single(t => t.Name == "ClosureClassUnderTest")
+                .Methods.Single(m => m.Name == "ReturnsClosure");
+
+            var enumerator = turtle.Mutate(method, module, method.Body.Instructions.Select(i => i.Offset).ToArray()).GetEnumerator();
+            Assert.IsTrue(enumerator.MoveNext());
+            Assert.IsTrue(enumerator.MoveNext());
+
+            Assert.AreEqual(@"  23:         public Func<int> ReturnsClosure(int left, int right)
+  24:         {
+  25:             return () => left + right;
+  26:         }
+  27: ".Replace("\r\n", "\n").Replace("\n", Environment.NewLine), turtle.GetOriginalSourceCode(4));
+        }
+
+        [Test]
+        public void Mutate_Delegate_Identifies_Delegate_Method()
+        {
+            var module = new Module(typeof(ClosureClassUnderTest).Assembly.Location);
+            module.LoadDebugInformation();
+
+            var turtle = new DummyTurtle();
+            var method = module.Definition.Types
+                .Single(t => t.Name == "ClosureClassUnderTest")
+                .Methods.Single(m => m.Name == "AddDelegate");
+
+            //act
+            var mutations = turtle.Mutate(method, module, method.Body.Instructions.Select(i => i.Offset).ToArray()).ToList();
+
+            //assert
+            Assert.AreEqual(2, mutations.Count, "mutations.Count");
+            var delegateMethod = mutations[1].MethodDefinition;
+            Assert.IsTrue(delegateMethod.Name.StartsWith("<AddDelegate>"));
+        }
+
+        [Test]
+        public void Mutate_Delegate_Resolves_And_Numbers_Source_Code()
+        {
+            var module = new Module(typeof(ClosureClassUnderTest).Assembly.Location);
+            module.LoadDebugInformation();
+
+            var turtle = new DummyTurtle();
+            var method = module.Definition.Types
+                .Single(t => t.Name == "ClosureClassUnderTest")
+                .Methods.Single(m => m.Name == "ReturnsDelegate");
+
+            var enumerator = turtle.Mutate(method, module, method.Body.Instructions.Select(i => i.Offset).ToArray()).GetEnumerator();
+            Assert.IsTrue(enumerator.MoveNext());
+            Assert.IsTrue(enumerator.MoveNext());
+
+            Assert.AreEqual(@"  35:         public Func<int, int, int> ReturnsDelegate()
+  36:         {
+  37:             return (l, r) => l + r;
+  38:         }
+  39: ".Replace("\r\n", "\n").Replace("\n", Environment.NewLine), turtle.GetOriginalSourceCode(4));
+        }
+
+        [Test]
+        public void Mutate_Multiple_Delegates_Identifies_All_Delegate_Methods()
+        {
+            var module = new Module(typeof(ClosureClassUnderTest).Assembly.Location);
+            module.LoadDebugInformation();
+
+            var turtle = new DummyTurtle();
+            var method = module.Definition.Types
+                .Single(t => t.Name == "ClosureClassUnderTest")
+                .Methods.Single(m => m.Name == "AddMultipleDelegates");
+
+            //act
+            var mutations = turtle.Mutate(method, module, method.Body.Instructions.Select(i => i.Offset).ToArray()).ToList();
+
+            //assert
+            Assert.AreEqual(3, mutations.Count, "mutations.Count");
+            var delegateMethod = mutations[2].MethodDefinition;
+            Assert.IsTrue(delegateMethod.Name.StartsWith("<AddMultipleDelegates>"));
+            Assert.AreEqual(2, delegateMethod.Parameters.Count, "third mutated method should be second delegate");
         }
 
         [Test]
