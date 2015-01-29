@@ -20,6 +20,8 @@
 #endregion
 
 using System;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 
 using Mono.Cecil;
@@ -117,6 +119,46 @@ namespace NinjaTurtles
 			var callingAssembly = Assembly.GetCallingAssembly();
 			return MutationTestBuilder.For(callingAssembly.Location, typeof(T), targetMethod, parameterTypes);
 		}
+
+        /// <summary>
+        /// Returns an <see cref="IMutationTest" /> instance allowing a fluent
+        /// definition of a set of mutation tests for a particular method that is
+        /// passed in via an expression.
+        /// </summary>
+        /// <param name="method">The method under test.</param>
+        /// <returns>An <see cref="IMutationTest" /> instance to allow fluent method chaining.</returns>
+        /// <remarks>
+        ///     contributed by Gordon Burgett
+        ///     https://ninjaturtles.codeplex.com/workitem/6
+        /// </remarks>
+        /// <exception cref="ArgumentException"></exception>
+        public static IMutationTest For<TRet>(Expression<Func<T, TRet>> method)
+        {
+            var call = method.Body as MethodCallExpression;
+            if (call == null) throw new ArgumentException("Expression body must be a method call");
+
+            return MutationTestBuilder.For(call.Method);
+        }
+
+        /// <summary>
+        /// Returns an <see cref="IMutationTest" /> instance allowing a fluent
+        /// definition of a set of mutation tests for a particular void method that is
+        /// passed in via an expression.
+        /// </summary>
+        /// <param name="method">The method under test.</param>
+        /// <returns>An <see cref="IMutationTest" /> instance to allow fluent method chaining.</returns>
+        /// <remarks>
+        ///     contributed by Gordon Burgett
+        ///     https://ninjaturtles.codeplex.com/workitem/6
+        /// </remarks>
+        /// <exception cref="ArgumentException"></exception>
+        public static IMutationTest For(Expression<Action<T>> method)
+        {
+            var call = method.Body as MethodCallExpression;
+            if (call == null) throw new ArgumentException("Expression body must be a method call");
+
+            return MutationTestBuilder.For(call.Method);
+        }
 	}
 
     /// <summary>
@@ -124,7 +166,7 @@ namespace NinjaTurtles
     /// a set of mutation tests.
     /// </summary>
     /// <remarks>
-    /// For public classes, the generic <see cref="MutationTestBuilder{T}" />
+    /// For public classes, the generic <see cref="MutationTestBuilder" />
     /// is to be prefered. See that class for full documentation.
     /// </remarks>
     public static class MutationTestBuilder
@@ -210,6 +252,56 @@ namespace NinjaTurtles
         public static void UseRunner<T>() where T : ITestRunner
         {
             TestRunner = typeof(T);
+        }
+
+        /// <summary>
+        /// Returns an <see cref="IMutationTest" /> instance allowing a fluent
+        /// definition of a set of mutation tests for a particular method that is
+        /// passed in via an expression.
+        /// </summary>
+        /// <param name="method">The method under test.</param>
+        /// <typeparam name="T">A type that implements <see cref="ITestRunner" />.</typeparam>
+        /// <returns>An <see cref="IMutationTest" /> instance to allow fluent method chaining.</returns>
+        /// <remarks>
+        ///     contributed by Gordon Burgett
+        ///     https://ninjaturtles.codeplex.com/workitem/6
+        /// </remarks>
+        /// <exception cref="ArgumentException"></exception>
+        public static IMutationTest For<T>(Expression<Func<T>> method)
+        {
+            var call = method.Body as MethodCallExpression;
+            if (call == null)
+                throw new ArgumentException("Expression body must be a method call");
+
+            return For(call.Method);
+        }
+
+        /// <summary>
+        /// Returns an <see cref="IMutationTest" /> instance allowing a fluent
+        /// definition of a set of mutation tests for a particular void method that is
+        /// passed in via an expression.
+        /// </summary>
+        /// <param name="method">The method under test.</param>
+        /// <returns>An <see cref="IMutationTest" /> instance to allow fluent method chaining.</returns>
+        /// <remarks>
+        ///     contributed by Gordon Burgett
+        ///     https://ninjaturtles.codeplex.com/workitem/6
+        /// </remarks>
+        /// <exception cref="ArgumentException"></exception>
+        public static IMutationTest For(Expression<Action> method)
+        {
+            var call = method.Body as MethodCallExpression;
+            if (call == null) throw new ArgumentException("Expression body must be a method call");
+
+            return For(call.Method);
+        }
+
+        // contributed by Gordon Burgett
+        // https://ninjaturtles.codeplex.com/workitem/6
+        internal static IMutationTest For(MethodInfo method)
+        {
+            // ReSharper disable once PossibleNullReferenceException
+            return For(method.DeclaringType.Assembly.Location, method.DeclaringType, method.Name, method.GetParameters().Select(pi => pi.ParameterType).ToArray());
         }
 	}
 }
