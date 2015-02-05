@@ -20,7 +20,7 @@
 #endregion
 
 using System;
-
+using JetBrains.Annotations;
 using NUnit.Framework;
 
 namespace NinjaTurtles.Tests
@@ -64,6 +64,42 @@ namespace NinjaTurtles.Tests
                 .MergeReportTo("SampleReport.xml")
                 .Run();
 		}
+    
+        [Test]
+        public void ForOfT_Returns_Correct_Type_For_Action()
+        {
+            IMutationTest result = MutationTestBuilder<TestClassForExpressions>.For(x => x.DoNothing());
+            Assert.IsNotNull(result);
+            Assert.AreEqual("MutationTest", result.GetType().Name, "For should return an instance of MutationTest.");
+        }
+
+        [Test]
+        public void ForOfT_Returns_Correct_Type_For_Func()
+        {
+            IMutationTest result = MutationTestBuilder<TestClassForExpressions>.For(x => x.DoStringThing());
+            Assert.IsNotNull(result);
+            Assert.AreEqual("MutationTest", result.GetType().Name, "For should return an instance of MutationTest.");
+        }
+
+        [Test]
+        public void Generic_ForOfT_Action_Stores_Type()
+        {
+            IMutationTest result = MutationTestBuilder<TestClassForExpressions>.For(x => x.DoNothing());
+            Assert.AreEqual(typeof(TestClassForExpressions), result.TargetType);
+        }
+
+        [Test]
+        public void Generic_ForOfT_Func_Stores_Type()
+        {
+            IMutationTest result = MutationTestBuilder<TestClassForExpressions>.For(x => x.DoNothing());
+            Assert.AreEqual(typeof(TestClassForExpressions), result.TargetType);
+        }
 	}
+
+    public class TestClassForExpressions
+    {
+        public void DoNothing() { }
+        public string DoStringThing() { return "something"; }
+    }
 }
 
