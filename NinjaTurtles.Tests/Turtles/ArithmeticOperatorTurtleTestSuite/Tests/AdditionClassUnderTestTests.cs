@@ -64,17 +64,21 @@ namespace NinjaTurtles.Tests.Turtles.ArithmeticOperatorTurtleTestSuite.Tests
 		[Test]
         public void Add_Mutation_Tests_Fail()
 		{
-			try
-			{
-				MutationTestBuilder<AdditionClassUnderTest>
-					.For("Add")
-					.With<ArithmeticOperatorTurtle>()
-					.Run();
-			}
-			catch (MutationTestFailureException)
-			{
-				return;
-			}
+		    try
+		    {
+		        MutationTestBuilder<AdditionClassUnderTest>
+		            .For("Add")
+		            .With<ArithmeticOperatorTurtle>()
+		            .Run();
+		    }
+		    catch (MutationTestFailureException)
+		    {
+		        return;
+		    }
+		    catch (System.Exception)
+		    {
+		        Assert.Fail("bad.");
+		    }
 			Assert.Fail("MutationTestFailureException was not thrown.");
 		}
 

@@ -120,7 +120,9 @@ namespace NinjaTurtles
 			{
                 var turtle = (MethodTurtleBase)Activator.CreateInstance(turtleType);
                 Console.WriteLine(turtle.Description);
+
                 Parallel.ForEach(turtle.Mutate(method, _module, originalOffsets),
+                    new ParallelOptions { MaxDegreeOfParallelism = 4 },
 // ReSharper disable AccessToModifiedClosure
         		    mutation => RunMutation(turtle, mutation, ref failures, ref count));
 // ReSharper restore AccessToModifiedClosure

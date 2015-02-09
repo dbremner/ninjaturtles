@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace NinjaTurtles
 {
@@ -59,7 +60,10 @@ namespace NinjaTurtles
         /// <returns>
         /// An instance of <see cref="Process" />.
         /// </returns>
-        public static Process CreateProcess(string exeName, string arguments, IEnumerable<string> additionalSearchLocations = null)
+        public static Process CreateProcess(
+            string exeName,
+            string arguments,
+            IEnumerable<string> additionalSearchLocations = null)
         {
             exeName = FindExecutable(exeName, additionalSearchLocations);
 
@@ -71,19 +75,15 @@ namespace NinjaTurtles
 
             arguments = string.Format(arguments, IsWindows ? "/" : "-");
 
-            var processStartInfo = new ProcessStartInfo(exeName, arguments)
+            return new Process
             {
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                RedirectStandardOutput = true
+                StartInfo = new ProcessStartInfo(exeName, arguments)
+                {
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    RedirectStandardOutput = true
+                }
             };
-
-            var process = new Process
-            {
-                StartInfo = processStartInfo
-            };
-
-            return process;
         }
 
         private static string FindExecutable(string exeName, IEnumerable<string> additionalSearchLocations)
@@ -95,7 +95,7 @@ namespace NinjaTurtles
 
             foreach (string folder in searchPath)
             {
-                string fullExePath = Path.Combine(folder, exeName);
+                var fullExePath = Path.Combine(folder, exeName);
                 if (File.Exists(fullExePath))
                 {
                     return fullExePath;

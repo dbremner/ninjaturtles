@@ -22,6 +22,7 @@ nunit-test-report.xml
 *.Deploy/Release
 .refix
 Refix.TestSolution/Refix
+TestResults/
 Packages
 packages
 *.dotCover
@@ -37,3 +38,5 @@ NinjaTurtles.*sdf
 TestResult.xml
 *.tssettings
 tozip
+*.ncrunchproject
+*.ncrunchsolution

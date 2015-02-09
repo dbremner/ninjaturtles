@@ -48,7 +48,7 @@ namespace NinjaTurtles
         /// </summary>
         public TestDirectory()
 		{
-            _folder = Path.Combine(Path.GetTempPath(),
+            _folder = Path.Combine(@"C:\Temp",//Path.GetTempPath(),
                                    "NinjaTurtles",
                                    Guid.NewGuid().ToString("N"));
             _log.Debug("Creating folder \"{0}\".", _folder);
