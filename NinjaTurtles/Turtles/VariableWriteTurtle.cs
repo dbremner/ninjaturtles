@@ -54,18 +54,19 @@ namespace NinjaTurtles.Turtles
         /// the <see mref="DoYield" /> method.
         /// </remarks>
         /// <param name="method">
-        /// A <see cref="MethodDefinition" /> for the method on which mutation
-        /// testing is to be carried out.
+        ///     A <see cref="MethodDefinition" /> for the method on which mutation
+        ///     testing is to be carried out.
         /// </param>
         /// <param name="module">
-        /// A <see cref="Module" /> representing the main module of the
-        /// containing assembly.
+        ///     A <see cref="Module" /> representing the main module of the
+        ///     containing assembly.
         /// </param>
+        /// <param name="originalOffsets"></param>
         /// <returns>
         /// An <see cref="IEnumerable{T}" /> of
         /// <see cref="MutantMetaData" /> structures.
         /// </returns>
-        protected override IEnumerable<MutantMetaData> DoMutate(MethodDefinition method, Module module)
+        protected override IEnumerable<MutantMetaData> CreateMutant(MethodDefinition method, Module module, int[] originalOffsets)
         {
             var variablesByType = GroupVariablesByType(method);
             PopulateOperandsInVariables(method, variablesByType);
@@ -116,7 +117,7 @@ namespace NinjaTurtles.Turtles
                         var description =
                             string.Format(
                                 "{0:x4}: write substitution {1}.{2} => {1}.{3}",
-                                GetOriginalOffset(index),
+                                originalOffsets[index],
                                 keyValuePair.Key.Name,
                                 originalVariable.Name,
                                 variable.Name);

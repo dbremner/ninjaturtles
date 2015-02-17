@@ -171,9 +171,15 @@ namespace NinjaTurtles.Tests.Turtles
             var method = module.Definition.Types
                 .Single(t => t.Name == "TestClass")
                 .Methods.Single(m => m.Name == "TestMethod");
-            turtle.Mutate(method, module, method.Body.Instructions.Select(i => i.Offset).ToArray()).First();
+            var offsets = method.Body.Instructions.Select(i => i.Offset).ToArray();
+            method.Body.Instructions.Select(i => i.Offset).ToArray();
+
+            //act
+            turtle.Mutate(method, module, offsets).First();
+
+            //assert
             var ilCount = method.Body.Instructions.Count;
-            Assert.AreNotEqual(turtle.GetOriginalOffset(ilCount - 2), method.Body.Instructions[ilCount - 2].Offset);
+            Assert.AreNotEqual(offsets[ilCount - 2], method.Body.Instructions[ilCount - 2].Offset);
         }
 
         [Test]
@@ -187,12 +193,20 @@ namespace NinjaTurtles.Tests.Turtles
                 .Single(t => t.Name == "AdditionClassUnderTest")
                 .Methods.Single(m => m.Name == "Add");
 
-            turtle.Mutate(method, module, method.Body.Instructions.Select(i => i.Offset).ToArray()).First();
-            Assert.AreEqual(@"  31:         public int Add(int left, int right)
+                //act
+            using (var enumerator = turtle.Mutate(method, module, method.Body.Instructions.Select(i => i.Offset).ToArray())
+                        .GetEnumerator())
+            {
+                enumerator.MoveNext();
+                var src = enumerator.Current.GetOriginalSourceCode();
+
+                //assert
+                Assert.AreEqual(@"  31:         public int Add(int left, int right)
   32:         {
   33:             return left + right;
   34:         }
-  35: ".Replace("\r\n", "\n").Replace("\n", Environment.NewLine), turtle.GetOriginalSourceCode(3));
+  35: ".Replace("\r\n", "\n").Replace("\n", Environment.NewLine), src);
+            }
         }
 
         [Test]
@@ -255,7 +269,7 @@ namespace NinjaTurtles.Tests.Turtles
   24:         {
   25:             return () => left + right;
   26:         }
-  27: ".Replace("\r\n", "\n").Replace("\n", Environment.NewLine), turtle.GetOriginalSourceCode(4));
+  27: ".Replace("\r\n", "\n").Replace("\n", Environment.NewLine), enumerator.Current.GetOriginalSourceCode());
         }
 
         [Test]
@@ -297,7 +311,7 @@ namespace NinjaTurtles.Tests.Turtles
   36:         {
   37:             return (l, r) => l + r;
   38:         }
-  39: ".Replace("\r\n", "\n").Replace("\n", Environment.NewLine), turtle.GetOriginalSourceCode(4));
+  39: ".Replace("\r\n", "\n").Replace("\n", Environment.NewLine), enumerator.Current.GetOriginalSourceCode());
         }
 
         [Test]
@@ -385,7 +399,7 @@ namespace NinjaTurtles.Tests.Turtles
                 get { return "Dummy turtle"; }
             }
 
-            protected override IEnumerable<MutantMetaData> DoMutate(MethodDefinition method, Module module)
+            protected override IEnumerable<MutantMetaData> CreateMutant(MethodDefinition method, Module module, int[] originalOffsets)
             {
                 var processor = method.Body.GetILProcessor();
                 method.Body.Instructions.Add(processor.Create(OpCodes.Nop));
