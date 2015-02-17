@@ -26,7 +26,6 @@ using System.IO;
 using System.Linq;
 
 using Mono.Cecil;
-using Mono.Cecil.Cil;
 using Mono.Cecil.Rocks;
 
 namespace NinjaTurtles.Turtles
@@ -37,10 +36,6 @@ namespace NinjaTurtles.Turtles
     /// </summary>
     public abstract class MethodTurtleBase : IMethodTurtle
     {
-        private int[] _originalOffsets;
-        private Module _module;
-        private MethodDefinition _method;
-
         internal void MutantComplete(MutantMetaData metaData)
         {
             metaData.TestDirectory.Dispose();
@@ -68,7 +63,6 @@ namespace NinjaTurtles.Turtles
         /// </returns>
         public IEnumerable<MutantMetaData> Mutate(MethodDefinition method, Module module, int[] originalOffsets)
         {
-            _module = module;
             var ret = MutateMethod(method, module, originalOffsets);
 
             ret = ret.Concat(MutateEnumerableGenerators(method, module));
@@ -77,9 +71,7 @@ namespace NinjaTurtles.Turtles
 
             ret = ret.Concat(MutateAnonymousDelegates(method, module));
 
-                //yield-return generator so the appropriate private fields are set as we enumerate this method
-            foreach (var m in ret)
-                yield return m;
+            return ret;
         }
 
         private IEnumerable<MutantMetaData> MutateEnumerableGenerators(MethodDefinition method, Module module)
@@ -133,10 +125,9 @@ namespace NinjaTurtles.Turtles
 
         private IEnumerable<MutantMetaData> MutateMethod(MethodDefinition method, Module module, int[] originalOffsets)
         {
-            _method = method;
-            _originalOffsets = originalOffsets;
+                //leave as a yield-return, so that we don't optimize macros again until we stop enumerating.
             method.Body.SimplifyMacros();
-            foreach (var mutation in DoMutate(method, module))
+            foreach (var mutation in CreateMutant(method, module, originalOffsets))
             {
                 yield return mutation;
             }
@@ -157,18 +148,19 @@ namespace NinjaTurtles.Turtles
         /// the <see mref="DoYield" /> method.
         /// </remarks>
         /// <param name="method">
-        /// A <see cref="MethodDefinition" /> for the method on which mutation
-        /// testing is to be carried out.
+        ///     A <see cref="MethodDefinition" /> for the method on which mutation
+        ///     testing is to be carried out.
         /// </param>
         /// <param name="module">
-        /// A <see cref="Module" /> representing the main module of the
-        /// containing assembly.
+        ///     A <see cref="Module" /> representing the main module of the
+        ///     containing assembly.
         /// </param>
+        /// <param name="originalOffsets"></param>
         /// <returns>
         /// An <see cref="IEnumerable{T}" /> of
         /// <see cref="MutantMetaData" /> structures.
         /// </returns>
-        protected abstract IEnumerable<MutantMetaData> DoMutate(MethodDefinition method, Module module);
+        protected abstract IEnumerable<MutantMetaData> CreateMutant(MethodDefinition method, Module module, int[] originalOffsets);
 
         /// <summary>
         /// A helper method that copies the test folder, and saves the mutated
@@ -195,57 +187,14 @@ namespace NinjaTurtles.Turtles
         {
             var testDirectory = new TestDirectory(Path.GetDirectoryName(module.AssemblyLocation));
             testDirectory.SaveAssembly(module);
-            return new MutantMetaData
-            {
-                Description = description,
-                MethodDefinition = method,
-                TestDirectory = testDirectory,
-                ILIndex = index
-            };
+            return new MutantMetaData(
+                module,
+                description,
+                method,
+                index,
+                testDirectory
+            );
         }
-
-        internal int GetOriginalOffset(int index)
-        {
-            return _originalOffsets[index];
-        }
-
-        internal string GetOriginalSourceFileName(int index)
-        {
-            var sequencePoint = GetCurrentSequencePoint(index);
-            return Path.GetFileName(sequencePoint.Document.Url);
-        }
-
-        internal SequencePoint GetCurrentSequencePoint(int index)
-        {
-            var instruction = _method.Body.Instructions[index];
-            while ((instruction.SequencePoint == null
-                || instruction.SequencePoint.StartLine == 0xfeefee) && index > 0)
-            {
-                index--;
-                instruction = _method.Body.Instructions[index];
-            }
-            var sequencePoint = instruction.SequencePoint;
-            return sequencePoint;
-        }
-
-        internal string GetOriginalSourceCode(int index)
-        {
-            var sequencePoint = GetCurrentSequencePoint(index);
-            string result = "";
-            if (!_module.SourceFiles.ContainsKey(sequencePoint.Document.Url))
-            {
-                return "";
-            }
-            string[] sourceCode = _module.SourceFiles[sequencePoint.Document.Url];
-            int upperBound = Math.Min(sequencePoint.EndLine + 2, sourceCode.Length);
-            for (int line = Math.Max(sequencePoint.StartLine - 2, 1); line <= upperBound; line++)
-            {
-                string sourceLine = sourceCode[line - 1].Replace("\t", "    ");
-                result += line.ToString(CultureInfo.InvariantCulture)
-                    .PadLeft(4, ' ') + ": " + sourceLine.TrimEnd(' ', '\t');
-                if (line < upperBound) result += Environment.NewLine;
-            }
-            return result;
-        }
+        
     }
 }

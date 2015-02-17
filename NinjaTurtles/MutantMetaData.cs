@@ -19,7 +19,11 @@
 
 #endregion
 
+using System;
+using System.Globalization;
 using Mono.Cecil;
+using Mono.Cecil.Rocks;
+using NinjaTurtles.Turtles;
 
 namespace NinjaTurtles
 {
@@ -29,13 +33,46 @@ namespace NinjaTurtles
     public class MutantMetaData
 	{
         /// <summary>
-        /// Gets or sets the description of the mutation test being run.
+        /// Gets the description of the mutation test being run.
         /// </summary>
-        public string Description { get; internal set; }
+        public string Description { get; private set; }
 
-		internal MethodDefinition MethodDefinition { get; set; }
-        internal int ILIndex { get; set; }
-        internal TestDirectory TestDirectory { get; set; }
+        /// <summary>
+        /// Gets the Module containing the mutated method.
+        /// </summary>
+        internal Module Module { get; private set; }
+
+        /// <summary>
+        /// Gets the mutated method.
+        /// </summary>
+		internal MethodDefinition MethodDefinition { get; private set; }
+
+        /// <summary>
+        /// Gets the index into the mutated method of the modified instruction.
+        /// </summary>
+        internal int ILIndex { get; private set; }
+
+        /// <summary>
+        /// Gets the directory to which the mutated method was saved.
+        /// </summary>
+        internal TestDirectory TestDirectory { get; private set; }
+
+        /// <summary>
+        /// Constructs the immutable MutantMetaData class.
+        /// </summary>
+        /// <param name="module"></param>
+        /// <param name="description"></param>
+        /// <param name="methodDefinition"></param>
+        /// <param name="ilIndex"></param>
+        /// <param name="testDirectory"></param>
+        public MutantMetaData(Module module, string description, MethodDefinition methodDefinition, int ilIndex, TestDirectory testDirectory)
+        {
+            Module = module;
+            Description = description;
+            MethodDefinition = methodDefinition;
+            ILIndex = ilIndex;
+            TestDirectory = testDirectory;
+        }
 
         /// <summary>
         /// Gets the name of the target directory for the mutation test, to
@@ -45,6 +82,26 @@ namespace NinjaTurtles
 		{
 			get { return TestDirectory.FullName; }
 		}
-	}
+
+        internal string GetOriginalSourceCode()
+        {
+            var sequencePoint = MethodDefinition.GetCurrentSequencePoint(ILIndex);
+            string result = "";
+            if (!Module.SourceFiles.ContainsKey(sequencePoint.Document.Url))
+            {
+                return "";
+            }
+            string[] sourceCode = Module.SourceFiles[sequencePoint.Document.Url];
+            int upperBound = Math.Min(sequencePoint.EndLine + 2, sourceCode.Length);
+            for (int line = Math.Max(sequencePoint.StartLine - 2, 1); line <= upperBound; line++)
+            {
+                string sourceLine = sourceCode[line - 1].Replace("\t", "    ");
+                result += line.ToString(CultureInfo.InvariantCulture)
+                    .PadLeft(4, ' ') + ": " + sourceLine.TrimEnd(' ', '\t');
+                if (line < upperBound) result += Environment.NewLine;
+            }
+            return result;
+        }
+    }
 }
 

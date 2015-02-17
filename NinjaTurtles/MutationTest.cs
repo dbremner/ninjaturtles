@@ -451,15 +451,15 @@ namespace NinjaTurtles
 			                  testSuitePassed
 			                  	? "Survived."
 			                    : "Killed.");
-            _report.AddResult(turtle.GetCurrentSequencePoint(mutation.ILIndex), mutation, !testSuitePassed);
+            _report.AddResult(mutation.MethodDefinition.GetCurrentSequencePoint(mutation.ILIndex), mutation, !testSuitePassed);
 
 		    if (testSuitePassed)
             {
                 mutation.TestDirectory.DoNotDelete = true;
                 result = string.Format("{0}\nOriginal source code around surviving mutant (in {1}):\n{2}\nFiles left for inspection in: {3}",
                     result,
-                    turtle.GetOriginalSourceFileName(mutation.ILIndex),
-                    turtle.GetOriginalSourceCode(mutation.ILIndex),
+                    mutation.MethodDefinition.GetOriginalSourceFileName(mutation.ILIndex),
+                    mutation.GetOriginalSourceCode(),
                     mutation.TestDirectoryName);
             }
 
