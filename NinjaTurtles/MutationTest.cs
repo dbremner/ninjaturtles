@@ -459,7 +459,7 @@ namespace NinjaTurtles
                 result = string.Format("{0}\nOriginal source code around surviving mutant (in {1}):\n{2}\nFiles left for inspection in: {3}",
                     result,
                     mutation.MethodDefinition.GetOriginalSourceFileName(mutation.ILIndex),
-                    mutation.GetOriginalSourceCode(),
+                    mutation.GetOriginalSourceCode(mutation.ILIndex),
                     mutation.TestDirectoryName);
             }
 
