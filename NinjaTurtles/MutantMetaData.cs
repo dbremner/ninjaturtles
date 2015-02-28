@@ -83,9 +83,9 @@ namespace NinjaTurtles
 			get { return TestDirectory.FullName; }
 		}
 
-        internal string GetOriginalSourceCode()
+        internal string GetOriginalSourceCode(int index)
         {
-            var sequencePoint = MethodDefinition.GetCurrentSequencePoint(ILIndex);
+            var sequencePoint = MethodDefinition.GetCurrentSequencePoint(index);
             string result = "";
             if (!Module.SourceFiles.ContainsKey(sequencePoint.Document.Url))
             {
