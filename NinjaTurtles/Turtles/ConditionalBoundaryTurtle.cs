@@ -52,18 +52,19 @@ namespace NinjaTurtles.Turtles
         /// the <see mref="DoYield" /> method.
         /// </remarks>
         /// <param name="method">
-        /// A <see cref="MethodDefinition" /> for the method on which mutation
-        /// testing is to be carried out.
+        ///     A <see cref="MethodDefinition" /> for the method on which mutation
+        ///     testing is to be carried out.
         /// </param>
         /// <param name="module">
-        /// A <see cref="Module" /> representing the main module of the
-        /// containing assembly.
+        ///     A <see cref="Module" /> representing the main module of the
+        ///     containing assembly.
         /// </param>
+        /// <param name="originalOffsets"></param>
         /// <returns>
         /// An <see cref="IEnumerable{T}" /> of
         /// <see cref="MutantMetaData" /> structures.
         /// </returns>
-        protected override IEnumerable<MutantMetaData> DoMutate(MethodDefinition method, Module module)
+        protected override IEnumerable<MutantMetaData> CreateMutant(MethodDefinition method, Module module, int[] originalOffsets)
         {
             for (int index = 0; index < method.Body.Instructions.Count; index++)
             {
@@ -81,7 +82,7 @@ namespace NinjaTurtles.Turtles
 
                     instruction.OpCode = instruction.OpCode == OpCodes.Clt ? OpCodes.Cgt : OpCodes.Clt;
 
-                    var description = string.Format("{0:x4}: {1} => not {2}", GetOriginalOffset(index), originalCode, instruction.OpCode.Code);
+                    var description = string.Format("{0:x4}: {1} => not {2}", originalOffsets[index], originalCode, instruction.OpCode.Code);
                     yield return DoYield(method, module, description, index);
 
                     instruction.OpCode = instruction.OpCode == OpCodes.Clt ? OpCodes.Cgt : OpCodes.Clt;

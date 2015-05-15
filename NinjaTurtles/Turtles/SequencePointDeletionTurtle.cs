@@ -51,18 +51,19 @@ namespace NinjaTurtles.Turtles
         /// the <see mref="DoYield" /> method.
         /// </remarks>
         /// <param name="method">
-        /// A <see cref="MethodDefinition" /> for the method on which mutation
-        /// testing is to be carried out.
+        ///     A <see cref="MethodDefinition" /> for the method on which mutation
+        ///     testing is to be carried out.
         /// </param>
         /// <param name="module">
-        /// A <see cref="Module" /> representing the main module of the
-        /// containing assembly.
+        ///     A <see cref="Module" /> representing the main module of the
+        ///     containing assembly.
         /// </param>
+        /// <param name="originalOffsets"></param>
         /// <returns>
         /// An <see cref="IEnumerable{T}" /> of
         /// <see cref="MutantMetaData" /> structures.
         /// </returns>
-        protected override IEnumerable<MutantMetaData> DoMutate(MethodDefinition method, Module module)
+        protected override IEnumerable<MutantMetaData> CreateMutant(MethodDefinition method, Module module, int[] originalOffsets)
         {
             var sequence = new Dictionary<int, OpCode>();
             int startIndex = -1;
@@ -89,7 +90,7 @@ namespace NinjaTurtles.Turtles
                     method.Body.Instructions[startIndex].Operand = instruction.Next;
 
                     var codes = string.Join(", ", sequence.Values.Select(o => o.Code));
-                    var description = string.Format("{0:x4}: deleting {1}", GetOriginalOffset(startIndex), codes);
+                    var description = string.Format("{0:x4}: deleting {1}", originalOffsets[startIndex], codes);
                     MutantMetaData mutation = DoYield(method, module, description, startIndex);
                     yield return mutation;
 

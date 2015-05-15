@@ -100,6 +100,7 @@
     <Compile Include="MutationTestFailureException.cs" />
     <Compile Include="TestDirectory.cs" />
     <Compile Include="Turtles\MethodTurtleBase.cs" />
+    <Compile Include="Turtles\MutantExtensions.cs" />
     <Compile Include="Turtles\NamespaceDoc.cs" />
     <Compile Include="Turtles\OpCodeRotationTurtle.cs" />
     <Compile Include="Turtles\SequencePointDeletionTurtle.cs" />

@@ -26,7 +26,6 @@ using System.IO;
 using System.Linq;
 
 using Mono.Cecil;
-using Mono.Cecil.Cil;
 using Mono.Cecil.Rocks;
 
 namespace NinjaTurtles.Turtles
@@ -37,10 +36,6 @@ namespace NinjaTurtles.Turtles
     /// </summary>
     public abstract class MethodTurtleBase : IMethodTurtle
     {
-        private int[] _originalOffsets;
-        private Module _module;
-        private MethodDefinition _method;
-
         internal void MutantComplete(MutantMetaData metaData)
         {
             metaData.TestDirectory.Dispose();
@@ -68,31 +63,75 @@ namespace NinjaTurtles.Turtles
         /// </returns>
         public IEnumerable<MutantMetaData> Mutate(MethodDefinition method, Module module, int[] originalOffsets)
         {
-            _module = module;
-            _method = method;
-            _originalOffsets = originalOffsets;
-            method.Body.SimplifyMacros();
-            foreach (var mutation in DoMutate(method, module))
-            {
-                yield return mutation;
-            }
-            method.Body.OptimizeMacros();
+            var ret = MutateMethod(method, module, originalOffsets);
+
+            ret = ret.Concat(MutateEnumerableGenerators(method, module));
+            
+            ret = ret.Concat(MutateClosures(method, module));
+
+            ret = ret.Concat(MutateAnonymousDelegates(method, module));
+
+            return ret;
+        }
+
+        private IEnumerable<MutantMetaData> MutateEnumerableGenerators(MethodDefinition method, Module module)
+        {
             var nestedType =
                 method.DeclaringType.NestedTypes.FirstOrDefault(
                     t => t.Name.StartsWith(string.Format("<{0}>", method.Name))
                     && t.Interfaces.Any(i => i.Name == "IEnumerable`1"));
-            if (nestedType != null)
-            {
-                var nestedMethod = nestedType.Methods.First(m => m.Name == "MoveNext");
-                _originalOffsets = nestedMethod.Body.Instructions.Select(i => i.Offset).ToArray();
-                _method = nestedMethod;
-                nestedMethod.Body.SimplifyMacros();
-                foreach (var mutation in DoMutate(nestedMethod, module))
-                {
-                    yield return mutation;
-                }
-                nestedMethod.Body.OptimizeMacros();
+            if (nestedType == null)
+                return Enumerable.Empty<MutantMetaData>();
+            
+            var nestedMethod = nestedType.Methods.First(m => m.Name == "MoveNext");
+            var originalOffsets = nestedMethod.Body.Instructions.Select(i => i.Offset).ToArray();
+            return MutateMethod(nestedMethod, module, originalOffsets);
+        }
+
+        private IEnumerable<MutantMetaData> MutateClosures(MethodDefinition method, Module module)
+        {
+            var ret = Enumerable.Empty<MutantMetaData>();
+
+            var nestedType =
+                method.DeclaringType.NestedTypes.FirstOrDefault(
+                    t => t.Name.StartsWith("<>c__DisplayClass")
+                        && t.Methods.Any(m => m.Name.StartsWith(string.Format("<{0}>", method.Name)))
+                    );
+            if (nestedType == null)
+                return ret;
+
+            var closureMethods = nestedType.Methods.Where(m => m.Name.StartsWith(string.Format("<{0}>", method.Name)));
+            foreach (var closureMethod in closureMethods) { 
+                var originalOffsets = closureMethod.Body.Instructions.Select(i => i.Offset).ToArray();
+                ret = ret.Concat(MutateMethod(closureMethod, module, originalOffsets));
             }
+
+            return ret;
+        }
+
+        private IEnumerable<MutantMetaData> MutateAnonymousDelegates(MethodDefinition method, Module module)
+        {
+            var delegateMethods = method.DeclaringType.Methods.Where(m => m.Name.StartsWith(string.Format("<{0}>", method.Name)));
+
+            var ret = Enumerable.Empty<MutantMetaData>();
+            foreach (var delegateMethod in delegateMethods)
+            {
+                var originalOffsets = delegateMethod.Body.Instructions.Select(i => i.Offset).ToArray();
+                ret = ret.Concat(MutateMethod(delegateMethod, module, originalOffsets));
+            }
+
+            return ret;
+        }
+
+        private IEnumerable<MutantMetaData> MutateMethod(MethodDefinition method, Module module, int[] originalOffsets)
+        {
+                //leave as a yield-return, so that we don't optimize macros again until we stop enumerating.
+            method.Body.SimplifyMacros();
+            foreach (var mutation in CreateMutant(method, module, originalOffsets))
+            {
+                yield return mutation;
+            }
+            method.Body.OptimizeMacros();
         }
 
         /// <summary>
@@ -109,18 +148,19 @@ namespace NinjaTurtles.Turtles
         /// the <see mref="DoYield" /> method.
         /// </remarks>
         /// <param name="method">
-        /// A <see cref="MethodDefinition" /> for the method on which mutation
-        /// testing is to be carried out.
+        ///     A <see cref="MethodDefinition" /> for the method on which mutation
+        ///     testing is to be carried out.
         /// </param>
         /// <param name="module">
-        /// A <see cref="Module" /> representing the main module of the
-        /// containing assembly.
+        ///     A <see cref="Module" /> representing the main module of the
+        ///     containing assembly.
         /// </param>
+        /// <param name="originalOffsets"></param>
         /// <returns>
         /// An <see cref="IEnumerable{T}" /> of
         /// <see cref="MutantMetaData" /> structures.
         /// </returns>
-        protected abstract IEnumerable<MutantMetaData> DoMutate(MethodDefinition method, Module module);
+        protected abstract IEnumerable<MutantMetaData> CreateMutant(MethodDefinition method, Module module, int[] originalOffsets);
 
         /// <summary>
         /// A helper method that copies the test folder, and saves the mutated
@@ -147,57 +187,14 @@ namespace NinjaTurtles.Turtles
         {
             var testDirectory = new TestDirectory(Path.GetDirectoryName(module.AssemblyLocation));
             testDirectory.SaveAssembly(module);
-            return new MutantMetaData
-            {
-                Description = description,
-                MethodDefinition = method,
-                TestDirectory = testDirectory,
-                ILIndex = index
-            };
+            return new MutantMetaData(
+                module,
+                description,
+                method,
+                index,
+                testDirectory
+            );
         }
-
-        internal int GetOriginalOffset(int index)
-        {
-            return _originalOffsets[index];
-        }
-
-        internal string GetOriginalSourceFileName(int index)
-        {
-            var sequencePoint = GetCurrentSequencePoint(index);
-            return Path.GetFileName(sequencePoint.Document.Url);
-        }
-
-        internal SequencePoint GetCurrentSequencePoint(int index)
-        {
-            var instruction = _method.Body.Instructions[index];
-            while ((instruction.SequencePoint == null
-                || instruction.SequencePoint.StartLine == 0xfeefee) && index > 0)
-            {
-                index--;
-                instruction = _method.Body.Instructions[index];
-            }
-            var sequencePoint = instruction.SequencePoint;
-            return sequencePoint;
-        }
-
-        internal string GetOriginalSourceCode(int index)
-        {
-            var sequencePoint = GetCurrentSequencePoint(index);
-            string result = "";
-            if (!_module.SourceFiles.ContainsKey(sequencePoint.Document.Url))
-            {
-                return "";
-            }
-            string[] sourceCode = _module.SourceFiles[sequencePoint.Document.Url];
-            int upperBound = Math.Min(sequencePoint.EndLine + 2, sourceCode.Length);
-            for (int line = Math.Max(sequencePoint.StartLine - 2, 1); line <= upperBound; line++)
-            {
-                string sourceLine = sourceCode[line - 1].Replace("\t", "    ");
-                result += line.ToString(CultureInfo.InvariantCulture)
-                    .PadLeft(4, ' ') + ": " + sourceLine.TrimEnd(' ', '\t');
-                if (line < upperBound) result += Environment.NewLine;
-            }
-            return result;
-        }
+        
     }
 }
