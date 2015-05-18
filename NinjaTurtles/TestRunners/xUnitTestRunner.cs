@@ -131,6 +131,36 @@ namespace NinjaTurtles.TestRunners
             return ConsoleProcessFactory.CreateProcess("xunit.console.clr4.exe", arguments, searchPath);
         }
 
+        /// <summary>
+        /// Ensures that the chosen runner can actually be found and executed.
+        /// </summary>
+        /// <param name="testDirectory"></param>
+        /// <param name="testAssemblyLocation"></param>
+        /// <remarks>
+        /// This method won't be called
+        /// from a user's testing code, it is called internally by
+        /// NinjaTurtles, and is only exposed publicly to allow for a new
+        /// implementation to be provided as an extension to NinjaTurtles.
+        /// </remarks>
+        public override void EnsureRunner(TestDirectory testDirectory, string testAssemblyLocation)
+        {
+            try
+            {
+                string originalTestAssemblyLocation = testAssemblyLocation;
+                testAssemblyLocation = Path.Combine(testDirectory.FullName, Path.GetFileName(testAssemblyLocation));
+
+                var searchPath = new List<string>();
+                AddSearchPathTermsForxUnitVersion(testAssemblyLocation, originalTestAssemblyLocation, searchPath);
+
+                var process = ConsoleProcessFactory.CreateProcess("xunit.console.clr4.exe", string.Empty, searchPath);
+                process.Start();
+            }
+            catch (Exception)
+            {
+                throw new TestRunnerException("Unable to find xunit.console.clr4.exe.\n  Either install the version of xunit you are using from the MSI, or \n use nuget to install xunit.runners in the packages directory.");
+            }
+        }
+
         private static void AddSearchPathTermsForxUnitVersion(string testAssemblyLocation, string originalTestAssemblyLocation, ICollection<string> searchPath)
         {
             var xUnitReference =

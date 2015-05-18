@@ -54,5 +54,16 @@ namespace NinjaTurtles.TestRunners
         /// A <see cref="Process" /> instance to run the unit test runner.
         /// </returns>
         Process GetRunnerProcess(TestDirectory testDirectory, string testAssemblyLocation, IEnumerable<string> testsToRun);
+
+        /// <summary>
+        /// Ensures that the chosen runner can actually be found and executed.
+        /// </summary>
+        /// <remarks>
+        /// This method won't be called
+        /// from a user's testing code, it is called internally by
+        /// NinjaTurtles, and is only exposed publicly to allow for a new
+        /// implementation to be provided as an extension to NinjaTurtles.
+        /// </remarks>
+        void EnsureRunner(TestDirectory testDirectory, string testAssemblyLocation);
     }
 }
