@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using NLog;
 
 namespace NinjaTurtles.TestRunners
 {
@@ -99,6 +100,37 @@ namespace NinjaTurtles.TestRunners
             AddSearchPathTermsForNUnitVersion(testAssemblyLocation, originalTestAssemblyLocation, searchPath);
 
             return ConsoleProcessFactory.CreateProcess("nunit-console.exe", arguments, searchPath);
+        }
+
+        /// <summary>
+        /// Ensures that the chosen runner can actually be found and executed.
+        /// </summary>
+        /// <param name="testDirectory"></param>
+        /// <param name="testAssemblyLocation"></param>
+        /// <remarks>
+        /// This method won't be called
+        /// from a user's testing code, it is called internally by
+        /// NinjaTurtles, and is only exposed publicly to allow for a new
+        /// implementation to be provided as an extension to NinjaTurtles.
+        /// </remarks>
+        public override void EnsureRunner(TestDirectory testDirectory, string testAssemblyLocation)
+        {
+            try
+            {
+                string originalTestAssemblyLocation = testAssemblyLocation;
+                testAssemblyLocation = Path.Combine(testDirectory.FullName, Path.GetFileName(testAssemblyLocation));
+                
+                var searchPath = new List<string>();
+                AddSearchPathTermsForNUnitVersion(testAssemblyLocation, originalTestAssemblyLocation, searchPath);
+
+                string arguments = string.Format("/?");
+                var process = ConsoleProcessFactory.CreateProcess("nunit-console.exe", arguments, searchPath);
+                process.Start();
+            }
+            catch (Exception)
+            {
+                throw new TestRunnerException("Unable to find nunit-console.exe.\n  Either install the version of nunit you are using from the MSI, or \n use nuget to install nunit.runners in the packages directory.");
+            }
         }
 
         private static void AddSearchPathTermsForNUnitVersion(string testAssemblyLocation, string originalTestAssemblyLocation, ICollection<string> searchPath)

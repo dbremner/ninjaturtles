@@ -102,6 +102,40 @@ namespace NinjaTurtles.TestRunners
             return ConsoleProcessFactory.CreateProcess("MSTest.exe", arguments, searchPath);
         }
 
+        /// <summary>
+        /// Ensures that the chosen runner can actually be found and executed.
+        /// </summary>
+        /// <param name="testDirectory"></param>
+        /// <param name="testAssemblyLocation"></param>
+        /// <remarks>
+        /// This method won't be called
+        /// from a user's testing code, it is called internally by
+        /// NinjaTurtles, and is only exposed publicly to allow for a new
+        /// implementation to be provided as an extension to NinjaTurtles.
+        /// </remarks>
+        public override void EnsureRunner(TestDirectory testDirectory, string testAssemblyLocation)
+        {
+            try
+            {
+                var searchPath = new List<string>();
+                string programFilesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+                string programFilesX86Folder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+
+                AddSearchPathsForVisualStudioVersions(searchPath, programFilesFolder);
+                if (!string.IsNullOrEmpty(programFilesX86Folder))
+                {
+                    AddSearchPathsForVisualStudioVersions(searchPath, programFilesX86Folder);
+                }
+
+                var process = ConsoleProcessFactory.CreateProcess("MSTest.exe", string.Empty, searchPath);
+                process.Start();
+            }
+            catch (Exception)
+            {
+                throw new TestRunnerException("Unable to find mstest.exe.");
+            }
+        }
+
         private void AddSearchPathsForVisualStudioVersions(ICollection<string> searchPath, string baseFolder)
         {
             for (int visualStudioVersion = 10; visualStudioVersion <= 13; visualStudioVersion++)

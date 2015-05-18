@@ -209,13 +209,13 @@ Parameter name: methodName")]
                 .Run();
         }
 
-        [Test]
+        [Test, Category("Mutation"), MutationTest]
         public void LongRunning_Test_Method()
         {
             new LongRunningWhenMutated().LongRunning();
         }
 
-        [Test]
+        [Test, Category("Mutation"), MutationTest]
         public void DoSomethingBanale_Mutation_Tests_Work()
         {
             MutationTestBuilder<OnlyTestedByNestedTestClass>.For("DoSomethingBanale")

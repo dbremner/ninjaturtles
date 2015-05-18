@@ -60,6 +60,19 @@ namespace NinjaTurtles.TestRunners
         public abstract Process GetRunnerProcess(TestDirectory testDirectory, string testAssemblyLocation, IEnumerable<string> testsToRun);
 
         /// <summary>
+        /// Ensures that the chosen runner can actually be found and executed.
+        /// </summary>
+        /// <param name="testDirectory"></param>
+        /// <param name="testAssemblyLocation"></param>
+        /// <remarks>
+        /// This method won't be called
+        /// from a user's testing code, it is called internally by
+        /// NinjaTurtles, and is only exposed publicly to allow for a new
+        /// implementation to be provided as an extension to NinjaTurtles.
+        /// </remarks>
+        public abstract void EnsureRunner(TestDirectory testDirectory, string testAssemblyLocation);
+
+        /// <summary>
         /// Traverses the directory tree from the location of the original test
         /// assembly, looking for both a packages folder (NuGet) and a .sln
         /// file.

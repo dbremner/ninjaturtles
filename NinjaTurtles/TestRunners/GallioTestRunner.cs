@@ -128,5 +128,51 @@ namespace NinjaTurtles.TestRunners
             }
             return ConsoleProcessFactory.CreateProcess("Gallio.Echo.exe", arguments, searchPath);
         }
+
+        /// <summary>
+        /// Ensures that the chosen runner can actually be found and executed.
+        /// </summary>
+        /// <param name="testDirectory"></param>
+        /// <param name="testAssemblyLocation"></param>
+        /// <remarks>
+        /// This method won't be called
+        /// from a user's testing code, it is called internally by
+        /// NinjaTurtles, and is only exposed publicly to allow for a new
+        /// implementation to be provided as an extension to NinjaTurtles.
+        /// </remarks>
+        public override void EnsureRunner(TestDirectory testDirectory, string testAssemblyLocation)
+        {
+            try
+            {
+                var searchPath = new List<string>();
+
+                string originalTestAssemblyLocation = testAssemblyLocation;
+                string solutionFolder = GetBestGuessSolutionFolder(originalTestAssemblyLocation);
+                if (!string.IsNullOrEmpty(solutionFolder))
+                {
+                    DirectoryInfo gallioFolder = new DirectoryInfo(solutionFolder)
+                        .GetDirectories("packages").Single()
+                        .GetDirectories("GallioBundle*").FirstOrDefault();
+                    if (gallioFolder != null)
+                    {
+                        searchPath.Add(Path.Combine(gallioFolder.FullName, "bin"));
+                    }
+                }
+
+                string programFilesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+                searchPath.Add(Path.Combine(programFilesFolder, "Gallio\\bin"));
+                string programFilesX86Folder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+                if (!string.IsNullOrEmpty(programFilesX86Folder))
+                {
+                    searchPath.Add(Path.Combine(programFilesX86Folder, "Gallio\\bin"));
+                }
+                var process = ConsoleProcessFactory.CreateProcess("Gallio.Echo.exe", string.Empty, searchPath);
+                process.Start();
+            }
+            catch (Exception)
+            {
+                throw new TestRunnerException("Unable to find Gallio.Echo.exe.\n  Either install the version of gallio you are using, or \n use nuget to install GallioBundle in the packages directory.");
+            }
+        }
     }
 }

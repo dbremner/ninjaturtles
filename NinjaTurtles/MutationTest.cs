@@ -422,7 +422,11 @@ namespace NinjaTurtles
 
 	    private Process GetTestRunnerProcess(TestDirectory testDirectory)
 	    {
-	        if (_runner == null) _runner = (ITestRunner)Activator.CreateInstance(MutationTestBuilder.TestRunner);
+	        if (_runner == null)
+	        {
+	            _runner = (ITestRunner)Activator.CreateInstance(MutationTestBuilder.TestRunner);
+                _runner.EnsureRunner(testDirectory, TestAssemblyLocation);
+	        }
 	        return _runner.GetRunnerProcess(testDirectory, TestAssemblyLocation, _testsToRun);
 	    }
 
